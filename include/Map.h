@@ -26,7 +26,9 @@
 #include <set>
 #include <pangolin/pangolin.h>
 #include <mutex>
-
+#include <boost/interprocess/shared_memory_object.hpp>
+#include <boost/interprocess/mapped_region.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/serialization/base_object.hpp>
 
 
@@ -120,6 +122,15 @@ public:
     static const int THUMB_HEIGHT = 512;
 
     static long unsigned int nNextId;
+
+    /* operators aditya added*/
+    void * operator new(size_t);
+    void operator delete(void *);
+
+    //shared memory location
+    shared_memory_object shm; //initialize it in the constructor
+    const ShmemAllocator alloc_ins; //shared memory allocator
+
 
 protected:
 

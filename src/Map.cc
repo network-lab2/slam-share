@@ -24,11 +24,24 @@
 namespace ORB_SLAM3
 {
 
+//create a template for the allocator for the operator new.
+//Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
+//This allocator will allow placing containers in the segment
+typedef allocator<Map, managed_shared_memory::segment_manager>  ShmemAllocator;
+
 long unsigned int Map::nNextId=0;
 
 Map::Map():mnMaxKFid(0),mnBigChangeIdx(0), mbImuInitialized(false), mnMapChange(0), mpFirstRegionKF(static_cast<KeyFrame*>(NULL)),
 mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
+    //shared memory initialization for the map
+    shared_memory_object shm_temp(open_only, "MySharedMemory", read_write);
+    shm = shm_temp;
+
+    //intialize the allocator
+    const ShmemAllocator alloc_inst_temp (segment.get_segment_manager());
+    alloc_ins = alloc_inst_temp; //this allocator can allocate data from shared memory
+
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
@@ -37,6 +50,8 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
                        mHasTumbnail(false), mbBad(false), mbImuInitialized(false), mpFirstRegionKF(static_cast<KeyFrame*>(NULL)),
                        mnMapChange(0), mbFail(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
+    shared_memory_object shm_temp(open_only, "MySharedMemory", read_write);
+    shm = shm_temp;
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
@@ -325,6 +340,11 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
         pMP->UpdateNormalAndDepth();
     }
     mnMapChange++;
+}
+
+void * Map::operator new(size_t _size){
+    //allocate the given size form the shared memory
+    
 }
 
 void Map::SetInertialSensor()
