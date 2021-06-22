@@ -31,6 +31,7 @@
 #include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/serialization/base_object.hpp>
 
+using namespace boost::interprocess;
 
 namespace ORB_SLAM3
 {
