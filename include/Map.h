@@ -35,7 +35,7 @@ using namespace boost::interprocess;
 
 //Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
 //This allocator will allow placing containers in the segment
-typedef allocator<int, managed_shared_memory::segment_manager>  ShmemAllocator;
+typedef boost::interprocess::allocator<int, managed_shared_memory::segment_manager>  ShmemAllocator;
 
 namespace ORB_SLAM3
 {
