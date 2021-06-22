@@ -40,7 +40,7 @@ namespace ORB_SLAM3
 
 //Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
 //This allocator will allow placing containers in the segment
-typedef boost::interprocess::allocator<int, managed_shared_memory::segment_manager>  ShmemAllocator;
+typedef boost::interprocess::allocator<int, boost::interprocess::managed_shared_memory::segment_manager>  ShmemAllocator;
 
 
 class MapPoint;
