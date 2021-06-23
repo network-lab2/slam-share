@@ -30,22 +30,18 @@ namespace ORB_SLAM3
 typedef boost::interprocess::allocator<Map, boost::interprocess::managed_shared_memory::segment_manager>  ShmemAllocator;
 
 
-//shared memory location
-//boost::interprocess::shared_memory_object shm; //initialize it in the constructor
-const ShmemAllocator alloc_ins; //shared memory allocator
-
 long unsigned int Map::nNextId=0;
 
 Map::Map():mnMaxKFid(0),mnBigChangeIdx(0), mbImuInitialized(false), mnMapChange(0), mpFirstRegionKF(static_cast<KeyFrame*>(NULL)),
 mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
     //shared memory initialization for the map
-    shared_memory_object shm_temp(open_only, "MySharedMemory", read_write);
-    shm = shm_temp;
+    managed_shared_memory shm_temp(open_only, "MySharedMemory", read_write);
 
+    //create a new allocator and copy this allocator to global one
+    typedef boost::interprocess::allocator<Map, boost::interprocess::managed_shared_memory::segment_manager>  ShmemAllocator2(shm_temp.get_segment_manager());
 
-    const ShmemAllocator alloc_inst_temp (segment.get_segment_manager());
-    alloc_ins = alloc_inst_temp; //this allocator can allocate data from shared memory
+    ShmemAllocator = ShmemAllocator2;//this allocator can allocate data from shared memory
 
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
