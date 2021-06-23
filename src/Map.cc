@@ -25,7 +25,14 @@ namespace ORB_SLAM3
 {
 
 // Shared memory declarations
+//Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
+//This allocator will allow placing containers in the segment
+typedef boost::interprocess::allocator<Map, boost::interprocess::managed_shared_memory::segment_manager>  ShmemAllocator;
 
+
+//shared memory location
+//boost::interprocess::shared_memory_object shm; //initialize it in the constructor
+const ShmemAllocator alloc_ins; //shared memory allocator
 
 long unsigned int Map::nNextId=0;
 
@@ -36,7 +43,7 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     shared_memory_object shm_temp(open_only, "MySharedMemory", read_write);
     shm = shm_temp;
 
-    
+
     const ShmemAllocator alloc_inst_temp (segment.get_segment_manager());
     alloc_ins = alloc_inst_temp; //this allocator can allocate data from shared memory
 
