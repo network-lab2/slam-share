@@ -24,10 +24,8 @@
 namespace ORB_SLAM3
 {
 
-//create a template for the allocator for the operator new.
-//Define an STL compatible allocator of ints that allocates from the managed_shared_memory.
-//This allocator will allow placing containers in the segment
-typedef allocator<Map, managed_shared_memory::segment_manager>  ShmemAllocator;
+// Shared memory declarations
+
 
 long unsigned int Map::nNextId=0;
 
@@ -38,7 +36,7 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     shared_memory_object shm_temp(open_only, "MySharedMemory", read_write);
     shm = shm_temp;
 
-    //intialize the allocator
+    
     const ShmemAllocator alloc_inst_temp (segment.get_segment_manager());
     alloc_ins = alloc_inst_temp; //this allocator can allocate data from shared memory
 
@@ -344,7 +342,8 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
 
 void * Map::operator new(size_t _size){
     //allocate the given size form the shared memory
-    
+    //we do not need the size as we will be making object
+
 }
 
 void Map::SetInertialSensor()
