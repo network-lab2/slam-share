@@ -291,7 +291,7 @@ void Map::RotateMap(const cv::Mat &R)
         cv::Mat Vw = pKF->GetVelocity();
         pKF->SetVelocity(Ryw*Vw);
     }
-    for(set<MapPoint*>::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
+    for(set<offset_ptr<MapPoint>>::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
     {
         MapPoint* pMP = *sit;
         pMP->SetWorldPos(Ryw*pMP->GetWorldPos()+tyw);
