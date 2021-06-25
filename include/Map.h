@@ -56,17 +56,17 @@ public:
     Map(int initKFid);
     ~Map();
 
-    void AddKeyFrame(offset_ptr<KeyFrame> pKF);
-    void AddMapPoint(offset_ptr<MapPoint> pMP);
-    void EraseMapPoint(offset_ptr<MapPoint> pMP);
-    void EraseKeyFrame(offset_ptr<KeyFrame> pKF);
-    void SetReferenceMapPoints(const std::vector<offset_ptr<MapPoint> > &vpMPs);
+    void AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    void AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP);
+    void EraseMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP);
+    void EraseKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    void SetReferenceMapPoints(const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs);
     void InformNewBigChange();
     int GetLastBigChangeIdx();
 
-    std::vector<offset_ptr<KeyFrame> > GetAllKeyFrames();
-    std::vector<offset_ptr<MapPoint> > GetAllMapPoints();
-    std::vector<offset_ptr<MapPoint> > GetReferenceMapPoints();
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > GetAllKeyFrames();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > GetAllMapPoints();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > GetReferenceMapPoints();
 
     long unsigned int MapPointsInMap();
     long unsigned  KeyFramesInMap();
@@ -77,7 +77,7 @@ public:
     void SetInitKFid(long unsigned int initKFif);
     long unsigned int GetMaxKFid();
 
-    offset_ptr<KeyFrame> GetOriginKF();
+    boost::interprocess::offset_ptr<KeyFrame> GetOriginKF();
 
     void SetCurrentMap();
     void SetStoredMap();
@@ -114,9 +114,9 @@ public:
 
     unsigned int GetLowerKFID();
 
-    vector<offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
+    vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
     vector<unsigned long int> mvBackupKeyFrameOriginsId;
-    offset_ptr<KeyFrame> mpFirstRegionKF;
+    boost::interprocess::offset_ptr<KeyFrame> mpFirstRegionKF;
     std::mutex mMutexMapUpdate;
 
     // This avoid that two points are created simultaneously in separate threads (id conflict)
@@ -140,13 +140,13 @@ protected:
 
     long unsigned int mnId;
 
-    std::set<offset_ptr<MapPoint> > mspMapPoints;
-    std::set<offset_ptr<KeyFrame> > mspKeyFrames;
+    std::set<boost::interprocess::offset_ptr<MapPoint> > mspMapPoints;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspKeyFrames;
 
-    offset_ptr<KeyFrame> mpKFinitial;
-    offset_ptr<KeyFrame> mpKFlowerID;
+    boost::interprocess::offset_ptr<KeyFrame> mpKFinitial;
+    boost::interprocess::offset_ptr<KeyFrame> mpKFlowerID;
 
-    std::vector<offset_ptr<MapPoint> > mvpReferenceMapPoints;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpReferenceMapPoints;
 
     bool mbImuInitialized;
 
