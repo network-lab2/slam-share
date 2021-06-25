@@ -36,7 +36,7 @@ Map::Map():mnMaxKFid(0),mnBigChangeIdx(0), mbImuInitialized(false), mnMapChange(
 mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
     //shared memory initialization for the map
-    boost::interprocess::managed_shared_memory shm_temp(open_only, "MySharedMemory");
+    boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
     shm = shm_temp;
 
 
@@ -48,7 +48,7 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
                        mHasTumbnail(false), mbBad(false), mbImuInitialized(false), mpFirstRegionKF(static_cast<KeyFrame*>(NULL)),
                        mnMapChange(0), mbFail(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
-    shared_memory_object shm_temp(open_only, "MySharedMemory", read_write);
+    boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
     shm = shm_temp;
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
