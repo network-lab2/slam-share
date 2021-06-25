@@ -26,6 +26,8 @@
 #include <set>
 #include <pangolin/pangolin.h>
 #include <mutex>
+
+//Some Boost interprocess libarries.
 #include <boost/interprocess/shared_memory_object.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/containers/vector.hpp>
@@ -54,17 +56,17 @@ public:
     Map(int initKFid);
     ~Map();
 
-    void AddKeyFrame(KeyFrame* pKF);
-    void AddMapPoint(MapPoint* pMP);
-    void EraseMapPoint(MapPoint* pMP);
-    void EraseKeyFrame(KeyFrame* pKF);
-    void SetReferenceMapPoints(const std::vector<MapPoint*> &vpMPs);
+    void AddKeyFrame(offset_ptr<KeyFrame> pKF);
+    void AddMapPoint(offset_ptr<MapPoint> pMP);
+    void EraseMapPoint(offset_ptr<MapPoint> pMP);
+    void EraseKeyFrame(offset_ptr<KeyFrame> pKF);
+    void SetReferenceMapPoints(const std::vector<offset_ptr<MapPoint> > &vpMPs);
     void InformNewBigChange();
     int GetLastBigChangeIdx();
 
-    std::vector<KeyFrame*> GetAllKeyFrames();
-    std::vector<MapPoint*> GetAllMapPoints();
-    std::vector<MapPoint*> GetReferenceMapPoints();
+    std::vector<offset_ptr<KeyFrame> > GetAllKeyFrames();
+    std::vector<offset_ptr<MapPoint> > GetAllMapPoints();
+    std::vector<offset_ptr<MapPoint> > GetReferenceMapPoints();
 
     long unsigned int MapPointsInMap();
     long unsigned  KeyFramesInMap();
@@ -75,7 +77,7 @@ public:
     void SetInitKFid(long unsigned int initKFif);
     long unsigned int GetMaxKFid();
 
-    KeyFrame* GetOriginKF();
+    offset_ptr<KeyFrame> GetOriginKF();
 
     void SetCurrentMap();
     void SetStoredMap();
@@ -112,9 +114,9 @@ public:
 
     unsigned int GetLowerKFID();
 
-    vector<KeyFrame*> mvpKeyFrameOrigins;
+    vector<offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
     vector<unsigned long int> mvBackupKeyFrameOriginsId;
-    KeyFrame* mpFirstRegionKF;
+    offset_ptr<KeyFrame> mpFirstRegionKF;
     std::mutex mMutexMapUpdate;
 
     // This avoid that two points are created simultaneously in separate threads (id conflict)
@@ -138,13 +140,13 @@ protected:
 
     long unsigned int mnId;
 
-    std::set<MapPoint*> mspMapPoints;
-    std::set<KeyFrame*> mspKeyFrames;
+    std::set<offset_ptr<MapPoint> > mspMapPoints;
+    std::set<offset_ptr<KeyFrame> > mspKeyFrames;
 
-    KeyFrame* mpKFinitial;
-    KeyFrame* mpKFlowerID;
+    offset_ptr<KeyFrame> mpKFinitial;
+    offset_ptr<KeyFrame> mpKFlowerID;
 
-    std::vector<MapPoint*> mvpReferenceMapPoints;
+    std::vector<offset_ptr<MapPoint> > mvpReferenceMapPoints;
 
     bool mbImuInitialized;
 

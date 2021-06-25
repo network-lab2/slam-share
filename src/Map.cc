@@ -36,7 +36,7 @@ Map::Map():mnMaxKFid(0),mnBigChangeIdx(0), mbImuInitialized(false), mnMapChange(
 mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
     //shared memory initialization for the map
-    managed_shared_memory shm_temp(open_only, "MySharedMemory", read_write);
+    boost::interprocess::managed_shared_memory shm_temp(open_only, "MySharedMemory", read_write);
 
     //create a new allocator and copy this allocator to global one
     typedef boost::interprocess::allocator<Map, boost::interprocess::managed_shared_memory::segment_manager>  ShmemAllocator2(shm_temp.get_segment_manager());
