@@ -389,7 +389,7 @@ void Map::PrintEssentialGraph()
     int count=0;
     cout << "Number of origin KFs: " << vpOriginKFs.size() << endl;
     KeyFrame* pFirstKF;
-    for(KeyFrame* pKFi : vpOriginKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame> pKFi : vpOriginKFs)
     {
         if(!pFirstKF)
             pFirstKF = pKFi;
@@ -402,10 +402,10 @@ void Map::PrintEssentialGraph()
     }
 
     cout << "KF: " << pFirstKF->mnId << endl;
-    set<KeyFrame*> spChilds = pFirstKF->GetChilds();
-    vector<KeyFrame*> vpChilds;
+    set<boost::interprocess::offset_ptr<KeyFrame> > spChilds = pFirstKF->GetChilds();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpChilds;
     vector<string> vstrHeader;
-    for(KeyFrame* pKFi : spChilds){
+    for(boost::interprocess::offset_ptr<KeyFrame> pKFi : spChilds){
         vstrHeader.push_back("--");
         vpChilds.push_back(pKFi);
     }
@@ -417,8 +417,8 @@ void Map::PrintEssentialGraph()
 
         cout << strHeader << "KF: " << pKFi->mnId << endl;
 
-        set<KeyFrame*> spKFiChilds = pKFi->GetChilds();
-        for(KeyFrame* pKFj : spKFiChilds)
+        set<boost::interprocess::offset_ptr<KeyFrame> > spKFiChilds = pKFi->GetChilds();
+        for(boost::interprocess::offset_ptr<KeyFrame> pKFj : spKFiChilds)
         {
             vpChilds.push_back(pKFj);
             vstrHeader.push_back(strHeader+"--");
@@ -434,8 +434,8 @@ bool Map::CheckEssentialGraph(){
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs = mvpKeyFrameOrigins;
     int count=0;
     cout << "Number of origin KFs: " << vpOriginKFs.size() << endl;
-    KeyFrame* pFirstKF;
-    for(KeyFrame* pKFi : vpOriginKFs)
+    boost::interprocess::offset_ptr<KeyFrame> pFirstKF;
+    for(boost::interprocess::offset_ptr<KeyFrame> pKFi : vpOriginKFs)
     {
         if(!pFirstKF)
             pFirstKF = pKFi;
@@ -448,18 +448,18 @@ bool Map::CheckEssentialGraph(){
         cout << "First KF in the essential graph has a parent, which is not possible" << endl;
     }
 
-    set<KeyFrame*> spChilds = pFirstKF->GetChilds();
-    vector<KeyFrame*> vpChilds;
+    set<boost::interprocess::offset_ptr<KeyFrame> > spChilds = pFirstKF->GetChilds();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpChilds;
     vpChilds.reserve(mspKeyFrames.size());
-    for(KeyFrame* pKFi : spChilds)
+    for(boost::interprocess::offset_ptr<KeyFrame> pKFi : spChilds)
         vpChilds.push_back(pKFi);
 
     for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames.size()+10); ++i)
     {
         count++;
-        KeyFrame* pKFi = vpChilds[i];
-        set<KeyFrame*> spKFiChilds = pKFi->GetChilds();
-        for(KeyFrame* pKFj : spKFiChilds)
+        boost::interprocess::offset_ptr<KeyFrame> pKFi = vpChilds[i];
+        set<boost::interprocess::offset_ptr<KeyFrame> > spKFiChilds = pKFi->GetChilds();
+        for(boost::interprocess::offset_ptr<KeyFrame> pKFj : spKFiChilds)
             vpChilds.push_back(pKFj);
     }
 
