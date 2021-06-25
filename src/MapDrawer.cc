@@ -303,7 +303,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
 
             for(size_t i=0; i<vpKFs.size(); i++)
             {
-                offset_ptr<KeyFrame> pKF = vpKFs[i];
+                boost::interprocess::offset_ptr<KeyFrame> pKF = vpKFs[i];
                 cv::Mat Twc = pKF->GetPoseInverse().t();
                 unsigned int index_color = pKF->mnOriginMapId;
 
