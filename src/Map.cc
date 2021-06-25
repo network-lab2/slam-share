@@ -125,7 +125,7 @@ void Map::EraseKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
     {
         if(pKF->mnId == mpKFlowerID->mnId)
         {
-            vector<KeyFrame*> vpKFs = vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
+            vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
             sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
             mpKFlowerID = vpKFs[0];
         }
@@ -160,13 +160,13 @@ int Map::GetLastBigChangeIdx()
 vector<boost::interprocess::offset_ptr<KeyFrame> > Map::GetAllKeyFrames()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return vector<KeyFrame*>(mspKeyFrames.begin(),mspKeyFrames.end());
+    return vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
 }
 
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetAllMapPoints()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return vector<MapPoint*>(mspMapPoints.begin(),mspMapPoints.end());
+    return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints.begin(),mspMapPoints.end());
 }
 
 long unsigned int Map::MapPointsInMap()
