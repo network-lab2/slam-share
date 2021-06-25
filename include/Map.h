@@ -64,7 +64,7 @@ public:
     void InformNewBigChange();
     int GetLastBigChangeIdx();
 
-    std::vector<boost::interprocess::offset_ptr<KeyFrame> > GetAllKeyFrames();
+    std::vector<keyframe* > GetAllKeyFrames();
     std::vector<boost::interprocess::offset_ptr<MapPoint> > GetAllMapPoints();
     std::vector<boost::interprocess::offset_ptr<MapPoint> > GetReferenceMapPoints();
 
