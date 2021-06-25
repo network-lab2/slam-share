@@ -231,7 +231,7 @@ void Map::clear()
 
     for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
     {
-        KeyFrame* pKF = *sit;
+        boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         pKF->UpdateMap(static_cast<Map*>(NULL));
 //        delete *sit;
     }
@@ -269,7 +269,7 @@ void Map::RotateMap(const cv::Mat &R)
     cv::Mat Txw = cv::Mat::eye(4,4,CV_32F);
     R.copyTo(Txw.rowRange(0,3).colRange(0,3));
 
-    KeyFrame* pKFini = mvpKeyFrameOrigins[0];
+    boost::interprocess::offset_ptr<KeyFrame> pKFini = mvpKeyFrameOrigins[0];
     cv::Mat Twc_0 = pKFini->GetPoseInverse();
     cv::Mat Txc_0 = Txw*Twc_0;
     cv::Mat Txb_0 = Txc_0*pKFini->mImuCalib.Tcb;
@@ -281,7 +281,7 @@ void Map::RotateMap(const cv::Mat &R)
 
     for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
     {
-        KeyFrame* pKF = *sit;
+        boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         cv::Mat Twc = pKF->GetPoseInverse();
         cv::Mat Tyc = Tyw*Twc;
         cv::Mat Tcy = cv::Mat::eye(4,4,CV_32F);
@@ -291,9 +291,9 @@ void Map::RotateMap(const cv::Mat &R)
         cv::Mat Vw = pKF->GetVelocity();
         pKF->SetVelocity(Ryw*Vw);
     }
-    for(set<offset_ptr<MapPoint>>::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
+    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
     {
-        MapPoint* pMP = *sit;
+        boost::interprocess::offset_ptr<MapPoint> pMP = *sit;
         pMP->SetWorldPos(Ryw*pMP->GetWorldPos()+tyw);
         pMP->UpdateNormalAndDepth();
     }
