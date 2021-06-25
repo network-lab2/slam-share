@@ -229,7 +229,7 @@ void Map::clear()
 //    for(set<MapPoint*>::iterator sit=mspMapPoints.begin(), send=mspMapPoints.end(); sit!=send; sit++)
 //        delete *sit;
 
-    for(set<KeyFrame*>::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
+    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
     {
         KeyFrame* pKF = *sit;
         pKF->UpdateMap(static_cast<Map*>(NULL));
@@ -279,7 +279,7 @@ void Map::RotateMap(const cv::Mat &R)
     cv::Mat Ryw = Tyw.rowRange(0,3).colRange(0,3);
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
-    for(set<KeyFrame*>::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
+    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
     {
         KeyFrame* pKF = *sit;
         cv::Mat Twc = pKF->GetPoseInverse();
