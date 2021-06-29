@@ -36,7 +36,7 @@ MapPoint::MapPoint():
     mpReplaced = static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
 }
 
-MapPoint::MapPoint(const cv::Mat &Pos, KeyFrame *pRefKF, boost::interprocess::offset_ptr<Map>  pMap):
+MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame> pRefKF, boost::interprocess::offset_ptr<Map>  pMap):
     mnFirstKFid(pRefKF->mnId), mnFirstFrame(pRefKF->mnFrameId), nObs(0), mnTrackReferenceForFrame(0),
     mnLastFrameSeen(0), mnBALocalForKF(0), mnFuseCandidateForKF(0), mnLoopPointForKF(0), mnCorrectedByKF(0),
     mnCorrectedReference(0), mnBAGlobalForKF(0), mpRefKF(pRefKF), mnVisible(1), mnFound(1), mbBad(false),
@@ -428,7 +428,7 @@ cv::Mat MapPoint::GetDescriptor()
     return mDescriptor.clone();
 }
 
-tuple<int,int> MapPoint::GetIndexInKeyFrame(KeyFrame *pKF)
+tuple<int,int> MapPoint::GetIndexInKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexFeatures);
     if(mObservations.count(pKF))
@@ -437,7 +437,7 @@ tuple<int,int> MapPoint::GetIndexInKeyFrame(KeyFrame *pKF)
         return tuple<int,int>(-1,-1);
 }
 
-bool MapPoint::IsInKeyFrame(KeyFrame *pKF)
+bool MapPoint::IsInKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexFeatures);
     return (mObservations.count(pKF));
