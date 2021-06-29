@@ -44,7 +44,7 @@ Atlas::~Atlas()
 
         if(pMi)
         {
-            delete pMi;
+            delete pMi.get();
             pMi = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
 
             it = mspMaps.erase(it);
