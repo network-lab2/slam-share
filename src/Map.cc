@@ -37,7 +37,7 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
 {
     //shared memory initialization for the map
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
-    shm = shm_temp;
+    shm = &shm_temp;
 
 
     mnId=nNextId++;
