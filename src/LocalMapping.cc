@@ -939,7 +939,7 @@ void LocalMapping::Release()
     mbStopped = false;
     mbStopRequested = false;
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit = mlNewKeyFrames.begin(), lend=mlNewKeyFrames.end(); lit!=lend; lit++)
-        delete *lit;
+        delete *(lit.get());
     mlNewKeyFrames.clear();
 
     cout << "Local Mapping RELEASE" << endl;
@@ -1414,7 +1414,7 @@ void LocalMapping::InitializeIMU(float priorG, float priorA, bool bFIBA)
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit = mlNewKeyFrames.begin(), lend=mlNewKeyFrames.end(); lit!=lend; lit++)
     {
         (*lit)->SetBadFlag();
-        delete *lit;
+        delete *(lit.get());
     }
     mlNewKeyFrames.clear();
 
@@ -1481,7 +1481,7 @@ void LocalMapping::ScaleRefinement()
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit = mlNewKeyFrames.begin(), lend=mlNewKeyFrames.end(); lit!=lend; lit++)
     {
         (*lit)->SetBadFlag();
-        delete *lit;
+        delete *(lit.get());
     }
     mlNewKeyFrames.clear();
 
