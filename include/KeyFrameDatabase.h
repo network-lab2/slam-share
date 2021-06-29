@@ -51,23 +51,23 @@ public:
 
     KeyFrameDatabase(const ORBVocabulary &voc);
 
-   void add(KeyFrame* pKF);
+   void add(boost::interprocess::offset_ptr<KeyFrame>  pKF);
 
-   void erase(KeyFrame* pKF);
+   void erase(boost::interprocess::offset_ptr<KeyFrame>  pKF);
 
    void clear();
-   void clearMap(Map* pMap);
+   void clearMap(boost::interprocess::offset_ptr<Map>  pMap);
 
    // Loop Detection(DEPRECATED)
-   std::vector<KeyFrame *> DetectLoopCandidates(KeyFrame* pKF, float minScore);
+   std::vector<KeyFrame *> DetectLoopCandidates(boost::interprocess::offset_ptr<KeyFrame>  pKF, float minScore);
 
    // Loop and Merge Detection
-   void DetectCandidates(KeyFrame* pKF, float minScore,vector<KeyFrame*>& vpLoopCand, vector<KeyFrame*>& vpMergeCand);
-   void DetectBestCandidates(KeyFrame *pKF, vector<KeyFrame*> &vpLoopCand, vector<KeyFrame*> &vpMergeCand, int nMinWords);
-   void DetectNBestCandidates(KeyFrame *pKF, vector<KeyFrame*> &vpLoopCand, vector<KeyFrame*> &vpMergeCand, int nNumCandidates);
+   void DetectCandidates(boost::interprocess::offset_ptr<KeyFrame>  pKF, float minScore,vector<boost::interprocess::offset_ptr<KeyFrame> >& vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> >& vpMergeCand);
+   void DetectBestCandidates(KeyFrame *pKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMergeCand, int nMinWords);
+   void DetectNBestCandidates(KeyFrame *pKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMergeCand, int nNumCandidates);
 
    // Relocalization
-   std::vector<KeyFrame*> DetectRelocalizationCandidates(Frame* F, Map* pMap);
+   std::vector<boost::interprocess::offset_ptr<KeyFrame> > DetectRelocalizationCandidates(Frame* F, boost::interprocess::offset_ptr<Map>  pMap);
 
    void SetORBVocabulary(ORBVocabulary* pORBVoc);
 
@@ -77,7 +77,7 @@ protected:
   const ORBVocabulary* mpVoc;
 
   // Inverted file
-  std::vector<list<KeyFrame*> > mvInvertedFile;
+  std::vector<list<boost::interprocess::offset_ptr<KeyFrame> > > mvInvertedFile;
 
   // Mutex
   std::mutex mMutex;
