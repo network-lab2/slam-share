@@ -114,14 +114,14 @@ public:
 
     // MapPoint observation functions
     int GetNumberMPs();
-    void AddMapPoint(MapPoint* pMP, const size_t &idx);
+    void AddMapPoint(boost::interprocess::offset_ptr<MapPoint>  pMP, const size_t &idx);
     void EraseMapPointMatch(const int &idx);
-    void EraseMapPointMatch(MapPoint* pMP);
-    void ReplaceMapPointMatch(const int &idx, MapPoint* pMP);
-    std::set<MapPoint*> GetMapPoints();
-    std::vector<MapPoint*> GetMapPointMatches();
+    void EraseMapPointMatch(boost::interprocess::offset_ptr<MapPoint>  pMP);
+    void ReplaceMapPointMatch(const int &idx, boost::interprocess::offset_ptr<MapPoint>  pMP);
+    std::set<boost::interprocess::offset_ptr<MapPoint> > GetMapPoints();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > GetMapPointMatches();
     int TrackedMapPoints(const int &minObs);
-    MapPoint* GetMapPoint(const size_t &idx);
+    boost::interprocess::offset_ptr<MapPoint>  GetMapPoint(const size_t &idx);
 
     // KeyPoint functions
     std::vector<size_t> GetFeaturesInArea(const float &x, const float  &y, const float  &r, const bool bRight = false) const;
@@ -158,8 +158,8 @@ public:
     cv::Mat GetAccBias();
     IMU::Bias GetImuBias();
 
-    bool ProjectPointDistort(MapPoint* pMP, cv::Point2f &kp, float &u, float &v);
-    bool ProjectPointUnDistort(MapPoint* pMP, cv::Point2f &kp, float &u, float &v);
+    bool ProjectPointDistort(boost::interprocess::offset_ptr<MapPoint>  pMP, cv::Point2f &kp, float &u, float &v);
+    bool ProjectPointUnDistort(boost::interprocess::offset_ptr<MapPoint>  pMP, cv::Point2f &kp, float &u, float &v);
 
     void SetORBVocabulary(ORBVocabulary* pORBVoc);
     void SetKeyFrameDatabase(KeyFrameDatabase* pKFDB);
@@ -309,7 +309,7 @@ protected:
     IMU::Bias mImuBias;
 
     // MapPoints associated to keypoints
-    std::vector<MapPoint*> mvpMapPoints;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints;
 
     // BoW
     KeyFrameDatabase* mpKeyFrameDB;
