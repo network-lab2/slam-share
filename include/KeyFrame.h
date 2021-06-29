@@ -53,7 +53,7 @@ class KeyFrame
 
 public:
     KeyFrame();
-    KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB);
+    KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrameDatabase* pKFDB);
 
     // Pose functions
     void SetPose(const cv::Mat &Tcw);
@@ -84,33 +84,33 @@ public:
     void ComputeBoW();
 
     // Covisibility graph functions
-    void AddConnection(KeyFrame* pKF, const int &weight);
-    void EraseConnection(KeyFrame* pKF);
+    void AddConnection(boost::interprocess::offset_ptr<KeyFrame> pKF, const int &weight);
+    void EraseConnection(boost::interprocess::offset_ptr<KeyFrame> pKF);
 
     void UpdateConnections(bool upParent=true);
     void UpdateBestCovisibles();
-    std::set<KeyFrame *> GetConnectedKeyFrames();
-    std::vector<KeyFrame* > GetVectorCovisibleKeyFrames();
-    std::vector<KeyFrame*> GetBestCovisibilityKeyFrames(const int &N);
-    std::vector<KeyFrame*> GetCovisiblesByWeight(const int &w);
-    int GetWeight(KeyFrame* pKF);
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > GetConnectedKeyFrames();
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > GetVectorCovisibleKeyFrames();
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > GetBestCovisibilityKeyFrames(const int &N);
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > GetCovisiblesByWeight(const int &w);
+    int GetWeight(boost::interprocess::offset_ptr<KeyFrame> pKF);
 
     // Spanning tree functions
-    void AddChild(KeyFrame* pKF);
-    void EraseChild(KeyFrame* pKF);
-    void ChangeParent(KeyFrame* pKF);
-    std::set<KeyFrame*> GetChilds();
-    KeyFrame* GetParent();
-    bool hasChild(KeyFrame* pKF);
+    void AddChild(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    void EraseChild(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    void ChangeParent(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > GetChilds();
+    boost::interprocess::offset_ptr<KeyFrame> GetParent();
+    bool hasChild(boost::interprocess::offset_ptr<KeyFrame> pKF);
     void SetFirstConnection(bool bFirst);
 
     // Loop Edges
-    void AddLoopEdge(KeyFrame* pKF);
-    std::set<KeyFrame*> GetLoopEdges();
+    void AddLoopEdge(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > GetLoopEdges();
 
     // Merge Edges
-    void AddMergeEdge(KeyFrame* pKF);
-    set<KeyFrame*> GetMergeEdges();
+    void AddMergeEdge(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    set<boost::interprocess::offset_ptr<KeyFrame> > GetMergeEdges();
 
     // MapPoint observation functions
     int GetNumberMPs();
@@ -146,12 +146,12 @@ public:
         return a>b;
     }
 
-    static bool lId(KeyFrame* pKF1, KeyFrame* pKF2){
+    static bool lId(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2){
         return pKF1->mnId<pKF2->mnId;
     }
 
-    Map* GetMap();
-    void UpdateMap(Map* pMap);
+    boost::interprocess::offset_ptr<Map> GetMap();
+    void UpdateMap(boost::interprocess::offset_ptr<Map> pMap);
 
     void SetNewBias(const IMU::Bias &b);
     cv::Mat GetGyroBias();
@@ -268,8 +268,8 @@ public:
     const cv::Mat mK;
 
     // Preintegrated IMU measurements from previous keyframe
-    KeyFrame* mPrevKF;
-    KeyFrame* mNextKF;
+    boost::interprocess::offset_ptr<KeyFrame> mPrevKF;
+    boost::interprocess::offset_ptr<KeyFrame> mNextKF;
 
     IMU::Preintegrated* mpImuPreintegrated;
     IMU::Calib mImuCalib;
@@ -281,8 +281,8 @@ public:
 
     int mnDataset;
 
-    std::vector <KeyFrame*> mvpLoopCandKFs;
-    std::vector <KeyFrame*> mvpMergeCandKFs;
+    std::vector <boost::interprocess::offset_ptr<KeyFrame> > mvpLoopCandKFs;
+    std::vector <boost::interprocess::offset_ptr<KeyFrame> > mvpMergeCandKFs;
 
     bool mbHasHessian;
     cv::Mat mHessianPose;
@@ -318,16 +318,16 @@ protected:
     // Grid over the image to speed up feature matching
     std::vector< std::vector <std::vector<size_t> > > mGrid;
 
-    std::map<KeyFrame*,int> mConnectedKeyFrameWeights;
-    std::vector<KeyFrame*> mvpOrderedConnectedKeyFrames;
+    std::map<boost::interprocess::offset_ptr<KeyFrame>,int> mConnectedKeyFrameWeights;
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpOrderedConnectedKeyFrames;
     std::vector<int> mvOrderedWeights;
 
     // Spanning Tree and Loop Edges
     bool mbFirstConnection;
-    KeyFrame* mpParent;
-    std::set<KeyFrame*> mspChildrens;
-    std::set<KeyFrame*> mspLoopEdges;
-    std::set<KeyFrame*> mspMergeEdges;
+    boost::interprocess::offset_ptr<KeyFrame> mpParent;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspLoopEdges;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges;
 
     // Bad flags
     bool mbNotErase;
@@ -336,7 +336,7 @@ protected:
 
     float mHalfBaseline; // Only for visualization
 
-    Map* mpMap;
+    boost::interprocess::offset_ptr<Map> mpMap;
 
     std::mutex mMutexPose; // for pose, velocity and biases
     std::mutex mMutexConnections;

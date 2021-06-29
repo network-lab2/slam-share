@@ -126,6 +126,7 @@ void Map::EraseKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
         if(pKF->mnId == mpKFlowerID->mnId)
         {
             vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
+            //sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
             sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
             mpKFlowerID = vpKFs[0];
         }
