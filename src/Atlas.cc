@@ -27,25 +27,25 @@ namespace ORB_SLAM3
 {
 
 Atlas::Atlas(){
-    mpCurrentMap = static_cast<Map*>(NULL);
+    mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
 }
 
 Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)
 {
-    mpCurrentMap = static_cast<Map*>(NULL);
+    mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     CreateNewMap();
 }
 
 Atlas::~Atlas()
 {
-    for(std::set<Map*>::iterator it = mspMaps.begin(), end = mspMaps.end(); it != end;)
+    for(std::set<boost::interprocess::offset_ptr<Map> >::iterator it = mspMaps.begin(), end = mspMaps.end(); it != end;)
     {
-        Map* pMi = *it;
+        boost::interprocess::offset_ptr<Map>  pMi = *it;
 
         if(pMi)
         {
             delete pMi;
-            pMi = static_cast<Map*>(NULL);
+            pMi = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
 
             it = mspMaps.erase(it);
         }
@@ -77,7 +77,7 @@ void Atlas::CreateNewMap()
     mspMaps.insert(mpCurrentMap);
 }
 
-void Atlas::ChangeMap(Map* pMap)
+void Atlas::ChangeMap(boost::interprocess::offset_ptr<Map>  pMap)
 {
     unique_lock<mutex> lock(mMutexAtlas);
     cout << "Chage to map with id: " << pMap->GetId() << endl;
@@ -101,15 +101,15 @@ void Atlas::SetViewer(Viewer* pViewer)
     mHasViewer = true;
 }
 
-void Atlas::AddKeyFrame(KeyFrame* pKF)
+void Atlas::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
-    Map* pMapKF = pKF->GetMap();
+    boost::interprocess::offset_ptr<Map>  pMapKF = pKF->GetMap();
     pMapKF->AddKeyFrame(pKF);
 }
 
-void Atlas::AddMapPoint(MapPoint* pMP)
+void Atlas::AddMapPoint(boost::interprocess::offset_ptr<MapPoint>  pMP)
 {
-    Map* pMapMP = pMP->GetMap();
+    boost::interprocess::offset_ptr<Map>  pMapMP = pMP->GetMap();
     pMapMP->AddMapPoint(pMP);
 }
 
@@ -118,7 +118,7 @@ void Atlas::AddCamera(GeometricCamera* pCam)
     mvpCameras.push_back(pCam);
 }
 
-void Atlas::SetReferenceMapPoints(const std::vector<MapPoint*> &vpMPs)
+void Atlas::SetReferenceMapPoints(const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs)
 {
     unique_lock<mutex> lock(mMutexAtlas);
     mpCurrentMap->SetReferenceMapPoints(vpMPs);
@@ -148,35 +148,35 @@ long unsigned Atlas::KeyFramesInMap()
     return mpCurrentMap->KeyFramesInMap();
 }
 
-std::vector<KeyFrame*> Atlas::GetAllKeyFrames()
+std::vector<boost::interprocess::offset_ptr<KeyFrame> > Atlas::GetAllKeyFrames()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     return mpCurrentMap->GetAllKeyFrames();
 }
 
-std::vector<MapPoint*> Atlas::GetAllMapPoints()
+std::vector<boost::interprocess::offset_ptr<MapPoint> > Atlas::GetAllMapPoints()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     return mpCurrentMap->GetAllMapPoints();
 }
 
-std::vector<MapPoint*> Atlas::GetReferenceMapPoints()
+std::vector<boost::interprocess::offset_ptr<MapPoint> > Atlas::GetReferenceMapPoints()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     return mpCurrentMap->GetReferenceMapPoints();
 }
 
-vector<Map*> Atlas::GetAllMaps()
+vector<boost::interprocess::offset_ptr<Map> > Atlas::GetAllMaps()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     struct compFunctor
     {
-        inline bool operator()(Map* elem1 ,Map* elem2)
+        inline bool operator()(boost::interprocess::offset_ptr<Map>  elem1 ,boost::interprocess::offset_ptr<Map>  elem2)
         {
             return elem1->GetId() < elem2->GetId();
         }
     };
-    vector<Map*> vMaps(mspMaps.begin(),mspMaps.end());
+    vector<boost::interprocess::offset_ptr<Map> > vMaps(mspMaps.begin(),mspMaps.end());
     sort(vMaps.begin(), vMaps.end(), compFunctor());
     return vMaps;
 }
@@ -196,17 +196,17 @@ void Atlas::clearMap()
 void Atlas::clearAtlas()
 {
     unique_lock<mutex> lock(mMutexAtlas);
-    /*for(std::set<Map*>::iterator it=mspMaps.begin(), send=mspMaps.end(); it!=send; it++)
+    /*for(std::set<boost::interprocess::offset_ptr<Map> >::iterator it=mspMaps.begin(), send=mspMaps.end(); it!=send; it++)
     {
         (*it)->clear();
         delete *it;
     }*/
     mspMaps.clear();
-    mpCurrentMap = static_cast<Map*>(NULL);
+    mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     mnLastInitKFidMap = 0;
 }
 
-Map* Atlas::GetCurrentMap()
+boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     if(!mpCurrentMap)
@@ -217,7 +217,7 @@ Map* Atlas::GetCurrentMap()
     return mpCurrentMap;
 }
 
-void Atlas::SetMapBad(Map* pMap)
+void Atlas::SetMapBad(boost::interprocess::offset_ptr<Map>  pMap)
 {
     mspMaps.erase(pMap);
     pMap->SetBad();
@@ -227,10 +227,10 @@ void Atlas::SetMapBad(Map* pMap)
 
 void Atlas::RemoveBadMaps()
 {
-    /*for(Map* pMap : mspBadMaps)
+    /*for(boost::interprocess::offset_ptr<Map>  pMap : mspBadMaps)
     {
         delete pMap;
-        pMap = static_cast<Map*>(NULL);
+        pMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     }*/
     mspBadMaps.clear();
 }
@@ -283,7 +283,7 @@ long unsigned int Atlas::GetNumLivedKF()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     long unsigned int num = 0;
-    for(Map* mMAPi : mspMaps)
+    for(boost::interprocess::offset_ptr<Map>  mMAPi : mspMaps)
     {
         num += mMAPi->GetAllKeyFrames().size();
     }
@@ -294,7 +294,7 @@ long unsigned int Atlas::GetNumLivedKF()
 long unsigned int Atlas::GetNumLivedMP() {
     unique_lock<mutex> lock(mMutexAtlas);
     long unsigned int num = 0;
-    for (Map *mMAPi : mspMaps) {
+    for (boost::interprocess::offset_ptr<Map> mMAPi : mspMaps) {
         num += mMAPi->GetAllMapPoints().size();
     }
 

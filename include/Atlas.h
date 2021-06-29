@@ -52,20 +52,20 @@ public:
     ~Atlas();
 
     void CreateNewMap();
-    void ChangeMap(Map* pMap);
+    void ChangeMap(boost::interprocess::offset_ptr<Map>  pMap);
 
     unsigned long int GetLastInitKFid();
 
     void SetViewer(Viewer* pViewer);
 
     // Method for change components in the current map
-    void AddKeyFrame(KeyFrame* pKF);
-    void AddMapPoint(MapPoint* pMP);
+    void AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF);
+    void AddMapPoint(boost::interprocess::offset_ptr<MapPoint>  pMP);
 
     void AddCamera(GeometricCamera* pCam);
 
     /* All methods without Map pointer work on current map */
-    void SetReferenceMapPoints(const std::vector<MapPoint*> &vpMPs);
+    void SetReferenceMapPoints(const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs);
     void InformNewBigChange();
     int GetLastBigChangeIdx();
 
@@ -73,11 +73,11 @@ public:
     long unsigned KeyFramesInMap();
 
     // Method for get data in current map
-    std::vector<KeyFrame*> GetAllKeyFrames();
-    std::vector<MapPoint*> GetAllMapPoints();
-    std::vector<MapPoint*> GetReferenceMapPoints();
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > GetAllKeyFrames();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > GetAllMapPoints();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > GetReferenceMapPoints();
 
-    vector<Map*> GetAllMaps();
+    vector<boost::interprocess::offset_ptr<Map> > GetAllMaps();
 
     int CountMaps();
 
@@ -85,9 +85,9 @@ public:
 
     void clearAtlas();
 
-    Map* GetCurrentMap();
+    boost::interprocess::offset_ptr<Map>  GetCurrentMap();
 
-    void SetMapBad(Map* pMap);
+    void SetMapBad(boost::interprocess::offset_ptr<Map>  pMap);
     void RemoveBadMaps();
 
     bool isInertial();
@@ -107,9 +107,9 @@ public:
 
 protected:
 
-    std::set<Map*> mspMaps;
-    std::set<Map*> mspBadMaps;
-    Map* mpCurrentMap;
+    std::set<boost::interprocess::offset_ptr<Map> > mspMaps;
+    std::set<boost::interprocess::offset_ptr<Map> > mspBadMaps;
+    boost::interprocess::offset_ptr<Map>  mpCurrentMap;
 
     std::vector<GeometricCamera*> mvpCameras;
     std::vector<KannalaBrandt8*> mvpBackupCamKan;
