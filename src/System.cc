@@ -544,7 +544,7 @@ void System::SaveTrajectoryEuRoC(const string &filename)
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
-    list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
+    list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
     list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
     list<bool>::iterator lbL = mpTracker->mlbLost.begin();
 
@@ -676,11 +676,11 @@ void System::SaveTrajectoryKITTI(const string &filename)
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
-    list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
+    list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
     list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
     for(list<cv::Mat>::iterator lit=mpTracker->mlRelativeFramePoses.begin(), lend=mpTracker->mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lT++)
     {
-        ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
 
         cv::Mat Trw = cv::Mat::eye(4,4,CV_32F);
 
