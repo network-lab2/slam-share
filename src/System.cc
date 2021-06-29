@@ -416,7 +416,7 @@ void System::SaveTrajectoryTUM(const string &filename)
         return;
     }
 
-    vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
@@ -433,7 +433,8 @@ void System::SaveTrajectoryTUM(const string &filename)
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
-    list<ORB_SLAM3::KeyFrame*>::iterator lRit = mpTracker->mlpReferences.begin();
+    //list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
+    list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
     list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
     list<bool>::iterator lbL = mpTracker->mlbLost.begin();
     for(list<cv::Mat>::iterator lit=mpTracker->mlRelativeFramePoses.begin(),
@@ -442,7 +443,7 @@ void System::SaveTrajectoryTUM(const string &filename)
         if(*lbL)
             continue;
 
-        KeyFrame* pKF = *lRit;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
 
         cv::Mat Trw = cv::Mat::eye(4,4,CV_32F);
 
@@ -471,7 +472,7 @@ void System::SaveKeyFrameTrajectoryTUM(const string &filename)
 {
     cout << endl << "Saving keyframe trajectory to " << filename << " ..." << endl;
 
-    vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
@@ -482,7 +483,7 @@ void System::SaveKeyFrameTrajectoryTUM(const string &filename)
 
     for(size_t i=0; i<vpKFs.size(); i++)
     {
-        KeyFrame* pKF = vpKFs[i];
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
 
        // pKF->SetPose(pKF->GetPose()*Two);
 
@@ -510,10 +511,10 @@ void System::SaveTrajectoryEuRoC(const string &filename)
         return;
     }*/
 
-    vector<Map*> vpMaps = mpAtlas->GetAllMaps();
-    Map* pBiggerMap;
+    vector<boost::interprocess::offset_ptr<Map> > vpMaps = mpAtlas->GetAllMaps();
+    boost::interprocess::offset_ptr<Map>  pBiggerMap;
     int numMaxKFs = 0;
-    for(Map* pMap :vpMaps)
+    for(boost::interprocess::offset_ptr<Map>  pMap :vpMaps)
     {
         if(pMap->GetAllKeyFrames().size() > numMaxKFs)
         {
@@ -522,7 +523,7 @@ void System::SaveTrajectoryEuRoC(const string &filename)
         }
     }
 
-    vector<KeyFrame*> vpKFs = pBiggerMap->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = pBiggerMap->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
@@ -543,7 +544,7 @@ void System::SaveTrajectoryEuRoC(const string &filename)
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
-    list<ORB_SLAM3::KeyFrame*>::iterator lRit = mpTracker->mlpReferences.begin();
+    list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
     list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
     list<bool>::iterator lbL = mpTracker->mlbLost.begin();
 
@@ -554,7 +555,7 @@ void System::SaveTrajectoryEuRoC(const string &filename)
             continue;
 
 
-        KeyFrame* pKF = *lRit;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
 
         cv::Mat Trw = cv::Mat::eye(4,4,CV_32F);
 
@@ -603,10 +604,10 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
 {
     cout << endl << "Saving keyframe trajectory to " << filename << " ..." << endl;
 
-    vector<Map*> vpMaps = mpAtlas->GetAllMaps();
-    Map* pBiggerMap;
+    vector<boost::interprocess::offset_ptr<Map> > vpMaps = mpAtlas->GetAllMaps();
+    boost::interprocess::offset_ptr<Map>  pBiggerMap;
     int numMaxKFs = 0;
-    for(Map* pMap :vpMaps)
+    for(boost::interprocess::offset_ptr<Map>  pMap :vpMaps)
     {
         if(pMap->GetAllKeyFrames().size() > numMaxKFs)
         {
@@ -615,7 +616,7 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
         }
     }
 
-    vector<KeyFrame*> vpKFs = pBiggerMap->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = pBiggerMap->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
@@ -626,7 +627,7 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
 
     for(size_t i=0; i<vpKFs.size(); i++)
     {
-        KeyFrame* pKF = vpKFs[i];
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
 
         if(pKF->isBad())
             continue;
@@ -658,7 +659,7 @@ void System::SaveTrajectoryKITTI(const string &filename)
         return;
     }
 
-    vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
@@ -675,11 +676,11 @@ void System::SaveTrajectoryKITTI(const string &filename)
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
-    list<ORB_SLAM3::KeyFrame*>::iterator lRit = mpTracker->mlpReferences.begin();
+    list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mpTracker->mlpReferences.begin();
     list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
     for(list<cv::Mat>::iterator lit=mpTracker->mlRelativeFramePoses.begin(), lend=mpTracker->mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lT++)
     {
-        ORB_SLAM3::KeyFrame* pKF = *lRit;
+        ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
 
         cv::Mat Trw = cv::Mat::eye(4,4,CV_32F);
 
@@ -708,7 +709,7 @@ int System::GetTrackingState()
     return mTrackingState;
 }
 
-vector<MapPoint*> System::GetTrackedMapPoints()
+vector<boost::interprocess::offset_ptr<MapPoint> > System::GetTrackedMapPoints()
 {
     unique_lock<mutex> lock(mMutexState);
     return mTrackedMapPoints;
