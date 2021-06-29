@@ -122,10 +122,10 @@ bool MapDrawer::ParseViewerParamFile(cv::FileStorage &fSettings)
 
 void MapDrawer::DrawMapPoints()
 {
-    const vector<MapPoint*> &vpMPs = mpAtlas->GetAllMapPoints();
-    const vector<MapPoint*> &vpRefMPs = mpAtlas->GetReferenceMapPoints();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs = mpAtlas->GetAllMapPoints();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > &vpRefMPs = mpAtlas->GetReferenceMapPoints();
 
-    set<MapPoint*> spRefMPs(vpRefMPs.begin(), vpRefMPs.end());
+    set<boost::interprocess::offset_ptr<MapPoint> > spRefMPs(vpRefMPs.begin(), vpRefMPs.end());
 
     if(vpMPs.empty())
         return;
@@ -147,7 +147,7 @@ void MapDrawer::DrawMapPoints()
     glBegin(GL_POINTS);
     glColor3f(1.0,0.0,0.0);
 
-    for(set<MapPoint*>::iterator sit=spRefMPs.begin(), send=spRefMPs.end(); sit!=send; sit++)
+    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=spRefMPs.begin(), send=spRefMPs.end(); sit!=send; sit++)
     {
         if((*sit)->isBad())
             continue;
@@ -165,13 +165,13 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
     const float h = w*0.75;
     const float z = w*0.6;
 
-    const vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
+    const vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
 
     if(bDrawKF)
     {
         for(size_t i=0; i<vpKFs.size(); i++)
         {
-            KeyFrame* pKF = vpKFs[i];
+            boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
             cv::Mat Twc = pKF->GetPoseInverse().t();
             unsigned int index_color = pKF->mnOriginMapId;
 
@@ -229,11 +229,11 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
         for(size_t i=0; i<vpKFs.size(); i++)
         {
             // Covisibility Graph
-            const vector<KeyFrame*> vCovKFs = vpKFs[i]->GetCovisiblesByWeight(100);
+            const vector<boost::interprocess::offset_ptr<KeyFrame> > vCovKFs = vpKFs[i]->GetCovisiblesByWeight(100);
             cv::Mat Ow = vpKFs[i]->GetCameraCenter();
             if(!vCovKFs.empty())
             {
-                for(vector<KeyFrame*>::const_iterator vit=vCovKFs.begin(), vend=vCovKFs.end(); vit!=vend; vit++)
+                for(vector<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator vit=vCovKFs.begin(), vend=vCovKFs.end(); vit!=vend; vit++)
                 {
                     if((*vit)->mnId<vpKFs[i]->mnId)
                         continue;
@@ -244,7 +244,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
             }
 
             // Spanning tree
-            KeyFrame* pParent = vpKFs[i]->GetParent();
+            boost::interprocess::offset_ptr<KeyFrame>  pParent = vpKFs[i]->GetParent();
             if(pParent)
             {
                 cv::Mat Owp = pParent->GetCameraCenter();
@@ -253,8 +253,8 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
             }
 
             // Loops
-            set<KeyFrame*> sLoopKFs = vpKFs[i]->GetLoopEdges();
-            for(set<KeyFrame*>::iterator sit=sLoopKFs.begin(), send=sLoopKFs.end(); sit!=send; sit++)
+            set<boost::interprocess::offset_ptr<KeyFrame> > sLoopKFs = vpKFs[i]->GetLoopEdges();
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=sLoopKFs.begin(), send=sLoopKFs.end(); sit!=send; sit++)
             {
                 if((*sit)->mnId<vpKFs[i]->mnId)
                     continue;
@@ -276,9 +276,9 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
         //Draw inertial links
         for(size_t i=0; i<vpKFs.size(); i++)
         {
-            KeyFrame* pKFi = vpKFs[i];
+            boost::interprocess::offset_ptr<KeyFrame>  pKFi = vpKFs[i];
             cv::Mat Ow = pKFi->GetCameraCenter();
-            KeyFrame* pNext = pKFi->mNextKF;
+            boost::interprocess::offset_ptr<KeyFrame>  pNext = pKFi->mNextKF;
             if(pNext)
             {
                 cv::Mat Owp = pNext->GetCameraCenter();
@@ -290,11 +290,11 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
         glEnd();
     }
 
-    vector<Map*> vpMaps = mpAtlas->GetAllMaps();
+    vector<boost::interprocess::offset_ptr<Map> > vpMaps = mpAtlas->GetAllMaps();
 
     if(bDrawKF)
     {
-        for(Map* pMap : vpMaps)
+        for(boost::interprocess::offset_ptr<Map>  pMap : vpMaps)
         {
             if(pMap == mpAtlas->GetCurrentMap())
                 continue;
