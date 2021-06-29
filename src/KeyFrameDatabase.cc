@@ -36,7 +36,7 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 }
 
 
-void KeyFrameDatabase::add(KeyFrame *pKF)
+void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutex);
 
@@ -465,7 +465,7 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
 
 }
 
-void KeyFrameDatabase::DetectBestCandidates(KeyFrame *pKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMergeCand, int nMinWords)
+void KeyFrameDatabase::DetectBestCandidates(boost::interprocess::offset_ptr<KeyFrame> pKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMergeCand, int nMinWords)
 {
     list<boost::interprocess::offset_ptr<KeyFrame> > lKFsSharingWords;
     set<boost::interprocess::offset_ptr<KeyFrame> > spConnectedKF;
@@ -601,7 +601,7 @@ bool compFirst(const pair<float, boost::interprocess::offset_ptr<KeyFrame> > & a
 }
 
 
-void KeyFrameDatabase::DetectNBestCandidates(KeyFrame *pKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMergeCand, int nNumCandidates)
+void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<KeyFrame> pKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpLoopCand, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMergeCand, int nNumCandidates)
 {
     list<boost::interprocess::offset_ptr<KeyFrame> > lKFsSharingWords;
     set<boost::interprocess::offset_ptr<KeyFrame> > spConnectedKF;
