@@ -45,11 +45,11 @@ cv::Mat FrameDrawer::DrawFrame(bool bOldFeatures)
     int state; // Tracking state
 
     Frame currentFrame;
-    vector<MapPoint*> vpLocalMap;
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpLocalMap;
     vector<cv::KeyPoint> vMatchesKeys;
-    vector<MapPoint*> vpMatchedMPs;
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMPs;
     vector<cv::KeyPoint> vOutlierKeys;
-    vector<MapPoint*> vpOutlierMPs;
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpOutlierMPs;
     map<long unsigned int, cv::Point2f> mProjectPoints;
     map<long unsigned int, cv::Point2f> mMatchedInImage;
 
@@ -376,7 +376,7 @@ void FrameDrawer::Update(Tracking *pTracker)
     {
         for(int i=0;i<N;i++)
         {
-            MapPoint* pMP = pTracker->mCurrentFrame.mvpMapPoints[i];
+            boost::interprocess::offset_ptr<MapPoint>  pMP = pTracker->mCurrentFrame.mvpMapPoints[i];
             if(pMP)
             {
                 if(!pTracker->mCurrentFrame.mvbOutlier[i])

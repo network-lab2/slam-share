@@ -286,7 +286,7 @@ void LocalMapping::Run()
     SetFinish();
 }
 
-void LocalMapping::InsertKeyFrame(KeyFrame *pKF)
+void LocalMapping::InsertKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexNewKFs);
     mlNewKeyFrames.push_back(pKF);
@@ -859,7 +859,7 @@ void LocalMapping::SearchInNeighbors()
     mpCurrentKeyFrame->UpdateConnections();
 }
 
-cv::Mat LocalMapping::ComputeF12(KeyFrame *&pKF1, KeyFrame *&pKF2)
+cv::Mat LocalMapping::ComputeF12(boost::interprocess::offset_ptr<KeyFrame> &pKF1, boost::interprocess::offset_ptr<KeyFrame> &pKF2)
 {
     cv::Mat R1w = pKF1->GetRotation();
     cv::Mat t1w = pKF1->GetTranslation();
@@ -878,7 +878,7 @@ cv::Mat LocalMapping::ComputeF12(KeyFrame *&pKF1, KeyFrame *&pKF2)
     return K1.t().inv()*t12x*R12*K2.inv();
 }
 
-cv::Matx33f LocalMapping::ComputeF12_(KeyFrame *&pKF1, KeyFrame *&pKF2)
+cv::Matx33f LocalMapping::ComputeF12_(boost::interprocess::offset_ptr<KeyFrame> &pKF1, boost::interprocess::offset_ptr<KeyFrame> &pKF2)
 {
     auto R1w = pKF1->GetRotation_();
     auto t1w = pKF1->GetTranslation_();

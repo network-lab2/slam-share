@@ -22,7 +22,7 @@
 namespace ORB_SLAM3
 {
 
-ImuCamPose::ImuCamPose(KeyFrame *pKF):its(0)
+ImuCamPose::ImuCamPose(boost::interprocess::offset_ptr<KeyFrame> pKF):its(0)
 {
     // Load IMU pose
     twb = Converter::toVector3d(pKF->GetImuPosition());
@@ -118,7 +118,7 @@ ImuCamPose::ImuCamPose(Frame *pF):its(0)
     DR.setIdentity();
 }
 
-ImuCamPose::ImuCamPose(Eigen::Matrix3d &_Rwc, Eigen::Vector3d &_twc, KeyFrame* pKF): its(0)
+ImuCamPose::ImuCamPose(Eigen::Matrix3d &_Rwc, Eigen::Vector3d &_twc, boost::interprocess::offset_ptr<KeyFrame>  pKF): its(0)
 {
     // This is only for posegrpah, we do not care about multicamera
     tcw.resize(1);
@@ -255,7 +255,7 @@ void ImuCamPose::UpdateW(const double *pu)
     }
 }
 
-InvDepthPoint::InvDepthPoint(double _rho, double _u, double _v, KeyFrame* pHostKF): u(_u), v(_v), rho(_rho),
+InvDepthPoint::InvDepthPoint(double _rho, double _u, double _v, boost::interprocess::offset_ptr<KeyFrame>  pHostKF): u(_u), v(_v), rho(_rho),
     fx(pHostKF->fx), fy(pHostKF->fy), cx(pHostKF->cx), cy(pHostKF->cy), bf(pHostKF->mbf)
 {
 }
@@ -453,7 +453,7 @@ void EdgeStereoOnlyPose::linearizeOplus()
     _jacobianOplusXi = proj_jac * Rcb * SE3deriv;
 }
 
-VertexVelocity::VertexVelocity(KeyFrame* pKF)
+VertexVelocity::VertexVelocity(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     setEstimate(Converter::toVector3d(pKF->GetVelocity()));
 }
@@ -463,7 +463,7 @@ VertexVelocity::VertexVelocity(Frame* pF)
     setEstimate(Converter::toVector3d(pF->mVw));
 }
 
-VertexGyroBias::VertexGyroBias(KeyFrame *pKF)
+VertexGyroBias::VertexGyroBias(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     setEstimate(Converter::toVector3d(pKF->GetGyroBias()));
 }
@@ -475,7 +475,7 @@ VertexGyroBias::VertexGyroBias(Frame *pF)
     setEstimate(bg);
 }
 
-VertexAccBias::VertexAccBias(KeyFrame *pKF)
+VertexAccBias::VertexAccBias(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     setEstimate(Converter::toVector3d(pKF->GetAccBias()));
 }

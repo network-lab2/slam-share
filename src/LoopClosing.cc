@@ -39,7 +39,7 @@ LoopClosing::LoopClosing(Atlas *pAtlas, KeyFrameDatabase *pDB, ORBVocabulary *pV
     mbLoopDetected(false), mbMergeDetected(false), mnLoopNumNotFound(0), mnMergeNumNotFound(0)
 {
     mnCovisibilityConsistencyTh = 3;
-    mpLastCurrentKF = static_cast<KeyFrame*>(NULL);
+    mpLastCurrentKF = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
 }
 
 void LoopClosing::SetTracker(Tracking *pTracker)
@@ -268,7 +268,7 @@ void LoopClosing::Run()
     SetFinish();
 }
 
-void LoopClosing::InsertKeyFrame(KeyFrame *pKF)
+void LoopClosing::InsertKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexLoopQueue);
     if(pKF->mnId!=0)
@@ -328,7 +328,7 @@ bool LoopClosing::NewDetectCommonRegions()
         g2o::Sim3 gScl(Converter::toMatrix3d(mTcl.rowRange(0, 3).colRange(0, 3)),Converter::toVector3d(mTcl.rowRange(0, 3).col(3)),1.0);
         g2o::Sim3 gScw = gScl * mg2oLoopSlw;
         int numProjMatches = 0;
-        vector<MapPoint*> vpMatchedMPs;
+        vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMPs;
         bool bCommonRegion = DetectAndReffineSim3FromLastKF(mpCurrentKF, mpLoopMatchedKF, gScw, numProjMatches, mvpLoopMPs, vpMatchedMPs);
         if(bCommonRegion)
         {
@@ -378,7 +378,7 @@ bool LoopClosing::NewDetectCommonRegions()
         g2o::Sim3 gScl(Converter::toMatrix3d(mTcl.rowRange(0, 3).colRange(0, 3)),Converter::toVector3d(mTcl.rowRange(0, 3).col(3)),1.0);
         g2o::Sim3 gScw = gScl * mg2oMergeSlw;
         int numProjMatches = 0;
-        vector<MapPoint*> vpMatchedMPs;
+        vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMPs;
         bool bCommonRegion = DetectAndReffineSim3FromLastKF(mpCurrentKF, mpMergeMatchedKF, gScw, numProjMatches, mvpMergeMPs, vpMatchedMPs);
         if(bCommonRegion)
         {
@@ -419,11 +419,11 @@ bool LoopClosing::NewDetectCommonRegions()
         return true;
     }
 
-    const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
+    const vector<boost::interprocess::offset_ptr<KeyFrame> > vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
     const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
 
     // Extract candidates from the bag of words
-    vector<KeyFrame*> vpMergeBowCand, vpLoopBowCand;
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpMergeBowCand, vpLoopBowCand;
     if(!bMergeDetectedInKF || !bLoopDetectedInKF)
     {
 #ifdef REGISTER_TIMES
@@ -462,10 +462,10 @@ bool LoopClosing::NewDetectCommonRegions()
     return false;
 }
 
-bool LoopClosing::DetectAndReffineSim3FromLastKF(KeyFrame* pCurrentKF, KeyFrame* pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
-                                                 std::vector<MapPoint*> &vpMPs, std::vector<MapPoint*> &vpMatchedMPs)
+bool LoopClosing::DetectAndReffineSim3FromLastKF(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, boost::interprocess::offset_ptr<KeyFrame>  pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
+                                                 std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs)
 {
-    set<MapPoint*> spAlreadyMatchedMPs;
+    set<boost::interprocess::offset_ptr<MapPoint> > spAlreadyMatchedMPs;
     nNumProjMatches = FindMatchesByProjection(pCurrentKF, pMatchedKF, gScw, spAlreadyMatchedMPs, vpMPs, vpMatchedMPs);
 
 
@@ -493,8 +493,8 @@ bool LoopClosing::DetectAndReffineSim3FromLastKF(KeyFrame* pCurrentKF, KeyFrame*
             g2o::Sim3 gScw_estimation(Converter::toMatrix3d(mScw.rowRange(0, 3).colRange(0, 3)),
                            Converter::toVector3d(mScw.rowRange(0, 3).col(3)),1.0);
 
-            vector<MapPoint*> vpMatchedMP;
-            vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<MapPoint*>(NULL));
+            vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMP;
+            vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
             nNumProjMatches = FindMatchesByProjection(pCurrentKF, pMatchedKF, gScw_estimation, spAlreadyMatchedMPs, vpMPs, vpMatchedMPs);
             if(nNumProjMatches >= nProjMatchesRep)
@@ -507,8 +507,8 @@ bool LoopClosing::DetectAndReffineSim3FromLastKF(KeyFrame* pCurrentKF, KeyFrame*
     return false;
 }
 
-bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, KeyFrame* &pMatchedKF2, KeyFrame* &pLastCurrentKF, g2o::Sim3 &g2oScw,
-                                             int &nNumCoincidences, std::vector<MapPoint*> &vpMPs, std::vector<MapPoint*> &vpMatchedMPs)
+bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::offset_ptr<KeyFrame> > &vpBowCand, boost::interprocess::offset_ptr<KeyFrame>  &pMatchedKF2, boost::interprocess::offset_ptr<KeyFrame>  &pLastCurrentKF, g2o::Sim3 &g2oScw,
+                                             int &nNumCoincidences, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs)
 {
     int nBoWMatches = 20;
     int nBoWInliers = 15;
@@ -516,7 +516,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
     int nProjMatches = 50;
     int nProjOptMatches = 80;
 
-    set<KeyFrame*> spConnectedKeyFrames = mpCurrentKF->GetConnectedKeyFrames();
+    set<boost::interprocess::offset_ptr<KeyFrame> > spConnectedKeyFrames = mpCurrentKF->GetConnectedKeyFrames();
 
     int nNumCovisibles = 5;
 
@@ -524,39 +524,39 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
     ORBmatcher matcher(0.75, true);
     int nNumGuidedMatching = 0;
 
-    KeyFrame* pBestMatchedKF;
+    boost::interprocess::offset_ptr<KeyFrame>  pBestMatchedKF;
     int nBestMatchesReproj = 0;
     int nBestNumCoindicendes = 0;
     g2o::Sim3 g2oBestScw;
-    std::vector<MapPoint*> vpBestMapPoints;
-    std::vector<MapPoint*> vpBestMatchedMapPoints;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > vpBestMapPoints;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > vpBestMatchedMapPoints;
 
     int numCandidates = vpBowCand.size();
     vector<int> vnStage(numCandidates, 0);
     vector<int> vnMatchesStage(numCandidates, 0);
 
     int index = 0;
-    for(KeyFrame* pKFi : vpBowCand)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpBowCand)
     {
         if(!pKFi || pKFi->isBad())
             continue;
 
 
         // Current KF against KF with covisibles version
-        std::vector<KeyFrame*> vpCovKFi = pKFi->GetBestCovisibilityKeyFrames(nNumCovisibles);
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vpCovKFi = pKFi->GetBestCovisibilityKeyFrames(nNumCovisibles);
         vpCovKFi.push_back(vpCovKFi[0]);
         vpCovKFi[0] = pKFi;
 
-        std::vector<std::vector<MapPoint*> > vvpMatchedMPs;
+        std::vector<std::vector<boost::interprocess::offset_ptr<MapPoint> > > vvpMatchedMPs;
         vvpMatchedMPs.resize(vpCovKFi.size());
-        std::set<MapPoint*> spMatchedMPi;
+        std::set<boost::interprocess::offset_ptr<MapPoint> > spMatchedMPi;
         int numBoWMatches = 0;
 
-        KeyFrame* pMostBoWMatchesKF = pKFi;
+        boost::interprocess::offset_ptr<KeyFrame>  pMostBoWMatchesKF = pKFi;
         int nMostBoWNumMatches = 0;
 
-        std::vector<MapPoint*> vpMatchedPoints = std::vector<MapPoint*>(mpCurrentKF->GetMapPointMatches().size(), static_cast<MapPoint*>(NULL));
-        std::vector<KeyFrame*> vpKeyFrameMatchedMP = std::vector<KeyFrame*>(mpCurrentKF->GetMapPointMatches().size(), static_cast<KeyFrame*>(NULL));
+        std::vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedPoints = std::vector<boost::interprocess::offset_ptr<MapPoint> >(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vpKeyFrameMatchedMP = std::vector<boost::interprocess::offset_ptr<KeyFrame> >(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL));
 
         int nIndexMostBoWMatchesKF=0;
         for(int j=0; j<vpCovKFi.size(); ++j)
@@ -583,7 +583,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
 
             for(int k=0; k < vvpMatchedMPs[j].size(); ++k)
             {
-                MapPoint* pMPi_j = vvpMatchedMPs[j][k];
+                boost::interprocess::offset_ptr<MapPoint>  pMPi_j = vvpMatchedMPs[j][k];
                 if(!pMPi_j || pMPi_j->isBad())
                     continue;
 
@@ -625,14 +625,14 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
                 vpCovKFi = pMostBoWMatchesKF->GetBestCovisibilityKeyFrames(nNumCovisibles);
                 int nInitialCov = vpCovKFi.size();
                 vpCovKFi.push_back(pMostBoWMatchesKF);
-                set<KeyFrame*> spCheckKFs(vpCovKFi.begin(), vpCovKFi.end());
+                set<boost::interprocess::offset_ptr<KeyFrame> > spCheckKFs(vpCovKFi.begin(), vpCovKFi.end());
 
-                set<MapPoint*> spMapPoints;
-                vector<MapPoint*> vpMapPoints;
-                vector<KeyFrame*> vpKeyFrames;
-                for(KeyFrame* pCovKFi : vpCovKFi)
+                set<boost::interprocess::offset_ptr<MapPoint> > spMapPoints;
+                vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints;
+                vector<boost::interprocess::offset_ptr<KeyFrame> > vpKeyFrames;
+                for(boost::interprocess::offset_ptr<KeyFrame>  pCovKFi : vpCovKFi)
                 {
-                    for(MapPoint* pCovMPij : pCovKFi->GetMapPointMatches())
+                    for(boost::interprocess::offset_ptr<MapPoint>  pCovMPij : pCovKFi->GetMapPointMatches())
                     {
                         if(!pCovMPij || pCovMPij->isBad())
                             continue;
@@ -652,10 +652,10 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
                 cv::Mat mScw = Converter::toCvMat(gScw);
 
 
-                vector<MapPoint*> vpMatchedMP;
-                vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<MapPoint*>(NULL));
-                vector<KeyFrame*> vpMatchedKF;
-                vpMatchedKF.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<KeyFrame*>(NULL));
+                vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMP;
+                vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
+                vector<boost::interprocess::offset_ptr<KeyFrame> > vpMatchedKF;
+                vpMatchedKF.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL));
                 int numProjMatches = matcher.SearchByProjection(mpCurrentKF, mScw, vpMapPoints, vpKeyFrames, vpMatchedMP, vpMatchedKF, 8, 1.5);
 
                 if(numProjMatches >= nProjMatches)
@@ -675,24 +675,24 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
                         g2o::Sim3 gScw = gScm*gSmw; // Similarity matrix of current from the world position
                         cv::Mat mScw = Converter::toCvMat(gScw);
 
-                        vector<MapPoint*> vpMatchedMP;
-                        vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<MapPoint*>(NULL));
+                        vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMP;
+                        vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
                         int numProjOptMatches = matcher.SearchByProjection(mpCurrentKF, mScw, vpMapPoints, vpMatchedMP, 5, 1.0);
 
                         if(numProjOptMatches >= nProjOptMatches)
                         {
                             int nNumKFs = 0;
                             // Check the Sim3 transformation with the current KeyFrame covisibles
-                            vector<KeyFrame*> vpCurrentCovKFs = mpCurrentKF->GetBestCovisibilityKeyFrames(nNumCovisibles);
+                            vector<boost::interprocess::offset_ptr<KeyFrame> > vpCurrentCovKFs = mpCurrentKF->GetBestCovisibilityKeyFrames(nNumCovisibles);
                             int j = 0;
                             while(nNumKFs < 3 && j<vpCurrentCovKFs.size())
                             {
-                                KeyFrame* pKFj = vpCurrentCovKFs[j];
+                                boost::interprocess::offset_ptr<KeyFrame>  pKFj = vpCurrentCovKFs[j];
                                 cv::Mat mTjc = pKFj->GetPose() * mpCurrentKF->GetPoseInverse();
                                 g2o::Sim3 gSjc(Converter::toMatrix3d(mTjc.rowRange(0, 3).colRange(0, 3)),Converter::toVector3d(mTjc.rowRange(0, 3).col(3)),1.0);
                                 g2o::Sim3 gSjw = gSjc * gScw;
                                 int numProjMatches_j = 0;
-                                vector<MapPoint*> vpMatchedMPs_j;
+                                vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMPs_j;
                                 bool bValid = DetectCommonRegionsFromLastKF(pKFj,pMostBoWMatchesKF, gSjw,numProjMatches_j, vpMapPoints, vpMatchedMPs_j);
 
                                 if(bValid)
@@ -759,10 +759,10 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, 
     return false;
 }
 
-bool LoopClosing::DetectCommonRegionsFromLastKF(KeyFrame* pCurrentKF, KeyFrame* pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
-                                                std::vector<MapPoint*> &vpMPs, std::vector<MapPoint*> &vpMatchedMPs)
+bool LoopClosing::DetectCommonRegionsFromLastKF(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, boost::interprocess::offset_ptr<KeyFrame>  pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
+                                                std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs)
 {
-    set<MapPoint*> spAlreadyMatchedMPs(vpMatchedMPs.begin(), vpMatchedMPs.end());
+    set<boost::interprocess::offset_ptr<MapPoint> > spAlreadyMatchedMPs(vpMatchedMPs.begin(), vpMatchedMPs.end());
     nNumProjMatches = FindMatchesByProjection(pCurrentKF, pMatchedKF, gScw, spAlreadyMatchedMPs, vpMPs, vpMatchedMPs);
 
     int nProjMatches = 30;
@@ -775,19 +775,19 @@ bool LoopClosing::DetectCommonRegionsFromLastKF(KeyFrame* pCurrentKF, KeyFrame* 
     return false;
 }
 
-int LoopClosing::FindMatchesByProjection(KeyFrame* pCurrentKF, KeyFrame* pMatchedKFw, g2o::Sim3 &g2oScw,
-                                         set<MapPoint*> &spMatchedMPinOrigin, vector<MapPoint*> &vpMapPoints,
-                                         vector<MapPoint*> &vpMatchedMapPoints)
+int LoopClosing::FindMatchesByProjection(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, boost::interprocess::offset_ptr<KeyFrame>  pMatchedKFw, g2o::Sim3 &g2oScw,
+                                         set<boost::interprocess::offset_ptr<MapPoint> > &spMatchedMPinOrigin, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints,
+                                         vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMapPoints)
 {
     int nNumCovisibles = 5;
-    vector<KeyFrame*> vpCovKFm = pMatchedKFw->GetBestCovisibilityKeyFrames(nNumCovisibles);
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpCovKFm = pMatchedKFw->GetBestCovisibilityKeyFrames(nNumCovisibles);
     int nInitialCov = vpCovKFm.size();
     vpCovKFm.push_back(pMatchedKFw);
-    set<KeyFrame*> spCheckKFs(vpCovKFm.begin(), vpCovKFm.end());
-    set<KeyFrame*> spCurrentCovisbles = pCurrentKF->GetConnectedKeyFrames();
+    set<boost::interprocess::offset_ptr<KeyFrame> > spCheckKFs(vpCovKFm.begin(), vpCovKFm.end());
+    set<boost::interprocess::offset_ptr<KeyFrame> > spCurrentCovisbles = pCurrentKF->GetConnectedKeyFrames();
     for(int i=0; i<nInitialCov; ++i)
     {
-        vector<KeyFrame*> vpKFs = vpCovKFm[i]->GetBestCovisibilityKeyFrames(nNumCovisibles);
+        vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = vpCovKFm[i]->GetBestCovisibilityKeyFrames(nNumCovisibles);
         int nInserted = 0;
         int j = 0;
         while(j < vpKFs.size() && nInserted < nNumCovisibles)
@@ -801,12 +801,12 @@ int LoopClosing::FindMatchesByProjection(KeyFrame* pCurrentKF, KeyFrame* pMatche
         }
         vpCovKFm.insert(vpCovKFm.end(), vpKFs.begin(), vpKFs.end());
     }
-    set<MapPoint*> spMapPoints;
+    set<boost::interprocess::offset_ptr<MapPoint> > spMapPoints;
     vpMapPoints.clear();
     vpMatchedMapPoints.clear();
-    for(KeyFrame* pKFi : vpCovKFm)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpCovKFm)
     {
-        for(MapPoint* pMPij : pKFi->GetMapPointMatches())
+        for(boost::interprocess::offset_ptr<MapPoint>  pMPij : pKFi->GetMapPointMatches())
         {
             if(!pMPij || pMPij->isBad())
                 continue;
@@ -823,7 +823,7 @@ int LoopClosing::FindMatchesByProjection(KeyFrame* pCurrentKF, KeyFrame* pMatche
 
     ORBmatcher matcher(0.9, true);
 
-    vpMatchedMapPoints.resize(pCurrentKF->GetMapPointMatches().size(), static_cast<MapPoint*>(NULL));
+    vpMatchedMapPoints.resize(pCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
     int num_matches = matcher.SearchByProjection(pCurrentKF, mScw, vpMapPoints, vpMatchedMapPoints, 3, 1.5);
 
     return num_matches;
@@ -874,7 +874,7 @@ void LoopClosing::CorrectLoop()
     CorrectedSim3[mpCurrentKF]=mg2oLoopScw;
     cv::Mat Twc = mpCurrentKF->GetPoseInverse();
 
-    Map* pLoopMap = mpCurrentKF->GetMap();
+    boost::interprocess::offset_ptr<Map>  pLoopMap = mpCurrentKF->GetMap();
 
     {
         // Get Map Mutex
@@ -882,9 +882,9 @@ void LoopClosing::CorrectLoop()
 
         const bool bImuInit = pLoopMap->isImuInitialized();
 
-        for(vector<KeyFrame*>::iterator vit=mvpCurrentConnectedKFs.begin(), vend=mvpCurrentConnectedKFs.end(); vit!=vend; vit++)
+        for(vector<boost::interprocess::offset_ptr<KeyFrame> >::iterator vit=mvpCurrentConnectedKFs.begin(), vend=mvpCurrentConnectedKFs.end(); vit!=vend; vit++)
         {
-            KeyFrame* pKFi = *vit;
+            boost::interprocess::offset_ptr<KeyFrame>  pKFi = *vit;
 
             cv::Mat Tiw = pKFi->GetPose();
 
@@ -909,16 +909,16 @@ void LoopClosing::CorrectLoop()
         // Correct all MapPoints obsrved by current keyframe and neighbors, so that they align with the other side of the loop
         for(KeyFrameAndPose::iterator mit=CorrectedSim3.begin(), mend=CorrectedSim3.end(); mit!=mend; mit++)
         {
-            KeyFrame* pKFi = mit->first;
+            boost::interprocess::offset_ptr<KeyFrame>  pKFi = mit->first;
             g2o::Sim3 g2oCorrectedSiw = mit->second;
             g2o::Sim3 g2oCorrectedSwi = g2oCorrectedSiw.inverse();
 
             g2o::Sim3 g2oSiw =NonCorrectedSim3[pKFi];
 
-            vector<MapPoint*> vpMPsi = pKFi->GetMapPointMatches();
+            vector<boost::interprocess::offset_ptr<MapPoint> > vpMPsi = pKFi->GetMapPointMatches();
             for(size_t iMP=0, endMPi = vpMPsi.size(); iMP<endMPi; iMP++)
             {
-                MapPoint* pMPi = vpMPsi[iMP];
+                boost::interprocess::offset_ptr<MapPoint>  pMPi = vpMPsi[iMP];
                 if(!pMPi)
                     continue;
                 if(pMPi->isBad())
@@ -969,8 +969,8 @@ void LoopClosing::CorrectLoop()
         {
             if(mvpLoopMatchedMPs[i])
             {
-                MapPoint* pLoopMP = mvpLoopMatchedMPs[i];
-                MapPoint* pCurMP = mpCurrentKF->GetMapPoint(i);
+                boost::interprocess::offset_ptr<MapPoint>  pLoopMP = mvpLoopMatchedMPs[i];
+                boost::interprocess::offset_ptr<MapPoint>  pCurMP = mpCurrentKF->GetMapPoint(i);
                 if(pCurMP)
                     pCurMP->Replace(pLoopMP);
                 else
@@ -989,21 +989,21 @@ void LoopClosing::CorrectLoop()
     SearchAndFuse(CorrectedSim3, mvpLoopMapPoints);
 
     // After the MapPoint fusion, new links in the covisibility graph will appear attaching both sides of the loop
-    map<KeyFrame*, set<KeyFrame*> > LoopConnections;
+    map<boost::interprocess::offset_ptr<KeyFrame> , set<boost::interprocess::offset_ptr<KeyFrame> > > LoopConnections;
 
-    for(vector<KeyFrame*>::iterator vit=mvpCurrentConnectedKFs.begin(), vend=mvpCurrentConnectedKFs.end(); vit!=vend; vit++)
+    for(vector<boost::interprocess::offset_ptr<KeyFrame> >::iterator vit=mvpCurrentConnectedKFs.begin(), vend=mvpCurrentConnectedKFs.end(); vit!=vend; vit++)
     {
-        KeyFrame* pKFi = *vit;
-        vector<KeyFrame*> vpPreviousNeighbors = pKFi->GetVectorCovisibleKeyFrames();
+        boost::interprocess::offset_ptr<KeyFrame>  pKFi = *vit;
+        vector<boost::interprocess::offset_ptr<KeyFrame> > vpPreviousNeighbors = pKFi->GetVectorCovisibleKeyFrames();
 
         // Update connections. Detect new links.
         pKFi->UpdateConnections();
         LoopConnections[pKFi]=pKFi->GetConnectedKeyFrames();
-        for(vector<KeyFrame*>::iterator vit_prev=vpPreviousNeighbors.begin(), vend_prev=vpPreviousNeighbors.end(); vit_prev!=vend_prev; vit_prev++)
+        for(vector<boost::interprocess::offset_ptr<KeyFrame> >::iterator vit_prev=vpPreviousNeighbors.begin(), vend_prev=vpPreviousNeighbors.end(); vit_prev!=vend_prev; vit_prev++)
         {
             LoopConnections[pKFi].erase(*vit_prev);
         }
-        for(vector<KeyFrame*>::iterator vit2=mvpCurrentConnectedKFs.begin(), vend2=mvpCurrentConnectedKFs.end(); vit2!=vend2; vit2++)
+        for(vector<boost::interprocess::offset_ptr<KeyFrame> >::iterator vit2=mvpCurrentConnectedKFs.begin(), vend2=mvpCurrentConnectedKFs.end(); vit2!=vend2; vit2++)
         {
             LoopConnections[pKFi].erase(*vit2);
         }
@@ -1053,11 +1053,11 @@ void LoopClosing::MergeLocal()
     int numTemporalKFs = 15;
 
     //Relationship to rebuild the essential graph, it is used two times, first in the local window and later in the rest of the map
-    KeyFrame* pNewChild;
-    KeyFrame* pNewParent;
+    boost::interprocess::offset_ptr<KeyFrame>  pNewChild;
+    boost::interprocess::offset_ptr<KeyFrame>  pNewParent;
 
-    vector<KeyFrame*> vpLocalCurrentWindowKFs;
-    vector<KeyFrame*> vpMergeConnectedKFs;
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpLocalCurrentWindowKFs;
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpMergeConnectedKFs;
 
     // Flag that is true only when we stopped a running BA, in this case we need relaunch at the end of the merge
     bool bRelaunchBA = false;
@@ -1092,19 +1092,19 @@ void LoopClosing::MergeLocal()
 
     // Merge map will become in the new active map with the local window of KFs and MPs from the current map.
     // Later, the elements of the current map will be transform to the new active map reference, in order to keep real time tracking
-    Map* pCurrentMap = mpCurrentKF->GetMap();
-    Map* pMergeMap = mpMergeMatchedKF->GetMap();
+    boost::interprocess::offset_ptr<Map>  pCurrentMap = mpCurrentKF->GetMap();
+    boost::interprocess::offset_ptr<Map>  pMergeMap = mpMergeMatchedKF->GetMap();
 
     // Ensure current keyframe is updated
     mpCurrentKF->UpdateConnections();
 
     //Get the current KF and its neighbors(visual->covisibles; inertial->temporal+covisibles)
-    set<KeyFrame*> spLocalWindowKFs;
+    set<boost::interprocess::offset_ptr<KeyFrame> > spLocalWindowKFs;
     //Get MPs in the welding area from the current map
-    set<MapPoint*> spLocalWindowMPs;
+    set<boost::interprocess::offset_ptr<MapPoint> > spLocalWindowMPs;
     if(pCurrentMap->IsInertial() && pMergeMap->IsInertial()) //TODO Check the correct initialization
     {
-        KeyFrame* pKFi = mpCurrentKF;
+        boost::interprocess::offset_ptr<KeyFrame>  pKFi = mpCurrentKF;
         int nInserted = 0;
         while(pKFi && nInserted < numTemporalKFs)
         {
@@ -1112,7 +1112,7 @@ void LoopClosing::MergeLocal()
             pKFi = mpCurrentKF->mPrevKF;
             nInserted++;
 
-            set<MapPoint*> spMPi = pKFi->GetMapPoints();
+            set<boost::interprocess::offset_ptr<MapPoint> > spMPi = pKFi->GetMapPoints();
             spLocalWindowMPs.insert(spMPi.begin(), spMPi.end());
         }
 
@@ -1121,7 +1121,7 @@ void LoopClosing::MergeLocal()
         {
             spLocalWindowKFs.insert(pKFi);
 
-            set<MapPoint*> spMPi = pKFi->GetMapPoints();
+            set<boost::interprocess::offset_ptr<MapPoint> > spMPi = pKFi->GetMapPoints();
             spLocalWindowMPs.insert(spMPi.begin(), spMPi.end());
         }
     }
@@ -1130,18 +1130,18 @@ void LoopClosing::MergeLocal()
         spLocalWindowKFs.insert(mpCurrentKF);
     }
 
-    vector<KeyFrame*> vpCovisibleKFs = mpCurrentKF->GetBestCovisibilityKeyFrames(numTemporalKFs);
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpCovisibleKFs = mpCurrentKF->GetBestCovisibilityKeyFrames(numTemporalKFs);
     spLocalWindowKFs.insert(vpCovisibleKFs.begin(), vpCovisibleKFs.end());
     const int nMaxTries = 3;
     int nNumTries = 0;
     while(spLocalWindowKFs.size() < numTemporalKFs && nNumTries < nMaxTries)
     {
-        vector<KeyFrame*> vpNewCovKFs;
+        vector<boost::interprocess::offset_ptr<KeyFrame> > vpNewCovKFs;
         vpNewCovKFs.empty();
-        for(KeyFrame* pKFi : spLocalWindowKFs)
+        for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spLocalWindowKFs)
         {
-            vector<KeyFrame*> vpKFiCov = pKFi->GetBestCovisibilityKeyFrames(numTemporalKFs/2);
-            for(KeyFrame* pKFcov : vpKFiCov)
+            vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFiCov = pKFi->GetBestCovisibilityKeyFrames(numTemporalKFs/2);
+            for(boost::interprocess::offset_ptr<KeyFrame>  pKFcov : vpKFiCov)
             {
                 if(pKFcov && !pKFcov->isBad() && spLocalWindowKFs.find(pKFcov) == spLocalWindowKFs.end())
                 {
@@ -1155,19 +1155,19 @@ void LoopClosing::MergeLocal()
         nNumTries++;
     }
 
-    for(KeyFrame* pKFi : spLocalWindowKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spLocalWindowKFs)
     {
         if(!pKFi || pKFi->isBad())
             continue;
 
-        set<MapPoint*> spMPs = pKFi->GetMapPoints();
+        set<boost::interprocess::offset_ptr<MapPoint> > spMPs = pKFi->GetMapPoints();
         spLocalWindowMPs.insert(spMPs.begin(), spMPs.end());
     }
 
-    set<KeyFrame*> spMergeConnectedKFs;
+    set<boost::interprocess::offset_ptr<KeyFrame> > spMergeConnectedKFs;
     if(pCurrentMap->IsInertial() && pMergeMap->IsInertial()) //TODO Check the correct initialization
     {
-        KeyFrame* pKFi = mpMergeMatchedKF;
+        boost::interprocess::offset_ptr<KeyFrame>  pKFi = mpMergeMatchedKF;
         int nInserted = 0;
         while(pKFi && nInserted < numTemporalKFs)
         {
@@ -1191,11 +1191,11 @@ void LoopClosing::MergeLocal()
     nNumTries = 0;
     while(spMergeConnectedKFs.size() < numTemporalKFs && nNumTries < nMaxTries)
     {
-        vector<KeyFrame*> vpNewCovKFs;
-        for(KeyFrame* pKFi : spMergeConnectedKFs)
+        vector<boost::interprocess::offset_ptr<KeyFrame> > vpNewCovKFs;
+        for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spMergeConnectedKFs)
         {
-            vector<KeyFrame*> vpKFiCov = pKFi->GetBestCovisibilityKeyFrames(numTemporalKFs/2);
-            for(KeyFrame* pKFcov : vpKFiCov)
+            vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFiCov = pKFi->GetBestCovisibilityKeyFrames(numTemporalKFs/2);
+            for(boost::interprocess::offset_ptr<KeyFrame>  pKFcov : vpKFiCov)
             {
                 if(pKFcov && !pKFcov->isBad() && spMergeConnectedKFs.find(pKFcov) == spMergeConnectedKFs.end())
                 {
@@ -1209,14 +1209,14 @@ void LoopClosing::MergeLocal()
         nNumTries++;
     }
 
-    set<MapPoint*> spMapPointMerge;
-    for(KeyFrame* pKFi : spMergeConnectedKFs)
+    set<boost::interprocess::offset_ptr<MapPoint> > spMapPointMerge;
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spMergeConnectedKFs)
     {
-        set<MapPoint*> vpMPs = pKFi->GetMapPoints();
+        set<boost::interprocess::offset_ptr<MapPoint> > vpMPs = pKFi->GetMapPoints();
         spMapPointMerge.insert(vpMPs.begin(),vpMPs.end());
     }
 
-    vector<MapPoint*> vpCheckFuseMapPoint;
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpCheckFuseMapPoint;
     vpCheckFuseMapPoint.reserve(spMapPointMerge.size());
     std::copy(spMapPointMerge.begin(), spMapPointMerge.end(), std::back_inserter(vpCheckFuseMapPoint));
 
@@ -1232,7 +1232,7 @@ void LoopClosing::MergeLocal()
     vCorrectedSim3[mpCurrentKF]=g2oCorrectedScw;
     vNonCorrectedSim3[mpCurrentKF]=g2oNonCorrectedScw;
 
-    for(KeyFrame* pKFi : spLocalWindowKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spLocalWindowKFs)
     {
         if(!pKFi || pKFi->isBad())
         {
@@ -1283,12 +1283,12 @@ void LoopClosing::MergeLocal()
 
     }
 
-    for(MapPoint* pMPi : spLocalWindowMPs)
+    for(boost::interprocess::offset_ptr<MapPoint>  pMPi : spLocalWindowMPs)
     {
         if(!pMPi || pMPi->isBad())
             continue;
 
-        KeyFrame* pKFref = pMPi->GetReferenceKeyFrame();
+        boost::interprocess::offset_ptr<KeyFrame>  pKFref = pMPi->GetReferenceKeyFrame();
         g2o::Sim3 g2oCorrectedSwi = vCorrectedSim3[pKFref].inverse();
         g2o::Sim3 g2oNonCorrectedSiw = vNonCorrectedSim3[pKFref];
 
@@ -1309,7 +1309,7 @@ void LoopClosing::MergeLocal()
         unique_lock<mutex> currentLock(pCurrentMap->mMutexMapUpdate); // We update the current map with the Merge information
         unique_lock<mutex> mergeLock(pMergeMap->mMutexMapUpdate); // We remove the Kfs and MPs in the merged area from the old map
 
-        for(KeyFrame* pKFi : spLocalWindowKFs)
+        for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spLocalWindowKFs)
         {
             if(!pKFi || pKFi->isBad())
             {
@@ -1332,7 +1332,7 @@ void LoopClosing::MergeLocal()
             }
         }
 
-        for(MapPoint* pMPi : spLocalWindowMPs)
+        for(boost::interprocess::offset_ptr<MapPoint>  pMPi : spLocalWindowMPs)
         {
             if(!pMPi || pMPi->isBad())
                 continue;
@@ -1358,7 +1358,7 @@ void LoopClosing::MergeLocal()
     while(pNewChild )
     {
         pNewChild->EraseChild(pNewParent); // We remove the relation between the old parent and the new for avoid loop
-        KeyFrame * pOldParent = pNewChild->GetParent();
+        boost::interprocess::offset_ptr<KeyFrame>  pOldParent = pNewChild->GetParent();
 
         pNewChild->ChangeParent(pNewParent);
 
@@ -1381,14 +1381,14 @@ void LoopClosing::MergeLocal()
     SearchAndFuse(vCorrectedSim3, vpCheckFuseMapPoint);
 
     // Update connectivity
-    for(KeyFrame* pKFi : spLocalWindowKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spLocalWindowKFs)
     {
         if(!pKFi || pKFi->isBad())
             continue;
 
         pKFi->UpdateConnections();
     }
-    for(KeyFrame* pKFi : spMergeConnectedKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : spMergeConnectedKFs)
     {
         if(!pKFi || pKFi->isBad())
             continue;
@@ -1419,8 +1419,8 @@ void LoopClosing::MergeLocal()
 
     ////
     //Update the non critical area from the current map to the merged map
-    vector<KeyFrame*> vpCurrentMapKFs = pCurrentMap->GetAllKeyFrames();
-    vector<MapPoint*> vpCurrentMapMPs = pCurrentMap->GetAllMapPoints();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpCurrentMapKFs = pCurrentMap->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpCurrentMapMPs = pCurrentMap->GetAllMapPoints();
 
     if(vpCurrentMapKFs.size() == 0)
     {
@@ -1435,7 +1435,7 @@ void LoopClosing::MergeLocal()
             {
                 unique_lock<mutex> currentLock(pCurrentMap->mMutexMapUpdate); // We update the current map with the Merge information
 
-                for(KeyFrame* pKFi : vpCurrentMapKFs)
+                for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpCurrentMapKFs)
                 {
                     if(!pKFi || pKFi->isBad() || pKFi->GetMap() != pCurrentMap)
                     {
@@ -1480,12 +1480,12 @@ void LoopClosing::MergeLocal()
                     }
 
                 }
-                for(MapPoint* pMPi : vpCurrentMapMPs)
+                for(boost::interprocess::offset_ptr<MapPoint>  pMPi : vpCurrentMapMPs)
                 {
                     if(!pMPi || pMPi->isBad()|| pMPi->GetMap() != pCurrentMap)
                         continue;
 
-                    KeyFrame* pKFref = pMPi->GetReferenceKeyFrame();
+                    boost::interprocess::offset_ptr<KeyFrame>  pKFref = pMPi->GetReferenceKeyFrame();
                     g2o::Sim3 g2oCorrectedSwi = vCorrectedSim3[pKFref].inverse();
                     g2o::Sim3 g2oNonCorrectedSiw = vNonCorrectedSim3[pKFref];
 
@@ -1521,7 +1521,7 @@ void LoopClosing::MergeLocal()
             unique_lock<mutex> currentLock(pCurrentMap->mMutexMapUpdate); // We update the current map with the Merge information
             unique_lock<mutex> mergeLock(pMergeMap->mMutexMapUpdate); // We remove the Kfs and MPs in the merged area from the old map
 
-            for(KeyFrame* pKFi : vpCurrentMapKFs)
+            for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpCurrentMapKFs)
             {
                 if(!pKFi || pKFi->isBad() || pKFi->GetMap() != pCurrentMap)
                 {
@@ -1534,7 +1534,7 @@ void LoopClosing::MergeLocal()
                 pCurrentMap->EraseKeyFrame(pKFi);
             }
 
-            for(MapPoint* pMPi : vpCurrentMapMPs)
+            for(boost::interprocess::offset_ptr<MapPoint>  pMPi : vpCurrentMapMPs)
             {
                 if(!pMPi || pMPi->isBad())
                     continue;
@@ -1577,11 +1577,11 @@ void LoopClosing::MergeLocal2()
     int numTemporalKFs = 11; //TODO (set by parameter): Temporal KFs in the local window if the map is inertial.
 
     //Relationship to rebuild the essential graph, it is used two times, first in the local window and later in the rest of the map
-    KeyFrame* pNewChild;
-    KeyFrame* pNewParent;
+    boost::interprocess::offset_ptr<KeyFrame>  pNewChild;
+    boost::interprocess::offset_ptr<KeyFrame>  pNewParent;
 
-    vector<KeyFrame*> vpLocalCurrentWindowKFs;
-    vector<KeyFrame*> vpMergeConnectedKFs;
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpLocalCurrentWindowKFs;
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpMergeConnectedKFs;
 
     KeyFrameAndPose CorrectedSim3, NonCorrectedSim3;
     // NonCorrectedSim3[mpCurrentKF]=mg2oLoopScw;
@@ -1616,8 +1616,8 @@ void LoopClosing::MergeLocal2()
     }
     cout << "Local Map stopped" << endl;
 
-    Map* pCurrentMap = mpCurrentKF->GetMap();
-    Map* pMergeMap = mpMergeMatchedKF->GetMap();
+    boost::interprocess::offset_ptr<Map>  pCurrentMap = mpCurrentKF->GetMap();
+    boost::interprocess::offset_ptr<Map>  pMergeMap = mpMergeMatchedKF->GetMap();
 
     {
         float s_on = mSold_new.scale();
@@ -1664,11 +1664,11 @@ void LoopClosing::MergeLocal2()
         unique_lock<mutex> mergeLock(pMergeMap->mMutexMapUpdate); // We remove the Kfs and MPs in the merged area from the old map
 
 
-        vector<KeyFrame*> vpMergeMapKFs = pMergeMap->GetAllKeyFrames();
-        vector<MapPoint*> vpMergeMapMPs = pMergeMap->GetAllMapPoints();
+        vector<boost::interprocess::offset_ptr<KeyFrame> > vpMergeMapKFs = pMergeMap->GetAllKeyFrames();
+        vector<boost::interprocess::offset_ptr<MapPoint> > vpMergeMapMPs = pMergeMap->GetAllMapPoints();
 
 
-        for(KeyFrame* pKFi : vpMergeMapKFs)
+        for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpMergeMapKFs)
         {
             if(!pKFi || pKFi->isBad() || pKFi->GetMap() != pMergeMap)
             {
@@ -1681,7 +1681,7 @@ void LoopClosing::MergeLocal2()
             pMergeMap->EraseKeyFrame(pKFi);
         }
 
-        for(MapPoint* pMPi : vpMergeMapMPs)
+        for(boost::interprocess::offset_ptr<MapPoint>  pMPi : vpMergeMapMPs)
         {
             if(!pMPi || pMPi->isBad() || pMPi->GetMap() != pMergeMap)
                 continue;
@@ -1692,8 +1692,8 @@ void LoopClosing::MergeLocal2()
         }
 
         // Save non corrected poses (already merged maps)
-        vector<KeyFrame*> vpKFs = pCurrentMap->GetAllKeyFrames();
-        for(KeyFrame* pKFi : vpKFs)
+        vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = pCurrentMap->GetAllKeyFrames();
+        for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpKFs)
         {
             cv::Mat Tiw=pKFi->GetPose();
             cv::Mat Riw = Tiw.rowRange(0,3).colRange(0,3);
@@ -1710,18 +1710,18 @@ void LoopClosing::MergeLocal2()
     while(pNewChild)
     {
         pNewChild->EraseChild(pNewParent); // We remove the relation between the old parent and the new for avoid loop
-        KeyFrame * pOldParent = pNewChild->GetParent();
+        boost::interprocess::offset_ptr<KeyFrame>  pOldParent = pNewChild->GetParent();
         pNewChild->ChangeParent(pNewParent);
         pNewParent = pNewChild;
         pNewChild = pOldParent;
 
     }
 
-    vector<MapPoint*> vpCheckFuseMapPoint; // MapPoint vector from current map to allow to fuse duplicated points with the old map (merge)
-    vector<KeyFrame*> vpCurrentConnectedKFs;
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpCheckFuseMapPoint; // MapPoint vector from current map to allow to fuse duplicated points with the old map (merge)
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpCurrentConnectedKFs;
 
     mvpMergeConnectedKFs.push_back(mpMergeMatchedKF);
-    vector<KeyFrame*> aux = mpMergeMatchedKF->GetVectorCovisibleKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > aux = mpMergeMatchedKF->GetVectorCovisibleKeyFrames();
     mvpMergeConnectedKFs.insert(mvpMergeConnectedKFs.end(), aux.begin(), aux.end());
     if (mvpMergeConnectedKFs.size()>6)
         mvpMergeConnectedKFs.erase(mvpMergeConnectedKFs.begin()+6,mvpMergeConnectedKFs.end());
@@ -1733,10 +1733,10 @@ void LoopClosing::MergeLocal2()
     if (vpCurrentConnectedKFs.size()>6)
         vpCurrentConnectedKFs.erase(vpCurrentConnectedKFs.begin()+6,vpCurrentConnectedKFs.end());
 
-    set<MapPoint*> spMapPointMerge;
-    for(KeyFrame* pKFi : mvpMergeConnectedKFs)
+    set<boost::interprocess::offset_ptr<MapPoint> > spMapPointMerge;
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : mvpMergeConnectedKFs)
     {
-        set<MapPoint*> vpMPs = pKFi->GetMapPoints();
+        set<boost::interprocess::offset_ptr<MapPoint> > vpMPs = pKFi->GetMapPoints();
         spMapPointMerge.insert(vpMPs.begin(),vpMPs.end());
         if(spMapPointMerge.size()>1000)
             break;
@@ -1747,14 +1747,14 @@ void LoopClosing::MergeLocal2()
 
     SearchAndFuse(vpCurrentConnectedKFs, vpCheckFuseMapPoint);
 
-    for(KeyFrame* pKFi : vpCurrentConnectedKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpCurrentConnectedKFs)
     {
         if(!pKFi || pKFi->isBad())
             continue;
 
         pKFi->UpdateConnections();
     }
-    for(KeyFrame* pKFi : mvpMergeConnectedKFs)
+    for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : mvpMergeConnectedKFs)
     {
         if(!pKFi || pKFi->isBad())
             continue;
@@ -1769,7 +1769,7 @@ void LoopClosing::MergeLocal2()
 
     // Perform BA
     bool bStopFlag=false;
-    KeyFrame* pCurrKF = mpTracker->GetLastKeyFrame();
+    boost::interprocess::offset_ptr<KeyFrame>  pCurrKF = mpTracker->GetLastKeyFrame();
     Optimizer::MergeInertialBA(pCurrKF, mpMergeMatchedKF, &bStopFlag, pCurrentMap,CorrectedSim3);
 
     // Release Local Mapping.
@@ -1779,7 +1779,7 @@ void LoopClosing::MergeLocal2()
     return;
 }
 
-void LoopClosing::SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector<MapPoint*> &vpMapPoints)
+void LoopClosing::SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints)
 {
     ORBmatcher matcher(0.8);
 
@@ -1788,13 +1788,13 @@ void LoopClosing::SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector
     for(KeyFrameAndPose::const_iterator mit=CorrectedPosesMap.begin(), mend=CorrectedPosesMap.end(); mit!=mend;mit++)
     {
         int num_replaces = 0;
-        KeyFrame* pKFi = mit->first;
-        Map* pMap = pKFi->GetMap();
+        boost::interprocess::offset_ptr<KeyFrame>  pKFi = mit->first;
+        boost::interprocess::offset_ptr<Map>  pMap = pKFi->GetMap();
 
         g2o::Sim3 g2oScw = mit->second;
         cv::Mat cvScw = Converter::toCvMat(g2oScw);
 
-        vector<MapPoint*> vpReplacePoints(vpMapPoints.size(),static_cast<MapPoint*>(NULL));
+        vector<boost::interprocess::offset_ptr<MapPoint> > vpReplacePoints(vpMapPoints.size(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
         int numFused = matcher.Fuse(pKFi,cvScw,vpMapPoints,4,vpReplacePoints);
 
         // Get Map Mutex
@@ -1802,7 +1802,7 @@ void LoopClosing::SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector
         const int nLP = vpMapPoints.size();
         for(int i=0; i<nLP;i++)
         {
-            MapPoint* pRep = vpReplacePoints[i];
+            boost::interprocess::offset_ptr<MapPoint>  pRep = vpReplacePoints[i];
             if(pRep)
             {
 
@@ -1818,7 +1818,7 @@ void LoopClosing::SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector
 }
 
 
-void LoopClosing::SearchAndFuse(const vector<KeyFrame*> &vConectedKFs, vector<MapPoint*> &vpMapPoints)
+void LoopClosing::SearchAndFuse(const vector<boost::interprocess::offset_ptr<KeyFrame> > &vConectedKFs, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints)
 {
     ORBmatcher matcher(0.8);
 
@@ -1827,11 +1827,11 @@ void LoopClosing::SearchAndFuse(const vector<KeyFrame*> &vConectedKFs, vector<Ma
     for(auto mit=vConectedKFs.begin(), mend=vConectedKFs.end(); mit!=mend;mit++)
     {
         int num_replaces = 0;
-        KeyFrame* pKF = (*mit);
-        Map* pMap = pKF->GetMap();
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = (*mit);
+        boost::interprocess::offset_ptr<Map>  pMap = pKF->GetMap();
         cv::Mat cvScw = pKF->GetPose();
 
-        vector<MapPoint*> vpReplacePoints(vpMapPoints.size(),static_cast<MapPoint*>(NULL));
+        vector<boost::interprocess::offset_ptr<MapPoint> > vpReplacePoints(vpMapPoints.size(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
         matcher.Fuse(pKF,cvScw,vpMapPoints,4,vpReplacePoints);
 
         // Get Map Mutex
@@ -1839,7 +1839,7 @@ void LoopClosing::SearchAndFuse(const vector<KeyFrame*> &vConectedKFs, vector<Ma
         const int nLP = vpMapPoints.size();
         for(int i=0; i<nLP;i++)
         {
-            MapPoint* pRep = vpReplacePoints[i];
+            boost::interprocess::offset_ptr<MapPoint>  pRep = vpReplacePoints[i];
             if(pRep)
             {
                 num_replaces += 1;
@@ -1870,7 +1870,7 @@ void LoopClosing::RequestReset()
     }
 }
 
-void LoopClosing::RequestResetActiveMap(Map *pMap)
+void LoopClosing::RequestResetActiveMap(boost::interprocess::offset_ptr<Map> pMap)
 {
     {
         unique_lock<mutex> lock(mMutexReset);
@@ -1903,9 +1903,9 @@ void LoopClosing::ResetIfRequested()
     else if(mbResetActiveMapRequested)
     {
 
-        for (list<KeyFrame*>::const_iterator it=mlpLoopKeyFrameQueue.begin(); it != mlpLoopKeyFrameQueue.end();)
+        for (list<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator it=mlpLoopKeyFrameQueue.begin(); it != mlpLoopKeyFrameQueue.end();)
         {
-            KeyFrame* pKFi = *it;
+            boost::interprocess::offset_ptr<KeyFrame>  pKFi = *it;
             if(pKFi->GetMap() == mpMapToReset)
             {
                 it = mlpLoopKeyFrameQueue.erase(it);
@@ -1920,7 +1920,7 @@ void LoopClosing::ResetIfRequested()
     }
 }
 
-void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoopKF)
+void LoopClosing::RunGlobalBundleAdjustment(boost::interprocess::offset_ptr<Map>  pActiveMap, unsigned long nLoopKF)
 {
     Verbose::PrintMess("Starting Global Bundle Adjustment", Verbose::VERBOSITY_NORMAL);
 
@@ -1974,16 +1974,16 @@ void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoop
             unique_lock<mutex> lock(pActiveMap->mMutexMapUpdate);
 
             // Correct keyframes starting at map first keyframe
-            list<KeyFrame*> lpKFtoCheck(pActiveMap->mvpKeyFrameOrigins.begin(),pActiveMap->mvpKeyFrameOrigins.end());
+            list<boost::interprocess::offset_ptr<KeyFrame> > lpKFtoCheck(pActiveMap->mvpKeyFrameOrigins.begin(),pActiveMap->mvpKeyFrameOrigins.end());
 
             while(!lpKFtoCheck.empty())
             {
-                KeyFrame* pKF = lpKFtoCheck.front();
-                const set<KeyFrame*> sChilds = pKF->GetChilds();
+                boost::interprocess::offset_ptr<KeyFrame>  pKF = lpKFtoCheck.front();
+                const set<boost::interprocess::offset_ptr<KeyFrame> > sChilds = pKF->GetChilds();
                 cv::Mat Twc = pKF->GetPoseInverse();
-                for(set<KeyFrame*>::const_iterator sit=sChilds.begin();sit!=sChilds.end();sit++)
+                for(set<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator sit=sChilds.begin();sit!=sChilds.end();sit++)
                 {
-                    KeyFrame* pChild = *sit;
+                    boost::interprocess::offset_ptr<KeyFrame>  pChild = *sit;
                     if(!pChild || pChild->isBad())
                         continue;
 
@@ -2027,11 +2027,11 @@ void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoop
             }
 
             // Correct MapPoints
-            const vector<MapPoint*> vpMPs = pActiveMap->GetAllMapPoints();
+            const vector<boost::interprocess::offset_ptr<MapPoint> > vpMPs = pActiveMap->GetAllMapPoints();
 
             for(size_t i=0; i<vpMPs.size(); i++)
             {
-                MapPoint* pMP = vpMPs[i];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = vpMPs[i];
 
                 if(pMP->isBad())
                     continue;
@@ -2044,7 +2044,7 @@ void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoop
                 else
                 {
                     // Update according to the correction of its reference keyframe
-                    KeyFrame* pRefKF = pMP->GetReferenceKeyFrame();
+                    boost::interprocess::offset_ptr<KeyFrame>  pRefKF = pMP->GetReferenceKeyFrame();
 
                     if(pRefKF->mnBAGlobalForKF!=nLoopKF)
                         continue;

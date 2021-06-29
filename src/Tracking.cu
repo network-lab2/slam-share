@@ -1410,7 +1410,7 @@ void Tracking::Track()
         return;
     }
 
-    Map* pCurrentMap = mpAtlas->GetCurrentMap();
+    boost::interprocess::offset_ptr<Map>  pCurrentMap = mpAtlas->GetCurrentMap();
 
     if(mState!=NO_IMAGES_YET)
     {
@@ -1617,7 +1617,7 @@ void Tracking::Track()
                         CreateMapInAtlas();
 
                     if(mpLastKeyFrame)
-                        mpLastKeyFrame = static_cast<KeyFrame*>(NULL);
+                        mpLastKeyFrame = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
 
                     Verbose::PrintMess("done", Verbose::VERBOSITY_NORMAL);
 
@@ -1666,7 +1666,7 @@ void Tracking::Track()
 
                     bool bOKMM = false;
                     bool bOKReloc = false;
-                    vector<MapPoint*> vpMPsMM;
+                    vector<boost::interprocess::offset_ptr<MapPoint> > vpMPsMM;
                     vector<bool> vbOutMM;
                     cv::Mat TcwMM;
                     if(!mVelocity.empty())
@@ -1811,19 +1811,19 @@ void Tracking::Track()
             // Clean VO matches
             for(int i=0; i<mCurrentFrame.N; i++)
             {
-                MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = mCurrentFrame.mvpMapPoints[i];
                 if(pMP)
                     if(pMP->Observations()<1)
                     {
                         mCurrentFrame.mvbOutlier[i] = false;
-                        mCurrentFrame.mvpMapPoints[i]=static_cast<MapPoint*>(NULL);
+                        mCurrentFrame.mvpMapPoints[i]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                     }
             }
 
             // Delete temporal MapPoints
-            for(list<MapPoint*>::iterator lit = mlpTemporalPoints.begin(), lend =  mlpTemporalPoints.end(); lit!=lend; lit++)
+            for(list<boost::interprocess::offset_ptr<MapPoint> >::iterator lit = mlpTemporalPoints.begin(), lend =  mlpTemporalPoints.end(); lit!=lend; lit++)
             {
-                MapPoint* pMP = *lit;
+                boost::interprocess::offset_ptr<MapPoint>  pMP = *lit;
                 delete pMP;
             }
             mlpTemporalPoints.clear();
@@ -1856,7 +1856,7 @@ void Tracking::Track()
             for(int i=0; i<mCurrentFrame.N;i++)
             {
                 if(mCurrentFrame.mvpMapPoints[i] && mCurrentFrame.mvbOutlier[i])
-                    mCurrentFrame.mvpMapPoints[i]=static_cast<MapPoint*>(NULL);
+                    mCurrentFrame.mvpMapPoints[i]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
             }
         }
 
@@ -1948,7 +1948,7 @@ void Tracking::StereoInitialization()
             mCurrentFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
 
         // Create KeyFrame
-        KeyFrame* pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+        boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
         // Insert KeyFrame in the map
         mpAtlas->AddKeyFrame(pKFini);
@@ -1961,7 +1961,7 @@ void Tracking::StereoInitialization()
                 if(z>0)
                 {
                     cv::Mat x3D = mCurrentFrame.UnprojectStereo(i);
-                    MapPoint* pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
                     pNewMP->AddObservation(pKFini,i);
                     pKFini->AddMapPoint(pNewMP,i);
                     pNewMP->ComputeDistinctiveDescriptors();
@@ -1977,7 +1977,7 @@ void Tracking::StereoInitialization()
                 if(rightIndex != -1){
                     cv::Mat x3D = mCurrentFrame.mvStereo3Dpoints[i];
 
-                    MapPoint* pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
 
                     pNewMP->AddObservation(pKFini,i);
                     pNewMP->AddObservation(pKFini,rightIndex + mCurrentFrame.Nleft);
@@ -2114,8 +2114,8 @@ void Tracking::MonocularInitialization()
 void Tracking::CreateInitialMapMonocular()
 {
     // Create KeyFrames
-    KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
-    KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
     if(mSensor == System::IMU_MONOCULAR)
         pKFini->mpImuPreintegrated = (IMU::Preintegrated*)(NULL);
@@ -2135,7 +2135,7 @@ void Tracking::CreateInitialMapMonocular()
 
         //Create MapPoint.
         cv::Mat worldPos(mvIniP3D[i]);
-        MapPoint* pMP = new MapPoint(worldPos,pKFcur,mpAtlas->GetCurrentMap());
+        boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(worldPos,pKFcur,mpAtlas->GetCurrentMap());
 
         pKFini->AddMapPoint(pMP,i);
         pKFcur->AddMapPoint(pMP,mvIniMatches[i]);
@@ -2159,7 +2159,7 @@ void Tracking::CreateInitialMapMonocular()
     pKFini->UpdateConnections();
     pKFcur->UpdateConnections();
 
-    std::set<MapPoint*> sMPs;
+    std::set<boost::interprocess::offset_ptr<MapPoint> > sMPs;
     sMPs = pKFini->GetMapPoints();
 
     // Bundle Adjustment
@@ -2188,12 +2188,12 @@ void Tracking::CreateInitialMapMonocular()
     pKFcur->SetPose(Tc2w);
 
     // Scale points
-    vector<MapPoint*> vpAllMapPoints = pKFini->GetMapPointMatches();
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpAllMapPoints = pKFini->GetMapPointMatches();
     for(size_t iMP=0; iMP<vpAllMapPoints.size(); iMP++)
     {
         if(vpAllMapPoints[iMP])
         {
-            MapPoint* pMP = vpAllMapPoints[iMP];
+            boost::interprocess::offset_ptr<MapPoint>  pMP = vpAllMapPoints[iMP];
             pMP->SetWorldPos(pMP->GetWorldPos()*invMedianDepth);
             pMP->UpdateNormalAndDepth();
         }
@@ -2225,7 +2225,7 @@ void Tracking::CreateInitialMapMonocular()
     mCurrentFrame.mpReferenceKF = pKFcur;
 
     // Compute here initial velocity
-    vector<KeyFrame*> vKFs = mpAtlas->GetAllKeyFrames();
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vKFs = mpAtlas->GetAllKeyFrames();
 
     cv::Mat deltaT = vKFs.back()->GetPose()*vKFs.front()->GetPoseInverse();
     mVelocity = cv::Mat();
@@ -2279,10 +2279,10 @@ void Tracking::CreateMapInAtlas()
     }
 
     if(mpLastKeyFrame)
-        mpLastKeyFrame = static_cast<KeyFrame*>(NULL);
+        mpLastKeyFrame = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
 
     if(mpReferenceKF)
-        mpReferenceKF = static_cast<KeyFrame*>(NULL);
+        mpReferenceKF = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
 
     mLastFrame = Frame();
     mCurrentFrame = Frame();
@@ -2296,11 +2296,11 @@ void Tracking::CheckReplacedInLastFrame()
 {
     for(int i =0; i<mLastFrame.N; i++)
     {
-        MapPoint* pMP = mLastFrame.mvpMapPoints[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = mLastFrame.mvpMapPoints[i];
 
         if(pMP)
         {
-            MapPoint* pRep = pMP->GetReplaced();
+            boost::interprocess::offset_ptr<MapPoint>  pRep = pMP->GetReplaced();
             if(pRep)
             {
                 mLastFrame.mvpMapPoints[i] = pRep;
@@ -2318,7 +2318,7 @@ bool Tracking::TrackReferenceKeyFrame()
     // We perform first an ORB matching with the reference keyframe
     // If enough matches are found we setup a PnP solver
     ORBmatcher matcher(0.7,true);
-    vector<MapPoint*> vpMapPointMatches;
+    vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPointMatches;
 
     int nmatches = matcher.SearchByBoW(mpReferenceKF,mCurrentFrame,vpMapPointMatches);
 
@@ -2346,9 +2346,9 @@ bool Tracking::TrackReferenceKeyFrame()
         {
             if(mCurrentFrame.mvbOutlier[i])
             {
-                MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = mCurrentFrame.mvpMapPoints[i];
 
-                mCurrentFrame.mvpMapPoints[i]=static_cast<MapPoint*>(NULL);
+                mCurrentFrame.mvpMapPoints[i]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                 mCurrentFrame.mvbOutlier[i]=false;
                 if(i < mCurrentFrame.Nleft){
                     pMP->mbTrackInView = false;
@@ -2375,7 +2375,7 @@ bool Tracking::TrackReferenceKeyFrame()
 void Tracking::UpdateLastFrame()
 {
     // Update pose according to reference keyframe
-    KeyFrame* pRef = mLastFrame.mpReferenceKF;
+    boost::interprocess::offset_ptr<KeyFrame>  pRef = mLastFrame.mpReferenceKF;
     cv::Mat Tlr = mlRelativeFramePoses.back();
     mLastFrame.SetPose(Tlr*pRef->GetPose());
 
@@ -2409,7 +2409,7 @@ void Tracking::UpdateLastFrame()
 
         bool bCreateNew = false;
 
-        MapPoint* pMP = mLastFrame.mvpMapPoints[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = mLastFrame.mvpMapPoints[i];
         if(!pMP)
             bCreateNew = true;
         else if(pMP->Observations()<1)
@@ -2420,7 +2420,7 @@ void Tracking::UpdateLastFrame()
         if(bCreateNew)
         {
             cv::Mat x3D = mLastFrame.UnprojectStereo(i);
-            MapPoint* pNewMP = new MapPoint(x3D,mpAtlas->GetCurrentMap(),&mLastFrame,i);
+            boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,mpAtlas->GetCurrentMap(),&mLastFrame,i);
 
             mLastFrame.mvpMapPoints[i]=pNewMP;
 
@@ -2461,7 +2461,7 @@ bool Tracking::TrackWithMotionModel()
     }
 
 
-    fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
+    fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
     // Project points seen in previous frame
     int th;
@@ -2477,7 +2477,7 @@ bool Tracking::TrackWithMotionModel()
     if(nmatches<20)
     {
         Verbose::PrintMess("Not enough matches, wider window search!!", Verbose::VERBOSITY_NORMAL);
-        fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
+        fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
         nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame,2*th,mSensor==System::MONOCULAR || mSensor==System::IMU_MONOCULAR);
         Verbose::PrintMess("Matches with wider search: " + to_string(nmatches), Verbose::VERBOSITY_NORMAL);
@@ -2504,9 +2504,9 @@ bool Tracking::TrackWithMotionModel()
         {
             if(mCurrentFrame.mvbOutlier[i])
             {
-                MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = mCurrentFrame.mvpMapPoints[i];
 
-                mCurrentFrame.mvpMapPoints[i]=static_cast<MapPoint*>(NULL);
+                mCurrentFrame.mvpMapPoints[i]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                 mCurrentFrame.mvbOutlier[i]=false;
                 if(i < mCurrentFrame.Nleft){
                     pMP->mbTrackInView = false;
@@ -2608,7 +2608,7 @@ bool Tracking::TrackLocalMap()
                     mnMatchesInliers++;
             }
             else if(mSensor==System::STEREO)
-                mCurrentFrame.mvpMapPoints[i] = static_cast<MapPoint*>(NULL);
+                mCurrentFrame.mvpMapPoints[i] = static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
         }
     }
 
@@ -2796,7 +2796,7 @@ void Tracking::CreateNewKeyFrame()
     if(!mpLocalMapper->SetNotStop(true))
         return;
 
-    KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKF = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
     if(mpAtlas->isImuInitialized())
         pKF->bImu = true;
@@ -2853,13 +2853,13 @@ void Tracking::CreateNewKeyFrame()
 
                 bool bCreateNew = false;
 
-                MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = mCurrentFrame.mvpMapPoints[i];
                 if(!pMP)
                     bCreateNew = true;
                 else if(pMP->Observations()<1)
                 {
                     bCreateNew = true;
-                    mCurrentFrame.mvpMapPoints[i] = static_cast<MapPoint*>(NULL);
+                    mCurrentFrame.mvpMapPoints[i] = static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                 }
 
                 if(bCreateNew)
@@ -2873,7 +2873,7 @@ void Tracking::CreateNewKeyFrame()
                         x3D = mCurrentFrame.UnprojectStereoFishEye(i);
                     }
 
-                    MapPoint* pNewMP = new MapPoint(x3D,pKF,mpAtlas->GetCurrentMap());
+                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKF,mpAtlas->GetCurrentMap());
                     pNewMP->AddObservation(pKF,i);
 
                     //Check if it is a stereo observation in order to not
@@ -2925,14 +2925,14 @@ __global__ void print_hello(cv::Mat matrix){
 }
 
 /*
-__global__ void parallel_check_mappoints(MapPoint** points, int num_points, long unsigned int mnId, int *nToMatch, Frame *mCurrentFrame ){
+__global__ void parallel_check_mappoints(boost::interprocess::offset_ptr<MapPoint> * points, int num_points, long unsigned int mnId, int *nToMatch, Frame *mCurrentFrame ){
 	int blocks = blockIdx.x;
 	int thread = threadIdx.x;
 	int index = blocks*64+thread;
-	MapPoint * pMP;
+	boost::interprocess::offset_ptr<MapPoint>  pMP;
 	if (index < num_points){
 		pMP = points[index];
-		//MapPoint* pMP = *vit;
+		//boost::interprocess::offset_ptr<MapPoint>  pMP = *vit;
 		        if((pMP->mnLastFrameSeen == mnId) && !(pMP->isBadCuda())){
 		            //continue;
 		        //begin_mutex = std::chrono::steady_clock::now();
@@ -2964,12 +2964,12 @@ __global__ void isInFrustumCUDA(Frame *thisFrame, void **pMPe, int num_points, f
 
 
 //GPU code for isInFrustrum
-__global__ void isInFrustumCUDA(Frame *thisFrame, MapPoint **pMPe, int num_points, float viewingCosLimit,  float *parameters,  bool *ans, float* mRcwd, float* mtcwd, float*mOwd, float mnMinX, float mnMaxX, float mnMinY, float mnMaxY, float mbf, int Nleft,float logscalefactor, int mnScaleLevels)
+__global__ void isInFrustumCUDA(Frame *thisFrame, boost::interprocess::offset_ptr<MapPoint> *pMPe, int num_points, float viewingCosLimit,  float *parameters,  bool *ans, float* mRcwd, float* mtcwd, float*mOwd, float mnMinX, float mnMaxX, float mnMinY, float mnMaxY, float mbf, int Nleft,float logscalefactor, int mnScaleLevels)
 {
 	int idx = blockDim.x*blockIdx.x + threadIdx.x;
 	if(idx<num_points){
 	//printf("Idx: %d num_points: %d\n", idx,num_points);
-	MapPoint *pMP =  pMPe[idx];
+	boost::interprocess::offset_ptr<MapPoint> pMP =  pMPe[idx];
 	//bool answer = ans[idx];
 	float * worldpos = (float *)(pMP->mWorldPos.data);
 	//printf("Worldps for thread: %d: %f\n",idx,worldpos[0]);
@@ -3138,14 +3138,14 @@ void Tracking::SearchLocalPoints()
 	std::chrono::steady_clock::time_point begin_local = std::chrono::steady_clock::now();
 
     // Do not search map points already matched
-    for(vector<MapPoint*>::iterator vit=mCurrentFrame.mvpMapPoints.begin(), vend=mCurrentFrame.mvpMapPoints.end(); vit!=vend; vit++)
+    for(vector<boost::interprocess::offset_ptr<MapPoint> >::iterator vit=mCurrentFrame.mvpMapPoints.begin(), vend=mCurrentFrame.mvpMapPoints.end(); vit!=vend; vit++)
     {
-        MapPoint* pMP = *vit;
+        boost::interprocess::offset_ptr<MapPoint>  pMP = *vit;
         if(pMP)
         {
             if(pMP->isBad())
             {
-                *vit = static_cast<MapPoint*>(NULL);
+                *vit = static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
             }
             else
             {
@@ -3210,7 +3210,7 @@ void Tracking::SearchLocalPoints()
     mCurrentFrame.mOw_f[1] = ((float *)(mCurrentFrame.mOw.data))[1];
     mCurrentFrame.mOw_f[2] = ((float *)(mCurrentFrame.mOw.data))[2];
     std::chrono::steady_clock::time_point begin_proj2 = std::chrono::steady_clock::now();
-    cudaHostRegister(mvpLocalMapPoints.data(),sizeof(MapPoint*)*num_mapPoints,cudaHostRegisterDefault);
+    cudaHostRegister(mvpLocalMapPoints.data(),sizeof(boost::interprocess::offset_ptr<MapPoint> )*num_mapPoints,cudaHostRegisterDefault);
     cudaHostRegister(mCurrentFrame.cam_parameter, sizeof(float)*8,cudaHostRegisterDefault);
     cudaHostRegister(mCurrentFrame.mrcw_f, sizeof(float)*9,cudaHostRegisterDefault);
     cudaHostRegister(mCurrentFrame.mtcw_f, sizeof(float)*3,cudaHostRegisterDefault);
@@ -3246,9 +3246,9 @@ void Tracking::SearchLocalPoints()
     
     int counter = 0;
     // Project points in frame and check its visibility
-    for(vector<MapPoint*>::iterator vit=mvpLocalMapPoints.begin(), vend=mvpLocalMapPoints.end(); vit!=vend; vit++)
+    for(vector<boost::interprocess::offset_ptr<MapPoint> >::iterator vit=mvpLocalMapPoints.begin(), vend=mvpLocalMapPoints.end(); vit!=vend; vit++)
     {
-        MapPoint* pMP = *vit;
+        boost::interprocess::offset_ptr<MapPoint>  pMP = *vit;
 
         if(pMP->mnLastFrameSeen == mCurrentFrame.mnId)
             continue;
@@ -3349,15 +3349,15 @@ void Tracking::UpdateLocalPoints()
 
     int count_pts = 0;
 
-    for(vector<KeyFrame*>::const_reverse_iterator itKF=mvpLocalKeyFrames.rbegin(), itEndKF=mvpLocalKeyFrames.rend(); itKF!=itEndKF; ++itKF)
+    for(vector<boost::interprocess::offset_ptr<KeyFrame> >::const_reverse_iterator itKF=mvpLocalKeyFrames.rbegin(), itEndKF=mvpLocalKeyFrames.rend(); itKF!=itEndKF; ++itKF)
     {
-        KeyFrame* pKF = *itKF;
-        const vector<MapPoint*> vpMPs = pKF->GetMapPointMatches();
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = *itKF;
+        const vector<boost::interprocess::offset_ptr<MapPoint> > vpMPs = pKF->GetMapPointMatches();
 
-        for(vector<MapPoint*>::const_iterator itMP=vpMPs.begin(), itEndMP=vpMPs.end(); itMP!=itEndMP; itMP++)
+        for(vector<boost::interprocess::offset_ptr<MapPoint> >::const_iterator itMP=vpMPs.begin(), itEndMP=vpMPs.end(); itMP!=itEndMP; itMP++)
         {
 
-            MapPoint* pMP = *itMP;
+            boost::interprocess::offset_ptr<MapPoint>  pMP = *itMP;
             if(!pMP)
                 continue;
             if(pMP->mnTrackReferenceForFrame==mCurrentFrame.mnId)
@@ -3376,18 +3376,18 @@ void Tracking::UpdateLocalPoints()
 void Tracking::UpdateLocalKeyFrames()
 {
     // Each map point vote for the keyframes in which it has been observed
-    map<KeyFrame*,int> keyframeCounter;
+    map<boost::interprocess::offset_ptr<KeyFrame> ,int> keyframeCounter;
     if(!mpAtlas->isImuInitialized() || (mCurrentFrame.mnId<mnLastRelocFrameId+2))
     {
         for(int i=0; i<mCurrentFrame.N; i++)
         {
-            MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+            boost::interprocess::offset_ptr<MapPoint>  pMP = mCurrentFrame.mvpMapPoints[i];
             if(pMP)
             {
                 if(!pMP->isBad())
                 {
-                    const map<KeyFrame*,tuple<int,int>> observations = pMP->GetObservations();
-                    for(map<KeyFrame*,tuple<int,int>>::const_iterator it=observations.begin(), itend=observations.end(); it!=itend; it++)
+                    const map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations = pMP->GetObservations();
+                    for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::const_iterator it=observations.begin(), itend=observations.end(); it!=itend; it++)
                         keyframeCounter[it->first]++;
                 }
                 else
@@ -3404,13 +3404,13 @@ void Tracking::UpdateLocalKeyFrames()
             // Using lastframe since current frame has not matches yet
             if(mLastFrame.mvpMapPoints[i])
             {
-                MapPoint* pMP = mLastFrame.mvpMapPoints[i];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = mLastFrame.mvpMapPoints[i];
                 if(!pMP)
                     continue;
                 if(!pMP->isBad())
                 {
-                    const map<KeyFrame*,tuple<int,int>> observations = pMP->GetObservations();
-                    for(map<KeyFrame*,tuple<int,int>>::const_iterator it=observations.begin(), itend=observations.end(); it!=itend; it++)
+                    const map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations = pMP->GetObservations();
+                    for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::const_iterator it=observations.begin(), itend=observations.end(); it!=itend; it++)
                         keyframeCounter[it->first]++;
                 }
                 else
@@ -3424,15 +3424,15 @@ void Tracking::UpdateLocalKeyFrames()
 
 
     int max=0;
-    KeyFrame* pKFmax= static_cast<KeyFrame*>(NULL);
+    boost::interprocess::offset_ptr<KeyFrame>  pKFmax= static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
 
     mvpLocalKeyFrames.clear();
     mvpLocalKeyFrames.reserve(3*keyframeCounter.size());
 
     // All keyframes that observe a map point are included in the local map. Also check which keyframe shares most points
-    for(map<KeyFrame*,int>::const_iterator it=keyframeCounter.begin(), itEnd=keyframeCounter.end(); it!=itEnd; it++)
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::const_iterator it=keyframeCounter.begin(), itEnd=keyframeCounter.end(); it!=itEnd; it++)
     {
-        KeyFrame* pKF = it->first;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = it->first;
 
         if(pKF->isBad())
             continue;
@@ -3448,20 +3448,20 @@ void Tracking::UpdateLocalKeyFrames()
     }
 
     // Include also some not-already-included keyframes that are neighbors to already-included keyframes
-    for(vector<KeyFrame*>::const_iterator itKF=mvpLocalKeyFrames.begin(), itEndKF=mvpLocalKeyFrames.end(); itKF!=itEndKF; itKF++)
+    for(vector<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator itKF=mvpLocalKeyFrames.begin(), itEndKF=mvpLocalKeyFrames.end(); itKF!=itEndKF; itKF++)
     {
         // Limit the number of keyframes
         if(mvpLocalKeyFrames.size()>80) // 80
             break;
 
-        KeyFrame* pKF = *itKF;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = *itKF;
 
-        const vector<KeyFrame*> vNeighs = pKF->GetBestCovisibilityKeyFrames(10);
+        const vector<boost::interprocess::offset_ptr<KeyFrame> > vNeighs = pKF->GetBestCovisibilityKeyFrames(10);
 
 
-        for(vector<KeyFrame*>::const_iterator itNeighKF=vNeighs.begin(), itEndNeighKF=vNeighs.end(); itNeighKF!=itEndNeighKF; itNeighKF++)
+        for(vector<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator itNeighKF=vNeighs.begin(), itEndNeighKF=vNeighs.end(); itNeighKF!=itEndNeighKF; itNeighKF++)
         {
-            KeyFrame* pNeighKF = *itNeighKF;
+            boost::interprocess::offset_ptr<KeyFrame>  pNeighKF = *itNeighKF;
             if(!pNeighKF->isBad())
             {
                 if(pNeighKF->mnTrackReferenceForFrame!=mCurrentFrame.mnId)
@@ -3473,10 +3473,10 @@ void Tracking::UpdateLocalKeyFrames()
             }
         }
 
-        const set<KeyFrame*> spChilds = pKF->GetChilds();
-        for(set<KeyFrame*>::const_iterator sit=spChilds.begin(), send=spChilds.end(); sit!=send; sit++)
+        const set<boost::interprocess::offset_ptr<KeyFrame> > spChilds = pKF->GetChilds();
+        for(set<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator sit=spChilds.begin(), send=spChilds.end(); sit!=send; sit++)
         {
-            KeyFrame* pChildKF = *sit;
+            boost::interprocess::offset_ptr<KeyFrame>  pChildKF = *sit;
             if(!pChildKF->isBad())
             {
                 if(pChildKF->mnTrackReferenceForFrame!=mCurrentFrame.mnId)
@@ -3488,7 +3488,7 @@ void Tracking::UpdateLocalKeyFrames()
             }
         }
 
-        KeyFrame* pParent = pKF->GetParent();
+        boost::interprocess::offset_ptr<KeyFrame>  pParent = pKF->GetParent();
         if(pParent)
         {
             if(pParent->mnTrackReferenceForFrame!=mCurrentFrame.mnId)
@@ -3504,7 +3504,7 @@ void Tracking::UpdateLocalKeyFrames()
     if((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO) &&mvpLocalKeyFrames.size()<80)
     {
         //cout << "CurrentKF: " << mCurrentFrame.mnId << endl;
-        KeyFrame* tempKeyFrame = mCurrentFrame.mpLastKeyFrame;
+        boost::interprocess::offset_ptr<KeyFrame>  tempKeyFrame = mCurrentFrame.mpLastKeyFrame;
 
         const int Nd = 20;
         for(int i=0; i<Nd; i++){
@@ -3535,7 +3535,7 @@ bool Tracking::Relocalization()
 
     // Relocalization is performed when tracking is lost
     // Track Lost: Query KeyFrame Database for keyframe candidates for relocalisation
-    vector<KeyFrame*> vpCandidateKFs = mpKeyFrameDB->DetectRelocalizationCandidates(&mCurrentFrame, mpAtlas->GetCurrentMap());
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpCandidateKFs = mpKeyFrameDB->DetectRelocalizationCandidates(&mCurrentFrame, mpAtlas->GetCurrentMap());
 
     if(vpCandidateKFs.empty()) {
         Verbose::PrintMess("There are not candidates", Verbose::VERBOSITY_NORMAL);
@@ -3551,7 +3551,7 @@ bool Tracking::Relocalization()
     vector<MLPnPsolver*> vpMLPnPsolvers;
     vpMLPnPsolvers.resize(nKFs);
 
-    vector<vector<MapPoint*> > vvpMapPointMatches;
+    vector<vector<boost::interprocess::offset_ptr<MapPoint> > > vvpMapPointMatches;
     vvpMapPointMatches.resize(nKFs);
 
     vector<bool> vbDiscarded;
@@ -3561,7 +3561,7 @@ bool Tracking::Relocalization()
 
     for(int i=0; i<nKFs; i++)
     {
-        KeyFrame* pKF = vpCandidateKFs[i];
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = vpCandidateKFs[i];
         if(pKF->isBad())
             vbDiscarded[i] = true;
         else
@@ -3613,7 +3613,7 @@ bool Tracking::Relocalization()
             {
                 Tcw.copyTo(mCurrentFrame.mTcw);
 
-                set<MapPoint*> sFound;
+                set<boost::interprocess::offset_ptr<MapPoint> > sFound;
 
                 const int np = vbInliers.size();
 
@@ -3635,7 +3635,7 @@ bool Tracking::Relocalization()
 
                 for(int io =0; io<mCurrentFrame.N; io++)
                     if(mCurrentFrame.mvbOutlier[io])
-                        mCurrentFrame.mvpMapPoints[io]=static_cast<MapPoint*>(NULL);
+                        mCurrentFrame.mvpMapPoints[io]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
 
                 // If few inliers, search by projection in a coarse window and optimize again
                 if(nGood<50)
@@ -3748,8 +3748,8 @@ void Tracking::Reset(bool bLocMap)
     mCurrentFrame = Frame();
     mnLastRelocFrameId = 0;
     mLastFrame = Frame();
-    mpReferenceKF = static_cast<KeyFrame*>(NULL);
-    mpLastKeyFrame = static_cast<KeyFrame*>(NULL);
+    mpReferenceKF = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
+    mpLastKeyFrame = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
     mvIniMatches.clear();
 
     if(mpViewer)
@@ -3768,7 +3768,7 @@ void Tracking::ResetActiveMap(bool bLocMap)
             usleep(3000);
     }
 
-    Map* pMap = mpAtlas->GetCurrentMap();
+    boost::interprocess::offset_ptr<Map>  pMap = mpAtlas->GetCurrentMap();
 
     if (!bLocMap)
     {
@@ -3807,7 +3807,7 @@ void Tracking::ResetActiveMap(bool bLocMap)
     // lbLost.reserve(mlbLost.size());
     unsigned int index = mnFirstFrameId;
     cout << "mnFirstFrameId = " << mnFirstFrameId << endl;
-    for(Map* pMap : mpAtlas->GetAllMaps())
+    for(boost::interprocess::offset_ptr<Map>  pMap : mpAtlas->GetAllMaps())
     {
         if(pMap->GetAllKeyFrames().size() > 0)
         {
@@ -3841,8 +3841,8 @@ void Tracking::ResetActiveMap(bool bLocMap)
 
     mCurrentFrame = Frame();
     mLastFrame = Frame();
-    mpReferenceKF = static_cast<KeyFrame*>(NULL);
-    mpLastKeyFrame = static_cast<KeyFrame*>(NULL);
+    mpReferenceKF = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
+    mpLastKeyFrame = static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL);
     mvIniMatches.clear();
 
     if(mpViewer)
@@ -3851,7 +3851,7 @@ void Tracking::ResetActiveMap(bool bLocMap)
     Verbose::PrintMess("   End reseting! ", Verbose::VERBOSITY_NORMAL);
 }
 
-vector<MapPoint*> Tracking::GetLocalMapMPS()
+vector<boost::interprocess::offset_ptr<MapPoint> > Tracking::GetLocalMapMPS()
 {
     return mvpLocalMapPoints;
 }
@@ -3894,18 +3894,18 @@ void Tracking::InformOnlyTracking(const bool &flag)
     mbOnlyTracking = flag;
 }
 
-void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, KeyFrame* pCurrentKeyFrame)
+void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, boost::interprocess::offset_ptr<KeyFrame>  pCurrentKeyFrame)
 {
-    Map * pMap = pCurrentKeyFrame->GetMap();
+    boost::interprocess::offset_ptr<Map>  pMap = pCurrentKeyFrame->GetMap();
     unsigned int index = mnFirstFrameId;
-    list<ORB_SLAM3::KeyFrame*>::iterator lRit = mlpReferences.begin();
+    list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mlpReferences.begin();
     list<bool>::iterator lbL = mlbLost.begin();
     for(list<cv::Mat>::iterator lit=mlRelativeFramePoses.begin(),lend=mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lbL++)
     {
         if(*lbL)
             continue;
 
-        KeyFrame* pKF = *lRit;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
 
         while(pKF->isBad())
         {
@@ -3972,7 +3972,7 @@ void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, KeyFrame* pCurr
 }
 
 
-cv::Mat Tracking::ComputeF12(KeyFrame *&pKF1, KeyFrame *&pKF2)
+cv::Mat Tracking::ComputeF12(boost::interprocess::offset_ptr<KeyFrame> &pKF1, boost::interprocess::offset_ptr<KeyFrame> &pKF2)
 {
     cv::Mat R1w = pKF1->GetRotation();
     cv::Mat t1w = pKF1->GetTranslation();
@@ -3995,7 +3995,7 @@ cv::Mat Tracking::ComputeF12(KeyFrame *&pKF1, KeyFrame *&pKF2)
 void Tracking::CreateNewMapPoints()
 {
     // Retrieve neighbor keyframes in covisibility graph
-    const vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
+    const vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
 
     ORBmatcher matcher(0.6,false);
 
@@ -4021,7 +4021,7 @@ void Tracking::CreateNewMapPoints()
     // Search matches with epipolar restriction and triangulate
     for(size_t i=0; i<vpKFs.size(); i++)
     {
-        KeyFrame* pKF2 = vpKFs[i];
+        boost::interprocess::offset_ptr<KeyFrame>  pKF2 = vpKFs[i];
         if(pKF2==mpLastKeyFrame)
             continue;
 
@@ -4213,7 +4213,7 @@ void Tracking::CreateNewMapPoints()
                 continue;
 
             // Triangulation is succesfull
-            MapPoint* pMP = new MapPoint(x3D,mpLastKeyFrame,mpAtlas->GetCurrentMap());
+            boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(x3D,mpLastKeyFrame,mpAtlas->GetCurrentMap());
 
             pMP->AddObservation(mpLastKeyFrame,idx1);
             pMP->AddObservation(pKF2,idx2);

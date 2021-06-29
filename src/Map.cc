@@ -32,7 +32,7 @@ namespace ORB_SLAM3
 
 long unsigned int Map::nNextId=0;
 
-Map::Map():mnMaxKFid(0),mnBigChangeIdx(0), mbImuInitialized(false), mnMapChange(0), mpFirstRegionKF(static_cast<KeyFrame*>(NULL)),
+Map::Map():mnMaxKFid(0),mnBigChangeIdx(0), mbImuInitialized(false), mnMapChange(0), mpFirstRegionKF(static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL)),
 mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
     //shared memory initialization for the map
@@ -45,7 +45,7 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
 }
 
 Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(initKFid), mnBigChangeIdx(0), mIsInUse(false),
-                       mHasTumbnail(false), mbBad(false), mbImuInitialized(false), mpFirstRegionKF(static_cast<KeyFrame*>(NULL)),
+                       mHasTumbnail(false), mbBad(false), mbImuInitialized(false), mpFirstRegionKF(static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL)),
                        mnMapChange(0), mbFail(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
@@ -227,13 +227,13 @@ void Map::SetStoredMap()
 
 void Map::clear()
 {
-//    for(set<MapPoint*>::iterator sit=mspMapPoints.begin(), send=mspMapPoints.end(); sit!=send; sit++)
+//    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(), send=mspMapPoints.end(); sit!=send; sit++)
 //        delete *sit;
 
     for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
     {
         boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
-        pKF->UpdateMap(static_cast<Map*>(NULL));
+        pKF->UpdateMap(static_cast<boost::interprocess::offset_ptr<Map> >(NULL));
 //        delete *sit;
     }
 
