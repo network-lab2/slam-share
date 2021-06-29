@@ -2087,7 +2087,7 @@ void Tracking::Track()
             for(list<boost::interprocess::offset_ptr<MapPoint> >::iterator lit = mlpTemporalPoints.begin(), lend =  mlpTemporalPoints.end(); lit!=lend; lit++)
             {
                 boost::interprocess::offset_ptr<MapPoint>  pMP = *lit;
-                delete pMP;
+                delete pMP.get();
             }
             mlpTemporalPoints.clear();
 
@@ -3832,7 +3832,7 @@ void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, boost::interpro
 {
     boost::interprocess::offset_ptr<Map>  pMap = pCurrentKeyFrame->GetMap();
     unsigned int index = mnFirstFrameId;
-    list<ORB_SLAM3::boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mlpReferences.begin();
+    list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lRit = mlpReferences.begin();
     list<bool>::iterator lbL = mlbLost.begin();
     for(list<cv::Mat>::iterator lit=mlRelativeFramePoses.begin(),lend=mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lbL++)
     {
