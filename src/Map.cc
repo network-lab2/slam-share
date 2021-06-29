@@ -49,7 +49,7 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
                        mnMapChange(0), mbFail(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
-    shm = shm_temp;
+    shm = &shm_temp;
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
