@@ -50,13 +50,13 @@ public:
     // Main function
     void Run();
 
-    void InsertKeyFrame(KeyFrame* pKF);
+    void InsertKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF);
     void EmptyQueue();
 
     // Thread Synch
     void RequestStop();
     void RequestReset();
-    void RequestResetActiveMap(Map* pMap);
+    void RequestResetActiveMap(boost::interprocess::offset_ptr<Map>  pMap);
     bool Stop();
     void Release();
     bool isStopped();
@@ -77,7 +77,7 @@ public:
 
     bool IsInitializing();
     double GetCurrKFTime();
-    KeyFrame* GetCurrKF();
+    boost::interprocess::offset_ptr<KeyFrame>  GetCurrKF();
 
     std::mutex mMutexImuInit;
 
@@ -133,8 +133,8 @@ protected:
     void SearchInNeighbors();
     void KeyFrameCulling();
 
-    cv::Mat ComputeF12(KeyFrame* &pKF1, KeyFrame* &pKF2);
-    cv::Matx33f ComputeF12_(KeyFrame* &pKF1, KeyFrame* &pKF2);
+    cv::Mat ComputeF12(boost::interprocess::offset_ptr<KeyFrame>  &pKF1, boost::interprocess::offset_ptr<KeyFrame>  &pKF2);
+    cv::Matx33f ComputeF12_(boost::interprocess::offset_ptr<KeyFrame>  &pKF1, boost::interprocess::offset_ptr<KeyFrame>  &pKF2);
 
     cv::Mat SkewSymmetricMatrix(const cv::Mat &v);
     cv::Matx33f SkewSymmetricMatrix_(const cv::Matx31f &v);
@@ -147,7 +147,7 @@ protected:
     void ResetIfRequested();
     bool mbResetRequested;
     bool mbResetRequestedActiveMap;
-    Map* mpMapToReset;
+    boost::interprocess::offset_ptr<Map>  mpMapToReset;
     std::mutex mMutexReset;
 
     bool CheckFinish();
@@ -161,11 +161,11 @@ protected:
     LoopClosing* mpLoopCloser;
     Tracking* mpTracker;
 
-    std::list<KeyFrame*> mlNewKeyFrames;
+    std::list<boost::interprocess::offset_ptr<KeyFrame> > mlNewKeyFrames;
 
-    KeyFrame* mpCurrentKeyFrame;
+    boost::interprocess::offset_ptr<KeyFrame>  mpCurrentKeyFrame;
 
-    std::list<MapPoint*> mlpRecentAddedMapPoints;
+    std::list<boost::interprocess::offset_ptr<MapPoint> > mlpRecentAddedMapPoints;
 
     std::mutex mMutexNewKFs;
 
