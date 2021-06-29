@@ -22,6 +22,7 @@
 #include <vector>
 #include <list>
 #include <opencv2/opencv.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
 
 
 namespace ORB_SLAM3

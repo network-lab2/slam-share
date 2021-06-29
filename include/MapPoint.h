@@ -44,9 +44,9 @@ class MapPoint
 public:
     MapPoint();
 
-    MapPoint(const cv::Mat &Pos, KeyFrame* pRefKF, Map* pMap);
-    MapPoint(const double invDepth, cv::Point2f uv_init, KeyFrame* pRefKF, KeyFrame* pHostKF, Map* pMap);
-    MapPoint(const cv::Mat &Pos,  Map* pMap, Frame* pFrame, const int &idxF);
+    MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>  pRefKF, boost::interprocess::offset_ptr<Map>  pMap);
+    MapPoint(const double invDepth, cv::Point2f uv_init, boost::interprocess::offset_ptr<KeyFrame>  pRefKF, boost::interprocess::offset_ptr<KeyFrame>  pHostKF, boost::interprocess::offset_ptr<Map>  pMap);
+    MapPoint(const cv::Mat &Pos,  boost::interprocess::offset_ptr<Map>  pMap, Frame* pFrame, const int &idxF);
 
     void SetWorldPos(const cv::Mat &Pos);
 
@@ -58,22 +58,22 @@ public:
 
     cv::Matx31f GetNormal2();
 
-    KeyFrame* GetReferenceKeyFrame();
+    boost::interprocess::offset_ptr<KeyFrame>  GetReferenceKeyFrame();
 
-    std::map<KeyFrame*,std::tuple<int,int>> GetObservations();
+    std::map<boost::interprocess::offset_ptr<KeyFrame> ,std::tuple<int,int>> GetObservations();
     int Observations();
 
-    void AddObservation(KeyFrame* pKF,int idx);
-    void EraseObservation(KeyFrame* pKF);
+    void AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF,int idx);
+    void EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF);
 
-    std::tuple<int,int> GetIndexInKeyFrame(KeyFrame* pKF);
-    bool IsInKeyFrame(KeyFrame* pKF);
+    std::tuple<int,int> GetIndexInKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF);
+    bool IsInKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF);
 
     void SetBadFlag();
     bool isBad();
 
-    void Replace(MapPoint* pMP);    
-    MapPoint* GetReplaced();
+    void Replace(boost::interprocess::offset_ptr<MapPoint>  pMP);    
+    boost::interprocess::offset_ptr<MapPoint>  GetReplaced();
 
     void IncreaseVisible(int n=1);
     void IncreaseFound(int n=1);
@@ -91,11 +91,11 @@ public:
 
     float GetMinDistanceInvariance();
     float GetMaxDistanceInvariance();
-    int PredictScale(const float &currentDist, KeyFrame*pKF);
+    int PredictScale(const float &currentDist, boost::interprocess::offset_ptr<KeyFrame> pKF);
     int PredictScale(const float &currentDist, Frame* pF);
 
-    Map* GetMap();
-    void UpdateMap(Map* pMap);
+    boost::interprocess::offset_ptr<Map>  GetMap();
+    void UpdateMap(boost::interprocess::offset_ptr<Map>  pMap);
 
 public:
     long unsigned int mnId;
@@ -138,7 +138,7 @@ public:
     double mInvDepth;
     double mInitU;
     double mInitV;
-    KeyFrame* mpHostKF;
+    boost::interprocess::offset_ptr<KeyFrame>  mpHostKF;
 
     static std::mutex mGlobalMutex;
 
@@ -151,7 +151,7 @@ protected:
      cv::Matx31f mWorldPosx;
 
      // Keyframes observing the point and associated index in keyframe
-     std::map<KeyFrame*,std::tuple<int,int> > mObservations;
+     std::map<boost::interprocess::offset_ptr<KeyFrame> ,std::tuple<int,int> > mObservations;
 
      // Mean viewing direction
      cv::Mat mNormalVector;
@@ -161,7 +161,7 @@ protected:
      cv::Mat mDescriptor;
 
      // Reference KeyFrame
-     KeyFrame* mpRefKF;
+     boost::interprocess::offset_ptr<KeyFrame>  mpRefKF;
 
      // Tracking counters
      int mnVisible;
@@ -169,13 +169,13 @@ protected:
 
      // Bad flag (we do not currently erase MapPoint from memory)
      bool mbBad;
-     MapPoint* mpReplaced;
+     boost::interprocess::offset_ptr<MapPoint>  mpReplaced;
 
      // Scale invariance distances
      float mfMinDistance;
      float mfMaxDistance;
 
-     Map* mpMap;
+     boost::interprocess::offset_ptr<Map>  mpMap;
 
      std::mutex mMutexPos;
      std::mutex mMutexFeatures;

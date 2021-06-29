@@ -31,16 +31,16 @@ MapPoint::MapPoint():
     mnFirstKFid(0), mnFirstFrame(0), nObs(0), mnTrackReferenceForFrame(0),
     mnLastFrameSeen(0), mnBALocalForKF(0), mnFuseCandidateForKF(0), mnLoopPointForKF(0), mnCorrectedByKF(0),
     mnCorrectedReference(0), mnBAGlobalForKF(0), mnVisible(1), mnFound(1), mbBad(false),
-    mpReplaced(static_cast<MapPoint*>(NULL))
+    mpReplaced(static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL))
 {
-    mpReplaced = static_cast<MapPoint*>(NULL);
+    mpReplaced = static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
 }
 
 MapPoint::MapPoint(const cv::Mat &Pos, KeyFrame *pRefKF, Map* pMap):
     mnFirstKFid(pRefKF->mnId), mnFirstFrame(pRefKF->mnFrameId), nObs(0), mnTrackReferenceForFrame(0),
     mnLastFrameSeen(0), mnBALocalForKF(0), mnFuseCandidateForKF(0), mnLoopPointForKF(0), mnCorrectedByKF(0),
     mnCorrectedReference(0), mnBAGlobalForKF(0), mpRefKF(pRefKF), mnVisible(1), mnFound(1), mbBad(false),
-    mpReplaced(static_cast<MapPoint*>(NULL)), mfMinDistance(0), mfMaxDistance(0), mpMap(pMap),
+    mpReplaced(static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL)), mfMinDistance(0), mfMaxDistance(0), mpMap(pMap),
     mnOriginMapId(pMap->GetId())
 {
     Pos.copyTo(mWorldPos);
@@ -56,11 +56,11 @@ MapPoint::MapPoint(const cv::Mat &Pos, KeyFrame *pRefKF, Map* pMap):
     mnId=nNextId++;
 }
 
-MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, KeyFrame* pRefKF, KeyFrame* pHostKF, Map* pMap):
+MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interprocess::offset_ptr<KeyFrame>  pRefKF, boost::interprocess::offset_ptr<KeyFrame>  pHostKF, Map* pMap):
     mnFirstKFid(pRefKF->mnId), mnFirstFrame(pRefKF->mnFrameId), nObs(0), mnTrackReferenceForFrame(0),
     mnLastFrameSeen(0), mnBALocalForKF(0), mnFuseCandidateForKF(0), mnLoopPointForKF(0), mnCorrectedByKF(0),
     mnCorrectedReference(0), mnBAGlobalForKF(0), mpRefKF(pRefKF), mnVisible(1), mnFound(1), mbBad(false),
-    mpReplaced(static_cast<MapPoint*>(NULL)), mfMinDistance(0), mfMaxDistance(0), mpMap(pMap),
+    mpReplaced(static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL)), mfMinDistance(0), mfMaxDistance(0), mpMap(pMap),
     mnOriginMapId(pMap->GetId())
 {
     mInvDepth=invDepth;
@@ -80,7 +80,7 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, KeyFrame* pRefKF,
 MapPoint::MapPoint(const cv::Mat &Pos, Map* pMap, Frame* pFrame, const int &idxF):
     mnFirstKFid(-1), mnFirstFrame(pFrame->mnId), nObs(0), mnTrackReferenceForFrame(0), mnLastFrameSeen(0),
     mnBALocalForKF(0), mnFuseCandidateForKF(0),mnLoopPointForKF(0), mnCorrectedByKF(0),
-    mnCorrectedReference(0), mnBAGlobalForKF(0), mpRefKF(static_cast<KeyFrame*>(NULL)), mnVisible(1),
+    mnCorrectedReference(0), mnBAGlobalForKF(0), mpRefKF(static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL)), mnVisible(1),
     mnFound(1), mbBad(false), mpReplaced(NULL), mpMap(pMap), mnOriginMapId(pMap->GetId())
 {
     Pos.copyTo(mWorldPos);
@@ -152,13 +152,13 @@ cv::Matx31f MapPoint::GetNormal2()
     return mNormalVectorx;
 }
 
-KeyFrame* MapPoint::GetReferenceKeyFrame()
+boost::interprocess::offset_ptr<KeyFrame>  MapPoint::GetReferenceKeyFrame()
 {
     unique_lock<mutex> lock(mMutexFeatures);
     return mpRefKF;
 }
 
-void MapPoint::AddObservation(KeyFrame* pKF, int idx)
+void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, int idx)
 {
     unique_lock<mutex> lock(mMutexFeatures);
     tuple<int,int> indexes;
@@ -185,7 +185,7 @@ void MapPoint::AddObservation(KeyFrame* pKF, int idx)
         nObs++;
 }
 
-void MapPoint::EraseObservation(KeyFrame* pKF)
+void MapPoint::EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     bool bBad=false;
     {
@@ -221,7 +221,7 @@ void MapPoint::EraseObservation(KeyFrame* pKF)
 }
 
 
-std::map<KeyFrame*, std::tuple<int,int>>  MapPoint::GetObservations()
+std::map<boost::interprocess::offset_ptr<KeyFrame> , std::tuple<int,int>>  MapPoint::GetObservations()
 {
     unique_lock<mutex> lock(mMutexFeatures);
     return mObservations;
@@ -235,7 +235,7 @@ int MapPoint::Observations()
 
 void MapPoint::SetBadFlag()
 {
-    map<KeyFrame*, tuple<int,int>> obs;
+    map<boost::interprocess::offset_ptr<KeyFrame> , tuple<int,int>> obs;
     {
         unique_lock<mutex> lock1(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPos);
@@ -243,9 +243,9 @@ void MapPoint::SetBadFlag()
         obs = mObservations;
         mObservations.clear();
     }
-    for(map<KeyFrame*, tuple<int,int>>::iterator mit=obs.begin(), mend=obs.end(); mit!=mend; mit++)
+    for(map<boost::interprocess::offset_ptr<KeyFrame> , tuple<int,int>>::iterator mit=obs.begin(), mend=obs.end(); mit!=mend; mit++)
     {
-        KeyFrame* pKF = mit->first;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = mit->first;
         int leftIndex = get<0>(mit -> second), rightIndex = get<1>(mit -> second);
         if(leftIndex != -1){
             pKF->EraseMapPointMatch(leftIndex);
@@ -258,20 +258,20 @@ void MapPoint::SetBadFlag()
     mpMap->EraseMapPoint(this);
 }
 
-MapPoint* MapPoint::GetReplaced()
+boost::interprocess::offset_ptr<MapPoint>  MapPoint::GetReplaced()
 {
     unique_lock<mutex> lock1(mMutexFeatures);
     unique_lock<mutex> lock2(mMutexPos);
     return mpReplaced;
 }
 
-void MapPoint::Replace(MapPoint* pMP)
+void MapPoint::Replace(boost::interprocess::offset_ptr<MapPoint>  pMP)
 {
     if(pMP->mnId==this->mnId)
         return;
 
     int nvisible, nfound;
-    map<KeyFrame*,tuple<int,int>> obs;
+    map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> obs;
     {
         unique_lock<mutex> lock1(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPos);
@@ -283,10 +283,10 @@ void MapPoint::Replace(MapPoint* pMP)
         mpReplaced = pMP;
     }
 
-    for(map<KeyFrame*,tuple<int,int>>::iterator mit=obs.begin(), mend=obs.end(); mit!=mend; mit++)
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::iterator mit=obs.begin(), mend=obs.end(); mit!=mend; mit++)
     {
         // Replace measurement in keyframe
-        KeyFrame* pKF = mit->first;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = mit->first;
 
         tuple<int,int> indexes = mit -> second;
         int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
@@ -351,7 +351,7 @@ void MapPoint::ComputeDistinctiveDescriptors()
     // Retrieve all observed descriptors
     vector<cv::Mat> vDescriptors;
 
-    map<KeyFrame*,tuple<int,int>> observations;
+    map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations;
 
     {
         unique_lock<mutex> lock1(mMutexFeatures);
@@ -365,9 +365,9 @@ void MapPoint::ComputeDistinctiveDescriptors()
 
     vDescriptors.reserve(observations.size());
 
-    for(map<KeyFrame*,tuple<int,int>>::iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
     {
-        KeyFrame* pKF = mit->first;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = mit->first;
 
         if(!pKF->isBad()){
             tuple<int,int> indexes = mit -> second;
@@ -445,8 +445,8 @@ bool MapPoint::IsInKeyFrame(KeyFrame *pKF)
 
 void MapPoint::UpdateNormalAndDepth()
 {
-    map<KeyFrame*,tuple<int,int>> observations;
-    KeyFrame* pRefKF;
+    map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations;
+    boost::interprocess::offset_ptr<KeyFrame>  pRefKF;
     cv::Mat Pos;
     {
         unique_lock<mutex> lock1(mMutexFeatures);
@@ -463,9 +463,9 @@ void MapPoint::UpdateNormalAndDepth()
 
     cv::Mat normal = cv::Mat::zeros(3,1,CV_32F);
     int n=0;
-    for(map<KeyFrame*,tuple<int,int>>::iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
     {
-        KeyFrame* pKF = mit->first;
+        boost::interprocess::offset_ptr<KeyFrame>  pKF = mit->first;
 
         tuple<int,int> indexes = mit -> second;
         int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
@@ -531,7 +531,7 @@ float MapPoint::GetMaxDistanceInvariance()
     return 1.2f*mfMaxDistance;
 }
 
-int MapPoint::PredictScale(const float &currentDist, KeyFrame* pKF)
+int MapPoint::PredictScale(const float &currentDist, boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     float ratio;
     {

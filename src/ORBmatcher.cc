@@ -41,7 +41,7 @@ ORBmatcher::ORBmatcher(float nnratio, bool checkOri): mfNNratio(nnratio), mbChec
 {
 }
 
-int ORBmatcher::SearchByProjection(Frame &F, const vector<MapPoint*> &vpMapPoints, const float th, const bool bFarPoints, const float thFarPoints)
+int ORBmatcher::SearchByProjection(Frame &F, const vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints, const float th, const bool bFarPoints, const float thFarPoints)
 {
     int nmatches=0, left = 0, right = 0;
 
@@ -49,7 +49,7 @@ int ORBmatcher::SearchByProjection(Frame &F, const vector<MapPoint*> &vpMapPoint
 
     for(size_t iMP=0; iMP<vpMapPoints.size(); iMP++)
     {
-        MapPoint* pMP = vpMapPoints[iMP];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpMapPoints[iMP];
         if(!pMP->mbTrackInView && !pMP->mbTrackInViewR)
             continue;
 
@@ -222,7 +222,7 @@ float ORBmatcher::RadiusByViewingCos(const float &viewCos)
 }
 
 
-bool ORBmatcher::CheckDistEpipolarLine(const cv::KeyPoint &kp1,const cv::KeyPoint &kp2,const cv::Mat &F12,const KeyFrame* pKF2, const bool b1)
+bool ORBmatcher::CheckDistEpipolarLine(const cv::KeyPoint &kp1,const cv::KeyPoint &kp2,const cv::Mat &F12,const boost::interprocess::offset_ptr<KeyFrame>  pKF2, const bool b1)
 {
     // Epipolar line in second image l = x1'F12 = [a b c]
     const float a = kp1.pt.x*F12.at<float>(0,0)+kp1.pt.y*F12.at<float>(1,0)+F12.at<float>(2,0);
@@ -244,7 +244,7 @@ bool ORBmatcher::CheckDistEpipolarLine(const cv::KeyPoint &kp1,const cv::KeyPoin
         return dsqr<6.63*pKF2->mvLevelSigma2[kp2.octave];
 }
 
-bool ORBmatcher::CheckDistEpipolarLine2(const cv::KeyPoint &kp1, const cv::KeyPoint &kp2, const cv::Mat &F12, const KeyFrame *pKF2, const float unc)
+bool ORBmatcher::CheckDistEpipolarLine2(const cv::KeyPoint &kp1, const cv::KeyPoint &kp2, const cv::Mat &F12, const boost::interprocess::offset_ptr<KeyFrame> pKF2, const float unc)
 {
     // Epipolar line in second image l = x1'F12 = [a b c]
     const float a = kp1.pt.x*F12.at<float>(0,0)+kp1.pt.y*F12.at<float>(1,0)+F12.at<float>(2,0);
@@ -266,11 +266,11 @@ bool ORBmatcher::CheckDistEpipolarLine2(const cv::KeyPoint &kp1, const cv::KeyPo
         return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave]*unc;
 }
 
-int ORBmatcher::SearchByBoW(KeyFrame* pKF,Frame &F, vector<MapPoint*> &vpMapPointMatches)
+int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame &F, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPointMatches)
 {
-    const vector<MapPoint*> vpMapPointsKF = pKF->GetMapPointMatches();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPointsKF = pKF->GetMapPointMatches();
 
-    vpMapPointMatches = vector<MapPoint*>(F.N,static_cast<MapPoint*>(NULL));
+    vpMapPointMatches = vector<boost::interprocess::offset_ptr<MapPoint> >(F.N,static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
     const DBoW2::FeatureVector &vFeatVecKF = pKF->mFeatVec;
 
@@ -298,7 +298,7 @@ int ORBmatcher::SearchByBoW(KeyFrame* pKF,Frame &F, vector<MapPoint*> &vpMapPoin
             {
                 const unsigned int realIdxKF = vIndicesKF[iKF];
 
-                MapPoint* pMP = vpMapPointsKF[realIdxKF];
+                boost::interprocess::offset_ptr<MapPoint>  pMP = vpMapPointsKF[realIdxKF];
 
                 if(!pMP)
                     continue;
@@ -461,7 +461,7 @@ int ORBmatcher::SearchByBoW(KeyFrame* pKF,Frame &F, vector<MapPoint*> &vpMapPoin
                 continue;
             for(size_t j=0, jend=rotHist[i].size(); j<jend; j++)
             {
-                vpMapPointMatches[rotHist[i][j]]=static_cast<MapPoint*>(NULL);
+                vpMapPointMatches[rotHist[i][j]]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                 nmatches--;
             }
         }
@@ -470,8 +470,8 @@ int ORBmatcher::SearchByBoW(KeyFrame* pKF,Frame &F, vector<MapPoint*> &vpMapPoin
     return nmatches;
 }
 
-int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const vector<MapPoint*> &vpPoints,
-                                   vector<MapPoint*> &vpMatched, int th, float ratioHamming)
+int ORBmatcher::SearchByProjection(boost::interprocess::offset_ptr<KeyFrame>  pKF, cv::Mat Scw, const vector<boost::interprocess::offset_ptr<MapPoint> > &vpPoints,
+                                   vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatched, int th, float ratioHamming)
 {
     // Get Calibration Parameters for later projection
     const float &fx = pKF->fx;
@@ -487,15 +487,15 @@ int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const vector<MapP
     cv::Mat Ow = -Rcw.t()*tcw;
 
     // Set of MapPoints already found in the KeyFrame
-    set<MapPoint*> spAlreadyFound(vpMatched.begin(), vpMatched.end());
-    spAlreadyFound.erase(static_cast<MapPoint*>(NULL));
+    set<boost::interprocess::offset_ptr<MapPoint> > spAlreadyFound(vpMatched.begin(), vpMatched.end());
+    spAlreadyFound.erase(static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
     int nmatches=0;
 
     // For each Candidate MapPoint Project and Match
     for(int iMP=0, iendMP=vpPoints.size(); iMP<iendMP; iMP++)
     {
-        MapPoint* pMP = vpPoints[iMP];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpPoints[iMP];
 
         // Discard Bad MapPoints and already found
         if(pMP->isBad() || spAlreadyFound.count(pMP))
@@ -585,8 +585,8 @@ int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const vector<MapP
     return nmatches;
 }
 
-int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const std::vector<MapPoint*> &vpPoints, const std::vector<KeyFrame*> &vpPointsKFs,
-                       std::vector<MapPoint*> &vpMatched, std::vector<KeyFrame*> &vpMatchedKF, int th, float ratioHamming)
+int ORBmatcher::SearchByProjection(boost::interprocess::offset_ptr<KeyFrame>  pKF, cv::Mat Scw, const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpPoints, const std::vector<boost::interprocess::offset_ptr<KeyFrame> > &vpPointsKFs,
+                       std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatched, std::vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMatchedKF, int th, float ratioHamming)
 {
     // Get Calibration Parameters for later projection
     const float &fx = pKF->fx;
@@ -602,16 +602,16 @@ int ORBmatcher::SearchByProjection(KeyFrame* pKF, cv::Mat Scw, const std::vector
     cv::Mat Ow = -Rcw.t()*tcw;
 
     // Set of MapPoints already found in the KeyFrame
-    set<MapPoint*> spAlreadyFound(vpMatched.begin(), vpMatched.end());
-    spAlreadyFound.erase(static_cast<MapPoint*>(NULL));
+    set<boost::interprocess::offset_ptr<MapPoint> > spAlreadyFound(vpMatched.begin(), vpMatched.end());
+    spAlreadyFound.erase(static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
     int nmatches=0;
 
     // For each Candidate MapPoint Project and Match
     for(int iMP=0, iendMP=vpPoints.size(); iMP<iendMP; iMP++)
     {
-        MapPoint* pMP = vpPoints[iMP];
-        KeyFrame* pKFi = vpPointsKFs[iMP];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpPoints[iMP];
+        boost::interprocess::offset_ptr<KeyFrame>  pKFi = vpPointsKFs[iMP];
 
         // Discard Bad MapPoints and already found
         if(pMP->isBad() || spAlreadyFound.count(pMP))
@@ -820,19 +820,19 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
     return nmatches;
 }
 
-int ORBmatcher::SearchByBoW(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint *> &vpMatches12)
+int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches12)
 {
     const vector<cv::KeyPoint> &vKeysUn1 = pKF1->mvKeysUn;
     const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
-    const vector<MapPoint*> vpMapPoints1 = pKF1->GetMapPointMatches();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
 
     const vector<cv::KeyPoint> &vKeysUn2 = pKF2->mvKeysUn;
     const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
-    const vector<MapPoint*> vpMapPoints2 = pKF2->GetMapPointMatches();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
 
-    vpMatches12 = vector<MapPoint*>(vpMapPoints1.size(),static_cast<MapPoint*>(NULL));
+    vpMatches12 = vector<boost::interprocess::offset_ptr<MapPoint> >(vpMapPoints1.size(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
     vector<bool> vbMatched2(vpMapPoints2.size(),false);
 
     vector<int> rotHist[HISTO_LENGTH];
@@ -859,7 +859,7 @@ int ORBmatcher::SearchByBoW(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint *> &
                     continue;
                 }
 
-                MapPoint* pMP1 = vpMapPoints1[idx1];
+                boost::interprocess::offset_ptr<MapPoint>  pMP1 = vpMapPoints1[idx1];
                 if(!pMP1)
                     continue;
                 if(pMP1->isBad())
@@ -879,7 +879,7 @@ int ORBmatcher::SearchByBoW(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint *> &
                         continue;
                     }
 
-                    MapPoint* pMP2 = vpMapPoints2[idx2];
+                    boost::interprocess::offset_ptr<MapPoint>  pMP2 = vpMapPoints2[idx2];
 
                     if(vbMatched2[idx2] || !pMP2)
                         continue;
@@ -953,7 +953,7 @@ int ORBmatcher::SearchByBoW(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint *> &
                 continue;
             for(size_t j=0, jend=rotHist[i].size(); j<jend; j++)
             {
-                vpMatches12[rotHist[i][j]]=static_cast<MapPoint*>(NULL);
+                vpMatches12[rotHist[i][j]]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                 nmatches--;
             }
         }
@@ -962,7 +962,7 @@ int ORBmatcher::SearchByBoW(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint *> &
     return nmatches;
 }
 
-int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F12,
+int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, cv::Mat F12,
                                        vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, const bool bCoarse)
 {    
     const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
@@ -1030,7 +1030,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
             {
                 const size_t idx1 = f1it->second[i1];
                 
-                MapPoint* pMP1 = pKF1->GetMapPoint(idx1);
+                boost::interprocess::offset_ptr<MapPoint>  pMP1 = pKF1->GetMapPoint(idx1);
                 
                 // If there is already a MapPoint skip
                 if(pMP1)
@@ -1061,7 +1061,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
                 {
                     size_t idx2 = f2it->second[i2];
                     
-                    MapPoint* pMP2 = pKF2->GetMapPoint(idx2);
+                    boost::interprocess::offset_ptr<MapPoint>  pMP2 = pKF2->GetMapPoint(idx2);
                     
                     // If we have already matched or there is a MapPoint skip
                     if(vbMatched2[idx2] || pMP2)
@@ -1205,7 +1205,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
     return nmatches;
 }
 
-    int ORBmatcher::SearchForTriangulation_(KeyFrame *pKF1, KeyFrame *pKF2, cv::Matx33f F12,
+    int ORBmatcher::SearchForTriangulation_(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, cv::Matx33f F12,
                                            vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, const bool bCoarse)
     {
         const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
@@ -1273,7 +1273,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
                 {
                     const size_t idx1 = f1it->second[i1];
 
-                    MapPoint* pMP1 = pKF1->GetMapPoint(idx1);
+                    boost::interprocess::offset_ptr<MapPoint>  pMP1 = pKF1->GetMapPoint(idx1);
 
                     // If there is already a MapPoint skip
                     if(pMP1)
@@ -1304,7 +1304,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
                     {
                         size_t idx2 = f2it->second[i2];
 
-                        MapPoint* pMP2 = pKF2->GetMapPoint(idx2);
+                        boost::interprocess::offset_ptr<MapPoint>  pMP2 = pKF2->GetMapPoint(idx2);
 
                         // If we have already matched or there is a MapPoint skip
                         if(vbMatched2[idx2] || pMP2)
@@ -1449,7 +1449,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
     }
 
 
-    int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F12,
+    int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, cv::Mat F12,
                                            vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, vector<cv::Mat> &vMatchedPoints)
     {
         const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
@@ -1498,7 +1498,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
                 {
                     const size_t idx1 = f1it->second[i1];
 
-                    MapPoint* pMP1 = pKF1->GetMapPoint(idx1);
+                    boost::interprocess::offset_ptr<MapPoint>  pMP1 = pKF1->GetMapPoint(idx1);
 
                     // If there is already a MapPoint skip
                     if(pMP1)
@@ -1523,7 +1523,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
                     {
                         size_t idx2 = f2it->second[i2];
 
-                        MapPoint* pMP2 = pKF2->GetMapPoint(idx2);
+                        boost::interprocess::offset_ptr<MapPoint>  pMP2 = pKF2->GetMapPoint(idx2);
 
                         // If we have already matched or there is a MapPoint skip
                         if(vbMatched2[idx2] || pMP2)
@@ -1640,7 +1640,7 @@ int ORBmatcher::SearchForTriangulation(KeyFrame *pKF1, KeyFrame *pKF2, cv::Mat F
         return nmatches;
     }
 
-int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const float th, const bool bRight)
+int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, const vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints, const float th, const bool bRight)
 {
     cv::Mat Rcw,tcw, Ow;
     GeometricCamera* pCamera;
@@ -1674,7 +1674,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const
     int count_notMP = 0, count_bad=0, count_isinKF = 0, count_negdepth = 0, count_notinim = 0, count_dist = 0, count_normal=0, count_notidx = 0, count_thcheck = 0;
     for(int i=0; i<nMPs; i++)
     {
-        MapPoint* pMP = vpMapPoints[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpMapPoints[i];
 
         if(!pMP)
         {
@@ -1814,7 +1814,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const
         // If there is already a MapPoint replace otherwise add new measurement
         if(bestDist<=TH_LOW)
         {
-            MapPoint* pMPinKF = pKF->GetMapPoint(bestIdx);
+            boost::interprocess::offset_ptr<MapPoint>  pMPinKF = pKF->GetMapPoint(bestIdx);
             if(pMPinKF)
             {
                 if(!pMPinKF->isBad())
@@ -1840,7 +1840,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, const vector<MapPoint *> &vpMapPoints, const
     return nFused;
 }
 
-int ORBmatcher::Fuse(KeyFrame *pKF, cv::Mat Scw, const vector<MapPoint *> &vpPoints, float th, vector<MapPoint *> &vpReplacePoint)
+int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, cv::Mat Scw, const vector<boost::interprocess::offset_ptr<MapPoint> > &vpPoints, float th, vector<boost::interprocess::offset_ptr<MapPoint> > &vpReplacePoint)
 {
     // Get Calibration Parameters for later projection
     const float &fx = pKF->fx;
@@ -1856,7 +1856,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, cv::Mat Scw, const vector<MapPoint *> &vpPoi
     cv::Mat Ow = -Rcw.t()*tcw;
 
     // Set of MapPoints already found in the KeyFrame
-    const set<MapPoint*> spAlreadyFound = pKF->GetMapPoints();
+    const set<boost::interprocess::offset_ptr<MapPoint> > spAlreadyFound = pKF->GetMapPoints();
 
     int nFused=0;
 
@@ -1865,7 +1865,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, cv::Mat Scw, const vector<MapPoint *> &vpPoi
     // For each candidate MapPoint project and match
     for(int iMP=0; iMP<nPoints; iMP++)
     {
-        MapPoint* pMP = vpPoints[iMP];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpPoints[iMP];
 
         // Discard Bad MapPoints and already found
         if(pMP->isBad() || spAlreadyFound.count(pMP))
@@ -1946,7 +1946,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, cv::Mat Scw, const vector<MapPoint *> &vpPoi
         // If there is already a MapPoint replace otherwise add new measurement
         if(bestDist<=TH_LOW)
         {
-            MapPoint* pMPinKF = pKF->GetMapPoint(bestIdx);
+            boost::interprocess::offset_ptr<MapPoint>  pMPinKF = pKF->GetMapPoint(bestIdx);
             if(pMPinKF)
             {
                 if(!pMPinKF->isBad())
@@ -1964,7 +1964,7 @@ int ORBmatcher::Fuse(KeyFrame *pKF, cv::Mat Scw, const vector<MapPoint *> &vpPoi
     return nFused;
 }
 
-int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &vpMatches12,
+int ORBmatcher::SearchBySim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches12,
                              const float &s12, const cv::Mat &R12, const cv::Mat &t12, const float th)
 {
     const float &fx = pKF1->fx;
@@ -1985,10 +1985,10 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
     cv::Mat sR21 = (1.0/s12)*R12.t();
     cv::Mat t21 = -sR21*t12;
 
-    const vector<MapPoint*> vpMapPoints1 = pKF1->GetMapPointMatches();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const int N1 = vpMapPoints1.size();
 
-    const vector<MapPoint*> vpMapPoints2 = pKF2->GetMapPointMatches();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const int N2 = vpMapPoints2.size();
 
     vector<bool> vbAlreadyMatched1(N1,false);
@@ -1996,7 +1996,7 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
 
     for(int i=0; i<N1; i++)
     {
-        MapPoint* pMP = vpMatches12[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpMatches12[i];
         if(pMP)
         {
             vbAlreadyMatched1[i]=true;
@@ -2012,7 +2012,7 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
     // Transform from KF1 to KF2 and search
     for(int i1=0; i1<N1; i1++)
     {
-        MapPoint* pMP = vpMapPoints1[i1];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpMapPoints1[i1];
 
         if(!pMP || vbAlreadyMatched1[i1])
             continue;
@@ -2092,7 +2092,7 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
     // Transform from KF2 to KF2 and search
     for(int i2=0; i2<N2; i2++)
     {
-        MapPoint* pMP = vpMapPoints2[i2];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpMapPoints2[i2];
 
         if(!pMP || vbAlreadyMatched2[i2])
             continue;
@@ -2215,7 +2215,7 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
 
         for(int i=0; i<LastFrame.N; i++)
         {
-            MapPoint* pMP = LastFrame.mvpMapPoints[i];
+            boost::interprocess::offset_ptr<MapPoint>  pMP = LastFrame.mvpMapPoints[i];
             if(pMP)
             {
                 if(!LastFrame.mvbOutlier[i])
@@ -2398,7 +2398,7 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
                 {
                     for(size_t j=0, jend=rotHist[i].size(); j<jend; j++)
                     {
-                        CurrentFrame.mvpMapPoints[rotHist[i][j]]=static_cast<MapPoint*>(NULL);
+                        CurrentFrame.mvpMapPoints[rotHist[i][j]]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
                         nmatches--;
                     }
                 }
@@ -2408,7 +2408,7 @@ int ORBmatcher::SearchBySim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint*> &
         return nmatches;
     }
 
-int ORBmatcher::SearchByProjection(Frame &CurrentFrame, KeyFrame *pKF, const set<MapPoint*> &sAlreadyFound, const float th , const int ORBdist)
+int ORBmatcher::SearchByProjection(Frame &CurrentFrame, boost::interprocess::offset_ptr<KeyFrame> pKF, const set<boost::interprocess::offset_ptr<MapPoint> > &sAlreadyFound, const float th , const int ORBdist)
 {
     int nmatches = 0;
 
@@ -2422,11 +2422,11 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, KeyFrame *pKF, const set
         rotHist[i].reserve(500);
     const float factor = 1.0f/HISTO_LENGTH;
 
-    const vector<MapPoint*> vpMPs = pKF->GetMapPointMatches();
+    const vector<boost::interprocess::offset_ptr<MapPoint> > vpMPs = pKF->GetMapPointMatches();
 
     for(size_t i=0, iend=vpMPs.size(); i<iend; i++)
     {
-        MapPoint* pMP = vpMPs[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = vpMPs[i];
 
         if(pMP)
         {
