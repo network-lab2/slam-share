@@ -89,8 +89,8 @@ public:
     // Use this function if you have deactivated local mapping and you only want to localize the camera.
     void InformOnlyTracking(const bool &flag);
 
-    void UpdateFrameIMU(const float s, const IMU::Bias &b, KeyFrame* pCurrentKeyFrame);
-    KeyFrame* GetLastKeyFrame()
+    void UpdateFrameIMU(const float s, const IMU::Bias &b, boost::interprocess::offset_ptr<KeyFrame>  pCurrentKeyFrame);
+    boost::interprocess::offset_ptr<KeyFrame>  GetLastKeyFrame()
     {
         return mpLastKeyFrame;
     }
@@ -137,7 +137,7 @@ public:
     // Lists used to recover the full camera trajectory at the end of the execution.
     // Basically we store the reference keyframe for each frame and its relative transformation
     list<cv::Mat> mlRelativeFramePoses;
-    list<KeyFrame*> mlpReferences;
+    list<boost::interprocess::offset_ptr<KeyFrame> > mlpReferences;
     list<double> mlFrameTimes;
     list<bool> mlbLost;
 
@@ -158,7 +158,7 @@ public:
     double t0IMU; // time-stamp of IMU initialization
 
 
-    vector<MapPoint*> GetLocalMapMPS();
+    vector<boost::interprocess::offset_ptr<MapPoint> > GetLocalMapMPS();
 
     bool mbWriteStats;
 
@@ -195,7 +195,7 @@ protected:
     // Map initialization for monocular
     void MonocularInitialization();
     void CreateNewMapPoints();
-    cv::Mat ComputeF12(KeyFrame *&pKF1, KeyFrame *&pKF2);
+    cv::Mat ComputeF12(boost::interprocess::offset_ptr<KeyFrame> &pKF1, boost::interprocess::offset_ptr<KeyFrame> &pKF2);
     void CreateInitialMapMonocular();
 
     void CheckReplacedInLastFrame();
@@ -266,9 +266,9 @@ protected:
     bool mbSetInit;
 
     //Local Map
-    KeyFrame* mpReferenceKF;
-    std::vector<KeyFrame*> mvpLocalKeyFrames;
-    std::vector<MapPoint*> mvpLocalMapPoints;
+    boost::interprocess::offset_ptr<KeyFrame>  mpReferenceKF;
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpLocalKeyFrames;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpLocalMapPoints;
     
     // System
     System* mpSystem;
@@ -306,7 +306,7 @@ protected:
     int mnMatchesInliers;
 
     //Last Frame, KeyFrame and Relocalisation Info
-    KeyFrame* mpLastKeyFrame;
+    boost::interprocess::offset_ptr<KeyFrame>  mpLastKeyFrame;
     unsigned int mnLastKeyFrameId;
     unsigned int mnLastRelocFrameId;
     double mTimeStampLost;
@@ -326,7 +326,7 @@ protected:
     //Color order (true RGB, false BGR, ignored if grayscale)
     bool mbRGB;
 
-    list<MapPoint*> mlpTemporalPoints;
+    list<boost::interprocess::offset_ptr<MapPoint> > mlpTemporalPoints;
 
     //int nMapChangeIndex;
 

@@ -58,7 +58,7 @@
 namespace ORB_SLAM3{
     class MLPnPsolver {
     public:
-        MLPnPsolver(const Frame &F, const vector<MapPoint*> &vpMapPointMatches);
+        MLPnPsolver(const Frame &F, const vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPointMatches);
 
         ~MLPnPsolver();
 
@@ -181,7 +181,7 @@ namespace ORB_SLAM3{
         //----------------------------------------------------
         //Fields of the solver
         //----------------------------------------------------
-        vector<MapPoint*> mvpMapPointMatches;
+        vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPointMatches;
 
         // 2D Points
         vector<cv::Point2f> mvP2D;

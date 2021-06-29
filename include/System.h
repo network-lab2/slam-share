@@ -165,7 +165,7 @@ public:
     // Information from most recent processed frame
     // You can call this right after TrackMonocular (or stereo or RGBD)
     int GetTrackingState();
-    std::vector<MapPoint*> GetTrackedMapPoints();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > GetTrackedMapPoints();
     std::vector<cv::KeyPoint> GetTrackedKeyPointsUn();
 
     // For debugging
@@ -231,7 +231,7 @@ private:
 
     // Tracking state
     int mTrackingState;
-    std::vector<MapPoint*> mTrackedMapPoints;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mTrackedMapPoints;
     std::vector<cv::KeyPoint> mTrackedKeyPointsUn;
     std::mutex mMutexState;
 };

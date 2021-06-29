@@ -34,8 +34,8 @@ class Sim3Solver
 {
 public:
 
-    Sim3Solver(KeyFrame* pKF1, KeyFrame* pKF2, const std::vector<MapPoint*> &vpMatched12, const bool bFixScale = true,
-               const vector<KeyFrame*> vpKeyFrameMatchedMP = vector<KeyFrame*>());
+    Sim3Solver(boost::interprocess::offset_ptr<KeyFrame>  pKF1, boost::interprocess::offset_ptr<KeyFrame>  pKF2, const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatched12, const bool bFixScale = true,
+               const vector<boost::interprocess::offset_ptr<KeyFrame> > vpKeyFrameMatchedMP = vector<boost::interprocess::offset_ptr<KeyFrame> >());
 
     void SetRansacParameters(double probability = 0.99, int minInliers = 6 , int maxIterations = 300);
 
@@ -64,14 +64,14 @@ protected:
 protected:
 
     // KeyFrames and matches
-    KeyFrame* mpKF1;
-    KeyFrame* mpKF2;
+    boost::interprocess::offset_ptr<KeyFrame>  mpKF1;
+    boost::interprocess::offset_ptr<KeyFrame>  mpKF2;
 
     std::vector<cv::Mat> mvX3Dc1;
     std::vector<cv::Mat> mvX3Dc2;
-    std::vector<MapPoint*> mvpMapPoints1;
-    std::vector<MapPoint*> mvpMapPoints2;
-    std::vector<MapPoint*> mvpMatches12;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints1;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints2;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMatches12;
     std::vector<size_t> mvnIndices1;
     std::vector<size_t> mvSigmaSquare1;
     std::vector<size_t> mvSigmaSquare2;

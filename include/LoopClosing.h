@@ -47,9 +47,9 @@ class LoopClosing
 {
 public:
 
-    typedef pair<set<KeyFrame*>,int> ConsistentGroup;    
-    typedef map<KeyFrame*,g2o::Sim3,std::less<KeyFrame*>,
-        Eigen::aligned_allocator<std::pair<KeyFrame* const, g2o::Sim3> > > KeyFrameAndPose;
+    typedef pair<set<boost::interprocess::offset_ptr<KeyFrame> >,int> ConsistentGroup;    
+    typedef map<boost::interprocess::offset_ptr<KeyFrame> ,g2o::Sim3,std::less<boost::interprocess::offset_ptr<KeyFrame> >,
+        Eigen::aligned_allocator<std::pair<boost::interprocess::offset_ptr<KeyFrame>  const, g2o::Sim3> > > KeyFrameAndPose;
 
 public:
 
@@ -62,13 +62,13 @@ public:
     // Main function
     void Run();
 
-    void InsertKeyFrame(KeyFrame *pKF);
+    void InsertKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF);
 
     void RequestReset();
-    void RequestResetActiveMap(Map* pMap);
+    void RequestResetActiveMap(boost::interprocess::offset_ptr<Map>  pMap);
 
     // This function will run in a separate thread
-    void RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoopKF);
+    void RunGlobalBundleAdjustment(boost::interprocess::offset_ptr<Map>  pActiveMap, unsigned long nLoopKF);
 
     bool isRunningGBA(){
         unique_lock<std::mutex> lock(mMutexGBA);
@@ -114,19 +114,19 @@ protected:
 
     //Methods to implement the new place recognition algorithm
     bool NewDetectCommonRegions();
-    bool DetectAndReffineSim3FromLastKF(KeyFrame* pCurrentKF, KeyFrame* pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
-                                        std::vector<MapPoint*> &vpMPs, std::vector<MapPoint*> &vpMatchedMPs);
-    bool DetectCommonRegionsFromBoW(std::vector<KeyFrame*> &vpBowCand, KeyFrame* &pMatchedKF, KeyFrame* &pLastCurrentKF, g2o::Sim3 &g2oScw,
-                                     int &nNumCoincidences, std::vector<MapPoint*> &vpMPs, std::vector<MapPoint*> &vpMatchedMPs);
-    bool DetectCommonRegionsFromLastKF(KeyFrame* pCurrentKF, KeyFrame* pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
-                                            std::vector<MapPoint*> &vpMPs, std::vector<MapPoint*> &vpMatchedMPs);
-    int FindMatchesByProjection(KeyFrame* pCurrentKF, KeyFrame* pMatchedKFw, g2o::Sim3 &g2oScw,
-                                set<MapPoint*> &spMatchedMPinOrigin, vector<MapPoint*> &vpMapPoints,
-                                vector<MapPoint*> &vpMatchedMapPoints);
+    bool DetectAndReffineSim3FromLastKF(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, boost::interprocess::offset_ptr<KeyFrame>  pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
+                                        std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs);
+    bool DetectCommonRegionsFromBoW(std::vector<boost::interprocess::offset_ptr<KeyFrame> > &vpBowCand, boost::interprocess::offset_ptr<KeyFrame>  &pMatchedKF, boost::interprocess::offset_ptr<KeyFrame>  &pLastCurrentKF, g2o::Sim3 &g2oScw,
+                                     int &nNumCoincidences, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs);
+    bool DetectCommonRegionsFromLastKF(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, boost::interprocess::offset_ptr<KeyFrame>  pMatchedKF, g2o::Sim3 &gScw, int &nNumProjMatches,
+                                            std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs);
+    int FindMatchesByProjection(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, boost::interprocess::offset_ptr<KeyFrame>  pMatchedKFw, g2o::Sim3 &g2oScw,
+                                set<boost::interprocess::offset_ptr<MapPoint> > &spMatchedMPinOrigin, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints,
+                                vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMapPoints);
 
 
-    void SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector<MapPoint*> &vpMapPoints);
-    void SearchAndFuse(const vector<KeyFrame*> &vConectedKFs, vector<MapPoint*> &vpMapPoints);
+    void SearchAndFuse(const KeyFrameAndPose &CorrectedPosesMap, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints);
+    void SearchAndFuse(const vector<boost::interprocess::offset_ptr<KeyFrame> > &vConectedKFs, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPoints);
 
     void CorrectLoop();
 
@@ -136,7 +136,7 @@ protected:
     void ResetIfRequested();
     bool mbResetRequested;
     bool mbResetActiveMapRequested;
-    Map* mpMapToReset;
+    boost::interprocess::offset_ptr<Map>  mpMapToReset;
     std::mutex mMutexReset;
 
     bool CheckFinish();
@@ -153,7 +153,7 @@ protected:
 
     LocalMapping *mpLocalMapper;
 
-    std::list<KeyFrame*> mlpLoopKeyFrameQueue;
+    std::list<boost::interprocess::offset_ptr<KeyFrame> > mlpLoopKeyFrameQueue;
 
     std::mutex mMutexLoopQueue;
 
@@ -161,40 +161,40 @@ protected:
     float mnCovisibilityConsistencyTh;
 
     // Loop detector variables
-    KeyFrame* mpCurrentKF;
-    KeyFrame* mpLastCurrentKF;
-    KeyFrame* mpMatchedKF;
+    boost::interprocess::offset_ptr<KeyFrame>  mpCurrentKF;
+    boost::interprocess::offset_ptr<KeyFrame>  mpLastCurrentKF;
+    boost::interprocess::offset_ptr<KeyFrame>  mpMatchedKF;
     std::vector<ConsistentGroup> mvConsistentGroups;
-    std::vector<KeyFrame*> mvpEnoughConsistentCandidates;
-    std::vector<KeyFrame*> mvpCurrentConnectedKFs;
-    std::vector<MapPoint*> mvpCurrentMatchedPoints;
-    std::vector<MapPoint*> mvpLoopMapPoints;
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpEnoughConsistentCandidates;
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpCurrentConnectedKFs;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpCurrentMatchedPoints;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpLoopMapPoints;
     cv::Mat mScw;
     g2o::Sim3 mg2oScw;
 
     //-------
-    Map* mpLastMap;
+    boost::interprocess::offset_ptr<Map>  mpLastMap;
 
     bool mbLoopDetected;
     int mnLoopNumCoincidences;
     int mnLoopNumNotFound;
-    KeyFrame* mpLoopLastCurrentKF;
+    boost::interprocess::offset_ptr<KeyFrame>  mpLoopLastCurrentKF;
     g2o::Sim3 mg2oLoopSlw;
     g2o::Sim3 mg2oLoopScw;
-    KeyFrame* mpLoopMatchedKF;
-    std::vector<MapPoint*> mvpLoopMPs;
-    std::vector<MapPoint*> mvpLoopMatchedMPs;
+    boost::interprocess::offset_ptr<KeyFrame>  mpLoopMatchedKF;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpLoopMPs;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpLoopMatchedMPs;
     bool mbMergeDetected;
     int mnMergeNumCoincidences;
     int mnMergeNumNotFound;
-    KeyFrame* mpMergeLastCurrentKF;
+    boost::interprocess::offset_ptr<KeyFrame>  mpMergeLastCurrentKF;
     g2o::Sim3 mg2oMergeSlw;
     g2o::Sim3 mg2oMergeSmw;
     g2o::Sim3 mg2oMergeScw;
-    KeyFrame* mpMergeMatchedKF;
-    std::vector<MapPoint*> mvpMergeMPs;
-    std::vector<MapPoint*> mvpMergeMatchedMPs;
-    std::vector<KeyFrame*> mvpMergeConnectedKFs;
+    boost::interprocess::offset_ptr<KeyFrame>  mpMergeMatchedKF;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMergeMPs;
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMergeMatchedMPs;
+    std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpMergeConnectedKFs;
 
     g2o::Sim3 mSold_new;
     //-------

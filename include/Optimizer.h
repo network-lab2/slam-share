@@ -47,17 +47,17 @@ class Optimizer
 {
 public:
 
-    void static BundleAdjustment(const std::vector<KeyFrame*> &vpKF, const std::vector<MapPoint*> &vpMP,
+    void static BundleAdjustment(const std::vector<boost::interprocess::offset_ptr<KeyFrame> > &vpKF, const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMP,
                                  int nIterations = 5, bool *pbStopFlag=NULL, const unsigned long nLoopKF=0,
                                  const bool bRobust = true);
-    void static GlobalBundleAdjustemnt(Map* pMap, int nIterations=5, bool *pbStopFlag=NULL,
+    void static GlobalBundleAdjustemnt(boost::interprocess::offset_ptr<Map>  pMap, int nIterations=5, bool *pbStopFlag=NULL,
                                        const unsigned long nLoopKF=0, const bool bRobust = true);
-    void static FullInertialBA(Map *pMap, int its, const bool bFixLocal=false, const unsigned long nLoopKF=0, bool *pbStopFlag=NULL, bool bInit=false, float priorG = 1e2, float priorA=1e6, Eigen::VectorXd *vSingVal = NULL, bool *bHess=NULL);
+    void static FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int its, const bool bFixLocal=false, const unsigned long nLoopKF=0, bool *pbStopFlag=NULL, bool bInit=false, float priorG = 1e2, float priorA=1e6, Eigen::VectorXd *vSingVal = NULL, bool *bHess=NULL);
 
-    void static LocalBundleAdjustment(KeyFrame* pKF, bool *pbStopFlag, vector<KeyFrame*> &vpNonEnoughOptKFs);
-    void static LocalBundleAdjustment(KeyFrame* pKF, bool *pbStopFlag, Map *pMap, int& num_fixedKF, int& num_OptKF, int& num_MPs, int& num_edges);
+    void static LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame>  pKF, bool *pbStopFlag, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpNonEnoughOptKFs);
+    void static LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame>  pKF, bool *pbStopFlag, boost::interprocess::offset_ptr<Map> pMap, int& num_fixedKF, int& num_OptKF, int& num_MPs, int& num_edges);
 
-    void static MergeBundleAdjustmentVisual(KeyFrame* pCurrentKF, vector<KeyFrame*> vpWeldingKFs, vector<KeyFrame*> vpFixedKFs, bool *pbStopFlag);
+    void static MergeBundleAdjustmentVisual(boost::interprocess::offset_ptr<KeyFrame>  pCurrentKF, vector<boost::interprocess::offset_ptr<KeyFrame> > vpWeldingKFs, vector<boost::interprocess::offset_ptr<KeyFrame> > vpFixedKFs, bool *pbStopFlag);
 
     int static PoseOptimization(Frame* pFrame);
 
@@ -65,43 +65,43 @@ public:
     int static PoseInertialOptimizationLastFrame(Frame *pFrame, bool bRecInit = false);
 
     // if bFixScale is true, 6DoF optimization (stereo,rgbd), 7DoF otherwise (mono)
-    void static OptimizeEssentialGraph(Map* pMap, KeyFrame* pLoopKF, KeyFrame* pCurKF,
+    void static OptimizeEssentialGraph(boost::interprocess::offset_ptr<Map>  pMap, boost::interprocess::offset_ptr<KeyFrame>  pLoopKF, boost::interprocess::offset_ptr<KeyFrame>  pCurKF,
                                        const LoopClosing::KeyFrameAndPose &NonCorrectedSim3,
                                        const LoopClosing::KeyFrameAndPose &CorrectedSim3,
-                                       const map<KeyFrame *, set<KeyFrame *> > &LoopConnections,
+                                       const map<boost::interprocess::offset_ptr<KeyFrame> , set<boost::interprocess::offset_ptr<KeyFrame> > > &LoopConnections,
                                        const bool &bFixScale);
-    void static OptimizeEssentialGraph6DoF(KeyFrame* pCurKF, vector<KeyFrame*> &vpFixedKFs, vector<KeyFrame*> &vpFixedCorrectedKFs,
-                                           vector<KeyFrame*> &vpNonFixedKFs, vector<MapPoint*> &vpNonCorrectedMPs, double scale);
-    void static OptimizeEssentialGraph(KeyFrame* pCurKF, vector<KeyFrame*> &vpFixedKFs, vector<KeyFrame*> &vpFixedCorrectedKFs,
-                                       vector<KeyFrame*> &vpNonFixedKFs, vector<MapPoint*> &vpNonCorrectedMPs);
-    void static OptimizeEssentialGraph(KeyFrame* pCurKF,
+    void static OptimizeEssentialGraph6DoF(boost::interprocess::offset_ptr<KeyFrame>  pCurKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpFixedKFs, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpFixedCorrectedKFs,
+                                           vector<boost::interprocess::offset_ptr<KeyFrame> > &vpNonFixedKFs, vector<boost::interprocess::offset_ptr<MapPoint> > &vpNonCorrectedMPs, double scale);
+    void static OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>  pCurKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpFixedKFs, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpFixedCorrectedKFs,
+                                       vector<boost::interprocess::offset_ptr<KeyFrame> > &vpNonFixedKFs, vector<boost::interprocess::offset_ptr<MapPoint> > &vpNonCorrectedMPs);
+    void static OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>  pCurKF,
                                        const LoopClosing::KeyFrameAndPose &NonCorrectedSim3,
                                        const LoopClosing::KeyFrameAndPose &CorrectedSim3);
     // For inetial loopclosing
-    void static OptimizeEssentialGraph4DoF(Map* pMap, KeyFrame* pLoopKF, KeyFrame* pCurKF,
+    void static OptimizeEssentialGraph4DoF(boost::interprocess::offset_ptr<Map>  pMap, boost::interprocess::offset_ptr<KeyFrame>  pLoopKF, boost::interprocess::offset_ptr<KeyFrame>  pCurKF,
                                        const LoopClosing::KeyFrameAndPose &NonCorrectedSim3,
                                        const LoopClosing::KeyFrameAndPose &CorrectedSim3,
-                                       const map<KeyFrame *, set<KeyFrame *> > &LoopConnections);
+                                       const map<boost::interprocess::offset_ptr<KeyFrame> , set<boost::interprocess::offset_ptr<KeyFrame> > > &LoopConnections);
 
     // if bFixScale is true, optimize SE3 (stereo,rgbd), Sim3 otherwise (mono) (OLD)
-    static int OptimizeSim3(KeyFrame* pKF1, KeyFrame* pKF2, std::vector<MapPoint *> &vpMatches1,
+    static int OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame>  pKF1, boost::interprocess::offset_ptr<KeyFrame>  pKF2, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches1,
                             g2o::Sim3 &g2oS12, const float th2, const bool bFixScale);
     // if bFixScale is true, optimize SE3 (stereo,rgbd), Sim3 otherwise (mono) (NEW)
-    static int OptimizeSim3(KeyFrame* pKF1, KeyFrame* pKF2, std::vector<MapPoint *> &vpMatches1,
+    static int OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame>  pKF1, boost::interprocess::offset_ptr<KeyFrame>  pKF2, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches1,
                             g2o::Sim3 &g2oS12, const float th2, const bool bFixScale,
                             Eigen::Matrix<double,7,7> &mAcumHessian, const bool bAllPoints=false);
-    static int OptimizeSim3(KeyFrame *pKF1, KeyFrame *pKF2, vector<MapPoint *> &vpMatches1, vector<KeyFrame*> &vpMatches1KF,
+    static int OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches1, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpMatches1KF,
                      g2o::Sim3 &g2oS12, const float th2, const bool bFixScale, Eigen::Matrix<double,7,7> &mAcumHessian,
                      const bool bAllPoints = false);
 
     // For inertial systems
 
-    void static LocalInertialBA(KeyFrame* pKF, bool *pbStopFlag, Map *pMap, int& num_fixedKF, int& num_OptKF, int& num_MPs, int& num_edges, bool bLarge = false, bool bRecInit = false);
+    void static LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame>  pKF, bool *pbStopFlag, boost::interprocess::offset_ptr<Map> pMap, int& num_fixedKF, int& num_OptKF, int& num_MPs, int& num_edges, bool bLarge = false, bool bRecInit = false);
 
-    void static MergeInertialBA(KeyFrame* pCurrKF, KeyFrame* pMergeKF, bool *pbStopFlag, Map *pMap, LoopClosing::KeyFrameAndPose &corrPoses);
+    void static MergeInertialBA(boost::interprocess::offset_ptr<KeyFrame>  pCurrKF, boost::interprocess::offset_ptr<KeyFrame>  pMergeKF, bool *pbStopFlag, boost::interprocess::offset_ptr<Map> pMap, LoopClosing::KeyFrameAndPose &corrPoses);
 
     // Local BA in welding area when two maps are merged
-    void static LocalBundleAdjustment(KeyFrame* pMainKF,vector<KeyFrame*> vpAdjustKF, vector<KeyFrame*> vpFixedKF, bool *pbStopFlag);
+    void static LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame>  pMainKF,vector<boost::interprocess::offset_ptr<KeyFrame> > vpAdjustKF, vector<boost::interprocess::offset_ptr<KeyFrame> > vpFixedKF, bool *pbStopFlag);
 
     // Marginalize block element (start:end,start:end). Perform Schur complement.
     // Marginalized elements are filled with zeros.
@@ -112,10 +112,10 @@ public:
     static Eigen::MatrixXd Sparsify(const Eigen::MatrixXd &H, const int &start1, const int &end1, const int &start2, const int &end2);
 
     // Inertial pose-graph
-    void static InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &scale, Eigen::Vector3d &bg, Eigen::Vector3d &ba, bool bMono, Eigen::MatrixXd  &covInertial, bool bFixedVel=false, bool bGauss=false, float priorG = 1e2, float priorA = 1e6);
-    void static InertialOptimization(Map *pMap, Eigen::Vector3d &bg, Eigen::Vector3d &ba, float priorG = 1e2, float priorA = 1e6);
-    void static InertialOptimization(vector<KeyFrame*> vpKFs, Eigen::Vector3d &bg, Eigen::Vector3d &ba, float priorG = 1e2, float priorA = 1e6);
-    void static InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &scale);
+    void static InertialOptimization(boost::interprocess::offset_ptr<Map> pMap, Eigen::Matrix3d &Rwg, double &scale, Eigen::Vector3d &bg, Eigen::Vector3d &ba, bool bMono, Eigen::MatrixXd  &covInertial, bool bFixedVel=false, bool bGauss=false, float priorG = 1e2, float priorA = 1e6);
+    void static InertialOptimization(boost::interprocess::offset_ptr<Map> pMap, Eigen::Vector3d &bg, Eigen::Vector3d &ba, float priorG = 1e2, float priorA = 1e6);
+    void static InertialOptimization(vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs, Eigen::Vector3d &bg, Eigen::Vector3d &ba, float priorG = 1e2, float priorA = 1e6);
+    void static InertialOptimization(boost::interprocess::offset_ptr<Map> pMap, Eigen::Matrix3d &Rwg, double &scale);
 };
 
 } //namespace ORB_SLAM3
