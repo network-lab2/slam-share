@@ -45,7 +45,7 @@ KeyFrame::KeyFrame():
 
 }
 
-KeyFrame::KeyFrame(Frame &F, Map *pMap, KeyFrameDatabase *pKFDB):
+KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrameDatabase *pKFDB):
     bImu(pMap->isImuInitialized()), mnFrameId(F.mnId),  mTimeStamp(F.mTimeStamp), mnGridCols(FRAME_GRID_COLS), mnGridRows(FRAME_GRID_ROWS),
     mfGridElementWidthInv(F.mfGridElementWidthInv), mfGridElementHeightInv(F.mfGridElementHeightInv),
     mnTrackReferenceForFrame(0), mnFuseTargetForKF(0), mnBALocalForKF(0), mnBAFixedForKF(0), mnBALocalForMerge(0),
@@ -321,7 +321,7 @@ int KeyFrame::GetNumberMPs()
     return numberMPs;
 }
 
-void KeyFrame::AddMapPoint(MapPoint *pMP, const size_t &idx)
+void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const size_t &idx)
 {
     unique_lock<mutex> lock(mMutexFeatures);
     mvpMapPoints[idx]=pMP;
@@ -855,13 +855,13 @@ IMU::Bias KeyFrame::GetImuBias()
     return mImuBias;
 }
 
-Map* KeyFrame::GetMap()
+boost::interprocess::offset_ptr<Map>  KeyFrame::GetMap()
 {
     unique_lock<mutex> lock(mMutexMap);
     return mpMap;
 }
 
-void KeyFrame::UpdateMap(Map* pMap)
+void KeyFrame::UpdateMap(boost::interprocess::offset_ptr<Map>  pMap)
 {
     unique_lock<mutex> lock(mMutexMap);
     mpMap = pMap;
