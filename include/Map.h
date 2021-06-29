@@ -130,9 +130,10 @@ public:
 
     static long unsigned int nNextId;
 
-    /* operators aditya added*/
+    /* operators aditya added
     void * operator new(size_t);
     void operator delete(void *);
+    */
 
     //for managed shared memory
     boost::interprocess::managed_shared_memory *shm;

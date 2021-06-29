@@ -341,11 +341,13 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
     mnMapChange++;
 }
 
+/*
 void * Map::operator new(size_t _size){
     //allocate the given size form the shared memory
     //we do not need the size as we will be making object
 
 }
+*/
 
 void Map::SetInertialSensor()
 {
