@@ -28,8 +28,10 @@
 
 #include <set>
 #include <mutex>
+#include <string>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/export.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
 
 
 namespace ORB_SLAM3
