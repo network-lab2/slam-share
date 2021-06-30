@@ -73,6 +73,13 @@ void Atlas::CreateNewMap()
     cout << "Creation of new map with last KF id: " << mnLastInitKFidMap << endl;
 
     //mpCurrentMap = new Map(mnLastInitKFidMap);
+
+     struct shm_remove
+              {
+                shm_remove() { shared_memory_object::remove("MySharedMemory"); }
+                ~shm_remove(){ shared_memory_object::remove("MySharedMemory"); }
+              } remover;
+
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
     //Open managed shared memory
     boost::interprocess::managed_shared_memory segment(boost::interprocess::create_only, "MySharedMemory",1073741824);
