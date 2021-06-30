@@ -72,7 +72,7 @@ void Atlas::CreateNewMap()
     }
     cout << "Creation of new map with last KF id: " << mnLastInitKFidMap << endl;
 
-    mpCurrentMap = new Map(mnLastInitKFidMap);
+    //mpCurrentMap = new Map(mnLastInitKFidMap);
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
     //Open managed shared memory
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_only, "MySharedMemory");
@@ -81,7 +81,8 @@ void Atlas::CreateNewMap()
     //name_map.append(string_num_map);
 
     //initialize the map now.
-    //mpCurrentMap = segment.construct<Map>("Map") (mnLastInitKFidMap);
+    Map * temp_map = segment.construct<Map>("Map1") (mnLastInitKFidMap);
+    mpCurrentMap = *temp_map;
 
 
 
