@@ -76,8 +76,8 @@ void Atlas::CreateNewMap()
 
      struct shm_remove
               {
-                shm_remove() { shared_memory_object::remove("MySharedMemory"); }
-                ~shm_remove(){ shared_memory_object::remove("MySharedMemory"); }
+                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
               } remover;
 
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
