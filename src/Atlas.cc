@@ -32,6 +32,13 @@ Atlas::Atlas(){
 
 Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)
 {
+
+     struct shm_remove
+              {
+                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+              } remover;
+              
     mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     CreateNewMap();
 }
@@ -74,11 +81,6 @@ void Atlas::CreateNewMap()
 
     //mpCurrentMap = new Map(mnLastInitKFidMap);
 
-     struct shm_remove
-              {
-                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-              } remover;
 
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
     //Open managed shared memory
