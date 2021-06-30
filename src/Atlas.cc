@@ -81,7 +81,7 @@ void Atlas::CreateNewMap()
     //name_map.append(string_num_map);
 
     //initialize the map now.
-    mpCurrentMap = segment.construct<Map>(name_map) (mnLastInitKFidMap);
+    mpCurrentMap = segment.construct<Map>("Map") (mnLastInitKFidMap);
 
 
 
