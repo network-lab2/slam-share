@@ -38,8 +38,9 @@ Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)
                 shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
                 ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
               } remover;
-              
-    mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
+
+    //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
+    mpCurrentMap = 0;
     CreateNewMap();
 }
 
