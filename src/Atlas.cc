@@ -91,10 +91,7 @@ void Atlas::CreateNewMap()
     //name_map.append(string_num_map);
 
     //initialize the map now.
-    Map * temp_map = segment.find_or_construct<Map>("Map1",std::nothrow) (mnLastInitKFidMap);
-    mpCurrentMap = temp_map;
-
-
+    mpCurrentMap = segment.find_or_construct<Map>("Map1",std::nothrow) (mnLastInitKFidMap);
 
     mpCurrentMap->SetCurrentMap();
     mspMaps.insert(mpCurrentMap);
