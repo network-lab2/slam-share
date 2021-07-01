@@ -55,7 +55,7 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
     shm = &shm_temp;
     */
-    std::cout<<"Map init called?"<,std::endl;
+    std::cout<<"Map init called?"<<std::endl;
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
