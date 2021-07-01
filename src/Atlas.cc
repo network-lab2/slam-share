@@ -235,7 +235,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     if(!mpCurrentMap)
         CreateNewMap();
     
-    while(mpCurrentMap->IsBad())
+    while(mpCurrentMap.get()->IsBad())
         usleep(3000);
 
     return mpCurrentMap;
