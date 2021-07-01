@@ -235,6 +235,8 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     if(!mpCurrentMap)
         CreateNewMap();
     
+    cout<<"Checked if new map is required."<<endl;
+
     while(mpCurrentMap.get()->IsBad())
         usleep(3000);
 
