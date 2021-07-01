@@ -27,7 +27,8 @@ namespace ORB_SLAM3
 {
 
 Atlas::Atlas(){
-    mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
+    //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
+    mpCurrentMap = 0;
 }
 
 Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)
