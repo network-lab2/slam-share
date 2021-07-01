@@ -94,6 +94,7 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
     mpCurrentMap = segment.find_or_construct<Map>("Map1",std::nothrow) (mnLastInitKFidMap);
+    cout<<"Created Map object in shared memory!"<<endl;
 
     mpCurrentMap->SetCurrentMap();
     mspMaps.insert(mpCurrentMap);
@@ -233,10 +234,10 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     unique_lock<mutex> lock(mMutexAtlas);
     if(!mpCurrentMap)
         CreateNewMap();
-    /*
+    
     while(mpCurrentMap->IsBad())
         usleep(3000);
-*/
+
     return mpCurrentMap;
 }
 
