@@ -232,9 +232,10 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     unique_lock<mutex> lock(mMutexAtlas);
     if(!mpCurrentMap)
         CreateNewMap();
+    /*
     while(mpCurrentMap->IsBad())
         usleep(3000);
-
+*/
     return mpCurrentMap;
 }
 
