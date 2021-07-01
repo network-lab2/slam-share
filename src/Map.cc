@@ -266,6 +266,7 @@ void Map::SetBad()
 
 bool Map::IsBad()
 {
+    std::cout<<"Called to see if map is bad?"<<std::endl;
     return mbBad;
 }
 
