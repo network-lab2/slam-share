@@ -106,6 +106,8 @@ public:
     long unsigned int GetNumLivedKF();
 
     long unsigned int GetNumLivedMP();
+     //for managed shared memory
+    boost::interprocess::managed_shared_memory *segment;
 
 protected:
 
