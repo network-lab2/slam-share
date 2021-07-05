@@ -139,6 +139,7 @@ public:
     boost::interprocess::managed_shared_memory *shm;
 
 
+    bool mbBad = false;
 
 protected:
 
@@ -170,8 +171,7 @@ protected:
 
     bool mIsInUse;
     bool mHasTumbnail;
-    bool mbBad = false;
-
+  
     bool mbIsInertial;
     bool mbIMU_BA1;
     bool mbIMU_BA2;
