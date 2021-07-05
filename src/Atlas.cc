@@ -245,7 +245,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 
     */
     //run functions.
-    cout<<"GetId: "<<mpCurrentMap.first()->GetId()<<endl;
+    cout<<"GetId: "<<mpCurrentMap.first->GetId()<<endl;
 
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
