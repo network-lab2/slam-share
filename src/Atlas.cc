@@ -89,7 +89,7 @@ void Atlas::CreateNewMap()
     //Open managed shared memory
     boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
     //std::string name_map = "Map";
-    segment = segment_mem;
+    segment = &segment_mem;
     //std::string string_num_map = to_string(mnLastInitKFidMap);
     //name_map.append(string_num_map);
 
