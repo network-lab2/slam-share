@@ -1744,11 +1744,11 @@ void Tracking::Track()
     }
     mbCreatedMap = false;
 
-    
-cout<<"In tracking, current maps have called few functions"<<endl;
+
+
 
     // Get Map Mutex -> Map cannot be changed
-    unique_lock<mutex> lock(pCurrentMap->mMutexMapUpdate);
+    //unique_lock<mutex> lock(pCurrentMap->mMutexMapUpdate);
 
     mbMapUpdated = false;
 
@@ -1761,7 +1761,7 @@ cout<<"In tracking, current maps have called few functions"<<endl;
         mbMapUpdated = true;
     }
 
-
+cout<<"In tracking, current maps have called few functions"<<endl;
 
     if(mState==NOT_INITIALIZED)
     {
