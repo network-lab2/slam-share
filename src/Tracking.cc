@@ -1673,7 +1673,11 @@ void Tracking::Track()
 
     cout<<"Calling GetCurrentMap from Track()"<<std::endl;
     //boost::interprocess::offset_ptr<Map>  pCurrentMap = mpAtlas->GetCurrentMap().get();
-    Map* pCurrentMap = mpAtlas->GetCurrentMap().get();
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
+    pCurrentMap = segment.find_or_construct<Map>("Map1")();
+
+    //Map* pCurrentMap = mpAtlas->GetCurrentMap().get();
 
     cout<<"The offset pointer in the track(): "<<pCurrentMap<<endl;
 
@@ -1748,7 +1752,7 @@ void Tracking::Track()
 
 
     // Get Map Mutex -> Map cannot be changed
-    //unique_lock<mutex> lock(pCurrentMap->mMutexMapUpdate);
+    unique_lock<mutex> lock(pCurrentMap->mMutexMapUpdate);
 
     mbMapUpdated = false;
 
