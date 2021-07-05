@@ -246,11 +246,13 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
     //check boolean
+    /*
     if(mpCurrentMap->mbBad)
         cout<<"mbBad is true"<<endl;
     else
         cout<<"mbBad is false"<<endl;
 
+    */
     while(mpCurrentMap.get()->IsBad())
         usleep(3000);
 
