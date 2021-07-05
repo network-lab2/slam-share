@@ -143,7 +143,7 @@ public:
 std::mutex mMutexMap;
 
 
-protected:
+//protected:
 
     long unsigned int mnId;
 
