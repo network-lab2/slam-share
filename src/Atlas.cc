@@ -237,13 +237,15 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
         CreateNewMap();
 
     //Open managed shared memory
+    /*
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
     
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
     mpCurrentMap = segment.find_or_construct<Map>("Map1")();
 
+    */
     //run functions.
-    cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
+    cout<<"GetId: "<<mpCurrentMap.first()->GetId()<<endl;
 
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
