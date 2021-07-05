@@ -267,11 +267,11 @@ void Map::SetBad()
 bool Map::IsBad()
 {
     std::cout<<"Called to see if map is bad?"<<std::endl;
-    if(mbBad)
+    if(this->mbBad)
         std::cout<<"mbBad is true"<<std::endl;
     else
         std::cout<<"mbBad is not true"<<std::endl;
-    return mbBad;
+    return this->mbBad;
 }
 
 void Map::RotateMap(const cv::Mat &R)
