@@ -110,7 +110,8 @@ void Map::SetImuInitialized()
 
 bool Map::isImuInitialized()
 {
-    cout<<"Map:isImuInitialized()"<<endl;
+    cout<<"Map:isImuInitialized(). Print something from map."<<this->MapPointsInMap()<<endl;
+
     unique_lock<mutex> lock(mMutexMap);
     return mbImuInitialized;
 }
