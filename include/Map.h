@@ -140,7 +140,7 @@ public:
 
     //bool mbBad = false;
 
-
+std::mutex mMutexMap;
 
 
 protected:
@@ -179,7 +179,7 @@ protected:
     bool mbIMU_BA1;
     bool mbIMU_BA2;
 
-    std::mutex mMutexMap;
+    
 };
 
 } //namespace ORB_SLAM3
