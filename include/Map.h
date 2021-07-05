@@ -139,7 +139,7 @@ public:
     boost::interprocess::managed_shared_memory *shm;
 
     //bool mbBad = false;
-    bool mbBad;
+
 
 
 
@@ -167,6 +167,7 @@ protected:
     // Index related to a big change in the map (loop closure, global BA)
     int mnBigChangeIdx;
 
+    bool mbBad;
 
     // View of the map in aerial sight (for the AtlasViewer)
     GLubyte* mThumbnail;
