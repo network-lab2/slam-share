@@ -1671,7 +1671,10 @@ void Tracking::Track()
         return;
     }
 
+    cout<<"Calling GetCurrentMap from Track()"<<std::endl;
     boost::interprocess::offset_ptr<Map>  pCurrentMap = mpAtlas->GetCurrentMap();
+
+    cout<<"The offset pointer in the track(): "<<pCurrentMap.get()<<endl;
 
 
     if(mState!=NO_IMAGES_YET)
