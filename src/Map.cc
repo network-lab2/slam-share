@@ -267,6 +267,7 @@ void Map::SetBad()
 bool Map::IsBad()
 {
     std::cout<<"Called to see if map is bad?"<<std::endl;
+    std::cout<<"print a integer: "<<mnBigChangeIdx<<endl;
     if(this->mbBad)
         std::cout<<"mbBad is true"<<std::endl;
     else
