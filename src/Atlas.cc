@@ -241,7 +241,8 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
 
     //run functions.
-    cout<<"GetId: "<<segment.atomic_func(mpCurrentMap->GetId())<<endl;
+    //cout<<"GetId: "<<segment.atomic_func(mpCurrentMap->GetId())<<endl;
+    cout<<"GetId: "<<segment.atomic_func(mpCurrentMap->GetId)<<endl;
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
     //check boolean
