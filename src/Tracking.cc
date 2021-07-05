@@ -1672,7 +1672,7 @@ void Tracking::Track()
     }
 
     boost::interprocess::offset_ptr<Map>  pCurrentMap = mpAtlas->GetCurrentMap();
-    cout<<"In tracking, found the current map."<<endl;
+
 
     if(mState!=NO_IMAGES_YET)
     {
@@ -1754,6 +1754,8 @@ void Tracking::Track()
         mbMapUpdated = true;
     }
 
+
+cout<<"In tracking, current maps have called few functions"<<endl;
 
     if(mState==NOT_INITIALIZED)
     {
