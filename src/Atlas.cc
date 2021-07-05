@@ -88,12 +88,12 @@ void Atlas::CreateNewMap()
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
     //Open managed shared memory
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
-    std::string name_map = "Map";
+    //std::string name_map = "Map";
     //std::string string_num_map = to_string(mnLastInitKFidMap);
     //name_map.append(string_num_map);
 
     //initialize the map now.
-    mpCurrentMap = segment.find_or_construct<Map>("Map1",std::nothrow) (mnLastInitKFidMap);
+    mpCurrentMap = segment.find_or_construct<Map>("Map1") (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory!"<<endl;
 
     mpCurrentMap->SetCurrentMap();
@@ -235,8 +235,10 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     if(!mpCurrentMap)
         CreateNewMap();
     
-    cout<<"Checked if new map is required."<<endl;
+    cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
 
+    //run functions.
+    cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
     //check boolean
