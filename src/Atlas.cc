@@ -234,11 +234,14 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     unique_lock<mutex> lock(mMutexAtlas);
     if(!mpCurrentMap)
         CreateNewMap();
+
+    //Open managed shared memory
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
     
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
 
     //run functions.
-    cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
+    cout<<"GetId: "<<segment.atomic_func(mpCurrentMap->GetId())<<endl;
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
     //check boolean
