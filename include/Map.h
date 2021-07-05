@@ -138,8 +138,8 @@ public:
     //for managed shared memory
     boost::interprocess::managed_shared_memory *shm;
 
-    bool mbBad = false;
-
+    //bool mbBad = false;
+    bool mbBad;
 
 
 
