@@ -157,6 +157,16 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
 cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timestamp, const vector<IMU::Point>& vImuMeas, string filename)
 {
+
+          //Open managed shared memory
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+
+    //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
+    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+                             mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
+
+    
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
     {
         cerr << "ERROR: you called TrackStereo but input sensor was not set to Stereo nor Stereo-Inertial." << endl;
@@ -208,14 +218,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
         for(size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
             mpTracker->GrabImuData(vImuMeas[i_imu]);
 
-        //Open managed shared memory
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
-
-    //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
-    //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
-                             mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-
+  
     cout<<"mpTracker address later: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<endl;
 
     cv::Mat Tcw = mpTracker->GrabImageStereo(imLeft,imRight,timestamp,filename);
