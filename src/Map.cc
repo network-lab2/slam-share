@@ -113,6 +113,7 @@ void Map::SetImuInitialized()
 
 bool Map::isImuInitialized()
 {
+    cout<<"Trying to print"<<endl;
     cout<<"Printing from class: "<<mnId<<endl;
     //cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
