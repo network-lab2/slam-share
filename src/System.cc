@@ -224,7 +224,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
             mpTracker->GrabImuData(vImuMeas[i_imu]);
 
   
-    cout<<"mpTracker address later: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<endl;
+    cout<<"mpTracker address later: "<<mpTracker<<endl;//" Read integer:"<<mpTracker->mSensor<<endl;
 
     cv::Mat Tcw = mpTracker->GrabImageStereo(imLeft,imRight,timestamp,filename);
 
