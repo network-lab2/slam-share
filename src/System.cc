@@ -170,6 +170,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
     //mpTracker = segment.find<Tracking>("TrackingThread")();
+    cout<<"Here.."<<endl;
     cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(mpTracker)<<endl;
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
