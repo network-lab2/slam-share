@@ -2191,6 +2191,8 @@ cout<<"In tracking, current maps have called few functions"<<endl;
 
 void Tracking::StereoInitialization()
 {
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     if(mCurrentFrame.N>500)
     {
         if (mSensor == System::IMU_STEREO)
@@ -2225,8 +2227,7 @@ void Tracking::StereoInitialization()
             mCurrentFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
 
         // Create KeyFrame
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-        mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    
         cout<<"Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
         cout<<"Map Name?: "<<mpAtlas->currentMapName<<endl;
 
