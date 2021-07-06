@@ -143,7 +143,7 @@ public:
 std::mutex mMutexMap;
 boost::interprocess::offset_ptr<std::mutex> mMutexMapPtr;
 
-
+ bool mbImuInitialized;
 protected:
 
     long unsigned int mnId;
@@ -156,7 +156,7 @@ protected:
 
     std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpReferenceMapPoints;
 
-    bool mbImuInitialized;
+   
 
     int mnMapChange;
     int mnMapChangeNotified;
