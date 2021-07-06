@@ -95,7 +95,7 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
     mpCurrentMap = segment->find_or_construct<Map>("Map1") (mnLastInitKFidMap);
-    cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap.get()<<endl;
+    cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
 
     mpCurrentMap->SetCurrentMap();
@@ -110,7 +110,7 @@ void Atlas::ChangeMap(boost::interprocess::offset_ptr<Map>  pMap)
         mpCurrentMap->SetStoredMap();
     }
 
-    mpCurrentMap = pMap;
+    mpCurrentMap = pMap.get();
     mpCurrentMap->SetCurrentMap();
 }
 
@@ -227,7 +227,9 @@ void Atlas::clearAtlas()
         delete *it;
     }*/
     mspMaps.clear();
-    mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
+    //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
+    //Aditya
+    mpCurrentMap = NULL;
     mnLastInitKFidMap = 0;
 }
 
@@ -247,7 +249,7 @@ Map* Atlas::GetCurrentMap()
 
     
     //run functions.
-    cout<<"GetId: "<<mpCurrentMap.get()->GetId()<<endl;
+    cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
 
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
@@ -259,7 +261,7 @@ Map* Atlas::GetCurrentMap()
         cout<<"mbBad is false"<<endl;
 
     */
-    while(mpCurrentMap.get()->IsBad())
+    while(mpCurrentMap->IsBad())
         usleep(3000);
 
 
