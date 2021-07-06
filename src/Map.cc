@@ -119,9 +119,11 @@ bool Map::isImuInitialized()
     //cout<<"Printing from class: "<<currMap->mnId<<endl;
     //cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    Atlas *atl = segment.find_or_construct<Atlas>("Atlas")();
     //unique_lock<mutex> lock(currMap->mMutexMap);
-    unique_lock<mutex> lock(mMutexMap);
-    return mbImuInitialized;
+    unique_lock<mutex> lock(alt->mpCurrentMap->mmMutexMap);
+    return alt->mpCurrentMap->mbImuInitialized;
 }
 
 void Map::EraseMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP)
