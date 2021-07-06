@@ -90,6 +90,7 @@ void Atlas::CreateNewMap()
     //name_map.append(string_num_map);
 
     //initialize the map now.
+    
     mpCurrentMap = segment->find_or_construct<Map>("Map1") (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;

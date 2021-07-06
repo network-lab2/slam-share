@@ -224,11 +224,12 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
             mpTracker->GrabImuData(vImuMeas[i_imu]);
 
   
-    cout<<"mpTracker address later: "<<mpTracker<<" offset of the pointer: "<<*((int*)((char*)mpTracker+30))<<endl;//" Read integer:"<<mpTracker->mSensor<<endl;
+    //cout<<"mpTracker address later: "<<mpTracker<<" offset of the pointer: "<<*((int*)((char*)mpTracker+30))<<endl;//" Read integer:"<<mpTracker->mSensor<<endl;
 
+unique_lock<mutex> lock2(mMutexState);
     cv::Mat Tcw = mpTracker->GrabImageStereo(imLeft,imRight,timestamp,filename);
 
-    unique_lock<mutex> lock2(mMutexState);
+    
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
