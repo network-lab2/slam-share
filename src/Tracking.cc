@@ -2241,7 +2241,7 @@ void Tracking::StereoInitialization()
         //cout<<"Tracking, check current map (ID): "<<mpCurrentMap->GetId()<<endl;
         //cout<<"Tracking, check current map (ID): "<<(mpAtlas->GetCurrentMap())->GetId()<<endl;
         //boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
-        boost::interprocess::offset_ptr<KeyFrame>  pKFini = segment.find_or_construct<KeyFrame>(anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+        boost::interprocess::offset_ptr<KeyFrame>  pKFini = segment.find_or_construct<KeyFrame>(boost::interprocess::anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
 
         // Insert KeyFrame in the map
@@ -3116,7 +3116,7 @@ void Tracking::CreateNewKeyFrame()
         return;
 
     //boost::interprocess::offset_ptr<KeyFrame>  pKF = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
-    boost::interprocess::offset_ptr<KeyFrame>  pKF = segment.construct<KeyFrame>(anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKF = segment.construct<KeyFrame>(boost::interprocess::anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
     if(mpAtlas->isImuInitialized())
         pKF->bImu = true;
