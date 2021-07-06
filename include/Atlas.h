@@ -87,7 +87,8 @@ public:
 
     void clearAtlas();
 
-    boost::interprocess::offset_ptr<Map>  GetCurrentMap();
+    //boost::interprocess::offset_ptr<Map>  GetCurrentMap();
+    Map*  GetCurrentMap();
     boost::interprocess::offset_ptr<Map> currentMapPtr;
 
     void SetMapBad(boost::interprocess::offset_ptr<Map>  pMap);
@@ -114,7 +115,8 @@ protected:
 
     std::set<boost::interprocess::offset_ptr<Map> > mspMaps;
     std::set<boost::interprocess::offset_ptr<Map> > mspBadMaps;
-    boost::interprocess::offset_ptr<Map>  mpCurrentMap;
+    //boost::interprocess::offset_ptr<Map>  mpCurrentMap;
+    Map* mpCurrentMap;
 
     std::vector<GeometricCamera*> mvpCameras;
     std::vector<KannalaBrandt8*> mvpBackupCamKan;

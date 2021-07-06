@@ -231,7 +231,8 @@ void Atlas::clearAtlas()
     mnLastInitKFidMap = 0;
 }
 
-boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
+//boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
+Map* Atlas::GetCurrentMap()
 {
     unique_lock<mutex> lock(mMutexAtlas);
     if(!mpCurrentMap)
