@@ -2240,7 +2240,9 @@ void Tracking::StereoInitialization()
 
         //cout<<"Tracking, check current map (ID): "<<mpCurrentMap->GetId()<<endl;
         //cout<<"Tracking, check current map (ID): "<<(mpAtlas->GetCurrentMap())->GetId()<<endl;
-        boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+        //boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+        boost::interprocess::offset_ptr<KeyFrame>  pKFini = segment.find_or_construct<KeyFrame>(anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+
 
         // Insert KeyFrame in the map
         mpAtlas->AddKeyFrame(pKFini);
@@ -2403,6 +2405,7 @@ void Tracking::MonocularInitialization()
 
 void Tracking::CreateInitialMapMonocular()
 {
+    //Have not worked with monocular map yet
     // Create KeyFrames
     boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
     boost::interprocess::offset_ptr<KeyFrame>  pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
@@ -3103,13 +3106,17 @@ bool Tracking::NeedNewKeyFrame()
 
 void Tracking::CreateNewKeyFrame()
 {
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    
     if(mpLocalMapper->IsInitializing())
         return;
 
     if(!mpLocalMapper->SetNotStop(true))
         return;
 
-    boost::interprocess::offset_ptr<KeyFrame>  pKF = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    //boost::interprocess::offset_ptr<KeyFrame>  pKF = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKF = segment.construct<KeyFrame>(anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
     if(mpAtlas->isImuInitialized())
         pKF->bImu = true;
