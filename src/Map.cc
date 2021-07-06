@@ -114,9 +114,9 @@ void Map::SetImuInitialized()
 
 bool Map::isImuInitialized()
 {
-    cout<<"Trying to print: addess of calling object: "<<this<<endl;
-    Map *currMap = (this->shm->find_or_construct<Map>("Map1")());
-    cout<<"Printing from class: "<<currMap->mnId<<endl;
+    //cout<<"Trying to print: addess of calling object: "<<this<<endl;
+    //Map *currMap = (this->shm->find_or_construct<Map>("Map1")());
+    //cout<<"Printing from class: "<<currMap->mnId<<endl;
     //cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
     unique_lock<mutex> lock(currMap->mMutexMap);
