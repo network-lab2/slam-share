@@ -50,6 +50,10 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
     mpFrameDrawer(pFrameDrawer), mpMapDrawer(pMapDrawer), mpAtlas(pAtlas), mnLastRelocFrameId(0), time_recently_lost(5.0), time_recently_lost_visual(2.0),
     mnInitialFrameId(0), mbCreatedMap(false), mnFirstFrameId(0), mpCamera2(nullptr)
 {
+
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    
     // Load camera parameters from settings file
     cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
 
@@ -2191,8 +2195,7 @@ cout<<"In tracking, current maps have called few functions"<<endl;
 
 void Tracking::StereoInitialization()
 {
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    
     if(mCurrentFrame.N>500)
     {
         if (mSensor == System::IMU_STEREO)
