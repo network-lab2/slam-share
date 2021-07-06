@@ -175,7 +175,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     const string hello = "";
     const string bye = "";
 
-    boost::interprocess::offset_ptr<Tracking> mpTracker_ptr = segment.find<Tracking>("TrackingThread");//(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,hello,0,bye);
+    boost::interprocess::offset_ptr<Tracking> mpTracker_ptr = segment.find_or_construct<Tracking>("TrackingThread");//(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,hello,0,bye);
     cout<<"Here.."<<mpTracker_ptr<<endl;
     //cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(mpTracker)<<endl;
     cout<<"offset_tracker "<<mpTracker_ptr->mSensor<<endl;
