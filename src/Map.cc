@@ -50,11 +50,12 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
                        mHasTumbnail(false), mbBad(false), mbImuInitialized(false), mpFirstRegionKF(static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL)),
                        mnMapChange(0), mbFail(false), mnMapChangeNotified(0), mbIsInertial(false), mbIMU_BA1(false), mbIMU_BA2(false)
 {
-    /*
+    
     //off for now
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
     shm = &shm_temp;
-    */
+    
+
     std::cout<<"Map init called?"<<std::endl;
     //also initialize the mutex.
     mMutexMapPtr = &mMutexMap;
@@ -114,11 +115,12 @@ void Map::SetImuInitialized()
 bool Map::isImuInitialized()
 {
     cout<<"Trying to print"<<endl;
-    cout<<"Printing from class: "<<this->mnId<<endl;
+    Map *currMap = ((*shm).find_or_construct<Map>("Map1")()).get();
+    cout<<"Printing from class: "<<currMap->mnId<<endl;
     //cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
-    //unique_lock<mutex> lock(mMutexMap);
-    unique_lock<mutex> lock(*mMutexMapPtr);
+    unique_lock<mutex> lock(currMap->mMutexMap);
+    //unique_lock<mutex> lock(*mMutexMapPtr);
     return mbImuInitialized;
 }
 
