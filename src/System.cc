@@ -163,7 +163,8 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")();
+    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(void, void, void, void,
+                             void, void, void, void, void);
 
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
