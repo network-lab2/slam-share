@@ -94,11 +94,16 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     }
     cout << "Vocabulary loaded!" << endl << endl;
 
+    cout<<"Installing Shared memory "<<endl;
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
 
+    //Creating a new atlas object in shared memory
     //Create the Atlas
-    mpAtlas = new Atlas(0);
+    //mpAtlas = new Atlas(0);
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")(0);
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)
         mpAtlas->SetInertialSensor();
