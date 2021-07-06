@@ -114,10 +114,10 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     seg = &segment;
 
-    //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
-    //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
+    //mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
 
     cout<<"mpTracker address in beginning: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<" Read integer address: "<<&(mpTracker->mSensor)<<endl;
 
@@ -167,18 +167,18 @@ offset_tracker = mpTracker;
 cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timestamp, const vector<IMU::Point>& vImuMeas, string filename)
 {
 
-          //Open managed shared memory
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    //Open managed shared memory
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    const string hello = "";
-    const string bye = "";
+    //const string hello = "";
+    //const string bye = "";
 
-    boost::interprocess::offset_ptr<Tracking> mpTracker_ptr = segment.find_or_construct<Tracking>("TrackingThread")(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,hello,0,bye);
+    //boost::interprocess::offset_ptr<Tracking> mpTracker_ptr = segment.find_or_construct<Tracking>("TrackingThread")(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,hello,0,bye);
     cout<<"Here.."<<mpTracker_ptr<<endl;
     //cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(mpTracker)<<endl;
-    cout<<"offset_tracker "<<mpTracker_ptr->mSensor<<endl;
+    cout<<"offset_tracker "<<mpTracker->mSensor<<endl;
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
     {
