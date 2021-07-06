@@ -35,11 +35,7 @@ Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)
 {
 
     std::cout<<"Atlas initialized:"<<std::endl;
-     struct shm_remove
-              {
-                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-              } remover;
+     
 
     //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     mpCurrentMap = 0;

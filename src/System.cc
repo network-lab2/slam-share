@@ -51,6 +51,12 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     "This is free software, and you are welcome to redistribute it" << endl <<
     "under certain conditions. See LICENSE.txt." << endl << endl;
 
+    struct shm_remove
+              {
+                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+              } remover;
+
     cout << "Input sensor was set to: ";
 
     if(mSensor==MONOCULAR)
@@ -159,11 +165,11 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
 {
 
           //Open managed shared memory
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    mpTracker = segment.find<Tracking>("TrackingThread")();
+    //mpTracker = segment.find<Tracking>("TrackingThread")();
 
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
