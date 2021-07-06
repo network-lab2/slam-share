@@ -2232,7 +2232,7 @@ void Tracking::StereoInitialization()
 
        
 
-        cout<<"Tracking, check current map (ID): "<<mpCurrentMap->GetId()<<endl;
+        //cout<<"Tracking, check current map (ID): "<<mpCurrentMap->GetId()<<endl;
         cout<<"Tracking, check current map (ID): "<<(mpAtlas->GetCurrentMap())->GetId()<<endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
