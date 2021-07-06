@@ -168,14 +168,14 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
 {
 
           //Open managed shared memory
-    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
     const string hello = "";
     const string bye = "";
 
-    mpTracker = (*seg).find<Tracking>("TrackingThread").first;//(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,hello,0,bye);
+    mpTracker = segment.find<Tracking>("TrackingThread").first;//(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,hello,0,bye);
     cout<<"Here.."<<endl;
     cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(mpTracker)<<endl;
     cout<<"offset_tracker "<<offset_tracker->mSensor<<endl;
