@@ -63,8 +63,10 @@ Atlas::~Atlas()
 
 void Atlas::CreateNewMap()
 {
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //std::string name_map = "Map";
+    segment = &segment_mem;
+    mpAtlas = segment->find_or_construct<Atlas>("Atlas")();
     cout<<"In create New Map()"<<endl;
     unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
     cout<<"In create after lock"<<endl;
@@ -87,9 +89,7 @@ void Atlas::CreateNewMap()
 
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
     //Open managed shared memory
-    boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    //std::string name_map = "Map";
-    segment = &segment_mem;
+    
     //std::string string_num_map = to_string(mnLastInitKFidMap);
     //name_map.append(string_num_map);
 
