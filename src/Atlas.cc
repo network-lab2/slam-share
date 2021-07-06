@@ -243,7 +243,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
     mpCurrentMap = segment.find_or_construct<Map>("Map1")();
-    
+
     
     //run functions.
     cout<<"GetId: "<<mpCurrentMap.get()->GetId()<<endl;
@@ -260,7 +260,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     */
     while(mpCurrentMap.get()->IsBad())
         usleep(3000);
-    
+
 
     return mpCurrentMap;
 }
@@ -303,6 +303,7 @@ void Atlas::SetImuInitialized()
 
 bool Atlas::isImuInitialized()
 {
+    cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
     unique_lock<mutex> lock(mMutexAtlas);
     return mpCurrentMap->isImuInitialized();
 }
