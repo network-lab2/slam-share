@@ -112,6 +112,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout << "Seq. Name: " << strSequence << endl;
     //Open managed shared memory
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    seg = &segment;
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
@@ -171,9 +172,9 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    //mpTracker = segment.find<Tracking>("TrackingThread")();
+    mpTracker = segment.find<Tracking>("TrackingThread")(nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,"",0,"");
     cout<<"Here.."<<endl;
-    cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(offset_tracker.get())<<endl;
+    cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(mpTracker)<<endl;
     cout<<"offset_tracker "<<offset_tracker->mSensor<<endl;
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)

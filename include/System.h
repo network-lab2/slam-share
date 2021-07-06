@@ -182,6 +182,7 @@ public:
 #endif
 
 boost::interprocess::offset_ptr<Tracking> offset_tracker;
+boost::interprocess::managed_shared_memory* seg;
 private:
 
     // Input sensor
