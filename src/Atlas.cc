@@ -248,7 +248,7 @@ Map* Atlas::GetCurrentMap()
 
     //Open managed shared memory
     
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     
     currentMapName = "Map1";
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
