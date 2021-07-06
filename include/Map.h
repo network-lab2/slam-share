@@ -141,9 +141,10 @@ public:
     //bool mbBad = false;
 
 std::mutex mMutexMap;
+boost::interprocess::offset_ptr<std::mutex> mMutexMapPtr;
 
 
-//protected:
+protected:
 
     long unsigned int mnId;
 

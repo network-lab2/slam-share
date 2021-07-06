@@ -56,6 +56,9 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     shm = &shm_temp;
     */
     std::cout<<"Map init called?"<<std::endl;
+    //also initialize the mutex.
+    mMutexMapPtr = &mMutexMap;
+
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
@@ -112,7 +115,8 @@ bool Map::isImuInitialized()
 {
     cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
-    unique_lock<mutex> lock(mMutexMap);
+    //unique_lock<mutex> lock(mMutexMap);
+    unique_lock<mutex> lock(*mMutexMapPtr);
     return mbImuInitialized;
 }
 
