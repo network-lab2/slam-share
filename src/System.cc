@@ -118,7 +118,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
 
-    cout<<"mpTracker address in beginning: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<endl;
+    cout<<"mpTracker address in beginning: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<" Read integer address: "<<&(mpTracker->mSensor)<<endl;
 
     //Initialize the Local Mapping thread and launch
     mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor==MONOCULAR || mSensor==IMU_MONOCULAR, mSensor==IMU_MONOCULAR || mSensor==IMU_STEREO, strSequence);
