@@ -69,7 +69,7 @@ void Atlas::CreateNewMap()
     Atlas *mpAtlas = segment->find_or_construct<Atlas>("Atlas")();
     
     cout<<"In create New Map()"<<endl;
-    //unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
+    unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
     
     cout<<"In create after lock"<<endl;
     //cout << "Creation of new map with id: " << Map::nNextId << endl;
@@ -239,7 +239,10 @@ void Atlas::clearAtlas()
 //boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 Map* Atlas::GetCurrentMap()
 {
-    unique_lock<mutex> lock(mMutexAtlas);
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    Atlas *atl = segment.find_or_construct<Atlas>("Atlas")();
+
+    unique_lock<mutex> lock(atl->mMutexAtlas);
     if(!mpCurrentMap)
         CreateNewMap();
 
