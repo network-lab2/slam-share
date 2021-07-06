@@ -2227,7 +2227,7 @@ void Tracking::StereoInitialization()
         // Create KeyFrame
 
         cout<<"Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
-         unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
+        
         cout<<"Tracking, check current map (ID): "<<(mpAtlas->GetCurrentMap())->GetId()<<endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 

@@ -110,6 +110,7 @@ public:
     long unsigned int GetNumLivedMP();
      //for managed shared memory
     boost::interprocess::managed_shared_memory *segment;
+    string currentMapName;
 
 protected:
 
