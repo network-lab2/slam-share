@@ -63,8 +63,9 @@ Atlas::~Atlas()
 
 void Atlas::CreateNewMap()
 {
+    cout<<"In create New Map()"<<endl;
     unique_lock<mutex> lock(mMutexAtlas);
-    cout << "Creation of new map with id: " << Map::nNextId << endl;
+    //cout << "Creation of new map with id: " << Map::nNextId << endl;
     if(mpCurrentMap){
         cout << "Exits current map " << endl;
         if(!mspMaps.empty() && mnLastInitKFidMap < mpCurrentMap->GetMaxKFid())
