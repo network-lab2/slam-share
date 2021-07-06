@@ -112,6 +112,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
 
+    cout<<"mpTracker address in beginning: "<<mpTracker<<endl;
+
     //Initialize the Local Mapping thread and launch
     mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor==MONOCULAR || mSensor==IMU_MONOCULAR, mSensor==IMU_MONOCULAR || mSensor==IMU_STEREO, strSequence);
     mptLocalMapping = new thread(&ORB_SLAM3::LocalMapping::Run,mpLocalMapper);
@@ -205,6 +207,8 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     if (mSensor == System::IMU_STEREO)
         for(size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
             mpTracker->GrabImuData(vImuMeas[i_imu]);
+
+        cout<<"mpTracker address later: "<<mpTracker<<endl;
 
     cv::Mat Tcw = mpTracker->GrabImageStereo(imLeft,imRight,timestamp,filename);
 
