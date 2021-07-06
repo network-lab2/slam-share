@@ -2232,6 +2232,7 @@ void Tracking::StereoInitialization()
         boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
         Map *mpCurrentMap = segment.find_or_construct<Map>("Map1")();
 
+cout<<"Tracking, check current map (ID): "<<mpCurrentMap->GetId()<<endl;
         cout<<"Tracking, check current map (ID): "<<(mpAtlas->GetCurrentMap())->GetId()<<endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
