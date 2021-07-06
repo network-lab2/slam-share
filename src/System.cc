@@ -120,6 +120,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     cout<<"mpTracker address in beginning: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<" Read integer address: "<<&(mpTracker->mSensor)<<endl;
 
+offset_tracker = mpTracker;
+
     //Initialize the Local Mapping thread and launch
     mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor==MONOCULAR || mSensor==IMU_MONOCULAR, mSensor==IMU_MONOCULAR || mSensor==IMU_STEREO, strSequence);
     mptLocalMapping = new thread(&ORB_SLAM3::LocalMapping::Run,mpLocalMapper);
@@ -171,7 +173,8 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
     //mpTracker = segment.find<Tracking>("TrackingThread")();
     cout<<"Here.."<<endl;
-    cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(mpTracker)<<endl;
+    cout<<"name of managed shared memory: "<<offset_tracker<<endl;
+    cout<<"offset_tracker "<<offset_tracker->GetTrackingState()<<endl;
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
     {

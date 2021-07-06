@@ -181,6 +181,7 @@ public:
     void InsertTrackTime(double& time);
 #endif
 
+boost::interprocess::offset_ptr<Tracking> offset_tracker;
 private:
 
     // Input sensor
