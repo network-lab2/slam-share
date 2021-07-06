@@ -119,8 +119,8 @@ bool Map::isImuInitialized()
     //cout<<"Printing from class: "<<currMap->mnId<<endl;
     //cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
-    unique_lock<mutex> lock(currMap->mMutexMap);
-    //unique_lock<mutex> lock(*mMutexMapPtr);
+    //unique_lock<mutex> lock(currMap->mMutexMap);
+    unique_lock<mutex> lock(*mMutexMapPtr);
     return mbImuInitialized;
 }
 
