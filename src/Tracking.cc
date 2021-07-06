@@ -53,7 +53,7 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
 
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
-    
+
     // Load camera parameters from settings file
     cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
 
@@ -2195,6 +2195,8 @@ cout<<"In tracking, current maps have called few functions"<<endl;
 
 void Tracking::StereoInitialization()
 {
+     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     
     if(mCurrentFrame.N>500)
     {
