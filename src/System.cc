@@ -104,7 +104,12 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Initialize the Tracking thread
     //(it will live in the main thread of execution, the one that called this constructor)
     cout << "Seq. Name: " << strSequence << endl;
-    mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    //Open managed shared memory
+    boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+
+    //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
+    mpTracker = segment->find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
 
     //Initialize the Local Mapping thread and launch
