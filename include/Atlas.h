@@ -108,8 +108,6 @@ public:
     long unsigned int GetNumLivedKF();
 
     long unsigned int GetNumLivedMP();
-     //for managed shared memory
-    boost::interprocess::managed_shared_memory *segment;
     string currentMapName;
 
 protected:
@@ -133,6 +131,10 @@ protected:
     // Class references for the map reconstruction from the save file
     KeyFrameDatabase* mpKeyFrameDB;
     ORBVocabulary* mpORBVocabulary;
+
+    //for managed shared memory
+    boost::interprocess::managed_shared_memory segment;
+
 
 
 }; // class Atlas

@@ -36,7 +36,7 @@ Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)
 
     std::cout<<"Atlas initialized:"<<std::endl;
      
-
+    segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     mpCurrentMap = 0;
     CreateNewMap();
@@ -63,10 +63,10 @@ Atlas::~Atlas()
 
 void Atlas::CreateNewMap()
 {
-    boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //std::string name_map = "Map";
-    segment = &segment_mem;
-    Atlas *mpAtlas = segment->find_or_construct<Atlas>("Atlas")();
+    //segment = &segment_mem;
+    Atlas *mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     
     cout<<"In create New Map()"<<endl;
     unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
@@ -97,7 +97,7 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
 
-    mpCurrentMap = segment->find_or_construct<Map>("Map1") (mnLastInitKFidMap);
+    mpCurrentMap = segment.find_or_construct<Map>("Map1") (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
 
@@ -239,7 +239,7 @@ void Atlas::clearAtlas()
 //boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 Map* Atlas::GetCurrentMap()
 {
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //Atlas *atl = segment.find_or_construct<Atlas>("Atlas")();
 
     //unique_lock<mutex> lock(mMutexAtlas);
