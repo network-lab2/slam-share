@@ -174,7 +174,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     //mpTracker = segment.find<Tracking>("TrackingThread")();
     cout<<"Here.."<<endl;
     cout<<"name of managed shared memory: "<<offset_tracker<<endl;
-    cout<<"offset_tracker "<<offset_tracker->GetTrackingState()<<endl;
+    cout<<"offset_tracker "<<offset_tracker->mSensor<<endl;
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
     {
