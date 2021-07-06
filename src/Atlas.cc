@@ -83,7 +83,7 @@ void Atlas::CreateNewMap()
 
     //Aditya: Use shared memory segment to create a new object, give a name with its map ID
     //Open managed shared memory
-    boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    boost::interprocess::managed_shared_memory segment_mem(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //std::string name_map = "Map";
     segment = &segment_mem;
     //std::string string_num_map = to_string(mnLastInitKFidMap);
