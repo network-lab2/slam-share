@@ -242,7 +242,7 @@ Map* Atlas::GetCurrentMap()
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     Atlas *atl = segment.find_or_construct<Atlas>("Atlas")();
 
-    unique_lock<mutex> lock(mMutexAtlas);
+    //unique_lock<mutex> lock(mMutexAtlas);
     if(!mpCurrentMap)
         CreateNewMap();
 
