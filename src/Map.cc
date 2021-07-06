@@ -115,7 +115,7 @@ void Map::SetImuInitialized()
 bool Map::isImuInitialized()
 {
     
-    unique_lock<mutex> lock(this->mmMutexMap);
+    unique_lock<mutex> lock(this->mMutexMap);
     return mbImuInitialized;
 }
 
