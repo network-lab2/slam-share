@@ -173,7 +173,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
     //mpTracker = segment.find<Tracking>("TrackingThread")();
     cout<<"Here.."<<endl;
-    cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(offset_tracker)<<endl;
+    cout<<"name of managed shared memory: "<<boost::interprocess::managed_shared_memory::get_instance_name(offset_tracker.get())<<endl;
     cout<<"offset_tracker "<<offset_tracker->mSensor<<endl;
 
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)
