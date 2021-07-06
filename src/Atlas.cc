@@ -319,7 +319,7 @@ bool Atlas::isImuInitialized()
     Atlas *atl = segment.find_or_construct<Atlas>("Atlas")();
 
     cout<<"Address of mpCurrentMap "<<atl->mpCurrentMap<<endl;
-    unique_lock<mutex> lock(alt->mMutexAtlas);
+    unique_lock<mutex> lock(atl->mMutexAtlas);
     return atl->mpCurrentMap->isImuInitialized();
 }
 
