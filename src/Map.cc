@@ -115,6 +115,7 @@ void Map::SetImuInitialized()
 bool Map::isImuInitialized()
 {
     cout<<"isImuInitialized called"<<endl;
+    Atlas *atl;
     unique_lock<mutex> lock(this->mMutexMap);
     return mbImuInitialized;
 }
