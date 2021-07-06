@@ -65,6 +65,7 @@ void Atlas::CreateNewMap()
 {
     cout<<"In create New Map()"<<endl;
     unique_lock<mutex> lock(mMutexAtlas);
+    cout<<"In create after lock"<<endl;
     //cout << "Creation of new map with id: " << Map::nNextId << endl;
     if(mpCurrentMap){
         cout << "Exits current map " << endl;
