@@ -2225,12 +2225,12 @@ void Tracking::StereoInitialization()
             mCurrentFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
 
         // Create KeyFrame
-
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+        mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
         cout<<"Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
         cout<<"Map Name?: "<<mpAtlas->currentMapName<<endl;
 
-        boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-        Map *mpCurrentMap = segment.find_or_construct<Map>("Map1")();
+       
 
         cout<<"Tracking, check current map (ID): "<<mpCurrentMap->GetId()<<endl;
         cout<<"Tracking, check current map (ID): "<<(mpAtlas->GetCurrentMap())->GetId()<<endl;
