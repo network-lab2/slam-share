@@ -213,9 +213,10 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
 
     //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
     //                         mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
-    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")();
+    mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+                             mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
 
-        cout<<"mpTracker address later: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<endl;
+    cout<<"mpTracker address later: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<endl;
 
     cv::Mat Tcw = mpTracker->GrabImageStereo(imLeft,imRight,timestamp,filename);
 
