@@ -1237,6 +1237,9 @@ void Tracking::SetStepByStep(bool bSet)
 
 cv::Mat Tracking::GrabImageStereo(const cv::Mat &imRectLeft, const cv::Mat &imRectRight, const double &timestamp, string filename)
 {
+    //added a mutex lock
+    unique_lock<mutex> lock(mMutexTracks);   
+    
     mImGray = imRectLeft;
     cv::Mat imGrayRight = imRectRight;
     mImRight = imRectRight;
