@@ -115,7 +115,7 @@ void Map::SetImuInitialized()
 bool Map::isImuInitialized()
 {
     cout<<"Trying to print"<<endl;
-    Map *currMap = (shm->find_or_construct<Map>("Map1")()).get();
+    Map *currMap = (shm->find_or_construct<Map>("Map1")());
     cout<<"Printing from class: "<<currMap->mnId<<endl;
     //cout<<"Map:isImuInitialized(). Print something from map."<<MapPointsInMap()<<endl;
 
