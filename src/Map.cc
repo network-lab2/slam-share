@@ -122,8 +122,8 @@ bool Map::isImuInitialized()
     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     Atlas *atl = segment.find_or_construct<Atlas>("Atlas")();
     //unique_lock<mutex> lock(currMap->mMutexMap);
-    unique_lock<mutex> lock(atl->mpCurrentMap->mmMutexMap);
-    return atl->mpCurrentMap->mbImuInitialized;
+    unique_lock<mutex> lock(atl->GetCurrentMap()->mmMutexMap);
+    return atl->GetCurrentMap()->mbImuInitialized;
 }
 
 void Map::EraseMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP)
