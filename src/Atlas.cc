@@ -90,7 +90,7 @@ void Atlas::CreateNewMap()
     //name_map.append(string_num_map);
 
     //initialize the map now.
-    
+
     mpCurrentMap = segment->find_or_construct<Map>("Map1") (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
@@ -239,7 +239,7 @@ Map* Atlas::GetCurrentMap()
 
     //Open managed shared memory
     
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
     mpCurrentMap = segment.find_or_construct<Map>("Map1")();
@@ -247,6 +247,7 @@ Map* Atlas::GetCurrentMap()
     
     //run functions.
     cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
+    cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
 
     //let's see if we can access mpCurrentMap
     cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
