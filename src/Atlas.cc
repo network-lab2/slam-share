@@ -63,8 +63,10 @@ Atlas::~Atlas()
 
 void Atlas::CreateNewMap()
 {
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     cout<<"In create New Map()"<<endl;
-    unique_lock<mutex> lock(mMutexAtlas);
+    unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
     cout<<"In create after lock"<<endl;
     //cout << "Creation of new map with id: " << Map::nNextId << endl;
     if(mpCurrentMap){
