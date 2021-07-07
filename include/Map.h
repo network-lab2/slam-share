@@ -113,6 +113,7 @@ public:
     void ChangeId(long unsigned int nId);
 
     unsigned int GetLowerKFID();
+    int sum_of_two();
 
     vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
     vector<unsigned long int> mvBackupKeyFrameOriginsId;
@@ -144,6 +145,10 @@ std::mutex mMutexMap;
 boost::interprocess::offset_ptr<std::mutex> mMutexMapPtr;
 
  bool mbImuInitialized;
+
+ //example
+ int a;
+ int b;
 protected:
 
     long unsigned int mnId;

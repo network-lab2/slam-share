@@ -57,6 +57,9 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     
 
     std::cout<<"Map init called?"<<std::endl;
+    std::cout<<"Updating a and B"<<std::endl;
+    a = 10;
+    b = 25;
     //also initialize the mutex.
     mMutexMapPtr = &mMutexMap;
 
