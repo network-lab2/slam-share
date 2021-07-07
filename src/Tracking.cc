@@ -1684,7 +1684,7 @@ void Tracking::Track()
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
     //boost::interprocess::offset_ptr<Map> pCurrentMap = segment.find_or_construct<Map>("Map1")();
 
-    //Map* pCurrentMap = mpAtlas->GetCurrentMap().get();
+    Map* pCurrentMap = mpAtlas->GetCurrentMap();
 
     //cout<<"The offset pointer in the track(): "<<pCurrentMap<<endl;
 
