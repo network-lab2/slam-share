@@ -41,7 +41,7 @@ Verbose::eLevel Verbose::th = Verbose::VERBOSITY_NORMAL;
 System::System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
                const bool bUseViewer, const int initFr, const string &strSequence, const string &strLoadingFile):
     mSensor(sensor), mpViewer(static_cast<Viewer*>(NULL)), mbReset(false), mbResetActiveMap(false),
-    mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false)
+    mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false),segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240)
 {
     // Output welcome message
     cout << endl <<
@@ -51,12 +51,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     "This is free software, and you are welcome to redistribute it" << endl <<
     "under certain conditions. See LICENSE.txt." << endl << endl;
 
-    struct shm_remove
-              {
-                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
-              } remover;
-
+    
     cout << "Input sensor was set to: ";
 
     if(mSensor==MONOCULAR)
@@ -95,8 +90,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout << "Vocabulary loaded!" << endl << endl;
 
     cout<<"Installing Shared memory "<<endl;
-    boost::interprocess::managed_shared_memory seg(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    segment = &seg;
+    //boost::interprocess::managed_shared_memory seg(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //segment = &seg;
 
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
@@ -104,8 +99,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Creating a new atlas object in shared memory
     //Create the Atlas
     //mpAtlas = new Atlas(0);
-    mpAtlas = segment->find_or_construct<Atlas>("Atlas")(0);
-    mpAtlas->segment = &seg;
+    mpAtlas = segment.find_or_construct<Atlas>("Atlas")(0);
+    mpAtlas->segment = &segment;
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)
         mpAtlas->SetInertialSensor();

@@ -23,6 +23,7 @@
 #include<chrono>
 
 #include<opencv2/core/core.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
 
 #include<System.h>
 
@@ -33,6 +34,12 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
 
 int main(int argc, char **argv)
 {
+    struct shm_remove
+              {
+                shm_remove() { boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+                ~shm_remove(){ boost::interprocess::shared_memory_object::remove("MySharedMemory"); }
+              } remover;
+
     if(argc != 4)
     {
         cerr << endl << "Usage: ./stereo_kitti path_to_vocabulary path_to_settings path_to_sequence" << endl;
