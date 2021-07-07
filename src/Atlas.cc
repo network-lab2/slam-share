@@ -105,6 +105,9 @@ void Atlas::CreateNewMap()
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
 
     mpCurrentMap->SetCurrentMap();
+    //example
+    currentMapPtr = mpCurrentMap;
+
     mspMaps.insert(mpCurrentMap);
 }
 
