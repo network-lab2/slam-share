@@ -34,7 +34,7 @@
 #include <boost/archive/xml_oarchive.hpp>
 
 //GLOBAL Variable
-boost::interprocess::managed_shared_memory segment;
+boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
 
 namespace ORB_SLAM3
 {
@@ -44,7 +44,7 @@ Verbose::eLevel Verbose::th = Verbose::VERBOSITY_NORMAL;
 System::System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
                const bool bUseViewer, const int initFr, const string &strSequence, const string &strLoadingFile):
     mSensor(sensor), mpViewer(static_cast<Viewer*>(NULL)), mbReset(false), mbResetActiveMap(false),
-    mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false),segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240)
+    mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false)//,segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240)
 {
     // Output welcome message
     cout << endl <<
