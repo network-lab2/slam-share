@@ -116,6 +116,9 @@ public:
      int a;
     int b;
 
+    //for managed shared memory
+    boost::interprocess::managed_shared_memory *segment;
+
 protected:
 
     std::set<boost::interprocess::offset_ptr<Map> > mspMaps;
@@ -138,8 +141,7 @@ protected:
     KeyFrameDatabase* mpKeyFrameDB;
     ORBVocabulary* mpORBVocabulary;
 
-    //for managed shared memory
-    boost::interprocess::managed_shared_memory segment;
+    
 
 
 

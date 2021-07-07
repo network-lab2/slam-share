@@ -95,7 +95,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout << "Vocabulary loaded!" << endl << endl;
 
     cout<<"Installing Shared memory "<<endl;
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    boost::interprocess::managed_shared_memory seg(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    segment = &seg;
 
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
@@ -103,7 +104,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Creating a new atlas object in shared memory
     //Create the Atlas
     //mpAtlas = new Atlas(0);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")(0);
+    mpAtlas = segment->find_or_construct<Atlas>("Atlas")(0);
+    mpAtlas->segment = &seg;
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)
         mpAtlas->SetInertialSensor();
@@ -115,10 +117,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Initialize the Tracking thread
     //(it will live in the main thread of execution, the one that called this constructor)
     cout << "Seq. Name: " << strSequence << endl;
-    //Open managed shared memory
-    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    seg = &segment;
-
+    
     mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
     //mpTracker = segment.find_or_construct<Tracking>("TrackingThread")(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
@@ -126,7 +125,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     cout<<"mpTracker address in beginning: "<<mpTracker<<" Read integer:"<<mpTracker->mSensor<<" Read integer address: "<<&(mpTracker->mSensor)<<endl;
 
-offset_tracker = mpTracker;
+    offset_tracker = mpTracker;
 
     //Initialize the Local Mapping thread and launch
     mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor==MONOCULAR || mSensor==IMU_MONOCULAR, mSensor==IMU_MONOCULAR || mSensor==IMU_STEREO, strSequence);

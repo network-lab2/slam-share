@@ -165,8 +165,8 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
     const float h = w*0.75;
     const float z = w*0.6;
 
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
 
     const vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
 

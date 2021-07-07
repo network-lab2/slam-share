@@ -137,7 +137,7 @@ public:
     */
 
     //for managed shared memory
-    boost::interprocess::managed_shared_memory *shm;
+    boost::interprocess::managed_shared_memory *segment;
 
     //bool mbBad = false;
 

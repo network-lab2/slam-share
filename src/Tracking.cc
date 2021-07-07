@@ -51,8 +51,8 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
     mnInitialFrameId(0), mbCreatedMap(false), mnFirstFrameId(0), mpCamera2(nullptr)
 {
 
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
 
     // Load camera parameters from settings file
     cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
@@ -1680,9 +1680,9 @@ void Tracking::Track()
 
     cout<<"Calling GetCurrentMap from Track()"<<std::endl;
     //boost::interprocess::offset_ptr<Map>  pCurrentMap = mpAtlas->GetCurrentMap().get();
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",1073741824);
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
-    boost::interprocess::offset_ptr<Map> pCurrentMap = segment.find_or_construct<Map>("Map1")();
+    //boost::interprocess::offset_ptr<Map> pCurrentMap = segment.find_or_construct<Map>("Map1")();
 
     //Map* pCurrentMap = mpAtlas->GetCurrentMap().get();
 
@@ -2195,8 +2195,8 @@ cout<<"In tracking, current maps have called few functions"<<endl;
 
 void Tracking::StereoInitialization()
 {
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     
     if(mCurrentFrame.N>500)
     {
@@ -3110,8 +3110,8 @@ bool Tracking::NeedNewKeyFrame()
 
 void Tracking::CreateNewKeyFrame()
 {
-    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    //mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     
     if(mpLocalMapper->IsInitializing())
         return;
