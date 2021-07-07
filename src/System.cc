@@ -33,6 +33,9 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 
+//GLOBAL Variable
+boost::interprocess::managed_shared_memory segment;
+
 namespace ORB_SLAM3
 {
 
