@@ -2195,7 +2195,7 @@ cout<<"In tracking, current maps have called few functions"<<endl;
 
 void Tracking::StereoInitialization()
 {
-     boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
     
     if(mCurrentFrame.N>500)
@@ -2233,8 +2233,8 @@ void Tracking::StereoInitialization()
 
         // Create KeyFrame
     
-        cout<<"Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
-        cout<<"Map a: "<<mpAtlas->GetCurrentMap()->a<<" Map b: "<<mpAtlas->GetCurrentMap()->b<<" Sum: "<<(mpAtlas->GetCurrentMap()->a+mpAtlas->GetCurrentMap()->b)<<endl;
+        cout<<"---Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
+        cout<<"***Map a: "<<mpAtlas->GetCurrentMap()->a<<" Map b: "<<mpAtlas->GetCurrentMap()->b<<" Sum: "<<(mpAtlas->GetCurrentMap()->a+mpAtlas->GetCurrentMap()->b)<<endl;
         cout<<"Map Name?: "<<mpAtlas->currentMapName<<endl;
 
        
