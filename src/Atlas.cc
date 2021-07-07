@@ -100,7 +100,7 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
 
-    mpCurrentMap = segment->find_or_construct<Map>("Map1") (mnLastInitKFidMap);
+    mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>("Map1") (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
 
