@@ -33,7 +33,7 @@ Atlas::Atlas(){
     b = 25;
 }
 
-Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false),segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240), a(10), b(25)
+Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)//,segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240), a(10), b(25)
 {
 
     std::cout<<"Atlas initialized:"<<std::endl;
