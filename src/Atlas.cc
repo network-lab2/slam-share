@@ -107,7 +107,7 @@ void Atlas::CreateNewMap()
     mpCurrentMap->SetCurrentMap();
 
     //populate the segment part.. 
-    mpCurrentMap->segment = mpAtlas->segment;
+    mpCurrentMap->segment = segment;
     //example
     currentMapPtr = mpCurrentMap;
 
