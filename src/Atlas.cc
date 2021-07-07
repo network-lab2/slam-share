@@ -35,6 +35,8 @@ Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false),segme
 {
 
     std::cout<<"Atlas initialized:"<<std::endl;
+    a = 10;
+    b = 25;
      
     
     //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
@@ -326,6 +328,12 @@ bool Atlas::isImuInitialized()
 void Atlas::SetKeyFrameDababase(KeyFrameDatabase* pKFDB)
 {
     mpKeyFrameDB = pKFDB;
+}
+
+
+int Atlas::sum_of_two(){
+    cout<<"Add a "<<a<<" and b "<<b<<" sum "<<(a+b)<<endl;
+    return (a+b);
 }
 
 KeyFrameDatabase* Atlas::GetKeyFrameDatabase()

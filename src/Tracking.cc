@@ -2234,6 +2234,7 @@ void Tracking::StereoInitialization()
         // Create KeyFrame
     
         cout<<"---Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
+        cout<<"*** ATLAS Map a: "<<mpAtlas->a<<" Map b: "<<mpAtlas->b<<" Sum: "<<(mpAtlas->a+mpAtlas->b)<<" Running function "<<mpAtlas->sum_of_two()<<endl;
         cout<<"***Map a: "<<mpAtlas->GetCurrentMap()->a<<" Map b: "<<mpAtlas->GetCurrentMap()->b<<" Sum: "<<(mpAtlas->GetCurrentMap()->a+mpAtlas->GetCurrentMap()->b)<<endl;
         cout<<"Map Name?: "<<mpAtlas->currentMapName<<endl;
 

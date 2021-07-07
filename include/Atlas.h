@@ -110,6 +110,12 @@ public:
     long unsigned int GetNumLivedMP();
     string currentMapName;
 
+    int sum_of_two();
+
+    //example
+     int a;
+    int b;
+
 protected:
 
     std::set<boost::interprocess::offset_ptr<Map> > mspMaps;
