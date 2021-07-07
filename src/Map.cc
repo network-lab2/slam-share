@@ -52,8 +52,8 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
 {
     
     //off for now
-    boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
-    shm = &shm_temp;
+    //boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
+    //shm = &shm_temp;
     
 
     std::cout<<"Map init called?"<<std::endl;
