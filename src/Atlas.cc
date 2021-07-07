@@ -69,7 +69,7 @@ void Atlas::CreateNewMap()
     //std::string name_map = "Map";
     //segment = &segment_mem;
     cout<<"Before finding atlas\n";
-    Atlas *mpAtlas = segment->find_or_construct<Atlas>("Atlas")();
+    Atlas *mpAtlas = (*segment).find_or_construct<Atlas>("Atlas")();
     
     cout<<"In create New Map()"<<endl;
     unique_lock<mutex> lock(mpAtlas->mMutexAtlas);
