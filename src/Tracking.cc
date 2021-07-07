@@ -2234,7 +2234,7 @@ void Tracking::StereoInitialization()
         // Create KeyFrame
     
         cout<<"Map pointer: "<<mpAtlas->GetCurrentMap()<<endl;
-        cout<<"Map a: "<<mpAtlas->GetCurrentMap()->a<<" Map b: "<<mpAtlas->GetCurrentMap()->b" Sum: "<<(mpAtlas->GetCurrentMap()->a+mpAtlas->GetCurrentMap()->b)<<endl;
+        cout<<"Map a: "<<mpAtlas->GetCurrentMap()->a<<" Map b: "<<mpAtlas->GetCurrentMap()->b<<" Sum: "<<(mpAtlas->GetCurrentMap()->a+mpAtlas->GetCurrentMap()->b)<<endl;
         cout<<"Map Name?: "<<mpAtlas->currentMapName<<endl;
 
        
