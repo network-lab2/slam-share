@@ -2259,7 +2259,9 @@ void Tracking::StereoInitialization()
                 if(z>0)
                 {
                     cv::Mat x3D = mCurrentFrame.UnprojectStereo(i);
-                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    //boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = mpAtlas->segment->find_or_construct<KeyFrame>(boost::interprocess::anonymous_instance)(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    
                     pNewMP->AddObservation(pKFini,i);
                     pKFini->AddMapPoint(pNewMP,i);
                     pNewMP->ComputeDistinctiveDescriptors();
@@ -2275,7 +2277,8 @@ void Tracking::StereoInitialization()
                 if(rightIndex != -1){
                     cv::Mat x3D = mCurrentFrame.mvStereo3Dpoints[i];
 
-                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    //boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKFini,mpAtlas->GetCurrentMap());
+                    boost::interprocess::offset_ptr<MapPoint>  pNewMP =  mpAtlas->segment->find_or_construct<KeyFrame>(boost::interprocess::anonymous_instance)(x3D,pKFini,mpAtlas->GetCurrentMap());
 
                     pNewMP->AddObservation(pKFini,i);
                     pNewMP->AddObservation(pKFini,rightIndex + mCurrentFrame.Nleft);
@@ -2411,8 +2414,12 @@ void Tracking::CreateInitialMapMonocular()
 {
     //Have not worked with monocular map yet
     // Create KeyFrames
-    boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
-    boost::interprocess::offset_ptr<KeyFrame>  pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    //mpAtlas->segment->find_or_construct<KeyFrame>
+    //boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    //boost::interprocess::offset_ptr<KeyFrame>  pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+
+    boost::interprocess::offset_ptr<KeyFrame>  pKFini = mpAtlas->segment->find_or_construct<KeyFrame>(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKFcur = mpAtlas->segment->find_or_construct<KeyFrame>(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
     if(mSensor == System::IMU_MONOCULAR)
         pKFini->mpImuPreintegrated = (IMU::Preintegrated*)(NULL);
@@ -2432,7 +2439,8 @@ void Tracking::CreateInitialMapMonocular()
 
         //Create MapPoint.
         cv::Mat worldPos(mvIniP3D[i]);
-        boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(worldPos,pKFcur,mpAtlas->GetCurrentMap());
+        //boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(worldPos,pKFcur,mpAtlas->GetCurrentMap());
+        boost::interprocess::offset_ptr<MapPoint>  pMP = mpAtlas->segment->find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)(worldPos,pKFcur,mpAtlas->GetCurrentMap());
 
         pKFini->AddMapPoint(pMP,i);
         pKFcur->AddMapPoint(pMP,mvIniMatches[i]);
@@ -2716,7 +2724,9 @@ void Tracking::UpdateLastFrame()
         if(bCreateNew)
         {
             cv::Mat x3D = mLastFrame.UnprojectStereo(i);
-            boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,mpAtlas->GetCurrentMap(),&mLastFrame,i);
+            //mpAtlas->segment->find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)
+            //boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,mpAtlas->GetCurrentMap(),&mLastFrame,i);
+            boost::interprocess::offset_ptr<MapPoint>  pNewMP = mpAtlas->segment->find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)(x3D,mpAtlas->GetCurrentMap(),&mLastFrame,i);
 
             mLastFrame.mvpMapPoints[i]=pNewMP;
 
@@ -3196,8 +3206,9 @@ void Tracking::CreateNewKeyFrame()
                     else{
                         x3D = mCurrentFrame.UnprojectStereoFishEye(i);
                     }
-
-                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKF,mpAtlas->GetCurrentMap());
+                    //mpAtlas->segment->find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)
+                    //boost::interprocess::offset_ptr<MapPoint>  pNewMP = new MapPoint(x3D,pKF,mpAtlas->GetCurrentMap());
+                    boost::interprocess::offset_ptr<MapPoint>  pNewMP = mpAtlas->segment->find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)(x3D,pKF,mpAtlas->GetCurrentMap());
                     pNewMP->AddObservation(pKF,i);
 
                     //Check if it is a stereo observation in order to not
@@ -4189,7 +4200,8 @@ void Tracking::CreateNewMapPoints()
                 continue;
 
             // Triangulation is succesfull
-            boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(x3D,mpLastKeyFrame,mpAtlas->GetCurrentMap());
+            //boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(x3D,mpLastKeyFrame,mpAtlas->GetCurrentMap());
+            boost::interprocess::offset_ptr<MapPoint>  pMP = mpAtlas->segment->find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)(x3D,mpLastKeyFrame,mpAtlas->GetCurrentMap());
 
             pMP->AddObservation(mpLastKeyFrame,idx1);
             pMP->AddObservation(pKF2,idx2);
