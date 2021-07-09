@@ -87,8 +87,8 @@ public:
 
     void clearAtlas();
 
-    //boost::interprocess::offset_ptr<Map>  GetCurrentMap();
-    Map*  GetCurrentMap();
+    boost::interprocess::offset_ptr<Map>  GetCurrentMap();
+    //Map*  GetCurrentMap();
     boost::interprocess::offset_ptr<Map> currentMapPtr;
 
     void SetMapBad(boost::interprocess::offset_ptr<Map>  pMap);
