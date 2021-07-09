@@ -2418,8 +2418,8 @@ void Tracking::CreateInitialMapMonocular()
     //boost::interprocess::offset_ptr<KeyFrame>  pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
     //boost::interprocess::offset_ptr<KeyFrame>  pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
-    boost::interprocess::offset_ptr<KeyFrame>  pKFini = mpAtlas->segment->find_or_construct<KeyFrame>(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
-    boost::interprocess::offset_ptr<KeyFrame>  pKFcur = mpAtlas->segment->find_or_construct<KeyFrame>(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKFini = mpAtlas->segment->find_or_construct<KeyFrame>(boost::interprocess::anonymous_instance)(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
+    boost::interprocess::offset_ptr<KeyFrame>  pKFcur = mpAtlas->segment->find_or_construct<KeyFrame>(boost::interprocess::anonymous_instance)(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
 
     if(mSensor == System::IMU_MONOCULAR)
         pKFini->mpImuPreintegrated = (IMU::Preintegrated*)(NULL);
