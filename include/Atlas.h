@@ -117,7 +117,7 @@ public:
     int b;
 
     //for managed shared memory
-    boost::interprocess::managed_shared_memory *segment;
+    boost::interprocess::fixed_managed_shared_memory *segment;
 
 protected:
 
