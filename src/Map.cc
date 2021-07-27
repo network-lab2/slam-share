@@ -56,10 +56,10 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     //shm = &shm_temp;
     
 
-    std::cout<<"Map init called?"<<std::endl;
-    std::cout<<"Updating a and B"<<std::endl;
-    a = 10;
-    b = 25;
+    //std::cout<<"Map init called?"<<std::endl;
+    //std::cout<<"Updating a and B"<<std::endl;
+    //a = 10;
+    //b = 25;
     //also initialize the mutex.
     mMutexMapPtr = &mMutexMap;
 
@@ -117,8 +117,8 @@ void Map::SetImuInitialized()
 
 bool Map::isImuInitialized()
 {
-    cout<<"isImuInitialized called"<<endl;
-    Atlas *atl;
+    //cout<<"isImuInitialized called"<<endl;
+    //Atlas *atl;
     unique_lock<mutex> lock(this->mMutexMap);
     return mbImuInitialized;
 }
@@ -275,13 +275,15 @@ void Map::SetBad()
 
 bool Map::IsBad()
 {
+    /*
     std::cout<<"Called to see if map is bad?"<<std::endl;
     std::cout<<"print a integer: "<<mnBigChangeIdx<<endl;
     if(this->mbBad)
         std::cout<<"mbBad is true"<<std::endl;
     else
         std::cout<<"mbBad is not true"<<std::endl;
-    return this->mbBad;
+    */
+    return mbBad;
 }
 
 void Map::RotateMap(const cv::Mat &R)

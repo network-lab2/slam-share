@@ -730,7 +730,8 @@ void LocalMapping::CreateNewMapPoints()
 
             // Triangulation is succesfull
             cv::Mat x3D_(x3D);
-            boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(x3D_,mpCurrentKeyFrame,mpAtlas->GetCurrentMap());
+            //boost::interprocess::offset_ptr<MapPoint>  pMP = new MapPoint(x3D_,mpCurrentKeyFrame,mpAtlas->GetCurrentMap());
+            boost::interprocess::offset_ptr<MapPoint>  pMP = ORB_SLAM3::segment.find_or_construct<MapPoint>(boost::interprocess::anonymous_instance)(x3D_,mpCurrentKeyFrame,mpAtlas->GetCurrentMap());
 
             pMP->AddObservation(mpCurrentKeyFrame,idx1);            
             pMP->AddObservation(pKF2,idx2);

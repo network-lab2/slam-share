@@ -47,6 +47,7 @@ namespace ORB_SLAM3
 {
    //GLOBAL Variable
 extern boost::interprocess::managed_shared_memory segment;//(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+extern boost::interprocess::mapped_region region;
 
 class Verbose
 {
