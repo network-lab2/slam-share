@@ -40,7 +40,7 @@ namespace ORB_SLAM3
  boost::interprocess::fixed_managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240,(void*)0x30000000);
  //boost::interprocess::mapped_region region(segment, boost::interprocess::read_write);
  //Create an allocator that allocates ints from the managed segment
-boost::interprocess::allocator<int, boost::interprocess::managed_shared_memory::segment_manager>
+boost::interprocess::allocator<int, boost::interprocess::fixed_managed_shared_memory::segment_manager>
       allocator_instance(segment.get_segment_manager());
 
 
