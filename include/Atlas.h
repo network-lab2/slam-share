@@ -116,7 +116,7 @@ public:
      int a;
     int b;
 
-    //for managed shared memory
+    //for managed shared memory converted
     boost::interprocess::fixed_managed_shared_memory *segment;
 
 protected:
