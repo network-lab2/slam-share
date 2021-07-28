@@ -49,7 +49,7 @@ namespace ORB_SLAM3
 extern boost::interprocess::fixed_managed_shared_memory segment;//(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
 //extern boost::interprocess::mapped_region region;
  //Create an allocator that allocates ints from the managed segment
-extern boost::interprocess::allocator<int, boost::interprocess::fixed_managed_shared_memory::segment_manager> allocator_instance;
+extern boost::interprocess::allocator<char, boost::interprocess::fixed_managed_shared_memory::segment_manager> allocator_instance;
 //extern boost::interprocess::allocator allocator_instance;
 
 class Verbose

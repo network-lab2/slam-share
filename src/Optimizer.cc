@@ -390,6 +390,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
         {
             //Rather than creating a new matrix here. we will make a memory buffer for the 
             // matrix that resides in shared memory.
+            
             pMP->mPosGBA.create(3,1,CV_32F);
             Converter::toCvMat(vPoint->estimate()).copyTo(pMP->mPosGBA);
             pMP->mnBAGlobalForKF = nLoopKF;

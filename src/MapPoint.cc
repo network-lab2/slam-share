@@ -68,7 +68,10 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     mInitV=(double)uv_init.y;
     mpHostKF = pHostKF;
 
-    mNormalVector = cv::Mat::zeros(3,1,CV_32F);
+    //initialize data for cv matrix mNormalVector
+    void *mNormalVector_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+
+    mNormalVector = cv::Mat::zeros(3,1,CV_32F,mNormalVector_data);
     mNormalVectorx = cv::Matx31f::zeros();
 
     // Worldpos is not set
@@ -83,6 +86,14 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     mnCorrectedReference(0), mnBAGlobalForKF(0), mpRefKF(static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL)), mnVisible(1),
     mnFound(1), mbBad(false), mpReplaced(NULL), mpMap(pMap), mnOriginMapId(pMap->GetId())
 {
+
+    //initialize all the cv matrix here:
+    // get size from above.
+    //void *mworldPos_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    // create mworldpos data
+
+
+
     Pos.copyTo(mWorldPos);
     mWorldPosx = cv::Matx31f(Pos.at<float>(0), Pos.at<float>(1), Pos.at<float>(2));
 
