@@ -72,8 +72,10 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     //initialize data for cv matrix mNormalVector
     void *mNormalVector_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
 
-    //    mNormalVector = cv::Mat::zeros(3,1,CV_32F,mNormalVector_data);
-    mNormalVector = cv::Mat::zeros(3,1,CV_32F);
+    //mNormalVector = cv::Mat::zeros(3,1,CV_32F,mNormalVector_data);
+    //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
+    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_data);
+    mNormalVector_ptr = mNormalVector_data;
 
     mNormalVectorx = cv::Matx31f::zeros();
 
