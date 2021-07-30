@@ -325,6 +325,11 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
 {
     unique_lock<mutex> lock(mMutexFeatures);
     mvpMapPoints[idx]=pMP;
+
+    //Let's check all the matrix sizes of mappoint here:
+    std::cout<<" Name      "<<" Rows "<<" Cols "<<" Channels "<<" Size "<<std::endl;
+    std::cout<<"mWorldPos: "<<pMP->GetWorldPos().rows<<" "<<pMP->GetWorldPos().cols<<" "<<pMP->GetWorldPos().size<<std::endl;
+
 }
 
 void KeyFrame::EraseMapPointMatch(const int &idx)

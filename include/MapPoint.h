@@ -97,6 +97,8 @@ public:
     boost::interprocess::offset_ptr<Map>  GetMap();
     void UpdateMap(boost::interprocess::offset_ptr<Map>  pMap);
 
+
+
 public:
     long unsigned int mnId;
     static long unsigned int nNextId;
@@ -143,6 +145,22 @@ public:
     static std::mutex mGlobalMutex;
 
     unsigned int mnOriginMapId;
+
+
+    // all the matrix variable addresses.
+    void *mPosGBA_ptr;
+    void *mPosMerge_ptr;
+    void *mNormalVectorMerge_ptr;
+
+    // For the absolute coordinates
+    void *mWorldPos_ptr;
+    void *mWorldPosx_ptr;
+
+    void *mNormalVector_ptr;
+    void *mNormalVectorx_ptr;
+    void *mDescriptor_ptr;
+
+    
 
 protected:    
 
