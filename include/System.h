@@ -40,6 +40,7 @@
 #include "Viewer.h"
 #include "ImuTypes.h"
 #include "Config.h"
+#include "MapPoint.h"
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 
