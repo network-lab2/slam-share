@@ -97,6 +97,9 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     // get size from above.
     //void *mworldPos_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     // create mworldpos data
+     //initialize data for cv matrix mNormalVector
+    mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mWorldPos = cv::Mat(3,1,CV_32F,mWorldPos_ptr);
 
 
 
