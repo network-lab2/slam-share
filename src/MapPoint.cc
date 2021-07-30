@@ -76,6 +76,7 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_data);
     mNormalVector_ptr = mNormalVector_data;
+    std::cout<<"Shared memory data for matrix "<<mNormalVector_ptr;
 
     mNormalVectorx = cv::Matx31f::zeros();
 
