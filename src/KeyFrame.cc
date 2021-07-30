@@ -330,7 +330,7 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
     std::cout<<" Name      "<<"Rows X Cols"<<" bytes "<<std::endl;
     std::cout<<"mWorldPos: "<<pMP->GetWorldPos().size<<pMP->GetWorldPos().total()*pMP->GetWorldPos().elemSize()<<std::endl;
     std::cout<<"mNormalVector: "<<pMP->GetNormal().size<<pMP->GetNormal().total()*pMP->GetNormal().elemSize()<<std::endl;
-    std::cout<<"mWorldPosx: "<<pMP->GetWorldPos2().size<<pMP->GetWorldPos2().total()*pMP->GetWorldPos2().elemSize()<<std::endl;
+    //std::cout<<"mWorldPosx: "<<pMP->GetWorldPos2().size<<pMP->GetWorldPos2().total()*pMP->GetWorldPos2().elemSize()<<std::endl;
 }
 
 void KeyFrame::EraseMapPointMatch(const int &idx)
