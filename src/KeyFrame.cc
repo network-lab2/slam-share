@@ -327,8 +327,8 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
     mvpMapPoints[idx]=pMP;
 
     //Let's check all the matrix sizes of mappoint here:
-    std::cout<<" Name      "<<" Rows "<<" Cols "<<" Channels "<<" Size "<<std::endl;
-    std::cout<<"mWorldPos: "<<pMP->GetWorldPos().rows<<" "<<pMP->GetWorldPos().cols<<" "<<pMP->GetWorldPos().size<<std::endl;
+    std::cout<<" Name      "<<"Rows X Cols"<<" bytes "<<std::endl;
+    std::cout<<"mWorldPos: "<<pMP->GetWorldPos().size<<pMP->GetWorldPos().total()*pMP->GetWorldPos().elemSize()<<std::endl;
 
 }
 
