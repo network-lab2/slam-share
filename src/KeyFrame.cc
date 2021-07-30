@@ -330,6 +330,11 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
     std::cout<<" Name      "<<"Rows X Cols"<<" bytes "<<std::endl;
     std::cout<<"mWorldPos: "<<pMP->GetWorldPos().size<<" "<<pMP->GetWorldPos().total()*pMP->GetWorldPos().elemSize()<<std::endl;
     std::cout<<"mNormalVector: "<<pMP->GetNormal().size<<" "<<pMP->GetNormal().total()*pMP->GetNormal().elemSize()<<std::endl;
+    std::cout<<"mPosGBA: "<<pMP->mPosGBA.size<<" "<<pMP->mPosGBA.total()*pMP->mPosGBA.elemSize()<<std::endl;
+    std::cout<<"mPosMerge: "<<pMP->mPosMerge.size<<" "<<pMP->mPosMerge.total()*pMP->mPosMerge.elemSize()<<std::endl;
+    std::cout<<"mNormalVectorMerge: "<<pMP->mNormalVectorMerge.size<<" "<<pMP->mNormalVectorMerge.total()*pMP->mNormalVectorMerge.elemSize()<<std::endl;
+    
+
     //std::cout<<"mWorldPosx: "<<pMP->GetWorldPos2().size<<pMP->GetWorldPos2().total()*pMP->GetWorldPos2().elemSize()<<std::endl;
 }
 
