@@ -91,7 +91,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
     mTcwGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
-    mTcwBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate();
+    //mTcwBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate();
 
 
     if(F.mVw.empty())
