@@ -142,6 +142,30 @@ void Atlas::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     boost::interprocess::offset_ptr<Map>  pMapKF = pKF->GetMap();
     pMapKF->AddKeyFrame(pKF);
+    // print the sizes of all the matrices
+    std::cout<<"----- ==== KEYFRAMES Details ---- ======= \n";
+    std::cout<<"mTcwGBA: "<<pKF->mTcwGBA.size<<" "<<pKF->mTcwGBA.total()*pKF->mTcwGBA.elemSize()<<std::endl;
+    std::cout<<"mTcwBefGBA: "<<pKF->mTcwBefGBA.size<<" "<<pKF->mTcwBefGBA.total()*pKF->mTcwBefGBA.elemSize()<<std::endl;
+    std::cout<<"mVwbGBA: "<<pKF->mVwbGBA.size<<" "<<pKF->mVwbGBA.total()*pKF->mVwbGBA.elemSize()<<std::endl;
+    std::cout<<"mVwbBefGBA: "<<pKF->mVwbBefGBA.size<<" "<<pKF->mVwbBefGBA.total()*pKF->mVwbBefGBA.elemSize()<<std::endl;
+    
+    std::cout<<"----- ==== KEYFRAMES MERGE Details ---- ======= \n";
+
+    std::cout<<"mTcwMerge: "<<pKF->mTcwMerge.size<<" "<<pKF->mTcwMerge.total()*pKF->mTcwMerge.elemSize()<<std::endl;
+    std::cout<<"mTcwBefMerge: "<<pKF->mTcwBefMerge.size<<" "<<pKF->mTcwBefMerge.total()*pKF->mTcwBefMerge.elemSize()<<std::endl;
+    std::cout<<"mTwcBefMerge: "<<pKF->mTwcBefMerge.size<<" "<<pKF->mTwcBefMerge.total()*pKF->mTwcBefMerge.elemSize()<<std::endl;
+    std::cout<<"mVwbMerge: "<<pKF->mVwbMerge.size<<" "<<pKF->mVwbMerge.total()*pKF->mVwbMerge.elemSize()<<std::endl;
+    std::cout<<"mVwbBefMerge: "<<pKF->mVwbBefMerge.size<<" "<<pKF->mVwbBefMerge.total()*pKF->mVwbBefMerge.elemSize()<<std::endl;
+
+    std::cout<<"----- ==== KEYFRAMES other matrix Details ---- ======= \n";
+    std::cout<<"Tcw: "<<pKF->GetPose().size<<" "<<pKF->GetPose().total()*pKF->GetPose().elemSize()<<std::endl;  
+    std::cout<<"Twc: "<<pKF->GetPoseInverse().size<<" "<<pKF->GetPoseInverse().total()*pKF->GetPoseInverse().elemSize()<<std::endl;
+    std::cout<<"Ow: "<<pKF->GetCameraCenter().size<<" "<<pKF->GetCameraCenter().total()*pKF->GetCameraCenter().elemSize()<<std::endl;
+    std::cout<<"Cw: "<<pKF->GetStereoCenter().size<<" "<<pKF->GetStereoCenter().total()*pKF->GetStereoCenter().elemSize()<<std::endl;
+    std::cout<<"Vw: "<<pKF->GetVelocity().size<<" "<<pKF->GetVelocity().total()*pKF->GetVelocity().elemSize()<<std::endl;
+    std::cout<<"Owb: "<<pKF->GetImuPosition().size<<" "<<pKF->GetImuPosition().total()*pKF->GetImuPosition().elemSize()<<std::endl;
+
+
 }
 
 void Atlas::AddMapPoint(boost::interprocess::offset_ptr<MapPoint>  pMP)
