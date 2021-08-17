@@ -84,6 +84,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
         }
     }
 
+    //creating all the matrix in the keyframe
+    std::cout<<"Keyframe constructor.--++"<<std::endl;
+
 
 
     if(F.mVw.empty())

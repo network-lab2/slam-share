@@ -215,6 +215,13 @@ public:
     cv::Mat mTcwBefGBA;
     cv::Mat mVwbGBA;
     cv::Mat mVwbBefGBA;
+
+    // Their component void * functions
+    void *mTcwGBA_ptr;
+    void *mTcwBefGBA_ptr;
+    void *mVwbGBA_ptr;
+    void *mVwbBefGBA_ptr;
+
     IMU::Bias mBiasGBA;
     long unsigned int mnBAGlobalForKF;
 
