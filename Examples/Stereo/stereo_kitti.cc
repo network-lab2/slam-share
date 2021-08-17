@@ -63,8 +63,17 @@ int main(int argc, char **argv)
 
     // Main loop
     cv::Mat imLeft, imRight;
+    int count_images = 0;
     for(int ni=0; ni<nImages; ni++)
     {
+
+        //stop after 500 frames.
+        count_images++;
+        if(count_image>=500)
+        {
+            std::cout<<" --- More than 500 images --- we pause now"<<std::endl;
+            int flag = std::cin.get();
+        }
         // Read left and right images from file
         imLeft = cv::imread(vstrImageLeft[ni],cv::IMREAD_UNCHANGED);
         imRight = cv::imread(vstrImageRight[ni],cv::IMREAD_UNCHANGED);
