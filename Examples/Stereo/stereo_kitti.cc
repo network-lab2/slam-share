@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
         //stop after 500 frames.
         count_images++;
-        if(count_image>=500)
+        if(count_images>=500)
         {
             std::cout<<" --- More than 500 images --- we pause now"<<std::endl;
             int flag = std::cin.get();
