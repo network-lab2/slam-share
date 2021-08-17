@@ -87,15 +87,25 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     mpHostKF = pHostKF;
 
     //initialize data for cv matrix mNormalVector
-    void *mNormalVector_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mWorldPos = cv::Mat(3,1,CV_32F,mWorldPos_ptr);
+    std::cout<<"Shared memory data for worldpos 2nd one --- "<<mWorldPos_ptr<<std::endl;
 
-    //mNormalVector = cv::Mat::zeros(3,1,CV_32F,mNormalVector_data);
-    //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
-    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_data);
+    Pos.copyTo(mWorldPos);
+    mWorldPosx = cv::Matx31f(Pos.at<float>(0), Pos.at<float>(1), Pos.at<float>(2));
+    
+    //initialize data for cv matrix mNormalVector
+    mNormalVector_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     memset(mNormalVector_ptr, 0, 3*4);//zeroing the mNormalVector
-    mNormalVector_ptr = mNormalVector_data;
-    std::cout<<"Shared memory data for matrix "<<mNormalVector_ptr<<std::endl;
+    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_ptr);
 
+
+    //initialize data for cv matrix mDescriptor
+    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr);
+
+    //mNormalVector_ptr = mNormalVector_data;
+    //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVectorx = cv::Matx31f::zeros();
 
     // Worldpos is not set
