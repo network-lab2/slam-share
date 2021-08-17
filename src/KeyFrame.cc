@@ -42,6 +42,9 @@ KeyFrame::KeyFrame():
         mbToBeErased(false), mbBad(false), mHalfBaseline(0), mbCurrentPlaceRecognition(false), mbHasHessian(false), mnMergeCorrectedForKF(0),
         NLeft(0),NRight(0), mnNumberOfOpt(0)
 {
+    //creating all the matrix in the keyframe
+    std::cout<<"Keyframe constructor.--++ First"<<std::endl;
+
 
 }
 
