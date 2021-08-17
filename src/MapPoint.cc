@@ -86,14 +86,8 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     mInitV=(double)uv_init.y;
     mpHostKF = pHostKF;
 
-    //initialize data for cv matrix mNormalVector
-    mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
-    mWorldPos = cv::Mat(3,1,CV_32F,mWorldPos_ptr);
-    std::cout<<"Shared memory data for worldpos 2nd one --- "<<mWorldPos_ptr<<std::endl;
+    std::cout<<"2nd *** Shared memory data for worldpos "<<mWorldPos_ptr<<std::endl;
 
-    Pos.copyTo(mWorldPos);
-    mWorldPosx = cv::Matx31f(Pos.at<float>(0), Pos.at<float>(1), Pos.at<float>(2));
-    
     //initialize data for cv matrix mNormalVector
     mNormalVector_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     memset(mNormalVector_ptr, 0, 3*4);//zeroing the mNormalVector
