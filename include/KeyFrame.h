@@ -304,6 +304,16 @@ protected:
     cv::Mat Ow;
     cv::Mat Cw; // Stereo middel point. Only for visualization
 
+    // matrices data pointers
+    void *Tcw_ptr;
+    void *Twc_ptr;
+    void *Ow_ptr;
+    void *Cw_ptr;
+    void *Owb_ptr;
+    void *Vw_ptr;
+
+
+
     cv::Matx44f Tcw_, Twc_, Tlr_;
     cv::Matx31f Ow_;
 
