@@ -59,7 +59,7 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
 
 
     //initialize data for cv matrix mDescriptor
-    mDescriptor_ptr = ORB_SLAM::allocator_instance.allocate(3*1*4);
+    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr);
 
     //mNormalVector_ptr = mNormalVector_data;
