@@ -18,7 +18,7 @@
 
 #include "MapPoint.h"
 #include "ORBmatcher.h"
-#include"System.h"
+#include "System.h"
 
 #include<mutex>
 
@@ -51,7 +51,13 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
 
     Pos.copyTo(mWorldPos);
     mWorldPosx = cv::Matx31f(Pos.at<float>(0), Pos.at<float>(1), Pos.at<float>(2));
-    mNormalVector = cv::Mat::zeros(3,1,CV_32F);
+    
+    //initialize data for cv matrix mNormalVector
+    mNormalVector_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    memset(mNormalVector_ptr, 0, 3*4);//zeroing the mNormalVector
+    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_data);
+    mNormalVector_ptr = mNormalVector_data;
+    //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVectorx = cv::Matx31f::zeros();
 
     mbTrackInViewR = false;
@@ -80,6 +86,7 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F,mNormalVector_data);
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_data);
+    memset(mNormalVector_ptr, 0, 3*4);//zeroing the mNormalVector
     mNormalVector_ptr = mNormalVector_data;
     std::cout<<"Shared memory data for matrix "<<mNormalVector_ptr<<std::endl;
 
