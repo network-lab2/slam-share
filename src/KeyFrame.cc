@@ -103,11 +103,11 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     Owb_ptr = ORB_SLAM3::allocator_instance.allocate(4*4);
     Vw_ptr = ORB_SLAM3::allocator_instance.allocate(3*4);
 
-    Tcw = cv::Mat(4,4,CV_32F,Tcw_ptr);
-    Twc = cv::Mat(4,4,CV_32F,Twc_ptr);
-    Ow = cv::Mat(3,1,CV_32F,Ow_ptr);
-    Cw = cv::Mat(4,1,CV_32F,Cw_ptr);
-    Owb = cv::Mat(3,1,CV_32F,Owb_ptr);
+    Tcw = cv::Mat(4,4,CV_32F,Tcw_ptr.get());
+    Twc = cv::Mat(4,4,CV_32F,Twc_ptr.get());
+    Ow = cv::Mat(3,1,CV_32F,Ow_ptr.get());
+    Cw = cv::Mat(4,1,CV_32F,Cw_ptr.get());
+    Owb = cv::Mat(3,1,CV_32F,Owb_ptr.get());
 
 
     if(F.mVw.empty())
