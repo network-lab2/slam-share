@@ -102,6 +102,8 @@ void Atlas::CreateNewMap()
     //initialize the map now.
 
     //first see if there is already a map or not
+    std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
+    std::cout<<"print integer: "<<(*(ret.first))<<std::endl;
     int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
 
     if((*magic_num) == 555){
