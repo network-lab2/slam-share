@@ -108,6 +108,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
 
+    cout<<"Created Key frame database"<<endl;
+
     //Creating a new atlas object in shared memory
     //Create the Atlas
     //mpAtlas = new Atlas(0);
