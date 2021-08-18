@@ -36,8 +36,8 @@
 
 namespace ORB_SLAM3
 {
-    std::cout<<"Installing shared memory "<<std::endl;
-  //Shared memory variables
+   
+    //Shared memory variables
     //boost::interprocess::fixed_managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240,(void*)0x30000000);
     boost::interprocess::fixed_managed_shared_memory segment(boost::interprocess::open_only, "MySharedMemory",(void*)0x30000000);
     //boost::interprocess::mapped_region region(segment, boost::interprocess::read_write);
