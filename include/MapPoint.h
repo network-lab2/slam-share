@@ -149,17 +149,17 @@ public:
 
 
     // all the matrix variable addresses.
-    char *mPosGBA_ptr;
-    char *mPosMerge_ptr;
-    char *mNormalVectorMerge_ptr;
+    boost::interprocess::offset_ptr<char> mPosGBA_ptr;
+    boost::interprocess::offset_ptr<char> mPosMerge_ptr;
+    boost::interprocess::offset_ptr<char> mNormalVectorMerge_ptr;
 
     // For the absolute coordinates
-    char *mWorldPos_ptr;
-    char *mWorldPosx_ptr;
+    boost::interprocess::offset_ptr<char> mWorldPos_ptr;
+    boost::interprocess::offset_ptr<char> mWorldPosx_ptr;
 
-    char *mNormalVector_ptr;
-    char *mNormalVectorx_ptr;
-    char *mDescriptor_ptr;
+    boost::interprocess::offset_ptr<char> mNormalVector_ptr;
+    boost::interprocess::offset_ptr<char> mNormalVectorx_ptr;
+    boost::interprocess::offset_ptr<char> mDescriptor_ptr;
 
 
 

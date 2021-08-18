@@ -309,8 +309,8 @@ protected:
     boost::interprocess::offset_ptr<char> Twc_ptr;
     boost::interprocess::offset_ptr<char> Ow_ptr;
     boost::interprocess::offset_ptr<char> Cw_ptr;
-     boost::interprocess::offset_ptr<char> Owb_ptr;
-     boost::interprocess::offset_ptr<char> Vw_ptr;
+    boost::interprocess::offset_ptr<char> Owb_ptr;
+    boost::interprocess::offset_ptr<char> Vw_ptr;
 
 
 
