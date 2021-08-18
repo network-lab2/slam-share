@@ -109,10 +109,12 @@ void Atlas::CreateNewMap()
     }
     else{
         std::cout<<"Magic num is: "<<(*magic_num)<<std::endl;
+        int magic = 555;
+        memcpy(magic_num,&magic,sizeof(int));
+        std::cout<<"New Magic Num: "<<(*magic_num)<<std::endl;
     }
     int flag = std::cin.get();
-    int magic = 555;
-    memcpy(magic_num,&magic,sizeof(int));
+
 
 
     mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>("Map1") (mnLastInitKFidMap);
