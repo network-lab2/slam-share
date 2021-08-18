@@ -46,7 +46,7 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
 {
     //initialize data for cv matrix mNormalVector
     mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
-    mWorldPos = cv::Mat(3,1,CV_32F,mWorldPos_ptr);
+    mWorldPos = cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
     std::cout<<"Shared memory data for worldpos "<<mWorldPos_ptr<<std::endl;
 
     Pos.copyTo(mWorldPos);
@@ -55,12 +55,12 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
     //initialize data for cv matrix mNormalVector
     mNormalVector_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     memset(mNormalVector_ptr, 0, 3*4);//zeroing the mNormalVector
-    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_ptr);
+    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_ptr.get());
 
 
     //initialize data for cv matrix mDescriptor
     mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
-    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr);
+    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr.get());
 
     //mNormalVector_ptr = mNormalVector_data;
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
