@@ -217,10 +217,10 @@ public:
     cv::Mat mVwbBefGBA;
 
     // Their component void * functions
-    char *mTcwGBA_ptr;
-    char *mTcwBefGBA_ptr;
-    char *mVwbGBA_ptr;
-    char *mVwbBefGBA_ptr;
+    boost::interprocess::offset_ptr<char> mTcwGBA_ptr;
+    boost::interprocess::offset_ptr<char> mTcwBefGBA_ptr;
+    boost::interprocess::offset_ptr<char> mVwbGBA_ptr;
+    boost::interprocess::offset_ptr<char> mVwbBefGBA_ptr;
 
     IMU::Bias mBiasGBA;
     long unsigned int mnBAGlobalForKF;
