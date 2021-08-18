@@ -149,17 +149,17 @@ public:
 
 
     // all the matrix variable addresses.
-    void *mPosGBA_ptr;
-    void *mPosMerge_ptr;
-    void *mNormalVectorMerge_ptr;
+    char *mPosGBA_ptr;
+    char *mPosMerge_ptr;
+    char *mNormalVectorMerge_ptr;
 
     // For the absolute coordinates
-    void *mWorldPos_ptr;
-    void *mWorldPosx_ptr;
+    char *mWorldPos_ptr;
+    char *mWorldPosx_ptr;
 
-    void *mNormalVector_ptr;
-    void *mNormalVectorx_ptr;
-    void *mDescriptor_ptr;
+    char *mNormalVector_ptr;
+    char *mNormalVectorx_ptr;
+    char *mDescriptor_ptr;
 
 
 
