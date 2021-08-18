@@ -111,8 +111,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
 
     cout<<"Created Key frame database"<<endl;
-     int *magic2 = (segment.find<int>("magic-num2")).first;
-     std::cout<<"Magic num is :"<<(*magic2)<<std::endl;
+     
 
     //Creating a new atlas object in shared memory
     //Create the Atlas
