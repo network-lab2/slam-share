@@ -217,10 +217,10 @@ public:
     cv::Mat mVwbBefGBA;
 
     // Their component void * functions
-    void *mTcwGBA_ptr;
-    void *mTcwBefGBA_ptr;
-    void *mVwbGBA_ptr;
-    void *mVwbBefGBA_ptr;
+    char *mTcwGBA_ptr;
+    char *mTcwBefGBA_ptr;
+    char *mVwbGBA_ptr;
+    char *mVwbBefGBA_ptr;
 
     IMU::Bias mBiasGBA;
     long unsigned int mnBAGlobalForKF;
@@ -305,12 +305,12 @@ protected:
     cv::Mat Cw; // Stereo middel point. Only for visualization
 
     // matrices data pointers
-    void *Tcw_ptr;
-    void *Twc_ptr;
-    void *Ow_ptr;
-    void *Cw_ptr;
-    void *Owb_ptr;
-    void *Vw_ptr;
+    char *Tcw_ptr;
+    char *Twc_ptr;
+    char *Ow_ptr;
+    char *Cw_ptr;
+    char *Owb_ptr;
+    char *Vw_ptr;
 
 
 
