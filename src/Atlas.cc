@@ -101,32 +101,7 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
 
-    //first see if there is already a map or not
-    std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
-    int *magic_num;
-    if(ret.first == 0)
-    {
-        std::cout<<"First pointer is 0"<<std::endl;
-        magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111);
-
-    }
-    else{
-        std::cout<<"print integer: "<<(*(ret.first))<<std::endl;
-        magic_num = ret.first;
-    }
-    //int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
     
-
-    if((*magic_num) == 555){
-        std::cout<<"Magic num is 555, read from another process."<<std::endl;
-    }
-    else{
-        //magic_num = ORB_SLAM3::segment.construct<int>("magic-num",std::nothrow)(555);
-        std::cout<<"Magic num is: "<<(*magic_num)<<" address is: "<<magic_num<<std::endl;
-        int magic = 555;
-        memcpy(magic_num,&magic,sizeof(int));
-        std::cout<<"New Magic Num: "<<(*magic_num)<<std::endl;
-    }
     int flag = std::cin.get();
 
 
