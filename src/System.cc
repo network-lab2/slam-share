@@ -101,9 +101,10 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout << "Vocabulary loaded!" << endl << endl;
 
     
+    boost::interprocess::fixed_managed_shared_memory seg(boost::interprocess::open_only, "MySharedMemory",(void*)0x30000000);
 
     //boost::interprocess::managed_shared_memory seg(boost::interprocess::open_only, "MySharedMemory");
-    int *magic2 = (segment.find<int>("magic-num2")).first;
+    int *magic2 = (seg.find<int>("magic-num2")).first;
      std::cout<<"Magic num is :"<<(*magic2)<<std::endl;
     //segment = &seg;
 
