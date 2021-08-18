@@ -101,8 +101,8 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
 
-    
-    int flag = std::cin.get();
+
+    //int flag = std::cin.get();
 
 
 
