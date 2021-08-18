@@ -102,7 +102,7 @@ void Atlas::CreateNewMap()
     //initialize the map now.
 
     //first see if there is already a map or not
-    int *magic_num = ORB_SLAM3::segment.find<int>("magic-num");
+    int *magic_num = ORB_SLAM3::segment.find<int>("magic-num").first;
 
     if(*magic_num == 555){
         std::cout<<"Magic num is 555, read from another process."<<std::endl;
