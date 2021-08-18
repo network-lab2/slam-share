@@ -118,7 +118,15 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Creating a new atlas object in shared memory
     //Create the Atlas
     //mpAtlas = new Atlas(0);
-    mpAtlas = segment.find_or_construct<Atlas>("Atlas")(0);
+    mpAtlas = (segment.find<Atlas>("Atlas")).first;
+
+    if(0 == mpAtlas){
+        std::cout<<"Atlas did not exist"<<std::endl;
+    mpAtlas = segment.construct<Atlas>("Atlas")(0);
+}
+else{
+    std::cout<<"Atlas EXISTED!!"<<std::endl;
+}
     mpAtlas->segment = &segment;
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)
