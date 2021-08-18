@@ -102,7 +102,9 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     
 
-    //boost::interprocess::managed_shared_memory seg(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
+    /boost::interprocess::managed_shared_memory seg(boost::interprocess::open_only, "MySharedMemory");
+     int *magic2 = (seg.find<int>("magic-num2")).first;
+     std::cout<<"Magic num is :"<<(*magic2)<<std::endl;
     //segment = &seg;
 
     //Create KeyFrame Database
