@@ -101,6 +101,18 @@ void Atlas::CreateNewMap()
 
     //initialize the map now.
 
+    //first see if there is already a map or not
+    int *magic_num = ORB_SLAM3::segment.find_or_construct<int>("magic-num")(111);
+
+    if(*magic_num == 555){
+        std::cout<<"Magic num is 555, read from another process."<<std::endl;
+    }
+    else{
+        std::cout<<"Magic num is: "<<(*magic_num)<<std::endl;
+    }
+    int flag = std::cin.get();
+
+
     mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>("Map1") (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;

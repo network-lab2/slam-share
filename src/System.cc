@@ -97,7 +97,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     }
     cout << "Vocabulary loaded!" << endl << endl;
 
-    cout<<"Installing Shared memory "<<endl;
+    //cout<<"Installing Shared memory "<<endl;
     //boost::interprocess::managed_shared_memory seg(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //segment = &seg;
 
