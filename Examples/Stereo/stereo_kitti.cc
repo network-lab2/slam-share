@@ -70,9 +70,9 @@ int main(int argc, char **argv)
 
         //stop after 500 frames.
         count_images++;
-        if(count_images>=500)
+        if(count_images>=50)
         {
-            std::cout<<" --- More than 500 images --- we pause now"<<std::endl;
+            std::cout<<" --- More than 50 images --- we pause now"<<std::endl;
             int flag = std::cin.get();
         }
         // Read left and right images from file
