@@ -165,6 +165,9 @@ else{
     //Initialize the Tracking thread
     //(it will live in the main thread of execution, the one that called this constructor)
     cout << "Seq. Name: " << strSequence << endl;
+
+    //let's look around the other atlas.. 
+    cout<<" Output from Atlas "<<mpAtlas->GetLastInitKFid()<<endl;
     
     mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
