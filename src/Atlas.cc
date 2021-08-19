@@ -289,9 +289,22 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     
-    currentMapName = "Map1";
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
-    mpCurrentMap = segment->find_or_construct<Map>("Map1")();
+    
+    std::pair<int *,std::size_t> ret = segment->find<Map>("Map1");
+    if (ret.first == 0)
+    {
+        std::cout<<"Cannot find Map1. Making the map1 now\n";
+        segment->construct<Map>("Map1")();
+
+    }
+    else
+        mpCurrentMap = ret.first;
+
+    // find_or_construct do not work.. see if the code runs with just find
+
+
+    //mpCurrentMap = segment->find_or_construct<Map>("Map1")();
 
     
     //run functions.
