@@ -167,7 +167,7 @@ else{
     cout << "Seq. Name: " << strSequence << endl;
 
     //let's look around the other atlas.. 
-    cout<<" Output from Atlas "<<mpAtlas->GetLastInitKFid()<<endl;
+    cout<<" Output from Atlas: CountMaps() "<<mpAtlas->CountMaps()<<endl;
     
     mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, strSequence);
