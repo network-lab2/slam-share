@@ -137,8 +137,8 @@ public:
     */
 
     //for managed shared memory
-    //boost::interprocess::fixed_managed_shared_memory *segment;
-    boost::interprocess::managed_shared_memory *segment;
+    boost::interprocess::fixed_managed_shared_memory *segment;
+    //boost::interprocess::managed_shared_memory *segment;
 
     //bool mbBad = false;
 
