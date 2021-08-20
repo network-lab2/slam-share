@@ -108,7 +108,7 @@ void Atlas::CreateNewMap()
    
     if(ret.first == 0)
     {
-        i= 1;
+        i=2;
     }
     
     string mapname = "Map";
