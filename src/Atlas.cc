@@ -110,6 +110,10 @@ void Atlas::CreateNewMap()
     {
         i += *(ret.first);
     }
+
+
+    *ret.first++;
+    processnum = *ret.first;
     
     string mapname = "Map";
     mapname+=i;

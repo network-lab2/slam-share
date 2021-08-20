@@ -151,7 +151,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         std::cout<<"Atlas EXISTED!! Using the same Atlas."<<std::endl;
     }
     mpAtlas->segment = &segment;
-    mpAtlas->processnum = *magic_num;
+    //mpAtlas->processnum = *magic_num;
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)
         mpAtlas->SetInertialSensor();
