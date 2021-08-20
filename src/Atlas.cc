@@ -105,7 +105,7 @@ void Atlas::CreateNewMap()
     //int flag = std::cin.get();
 
 
-    char i = ORB_SLAM3::processnum;
+    char i = processnum;
     string mapname = "Map";
     mapname+=i;
     mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>(mapname.c_str()) (mnLastInitKFidMap);
