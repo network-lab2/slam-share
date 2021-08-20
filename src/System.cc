@@ -123,7 +123,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     if(ret.first == 0)
     {
-        int newnum = ret.first+1;
+        int newnum = *ret.first+1;
         std::cout<<"First pointer is 0; First process"<<std::endl;
         magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
 
