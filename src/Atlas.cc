@@ -294,8 +294,10 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
 
-    
-    std::pair<Map *,std::size_t> ret = segment->find<Map>("Map1");
+     char i = processnum;
+    string mapname = "Map";
+    mapname+=i;
+    std::pair<Map *,std::size_t> ret = segment->find<Map>(mapname.c_str());
     if (ret.first == 0)
     {
         std::cout<<"Cannot find Map. Making a map now\n";
