@@ -108,6 +108,7 @@ void Atlas::CreateNewMap()
     char i = processnum;
     string mapname = "Map";
     mapname+=i;
+    std::cout<<"MapName in create map: "<<mapname<<std::endl;
     mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>(mapname.c_str()) (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
@@ -294,9 +295,10 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
 
-     char i = processnum;
+    char i = processnum;
     string mapname = "Map";
     mapname+=i;
+    std::cout<<"MapName in create map: "<<mapname<<std::endl;
     std::pair<Map *,std::size_t> ret = segment->find<Map>(mapname.c_str());
     if (ret.first == 0)
     {
