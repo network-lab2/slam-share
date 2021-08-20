@@ -300,7 +300,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
 
-    char i = processnum;
+    char i = 'a'+processnum;
     string mapname = "Map";
     mapname+=i;
     std::cout<<"MapName in create map: "<<mapname<<std::endl;
