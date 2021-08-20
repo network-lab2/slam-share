@@ -118,11 +118,11 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout<<"Created Key frame database"<<endl;
     //first see if there is already a map or not
     std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
-    int *magic_num = ret.first;
+    int *magic_num = nullptr;
 
     if(ret.first == 0)
     {
-        int newnum = *ret.first+1;
+        int newnum = 1;
         std::cout<<"First pointer is 0; First process"<<std::endl;
         magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
         
