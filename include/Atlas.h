@@ -120,6 +120,9 @@ public:
     //boost::interprocess::fixed_managed_shared_memory *segment;
     boost::interprocess::managed_shared_memory *segment;
 
+    //process num
+    int processnum;
+
 protected:
 
     std::set<boost::interprocess::offset_ptr<Map> > mspMaps;

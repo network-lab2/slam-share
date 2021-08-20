@@ -119,18 +119,18 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //first see if there is already a map or not
     std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
     int *magic_num = ret.first;
-    processnum = *magic_num;
 
     if(ret.first == 0)
     {
         int newnum = *ret.first+1;
         std::cout<<"First pointer is 0; First process"<<std::endl;
         magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
+        
 
     }
     else{
         std::cout<<"Not first process. Process Num: "<<(*(ret.first))<<std::endl;
-        magic_num = ret.first;
+
     }
     //int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
     
@@ -139,6 +139,9 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Create the Atlas
     //mpAtlas = new Atlas(0);
     mpAtlas = (segment.find<Atlas>("Atlas")).first;
+    mpAtlas->processnum = *magic_num;
+    std::cout<<"Incrementing the magic number\n";
+    *magic_num++;
 
     if(0 == mpAtlas){
         std::cout<<"Atlas did not exist"<<std::endl;
