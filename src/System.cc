@@ -50,6 +50,7 @@ namespace ORB_SLAM3
     //cout<<"Installing Shared memory "<<endl;
 
 
+
 Verbose::eLevel Verbose::th = Verbose::VERBOSITY_NORMAL;
 
 System::System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
@@ -117,32 +118,23 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout<<"Created Key frame database"<<endl;
     //first see if there is already a map or not
     std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
-    int *magic_num;
+    int *magic_num = ret.first;
+    processnum = *magic_num;
+
     if(ret.first == 0)
     {
-        std::cout<<"First pointer is 0"<<std::endl;
-        magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111);
+        int newnum = ret.first+1;
+        std::cout<<"First pointer is 0; First process"<<std::endl;
+        magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
 
     }
     else{
-        std::cout<<"print integer: "<<(*(ret.first))<<std::endl;
+        std::cout<<"Not first process. Process Num: "<<(*(ret.first))<<std::endl;
         magic_num = ret.first;
     }
     //int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
     
-
-    if((*magic_num) == 555){
-        std::cout<<"Magic num is 555, read from another process."<<std::endl;
-    }
-    else{
-        //magic_num = ORB_SLAM3::segment.construct<int>("magic-num",std::nothrow)(555);
-        std::cout<<"Magic num is: "<<(*magic_num)<<" address is: "<<magic_num<<std::endl;
-        int magic = 555;
-        memcpy(magic_num,&magic,sizeof(int));
-        std::cout<<"New Magic Num: "<<(*magic_num)<<std::endl;
-    }
-     
-
+ 
     //Creating a new atlas object in shared memory
     //Create the Atlas
     //mpAtlas = new Atlas(0);
@@ -150,11 +142,11 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     if(0 == mpAtlas){
         std::cout<<"Atlas did not exist"<<std::endl;
-    mpAtlas = segment.construct<Atlas>("Atlas")(0);
-}
-else{
-    std::cout<<"Atlas EXISTED!!"<<std::endl;
-}
+        mpAtlas = segment.construct<Atlas>("Atlas")(0);
+    }
+    else{
+        std::cout<<"Atlas EXISTED!! Using the same Atlas."<<std::endl;
+    }
     mpAtlas->segment = &segment;
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)

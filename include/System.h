@@ -55,6 +55,8 @@ extern boost::interprocess::managed_shared_memory segment;
 extern boost::interprocess::allocator<char, boost::interprocess::managed_shared_memory::segment_manager> allocator_instance;
 //extern boost::interprocess::allocator allocator_instance;
 
+extern int processnum;
+
 class Verbose
 {
 public:

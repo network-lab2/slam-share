@@ -64,18 +64,18 @@ Atlas::~Atlas()
     }
 }
 
+
 void Atlas::CreateNewMap()
 {
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //std::string name_map = "Map";
     //segment = &segment_mem;
-    cout<<"Before finding atlas\n";
     //Atlas *mpAtlas = (*segment).find<Atlas>("Atlas")().first;
     
     cout<<"In create New Map()"<<endl;
     unique_lock<mutex> lock(mMutexAtlas);
     
-    cout<<"In create after lock"<<endl;
+    
     //cout << "Creation of new map with id: " << Map::nNextId << endl;
     if(mpCurrentMap){
         cout << "Exits current map " << endl;
@@ -105,8 +105,9 @@ void Atlas::CreateNewMap()
     //int flag = std::cin.get();
 
 
-
-    mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>("Map1") (mnLastInitKFidMap);
+    String mapname = "Map";
+    mapname.append(static_cast<char>(ORB_SLAM3::processnum));
+    mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>(mapname.c_str()) (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
 
@@ -281,32 +282,29 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     Atlas *atl = segment->find_or_construct<Atlas>("Atlas")();
 
-    //unique_lock<mutex> lock(mMutexAtlas);
+    unique_lock<mutex> lock(mMutexAtlas);
+    
+    //previous code to give map. just gives default map
+    /*
     if(!atl->mpCurrentMap)
         CreateNewMap();
+    */
 
-    //Open managed shared memory
-    
-    //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    
+
     cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
+
     
     std::pair<Map *,std::size_t> ret = segment->find<Map>("Map1");
     if (ret.first == 0)
     {
-        std::cout<<"Cannot find Map1. Making the map1 now\n";
-        segment->construct<Map>("Map1")();
-
+        std::cout<<"Cannot find Map. Making a map now\n";
+        //segment->construct<Map>("Map1")();
+        CreateNewMap();
     }
     else
         mpCurrentMap = ret.first;
 
-    // find_or_construct do not work.. see if the code runs with just find
-
-
-    //mpCurrentMap = segment->find_or_construct<Map>("Map1")();
-
-    
+   
     //run functions.
     cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
     cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
