@@ -105,8 +105,9 @@ void Atlas::CreateNewMap()
     //int flag = std::cin.get();
 
 
+    char i = ORB_SLAM3::processnum;
     string mapname = "Map";
-    mapname.append(static_cast<char>(ORB_SLAM3::processnum));
+    mapname.append(i);
     mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>(mapname.c_str()) (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
