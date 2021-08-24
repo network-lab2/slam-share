@@ -103,9 +103,11 @@ void Atlas::CreateNewMap()
 
 
     //int flag = std::cin.get();
+      /*
     std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
     
    
+ 
     if(ret.first != 0)
     {
          *ret.first++;
@@ -114,7 +116,7 @@ void Atlas::CreateNewMap()
 else{
         processnum = 1;
 }
-
+*/
 
    
     char mapname[5];
@@ -123,6 +125,8 @@ else{
     mapname[1] = 'a';
     mapname[2] = 'p';
     mapname[4] = '\0';
+
+    std::cout<<"Process num in CreateNewMap "<<processnum<<std::endl;
 
     sprintf(&mapname[3],"%d",processnum);
     std::cout<<"MapName in create map: "<<mapname<<std::endl;
