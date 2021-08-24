@@ -142,6 +142,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
    
     std::cout<<"Incrementing the magic number\n";
     *magic_num++;
+    std::cout<<"New magic number"<<*magic_num<<std::endl;
 
     if(0 == mpAtlas){
         std::cout<<"Atlas did not exist"<<std::endl;

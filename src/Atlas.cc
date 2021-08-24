@@ -295,7 +295,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 //Map* Atlas::GetCurrentMap()
 {
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    Atlas *atl = segment->find_or_construct<Atlas>("Atlas")();
+    //Atlas *atl = segment->find_or_construct<Atlas>("Atlas")();
 
     unique_lock<mutex> lock(mMutexAtlas);
     
@@ -306,12 +306,12 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
     */
 
 
-    cout<<"Checked if new map is required. Runing a function in Shared memory"<<endl;
+    cout<<"Checked if new map is required. GetCurrentMap()"<<endl;
 
     char i = 'a'+processnum;
     string mapname = "Map";
     mapname+=i;
-    std::cout<<"MapName in create map: "<<mapname<<std::endl;
+    std::cout<<"MapName in getcurrent map: "<<mapname<<std::endl;
     std::pair<Map *,std::size_t> ret = segment->find<Map>(mapname.c_str());
     if (ret.first == 0)
     {
@@ -319,8 +319,10 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
         //segment->construct<Map>("Map1")();
         CreateNewMap();
     }
-    else
+    else{
         mpCurrentMap = ret.first;
+        std::cout<<"Found an existing map"<<std::endl;
+    }
 
    
     //run functions.
