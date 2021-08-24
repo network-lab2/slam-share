@@ -122,14 +122,15 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     if(ret.first == 0)
     {
-        int newnum = 1;
+        int newnum = 2;
         std::cout<<"First pointer is 0; First process"<<std::endl;
         magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
-        std::cout<<"Made the magic-num memory"<<std::endl;
+        *magic_num = newnum;
+        std::cout<<"Made the magic-num memory. Value: "<<*magic_num<<std::endl;
 
     }
     else{
-        std::cout<<"Not first process. Process Num: "<<(*(ret.first))<<std::endl;
+        std::cout<<"Not first process. Magic Num: "<<(*(ret.first))<<std::endl;
 
     }
     //int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
