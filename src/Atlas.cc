@@ -42,6 +42,9 @@ Atlas::Atlas(int initKFid): mnLastInitKFidMap(initKFid), mHasViewer(false)//,seg
     
     //mpCurrentMap = static_cast<boost::interprocess::offset_ptr<Map> >(NULL);
     mpCurrentMap = 0;
+    std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
+    processnum = *ret.first;
+    
     CreateNewMap();
 }
 
