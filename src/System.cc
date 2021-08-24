@@ -131,6 +131,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     }
     else{
         std::cout<<"Not first process. Magic Num: "<<(*(ret.first))<<std::endl;
+        magic_num = ret.first;
 
     }
     //int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
