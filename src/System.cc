@@ -142,7 +142,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mpAtlas = (segment.find<Atlas>("Atlas")).first;
    
     std::cout<<"Incrementing the magic number\n";
-    *magic_num++;
+    *magic_num = *magic_num+1;
     std::cout<<"New magic number"<<*magic_num<<std::endl;
 
     if(0 == mpAtlas){
