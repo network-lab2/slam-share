@@ -117,12 +117,16 @@ else{
 
 
    
-    char i = 'a'+processnum;
-    
-    string mapname = "Map";
-    mapname+=i;
+    char mapname[5];
+
+    mapname[0] = 'm';
+    mapname[1] = 'a';
+    mapname[2] = 'p';
+    mapname[4] = '\0';
+
+    sprintf(&mapname[3],"%d",processnum);
     std::cout<<"MapName in create map: "<<mapname<<std::endl;
-    mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>(mapname.c_str()) (mnLastInitKFidMap);
+    mpCurrentMap = ORB_SLAM3::segment.find_or_construct<Map>(mapname) (mnLastInitKFidMap);
     cout<<"Created Map object in shared memory! Address is: "<<mpCurrentMap<<endl;
     cout<<"Reading a variable there "<<mpCurrentMap->GetMaxKFid()<<endl;
 
@@ -307,12 +311,18 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 
 
     cout<<"Checked if new map is required. GetCurrentMap()"<<endl;
+    char mapname[5];
 
-    char i = 'a'+processnum;
-    string mapname = "Map";
-    mapname+=i;
+    mapname[0] = 'm';
+    mapname[1] = 'a';
+    mapname[2] = 'p';
+    mapname[4] = '\0';
+
+    sprintf(&mapname[3],"%d",processnum);
+
+    
     std::cout<<"MapName in getcurrent map: "<<mapname<<std::endl;
-    std::pair<Map *,std::size_t> ret = segment->find<Map>(mapname.c_str());
+    std::pair<Map *,std::size_t> ret = segment->find<Map>(mapname);
     if (ret.first == 0)
     {
         std::cout<<"Cannot find Map. Making a map now\n";

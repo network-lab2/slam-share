@@ -155,6 +155,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     }
     mpAtlas->segment = &segment;
     //mpAtlas->processnum = *magic_num;
+    processnum = *magic_num;
 
     if (mSensor==IMU_STEREO || mSensor==IMU_MONOCULAR)
         mpAtlas->SetInertialSensor();
