@@ -162,7 +162,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     
     if(0 == mpAtlas){
         std::cout<<"Atlas did not exist"<<std::endl;
-        mpAtlas = segment.construct<Atlas>("Atlas")(0);
+        //mpAtlas = segment.construct<Atlas>("Atlas")(0);
+        mpAtlas = segment.construct<Atlas>(atlasname)(0);
     }
     else{
         std::cout<<"Atlas EXISTED!! Using the same Atlas."<<std::endl;
