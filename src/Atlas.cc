@@ -403,11 +403,11 @@ void Atlas::SetImuInitialized()
 bool Atlas::isImuInitialized()
 {
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
-    Atlas *atl = segment->find_or_construct<Atlas>("Atlas")();
+    //Atlas *atl = segment->find_or_construct<Atlas>("Atlas")();
 
-    cout<<"Address of mpCurrentMap "<<atl->mpCurrentMap<<endl;
-    unique_lock<mutex> lock(atl->mMutexAtlas);
-    return atl->mpCurrentMap->isImuInitialized();
+    cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
+    unique_lock<mutex> lock(mMutexAtlas);
+    return mpCurrentMap->isImuInitialized();
 }
 
 void Atlas::SetKeyFrameDababase(KeyFrameDatabase* pKFDB)
