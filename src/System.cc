@@ -134,18 +134,32 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         magic_num = ret.first;
 
     }
+
+    std::cout<<"Incrementing the magic number\n";
+    *magic_num = *magic_num+1;
+    std::cout<<"New magic number "<<*magic_num<<std::endl;
     //int *magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(111, std::nothrow);
     
  
     //Creating a new atlas object in shared memory
     //Create the Atlas
     //mpAtlas = new Atlas(0);
-    mpAtlas = (segment.find<Atlas>("Atlas")).first;
-   
-    std::cout<<"Incrementing the magic number\n";
-    *magic_num = *magic_num+1;
-    std::cout<<"New magic number "<<*magic_num<<std::endl;
 
+    char atlasname[7];
+
+    atlasname[0] = 'a';
+    atlasname[1] = 't';
+    atlasname[2] = 'l';
+    atlasname[3] = 'a';
+    atlasname[4] = 's';
+    atlasname[6] = '\0';
+
+    sprintf(&atlasname[5],"%d",*magic_num);
+    mpAtlas = (segment.find<Atlas>(atlasname)).first;
+
+    //mpAtlas = (segment.find<Atlas>("Atlas")).first;
+   
+    
     if(0 == mpAtlas){
         std::cout<<"Atlas did not exist"<<std::endl;
         mpAtlas = segment.construct<Atlas>("Atlas")(0);
