@@ -309,7 +309,11 @@ void Map::RotateMap(const cv::Mat &R)
     cv::Mat Txw = cv::Mat::eye(4,4,CV_32F);
     R.copyTo(Txw.rowRange(0,3).colRange(0,3));
 
-    boost::interprocess::offset_ptr<KeyFrame> pKFini = mvpKeyFrameOrigins[0];
+    //old
+    //boost::interprocess::offset_ptr<KeyFrame> pKFini = mvpKeyFrameOrigins[0];
+    //new
+    boost::interprocess::offset_ptr<KeyFrame> pKFini = mvpKeyFrameOrigins->at(0);
+    
     cv::Mat Twc_0 = pKFini->GetPoseInverse();
     cv::Mat Txc_0 = Txw*Twc_0;
     cv::Mat Txb_0 = Txc_0*pKFini->mImuCalib.Tcb;
