@@ -44,6 +44,7 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     */
      const ShmemAllocator alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     mvpKeyFrameOrigins = ORB_SLAM3::segment.construct<MyVector>(boost::interprocess::anonymous_instance)(alloc_inst);
+    keyframeorigins_offsetptr = mvpKeyFrameOrigins;
 
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
@@ -66,6 +67,7 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
 
     const ShmemAllocator alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     mvpKeyFrameOrigins = ORB_SLAM3::segment.construct<MyVector>(boost::interprocess::anonymous_instance)(alloc_inst);
+    keyframeorigins_offsetptr = mvpKeyFrameOrigins;
 
 
 

@@ -908,7 +908,7 @@ void System::PostLoad(){
         std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
 
         // print the number of keyframes.
-        std::cout<<"Num of keyframes in another atlas: "<<otherAtlas->currentMapPtr->mvpKeyFrameOrigins->size()<<std::endl;
+        std::cout<<"Num of keyframes in another atlas: "<<otherAtlas->currentMapPtr->keyframeorigins_offsetptr->size()<<std::endl;
 
 
     } 

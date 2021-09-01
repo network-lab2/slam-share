@@ -123,6 +123,7 @@ public:
     //changed the vector //old code
     //vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
     MyVector *mvpKeyFrameOrigins;
+    boost::interprocess::offset_ptr<MyVector> keyframeorigins_offsetptr;
 
     vector<unsigned long int> mvBackupKeyFrameOriginsId;
     boost::interprocess::offset_ptr<KeyFrame> mpFirstRegionKF;
