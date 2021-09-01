@@ -42,6 +42,8 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
     shm = &shm_temp;
     */
+     const ShmemAllocator alloc_inst(ORB_SLAM3::segment.get_segment_manager());
+    MyVector *mvpKeyFrameOrigins = ORB_SLAM3::segment.construct<MyVector>("keyframeorigins")(alloc_inst);
 
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
@@ -494,7 +496,7 @@ bool Map::CheckEssentialGraph(){
     {
         vpOriginKFs.push_back(i);
     }
-    
+
     int count=0;
     cout << "Number of origin KFs: " << vpOriginKFs.size() << endl;
     boost::interprocess::offset_ptr<KeyFrame> pFirstKF;
