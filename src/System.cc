@@ -914,6 +914,8 @@ void System::PostLoad(){
     } 
     else{
         std::cout<<"--- Still in First process. No need to merge\n";
+        // print the number of keyframes.
+        std::cout<<"Num of keyframes in THIS atlas: "<<otherAtlas->currentMapPtr->keyframeorigins_offsetptr->size()<<std::endl;
     }
 
 }
