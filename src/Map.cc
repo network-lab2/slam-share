@@ -434,7 +434,7 @@ void Map::PrintEssentialGraph()
     //old
     //vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs = mvpKeyFrameOrigins;
     //new
-    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs(mvpKeyFrameOrigins);
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs(*mvpKeyFrameOrigins);
     
 
     int count=0;
