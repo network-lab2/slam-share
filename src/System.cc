@@ -905,6 +905,8 @@ void System::PostLoad(){
         sprintf(&atlasname[5],"%d",previous_num);
         otherAtlas = (segment.find<Atlas>(atlasname)).first;
 
+        std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
+
         // print the number of keyframes.
         std::cout<<"Num of keyframes in another atlas: "<<otherAtlas->currentMapPtr->mvpKeyFrameOrigins->size()<<std::endl;
 
