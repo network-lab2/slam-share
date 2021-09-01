@@ -2312,7 +2312,10 @@ void Tracking::StereoInitialization()
 
         mpAtlas->SetReferenceMapPoints(mvpLocalMapPoints);
 
-        mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+        //old
+        //mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+        //new
+        mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins->push_back(pKFini);
 
         mpMapDrawer->SetCurrentCameraPose(mCurrentFrame.mTcw);
 
@@ -2546,7 +2549,11 @@ void Tracking::CreateInitialMapMonocular()
 
     mpMapDrawer->SetCurrentCameraPose(pKFcur->GetPose());
 
-    mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+    //old
+    //mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+    //new
+    mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins->push_back(pKFini);
+
 
     mState=OK;
 

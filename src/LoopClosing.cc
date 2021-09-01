@@ -1974,7 +1974,10 @@ void LoopClosing::RunGlobalBundleAdjustment(boost::interprocess::offset_ptr<Map>
             unique_lock<mutex> lock(pActiveMap->mMutexMapUpdate);
 
             // Correct keyframes starting at map first keyframe
-            list<boost::interprocess::offset_ptr<KeyFrame> > lpKFtoCheck(pActiveMap->mvpKeyFrameOrigins.begin(),pActiveMap->mvpKeyFrameOrigins.end());
+            //old
+            //list<boost::interprocess::offset_ptr<KeyFrame> > lpKFtoCheck(pActiveMap->mvpKeyFrameOrigins.begin(),pActiveMap->mvpKeyFrameOrigins.end());
+            //new
+            list<boost::interprocess::offset_ptr<KeyFrame> > lpKFtoCheck(pActiveMap->mvpKeyFrameOrigins->begin(),pActiveMap->mvpKeyFrameOrigins->end());
 
             while(!lpKFtoCheck.empty())
             {

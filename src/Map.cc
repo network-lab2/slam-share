@@ -60,6 +60,12 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     //std::cout<<"Updating a and B"<<std::endl;
     //a = 10;
     //b = 25;
+
+    const ShmemAllocator alloc_inst(ORB_SLAM3::segment.get_segment_manager());
+    MyVector *mvpKeyFrameOrigins = ORB_SLAM3::segment.construct<MyVector>("keyframeorigins")(alloc_inst);
+
+
+
     //also initialize the mutex.
     mMutexMapPtr = &mMutexMap;
 
@@ -73,14 +79,20 @@ Map::~Map()
     mspMapPoints.clear();
 
     //TODO: erase all keyframes from memory
+    //old
     mspKeyFrames.clear();
+    //new
+    //mspKeyFrames->clear();
 
     if(mThumbnail)
         delete mThumbnail;
     mThumbnail = static_cast<GLubyte*>(NULL);
 
     mvpReferenceMapPoints.clear();
-    mvpKeyFrameOrigins.clear();
+    //old
+    //mvpKeyFrameOrigins.clear();
+    //new
+    mvpKeyFrameOrigins->clear();
 }
 
 void Map::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
@@ -258,7 +270,10 @@ void Map::clear()
     mnLastLoopKFid = 0;
     mbImuInitialized = false;
     mvpReferenceMapPoints.clear();
-    mvpKeyFrameOrigins.clear();
+    //old
+    //mvpKeyFrameOrigins.clear();
+    //new
+    mvpKeyFrameOrigins->clear();
     mbIMU_BA1 = false;
     mbIMU_BA2 = false;
 }

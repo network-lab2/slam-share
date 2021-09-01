@@ -2241,7 +2241,11 @@ void Tracking::CreateInitialMapMonocular()
 
     mpMapDrawer->SetCurrentCameraPose(pKFcur->GetPose());
 
+    //old
+    //mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+    //new
     mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+
 
     mState=OK;
 

@@ -115,7 +115,15 @@ public:
     unsigned int GetLowerKFID();
     int sum_of_two();
 
-    vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
+    //create your own vector!
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator; 
+    //typedef vector
+    typedef vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator> MyVector;
+
+    //changed the vector //old code
+    //vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
+    MyVector *mvpKeyFrameOrigins;
+
     vector<unsigned long int> mvBackupKeyFrameOriginsId;
     boost::interprocess::offset_ptr<KeyFrame> mpFirstRegionKF;
     std::mutex mMutexMapUpdate;
