@@ -2197,6 +2197,7 @@ void Tracking::StereoInitialization()
 {
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
+    cout<<"-- Inside StereoInitialization\n";
     
     if(mCurrentFrame.N>500)
     {

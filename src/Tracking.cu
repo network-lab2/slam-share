@@ -2012,9 +2012,9 @@ void Tracking::StereoInitialization()
         mpAtlas->SetReferenceMapPoints(mvpLocalMapPoints);
 
         //old
-        //mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
+        mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
         //new
-        mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins->push_back(pKFini);
+        //mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins->push_back(pKFini);
 
 
         mpMapDrawer->SetCurrentCameraPose(mCurrentFrame.mTcw);
