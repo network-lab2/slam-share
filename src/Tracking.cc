@@ -2316,7 +2316,10 @@ void Tracking::StereoInitialization()
         //old
         //mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins.push_back(pKFini);
         //new
+        std::cout<<"Fails here at push_back"<<std::endl;
         mpAtlas->GetCurrentMap()->mvpKeyFrameOrigins->push_back(pKFini);
+        std::cout<<"push_back passed"<<std::endl;
+
 
         mpMapDrawer->SetCurrentCameraPose(mCurrentFrame.mTcw);
 
