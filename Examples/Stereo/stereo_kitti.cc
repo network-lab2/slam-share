@@ -76,6 +76,9 @@ int main(int argc, char **argv)
             SLAM.PostLoad(); //run the post load function
             int flag = std::cin.get();
         }
+        else{
+            std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
+        }
         // Read left and right images from file
         imLeft = cv::imread(vstrImageLeft[ni],cv::IMREAD_UNCHANGED);
         imRight = cv::imread(vstrImageRight[ni],cv::IMREAD_UNCHANGED);
