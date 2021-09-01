@@ -434,7 +434,11 @@ void Map::PrintEssentialGraph()
     //old
     //vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs = mvpKeyFrameOrigins;
     //new
-    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs(*mvpKeyFrameOrigins);
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs;
+    for(boost::interprocess::offset_ptr<KeyFrame> i:*mvpKeyFrameOrigins)
+    {
+        vpOriginKFs.push_back(i);
+    }
     
 
     int count=0;
@@ -485,7 +489,12 @@ bool Map::CheckEssentialGraph(){
     //old
     //vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs = mvpKeyFrameOrigins;
     //new
-    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs(*mvpKeyFrameOrigins);//will it work.
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs;
+    for(boost::interprocess::offset_ptr<KeyFrame> i:*mvpKeyFrameOrigins)
+    {
+        vpOriginKFs.push_back(i);
+    }
+    
     int count=0;
     cout << "Number of origin KFs: " << vpOriginKFs.size() << endl;
     boost::interprocess::offset_ptr<KeyFrame> pFirstKF;
