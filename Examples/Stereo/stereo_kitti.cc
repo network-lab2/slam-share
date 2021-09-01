@@ -73,6 +73,7 @@ int main(int argc, char **argv)
         if(count_images>=100)
         {
             std::cout<<" --- More than 100 images --- we pause now"<<std::endl;
+            SLAM.PostLoad(); //run the post load function
             int flag = std::cin.get();
         }
         // Read left and right images from file
