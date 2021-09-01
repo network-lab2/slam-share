@@ -882,6 +882,41 @@ void System::InsertTrackTime(double& time)
 #endif
 
 
+void System::PostLoad(){
+    std::cout<<"---- Running PostLoad ----"<<std::endl;
+    //first check if the atlas is first one or later one.
+    std::pair<int *,std::size_t> ret = ORB_SLAM3::segment.find<int>("magic-num");
+    int *magic_num = ret.first;
+    Atlas *otherAtlas=nullptr;
+
+    //now check. 3 is the starting process. 
+    if (*magic_num > 3)
+    {
+        int previous_num = *magic_num-1;
+        char atlasname[7];
+
+        atlasname[0] = 'a';
+        atlasname[1] = 't';
+        atlasname[2] = 'l';
+        atlasname[3] = 'a';
+        atlasname[4] = 's';
+        atlasname[6] = '\0';
+
+        sprintf(&atlasname[5],"%d",previous_num);
+        otherAtlas = (segment.find<Atlas>(atlasname)).first;
+
+        // print the number of keyframes.
+        std::cout<<"Num of keyframes in another atlas: "<<otherAtlas->currentMapPtr->KeyFramesInMap()<<std::endl;
+
+
+    } 
+    else{
+        std::cout<<"--- Still in First process. No need to merge\n";
+    }
+
+}
+
+
 } //namespace ORB_SLAM
 
 
