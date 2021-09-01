@@ -431,7 +431,12 @@ bool Map::GetIniertialBA2()
 void Map::PrintEssentialGraph()
 {
     //Print the essential graph
-    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs = mvpKeyFrameOrigins;
+    //old
+    //vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs = mvpKeyFrameOrigins;
+    //new
+    vector<boost::interprocess::offset_ptr<KeyFrame> > vpOriginKFs(mvpKeyFrameOrigins);
+    
+
     int count=0;
     cout << "Number of origin KFs: " << vpOriginKFs.size() << endl;
     boost::interprocess::offset_ptr<KeyFrame> pFirstKF;
