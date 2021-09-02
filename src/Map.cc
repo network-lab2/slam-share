@@ -74,7 +74,7 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
 
 
     const ShmemAllocator_longint alloc_inst2(ORB_SLAM3::segment.get_segment_manager());
-    mvBackupKeyFrameOriginsId = ORB_SLAM3::segment.construct<unsigned long int>(boost::interprocess::anonymous_instance)(alloc_inst2);
+    mvBackupKeyFrameOriginsId = ORB_SLAM3::segment.construct<MyVector_longint>(boost::interprocess::anonymous_instance)(alloc_inst2);
 
     //also initialize the mutex.
     mMutexMapPtr = &mMutexMap;
