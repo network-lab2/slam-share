@@ -47,7 +47,7 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     keyframeorigins_offsetptr = mvpKeyFrameOrigins;
 
     const ShmemAllocator_longint alloc_inst2(ORB_SLAM3::segment.get_segment_manager());
-    mvBackupKeyFrameOriginsId = ORB_SLAM3::segment.construct<unsigned long int>(boost::interprocess::anonymous_instance)(alloc_inst2);
+    mvBackupKeyFrameOriginsId = ORB_SLAM3::segment.construct<MyVector_longint>(boost::interprocess::anonymous_instance)(alloc_inst2);
 
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
