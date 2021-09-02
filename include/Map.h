@@ -119,13 +119,19 @@ public:
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator; 
     //typedef vector
     typedef vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator> MyVector;
-
     //changed the vector //old code
     //vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
     MyVector *mvpKeyFrameOrigins;
     boost::interprocess::offset_ptr<MyVector> keyframeorigins_offsetptr;
 
-    vector<unsigned long int> mvBackupKeyFrameOriginsId;
+
+    //old code
+    //vector<unsigned long int> mvBackupKeyFrameOriginsId;
+    typedef boost::interprocess::allocator<unsigned long int, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_longint; 
+    typedef vector<unsigned long int, ShmemAllocator_longint> MyVector_longint;
+    MyVector_longint *mvBackupKeyFrameOriginsId;
+    
+
     boost::interprocess::offset_ptr<KeyFrame> mpFirstRegionKF;
     std::mutex mMutexMapUpdate;
 

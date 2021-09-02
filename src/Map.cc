@@ -42,9 +42,12 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     boost::interprocess::managed_shared_memory shm_temp(boost::interprocess::open_only, "MySharedMemory");
     shm = &shm_temp;
     */
-     const ShmemAllocator alloc_inst(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     mvpKeyFrameOrigins = ORB_SLAM3::segment.construct<MyVector>(boost::interprocess::anonymous_instance)(alloc_inst);
     keyframeorigins_offsetptr = mvpKeyFrameOrigins;
+
+    const ShmemAllocator_longint alloc_inst2(ORB_SLAM3::segment.get_segment_manager());
+    mvBackupKeyFrameOriginsId = ORB_SLAM3::segment.construct<unsigned long int>(boost::interprocess::anonymous_instance)(alloc_inst2);
 
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
