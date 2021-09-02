@@ -909,7 +909,7 @@ void System::PostLoad(){
 
          std::cout<<"Point distribution of This ATLas:"<<std::endl;
         otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
-        std::cout<<"Num of pointer to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr.first<<std::endl;
+        std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
 
 
     } 
@@ -930,7 +930,7 @@ void System::PostLoad(){
         // print the number of keyframes.
         std::cout<<"Point distribution of This ATLas:"<<std::endl;
         otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
-        std::cout<<"Num of pointer to currentMapPtr in THIS atlas: "<<otherAtlas->currentMapPtr.first<<std::endl;
+        std::cout<<"Num of mappoints to currentMapPtr in THIS atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
     }
 
 }
