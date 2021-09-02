@@ -907,8 +907,9 @@ void System::PostLoad(){
 
         std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
 
-        // print the number of keyframes.
-        std::cout<<"Num of mvBackupKeyFrameOriginsId in another atlas: "<<otherAtlas->currentMapPtr->GetOriginKF()->mNameFile<<std::endl;
+         std::cout<<"Point distribution of This ATLas:"<<std::endl;
+        otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
+        std::cout<<"Num of pointer to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr.first<<std::endl;
 
 
     } 
@@ -927,7 +928,9 @@ void System::PostLoad(){
         otherAtlas = (segment.find<Atlas>(atlasname)).first;
         std::cout<<"--- Still in First process. No need to merge\n";
         // print the number of keyframes.
-        std::cout<<"Num of mvBackupKeyFrameOriginsId in THIS atlas: "<<otherAtlas->currentMapPtr->GetOriginKF()->mNameFile<<std::endl;
+        std::cout<<"Point distribution of This ATLas:"<<std::endl;
+        otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
+        std::cout<<"Num of pointer to currentMapPtr in THIS atlas: "<<otherAtlas->currentMapPtr.first<<std::endl;
     }
 
 }
