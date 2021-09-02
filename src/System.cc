@@ -907,7 +907,7 @@ void System::PostLoad(){
 
         std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
 
-         std::cout<<"Point distribution of This ATLas:"<<std::endl;
+         std::cout<<"Point distribution of Other Atlas:"<<std::endl;
         otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
         std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
 
