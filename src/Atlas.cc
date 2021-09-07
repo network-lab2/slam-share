@@ -311,12 +311,16 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 
     unique_lock<mutex> lock(mMutexAtlas);
     
+    if(!mpCurrentMap)
+        CreateNewMap();
+
     //previous code to give map. just gives default map
     /*
     if(!atl->mpCurrentMap)
         CreateNewMap();
     */
 
+/*
 
     cout<<"Checked if new map is required. GetCurrentMap()"<<endl;
     char mapname[5];
@@ -341,7 +345,7 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
         mpCurrentMap = ret.first;
         std::cout<<"Found an existing map"<<std::endl;
     }
-
+*/
    
     //run functions.
     cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
