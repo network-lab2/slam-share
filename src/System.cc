@@ -910,6 +910,8 @@ void System::PostLoad(){
         std::cout<<"Point distribution of Other Atlas: (mnFrameID) "<<otherAtlas->currentMapPtr->GetOriginKF()->mnFrameId<<std::endl;
         
         std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
+        std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
+
 
 
     } 
