@@ -910,6 +910,7 @@ void System::PostLoad(){
         std::cout<<"Point distribution of Other Atlas: (mnFrameID) "<<std::endl;
         otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
         std::cout<<std::endl;
+        std::cout<<"Other atlas timestamp: "<<otherAtlas->currentMapPtr->GetOriginKF()->mTimeStamp<<"\n";
         std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
         std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
 
@@ -935,7 +936,7 @@ void System::PostLoad(){
         otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
         std::cout<<std::endl;
         std::cout<<"Num of mappoints to currentMapPtr in THIS atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
-    }
+    }   std::cout<<"Other atlas timestamp: "<<otherAtlas->currentMapPtr->GetOriginKF()->mTimeStamp<<"\n";
 
 }
 
