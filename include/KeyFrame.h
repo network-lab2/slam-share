@@ -401,7 +401,8 @@ public:
         int left = 0, right = 0;
         int Nlim = (NLeft != -1) ? NLeft : N;
         for(int i = 0; i < N; i++){
-            if(mvpMapPoints[i]){
+            //if(mvpMapPoints[i]){
+            if((*mvpMapPoints)[i]){
                 if(i < Nlim) left++;
                 else right++;
             }
