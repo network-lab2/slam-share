@@ -358,7 +358,8 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
 {
     unique_lock<mutex> lock(mMutexFeatures);
     //mvpMapPoints[idx]=pMP;
-    (*mvpMapPoints)[idx]=pMP;
+    //(*mvpMapPoints)[idx]=pMP;
+    mvpMapPoints->at(idx)=pMP;
 
     //Let's check all the matrix sizes of mappoint here:
     /*
