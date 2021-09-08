@@ -346,7 +346,8 @@ int KeyFrame::GetNumberMPs()
     //for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
     for(size_t i=0, iend=mvpMapPoints->size(); i<iend; i++)
     {
-        if(!mvpMapPoints[i])
+        //if(!mvpMapPoints[i])
+        if(!(*mvpMapPoints)[i])
             continue;
         numberMPs++;
     }
