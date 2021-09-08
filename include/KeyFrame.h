@@ -336,7 +336,7 @@ protected:
 
     //new code
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint;
-    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_longint> MyVector_mappoint;
+    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
     MyVector_mappoint * mvpMapPoints;
 
     // BoW
