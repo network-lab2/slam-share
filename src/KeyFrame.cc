@@ -452,7 +452,13 @@ vector<boost::interprocess::offset_ptr<MapPoint> > KeyFrame::GetMapPointMatches(
 {
     unique_lock<mutex> lock(mMutexFeatures);
     //return mvpMapPoints;
-    return (*mvpMapPoints);
+    mvpMapPoints_vector.clear();
+    for(size_t i=0; i<mvpMapPoints->size(); i++){
+        mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
+    }
+
+    //return (*mvpMapPoints);
+    return mvpMapPoints_vector;
 }
 
 boost::interprocess::offset_ptr<MapPoint>  KeyFrame::GetMapPoint(const size_t &idx)
@@ -471,7 +477,12 @@ void KeyFrame::UpdateConnections(bool upParent)
     {
         unique_lock<mutex> lockMPs(mMutexFeatures);
         //vpMP = mvpMapPoints;
-        vpMP = (*mvpMapPoints);
+        //vpMP = (*mvpMapPoints);
+        mvpMapPoints_vector.clear();
+    for(size_t i=0; i<mvpMapPoints->size(); i++){
+        mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
+    }
+        vpMP = mvpMapPoints_vector;
 
     }
 
