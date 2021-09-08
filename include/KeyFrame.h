@@ -326,8 +326,18 @@ protected:
     // Imu bias
     IMU::Bias mImuBias;
 
-    // MapPoints associated to keypoints
-    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints;
+    //example code
+    //typedef boost::interprocess::allocator<unsigned long int, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_longint; 
+    //typedef vector<unsigned long int, ShmemAllocator_longint> MyVector_longint;
+    //MyVector_longint *mvBackupKeyFrameOriginsId;
+
+    // MapPoints associated to keypoints:: OLD CODE
+    //std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints;
+
+    //new code
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint;
+    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_longint> MyVector_mappoint;
+    MyVector_mappoint * mvpMapPoints;
 
     // BoW
     KeyFrameDatabase* mpKeyFrameDB;

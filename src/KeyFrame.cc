@@ -46,6 +46,9 @@ KeyFrame::KeyFrame():
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ First"<<std::endl;
 
+    const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
+    mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+
 
 }
 
@@ -61,7 +64,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mfLogScaleFactor(F.mfLogScaleFactor), mvScaleFactors(F.mvScaleFactors), mvLevelSigma2(F.mvLevelSigma2),
     mvInvLevelSigma2(F.mvInvLevelSigma2), mnMinX(F.mnMinX), mnMinY(F.mnMinY), mnMaxX(F.mnMaxX),
     mnMaxY(F.mnMaxY), mK(F.mK), mPrevKF(NULL), mNextKF(NULL), mpImuPreintegrated(F.mpImuPreintegrated),
-    mImuCalib(F.mImuCalib), mvpMapPoints(F.mvpMapPoints), mpKeyFrameDB(pKFDB),
+    mImuCalib(F.mImuCalib)/*, mvpMapPoints(F.mvpMapPoints)*/, mpKeyFrameDB(pKFDB),
     mpORBvocabulary(F.mpORBvocabulary), mbFirstConnection(true), mpParent(NULL), mDistCoef(F.mDistCoef), mbNotErase(false), mnDataset(F.mnDataset),
     mbToBeErased(false), mbBad(false), mHalfBaseline(F.mb/2), mpMap(pMap), mbCurrentPlaceRecognition(false), mNameFile(F.mNameFile), mbHasHessian(false), mnMergeCorrectedForKF(0),
     mpCamera(F.mpCamera), mpCamera2(F.mpCamera2),
@@ -87,6 +90,10 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
             }
         }
     }
+
+    //initializing a vector
+    const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
+    mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
@@ -336,7 +343,8 @@ int KeyFrame::GetNumberMPs()
 {
     unique_lock<mutex> lock(mMutexFeatures);
     int numberMPs = 0;
-    for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
+    //for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
+    for(size_t i=0, iend=mvpMapPoints->size(); i<iend; i++)
     {
         if(!mvpMapPoints[i])
             continue;
@@ -348,7 +356,8 @@ int KeyFrame::GetNumberMPs()
 void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const size_t &idx)
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    mvpMapPoints[idx]=pMP;
+    //mvpMapPoints[idx]=pMP;
+    (*mvpMapPoints)[idx]=pMP;
 
     //Let's check all the matrix sizes of mappoint here:
     /*
@@ -366,34 +375,44 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
 void KeyFrame::EraseMapPointMatch(const int &idx)
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    mvpMapPoints[idx]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+    //mvpMapPoints[idx]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+    (*mvpMapPoints)[idx]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
 }
 
 void KeyFrame::EraseMapPointMatch(boost::interprocess::offset_ptr<MapPoint>  pMP)
 {
     tuple<size_t,size_t> indexes = pMP->GetIndexInKeyFrame(this);
     size_t leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
-    if(leftIndex != -1)
-        mvpMapPoints[leftIndex]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
-    if(rightIndex != -1)
-        mvpMapPoints[rightIndex]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+    if(leftIndex != -1){
+        //mvpMapPoints[leftIndex]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+        (*mvpMapPoints)[leftIndex]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+    }
+    if(rightIndex != -1){
+        //mvpMapPoints[rightIndex]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+        (*mvpMapPoints)[rightIndex]=static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL);
+    }
 }
 
 
 void KeyFrame::ReplaceMapPointMatch(const int &idx, boost::interprocess::offset_ptr<MapPoint>  pMP)
 {
-    mvpMapPoints[idx]=pMP;
+    //mvpMapPoints[idx]=pMP;
+    (*mvpMapPoints)[idx]=pMP;
 }
 
 set<boost::interprocess::offset_ptr<MapPoint> > KeyFrame::GetMapPoints()
 {
     unique_lock<mutex> lock(mMutexFeatures);
     set<boost::interprocess::offset_ptr<MapPoint> > s;
-    for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
+    //for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
+    for(size_t i=0, iend=mvpMapPoints->size(); i<iend; i++)
     {
-        if(!mvpMapPoints[i])
+        //if(!mvpMapPoints[i]){
+        if(!(*mvpMapPoints)[i]){
             continue;
-        boost::interprocess::offset_ptr<MapPoint>  pMP = mvpMapPoints[i];
+        }
+        //boost::interprocess::offset_ptr<MapPoint>  pMP = mvpMapPoints[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = (*mvpMapPoints)[i];
         if(!pMP->isBad())
             s.insert(pMP);
     }
@@ -408,14 +427,16 @@ int KeyFrame::TrackedMapPoints(const int &minObs)
     const bool bCheckObs = minObs>0;
     for(int i=0; i<N; i++)
     {
-        boost::interprocess::offset_ptr<MapPoint>  pMP = mvpMapPoints[i];
+        //boost::interprocess::offset_ptr<MapPoint>  pMP = mvpMapPoints[i];
+        boost::interprocess::offset_ptr<MapPoint>  pMP = (*mvpMapPoints)[i];
         if(pMP)
         {
             if(!pMP->isBad())
             {
                 if(bCheckObs)
                 {
-                    if(mvpMapPoints[i]->Observations()>=minObs)
+                    //if(mvpMapPoints[i]->Observations()>=minObs)
+                    if((*mvpMapPoints)[i]->Observations()>=minObs)
                         nPoints++;
                 }
                 else
@@ -430,13 +451,15 @@ int KeyFrame::TrackedMapPoints(const int &minObs)
 vector<boost::interprocess::offset_ptr<MapPoint> > KeyFrame::GetMapPointMatches()
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    return mvpMapPoints;
+    //return mvpMapPoints;
+    return (*mvpMapPoints);
 }
 
 boost::interprocess::offset_ptr<MapPoint>  KeyFrame::GetMapPoint(const size_t &idx)
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    return mvpMapPoints[idx];
+    //return mvpMapPoints[idx];
+    return (*mvpMapPoints)[idx];
 }
 
 void KeyFrame::UpdateConnections(bool upParent)
@@ -447,7 +470,9 @@ void KeyFrame::UpdateConnections(bool upParent)
 
     {
         unique_lock<mutex> lockMPs(mMutexFeatures);
-        vpMP = mvpMapPoints;
+        //vpMP = mvpMapPoints;
+        vpMP = (*mvpMapPoints);
+
     }
 
     //For all map points in keyframe check in which other keyframes are they seen
@@ -653,11 +678,14 @@ void KeyFrame::SetBadFlag()
         mit->first->EraseConnection(this);
     }
 
-    for(size_t i=0; i<mvpMapPoints.size(); i++)
+    //for(size_t i=0; i<mvpMapPoints.size(); i++)
+    for(size_t i=0; i<mvpMapPoints->size(); i++)
     {
-        if(mvpMapPoints[i])
+        //if(mvpMapPoints[i])
+        if((*mvpMapPoints)[i])
         {
-            mvpMapPoints[i]->EraseObservation(this);
+            //mvpMapPoints[i]->EraseObservation(this);
+            (*mvpMapPoints)[i]->EraseObservation(this);
         }
     }
 
@@ -840,7 +868,8 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     {
         unique_lock<mutex> lock(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPose);
-        vpMapPoints = mvpMapPoints;
+        //vpMapPoints = mvpMapPoints;
+        vpMapPoints = (*mvpMapPoints);
         Tcw_ = Tcw.clone();
     }
 
@@ -851,9 +880,11 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     float zcw = Tcw_.at<float>(2,3);
     for(int i=0; i<N; i++)
     {
-        if(mvpMapPoints[i])
+        //if(mvpMapPoints[i])
+        if((*mvpMapPoints)[i])
         {
-            boost::interprocess::offset_ptr<MapPoint>  pMP = mvpMapPoints[i];
+            //boost::interprocess::offset_ptr<MapPoint>  pMP = mvpMapPoints[i];
+            boost::interprocess::offset_ptr<MapPoint>  pMP = (*mvpMapPoints)[i];
             cv::Mat x3Dw = pMP->GetWorldPos();
             float z = Rcw2.dot(x3Dw)+zcw;
             vDepths.push_back(z);
