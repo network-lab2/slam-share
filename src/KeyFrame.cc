@@ -348,11 +348,11 @@ int KeyFrame::GetNumberMPs()
     int numberMPs = 0;
     //for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
     std::cout<<"GetNumberMps, before loop\n";
-    MyVector_mappoint * mvpMapPoints = mvpMapPoints_ptr;
-    for(size_t i=0, iend=(*mvpMapPoints).size(); i<iend; i++)
+    boost::interprocess::offset_ptr<MyVector_mappoint> mvpMapPoints = mvpMapPoints_ptr;
+    for(size_t i=0, iend=(mvpMapPoints)->size(); i<iend; i++)
     {
         //if(!mvpMapPoints[i])
-        if(!(*mvpMapPoints)[i])
+        if(!(mvpMapPoints->at(i)))
             continue;
         numberMPs++;
     }
