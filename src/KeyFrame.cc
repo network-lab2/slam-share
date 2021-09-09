@@ -481,7 +481,7 @@ vector<boost::interprocess::offset_ptr<MapPoint> > KeyFrame::GetMapPointMatches(
         mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
     }
 */
-    return (mvpMapPoints.get());
+    return (*(mvpMapPoints.get()));
     //return mvpMapPoints_vector;
 }
 
