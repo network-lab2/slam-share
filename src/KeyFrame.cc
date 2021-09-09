@@ -94,6 +94,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //initializing a vector
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+    (*mvpMapPoints) = F.mvpMapPoints;
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
@@ -358,8 +359,8 @@ void KeyFrame::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP, const 
 {
     unique_lock<mutex> lock(mMutexFeatures);
     //mvpMapPoints[idx]=pMP;
-    //(*mvpMapPoints)[idx]=pMP;
-    mvpMapPoints->at(idx)=pMP;
+    (*mvpMapPoints).at(idx)=pMP;
+    //mvpMapPoints->at(idx)=pMP;
 
     //Let's check all the matrix sizes of mappoint here:
     /*
