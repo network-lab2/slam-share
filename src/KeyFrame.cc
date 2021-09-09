@@ -321,7 +321,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetVectorCovisibleK
     //old-code
     //return mvpOrderedConnectedKeyFrames;
     //new-code
-    return (*(mvpOrderedConnectedKeyFrames->get()));
+    return (*(mvpOrderedConnectedKeyFrames.get()));
 }
 
 vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetBestCovisibilityKeyFrames(const int &N)
