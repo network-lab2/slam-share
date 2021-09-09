@@ -167,6 +167,16 @@ public:
 
     bool bImu;
 
+
+    //new code
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint;
+    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
+
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_keyframe;
+    typedef vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator_keyframe> MyVector_keyframe;
+
+
+
     // The following variables are accesed from only 1 thread or never change (no mutex needed).
 public:
 
@@ -289,8 +299,16 @@ public:
 
     int mnDataset;
 
-    std::vector <boost::interprocess::offset_ptr<KeyFrame> > mvpLoopCandKFs;
-    std::vector <boost::interprocess::offset_ptr<KeyFrame> > mvpMergeCandKFs;
+    //Old CODE:
+    //---------//
+    //   std::vector <boost::interprocess::offset_ptr<KeyFrame> > mvpLoopCandKFs;
+    //   std::vector <boost::interprocess::offset_ptr<KeyFrame> > mvpMergeCandKFs;
+    //---------//
+    //New Code:
+    boost::interprocess::offset_ptr<MyVector_keyframe> mvpLoopCandKFs;
+    boost::interprocess::offset_ptr<MyVector_keyframe> mvpMergeCandKFs;
+
+
 
     bool mbHasHessian;
     cv::Mat mHessianPose;
@@ -335,9 +353,7 @@ protected:
     //std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints;
 
     //new code
-    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint;
-    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
-    MyVector_mappoint * mvpMapPoints_original;
+    //boost::interprocess::offset_ptr<MyVector_mappoint> mvpMapPoints_original;
     boost::interprocess::offset_ptr<MyVector_mappoint> mvpMapPoints;
     std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpMapPoints_vector;
 
@@ -348,16 +364,30 @@ protected:
     // Grid over the image to speed up feature matching
     std::vector< std::vector <std::vector<size_t> > > mGrid;
 
+
+    //Maps and Vector.
     std::map<boost::interprocess::offset_ptr<KeyFrame>,int> mConnectedKeyFrameWeights;
     std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpOrderedConnectedKeyFrames;
     std::vector<int> mvOrderedWeights;
 
+
+    //new code for Set.
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_keyframe_set;
+    typedef set<boost::interprocess::offset_ptr<KeyFrame>, std::less<boost::interprocess::offset_ptr<KeyFrame> >,ShmemAllocator_keyframe_set> Myset_keyframe;
+
     // Spanning Tree and Loop Edges
     bool mbFirstConnection;
     boost::interprocess::offset_ptr<KeyFrame> mpParent;
+
+    //replace the STL set with regular set
     std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens;
     std::set<boost::interprocess::offset_ptr<KeyFrame> > mspLoopEdges;
-    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges;
+    //OLD CODE
+    //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges;
+    //New CODE
+    boost::interprocess::offset_ptr<Myset_keyframe> mspMergeEdges;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges_support;
+
 
     // Bad flags
     bool mbNotErase;

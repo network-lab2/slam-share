@@ -44,11 +44,19 @@ KeyFrame::KeyFrame():
         NLeft(0),NRight(0), mnNumberOfOpt(0)
 {
     //creating all the matrix in the keyframe
-    std::cout<<"Keyframe constructor.--++ First"<<std::endl;
+    std::cout<<"Keyframe constructor.--++ First: initializing all vectors, sets and CV::MATs."<<std::endl;
 
+    //allocators first.
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
-    mvpMapPoints_original = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
-    mvpMapPoints = mvpMapPoints_original;
+    const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
+
+    //keyframes ones
+    mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
+    mvpMergeCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
+
+    //mappoints ones
+    mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+    //mvpMapPoints = mvpMapPoints_original;
 
 
 }
@@ -94,8 +102,16 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //initializing a vector
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
-    mvpMapPoints_original = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
-    mvpMapPoints = mvpMapPoints_original;
+    const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
+
+    //keyframes ones
+    mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
+    mvpMergeCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
+
+    //mappoints ones
+    mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+
+    //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
 
     //creating all the matrix in the keyframe
@@ -645,13 +661,28 @@ void KeyFrame::AddMergeEdge(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     unique_lock<mutex> lockCon(mMutexConnections);
     mbNotErase = true;
-    mspMergeEdges.insert(pKF);
+    //old code
+    //mspMergeEdges.insert(pKF);
+    //new code
+    mspMergeEdges->insert(pKF);
 }
 
 set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetMergeEdges()
 {
     unique_lock<mutex> lockCon(mMutexConnections);
-    return mspMergeEdges;
+    //clear the set and then initialize it with real value
+    //new code
+    mspMergeEdges_support.clear();
+
+    for(auto f : mspMergeEdges){
+        mspMergeEdges_support.insert(f);
+    }
+    //code ends
+    
+    //old code
+    //return mspMergeEdges;
+    //new code
+    return mspMergeEdges_support;
 }
 
 void KeyFrame::SetNotErase()

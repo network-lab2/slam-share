@@ -65,8 +65,12 @@ void LoopClosing::Run()
         {
             if(mpLastCurrentKF)
             {
-                mpLastCurrentKF->mvpLoopCandKFs.clear();
-                mpLastCurrentKF->mvpMergeCandKFs.clear();
+                //OLD CODE:
+                //mpLastCurrentKF->mvpLoopCandKFs.clear();
+                //mpLastCurrentKF->mvpMergeCandKFs.clear();
+                //NEW CODE:
+                mpLastCurrentKF->mvpLoopCandKFs->clear();
+                mpLastCurrentKF->mvpMergeCandKFs->clear();
             }
 #ifdef REGISTER_TIMES
             timeDetectBoW = 0;
