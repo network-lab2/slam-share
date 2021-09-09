@@ -345,7 +345,8 @@ int KeyFrame::GetNumberMPs()
     unique_lock<mutex> lock(mMutexFeatures);
     int numberMPs = 0;
     //for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
-    for(size_t i=0, iend=mvpMapPoints->size(); i<iend; i++)
+    std::cout<<"GetNumberMps, before loop\n";
+    for(size_t i=0, iend=(*mvpMapPoints).size(); i<iend; i++)
     {
         //if(!mvpMapPoints[i])
         if(!(*mvpMapPoints)[i])
