@@ -47,8 +47,8 @@ KeyFrame::KeyFrame():
     std::cout<<"Keyframe constructor.--++ First"<<std::endl;
 
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
-    mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
-    mvpMapPoints_ptr = mvpMapPoints;
+    mvpMapPoints_original = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+    mvpMapPoints = mvpMapPoints_original;
 
 
 }
@@ -94,9 +94,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //initializing a vector
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
-    mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+    mvpMapPoints_original = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+    mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
-    mvpMapPoints_ptr = mvpMapPoints;
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
@@ -348,7 +348,7 @@ int KeyFrame::GetNumberMPs()
     int numberMPs = 0;
     //for(size_t i=0, iend=mvpMapPoints.size(); i<iend; i++)
     std::cout<<"GetNumberMps, before loop\n";
-    boost::interprocess::offset_ptr<MyVector_mappoint> mvpMapPoints = mvpMapPoints_ptr;
+    //boost::interprocess::offset_ptr<MyVector_mappoint> mvpMapPoints = mvpMapPoints_ptr;
     for(size_t i=0, iend=(mvpMapPoints)->size(); i<iend; i++)
     {
         //if(!mvpMapPoints[i])
