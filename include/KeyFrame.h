@@ -376,7 +376,7 @@ protected:
 
     //new code for Set.
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_keyframe_set;
-    typedef boost::interprocess::containers::set<boost::interprocess::offset_ptr<KeyFrame>, std::less<boost::interprocess::offset_ptr<KeyFrame> >,ShmemAllocator_keyframe_set> Myset_keyframe;
+    typedef boost::interprocess::set<boost::interprocess::offset_ptr<KeyFrame>, std::less<boost::interprocess::offset_ptr<KeyFrame> >,ShmemAllocator_keyframe_set> Myset_keyframe;
 
     // Spanning Tree and Loop Edges
     bool mbFirstConnection;
