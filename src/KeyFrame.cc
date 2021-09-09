@@ -475,13 +475,14 @@ vector<boost::interprocess::offset_ptr<MapPoint> > KeyFrame::GetMapPointMatches(
 {
     unique_lock<mutex> lock(mMutexFeatures);
     //return mvpMapPoints;
+    /*
     mvpMapPoints_vector.clear();
     for(size_t i=0; i<mvpMapPoints->size(); i++){
         mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
     }
-
-    //return (*mvpMapPoints);
-    return mvpMapPoints_vector;
+*/
+    return *(mvpMapPoints.get());
+    //return mvpMapPoints_vector;
 }
 
 boost::interprocess::offset_ptr<MapPoint>  KeyFrame::GetMapPoint(const size_t &idx)
