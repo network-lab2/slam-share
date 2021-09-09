@@ -919,12 +919,14 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     {
         unique_lock<mutex> lock(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPose);
-        //vpMapPoints = mvpMapPoints;
+        vpMapPoints = mvpMapPoints;
+        /*
         mvpMapPoints_vector.clear();
         for(size_t i=0; i<mvpMapPoints->size(); i++){
             mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
         }
         vpMapPoints = mvpMapPoints_vector;
+        */
         Tcw_ = Tcw.clone();
     }
 
