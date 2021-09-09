@@ -173,10 +173,10 @@ public:
 
     //new code
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint;
-    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
+    typedef boost::interprocess::vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
 
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_keyframe;
-    typedef vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator_keyframe> MyVector_keyframe;
+    typedef boost::interprocess::vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator_keyframe> MyVector_keyframe;
 
 
 
