@@ -919,7 +919,7 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     {
         unique_lock<mutex> lock(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPose);
-        vpMapPoints.assign(mvpMapPoints.get().begin(),mvpMapPoints.get().end());// = mvpMapPoints;
+        vpMapPoints.assign(mvpMapPoints.get()->begin(),mvpMapPoints.get()->end());// = mvpMapPoints;
         /*
         mvpMapPoints_vector.clear();
         for(size_t i=0; i<mvpMapPoints->size(); i++){
