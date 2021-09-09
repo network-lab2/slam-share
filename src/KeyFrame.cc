@@ -53,6 +53,7 @@ KeyFrame::KeyFrame():
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
     mvpMergeCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
+    mvpOrderedConnectedKeyFrames = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
 
     //mappoints ones
     mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
@@ -297,7 +298,11 @@ void KeyFrame::UpdateBestCovisibles()
         }
     }
 
-    mvpOrderedConnectedKeyFrames = vector<boost::interprocess::offset_ptr<KeyFrame> >(lKFs.begin(),lKFs.end());
+    //old code
+    //mvpOrderedConnectedKeyFrames = vector<boost::interprocess::offset_ptr<KeyFrame> >(lKFs.begin(),lKFs.end());
+    //new code
+    mvpOrderedConnectedKeyFrames->assign(lKFs.begin(),lKFs.end());
+
     mvOrderedWeights = vector<int>(lWs.begin(), lWs.end());
 }
 
@@ -313,7 +318,10 @@ set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetConnectedKeyFrames(
 vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetVectorCovisibleKeyFrames()
 {
     unique_lock<mutex> lock(mMutexConnections);
-    return mvpOrderedConnectedKeyFrames;
+    //old-code
+    //return mvpOrderedConnectedKeyFrames;
+    //new-code
+    return (*(mvpOrderedConnectedKeyFrames->get()));
 }
 
 vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetBestCovisibilityKeyFrames(const int &N)

@@ -370,7 +370,12 @@ protected:
 
     //Maps and Vector.
     std::map<boost::interprocess::offset_ptr<KeyFrame>,int> mConnectedKeyFrameWeights;
-    std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpOrderedConnectedKeyFrames;
+
+    //old-code
+    //std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpOrderedConnectedKeyFrames;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_keyframe> mvpOrderedConnectedKeyFrames;
+
     std::vector<int> mvOrderedWeights;
 
 
