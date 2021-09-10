@@ -50,6 +50,7 @@ KeyFrame::KeyFrame():
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_map_keyframe alloc_map_key(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -62,6 +63,9 @@ KeyFrame::KeyFrame():
 
     //map-keyframe
     mConnectedKeyFrameWeights = ORB_SLAM3::segment.construct<MyMap>(boost::interprocess::anonymous_instance)(alloc_map_key);
+
+    //set-keyframe
+    mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
 }
 
@@ -108,6 +112,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_map_keyframe alloc_map_key(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -119,6 +124,10 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
      //map-keyframe
     mConnectedKeyFrameWeights = ORB_SLAM3::segment.construct<MyMap>(boost::interprocess::anonymous_instance)(alloc_map_key);
+
+
+    //set-keyframe
+    mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
     //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
