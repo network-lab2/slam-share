@@ -379,7 +379,7 @@ protected:
     //we need different datastructure for maps
     typedef boost::interprocess::offset_ptr<KeyFrame> keyType;
     typedef int MappedType;
-    typedef std::pair<boost::interprocess::offset_ptr<KeyFrame>, int> ValueType;
+    typedef std::pair<const boost::interprocess::offset_ptr<KeyFrame>, int> ValueType;
     typedef boost::interprocess::allocator<ValueType,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_map_keyframe;
 
     //Maps and Vector.
