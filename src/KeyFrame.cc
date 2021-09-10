@@ -327,10 +327,22 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetVectorCovisibleK
 vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetBestCovisibilityKeyFrames(const int &N)
 {
     unique_lock<mutex> lock(mMutexConnections);
-    if((int)mvpOrderedConnectedKeyFrames.size()<N)
-        return mvpOrderedConnectedKeyFrames;
-    else
-        return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames.begin(),mvpOrderedConnectedKeyFrames.begin()+N);
+    //old-code
+    //if((int)mvpOrderedConnectedKeyFrames.size()<N){
+    //new code
+    if((int)mvpOrderedConnectedKeyFrames->size()<N){
+        //old-code
+        //return mvpOrderedConnectedKeyFrames;
+        //new-code
+        return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames->begin(), mvpOrderedConnectedKeyFrames->end());
+
+    }
+    else{
+        //old-code
+        //return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames.begin(),mvpOrderedConnectedKeyFrames.begin()+N);
+        //new-code
+        return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames->begin(),mvpOrderedConnectedKeyFrames->begin()+N);
+    }
 
 }
 
@@ -338,7 +350,10 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetCovisiblesByWeig
 {
     unique_lock<mutex> lock(mMutexConnections);
 
-    if(mvpOrderedConnectedKeyFrames.empty())
+    //old-code
+    //if(mvpOrderedConnectedKeyFrames.empty())
+    //new-code
+    if(mvpOrderedConnectedKeyFrames->empty())
     {
         return vector<boost::interprocess::offset_ptr<KeyFrame> >();
     }
@@ -352,8 +367,10 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetCovisiblesByWeig
     else
     {
         int n = it-mvOrderedWeights.begin();
-
-        return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames.begin(), mvpOrderedConnectedKeyFrames.begin()+n);
+        //old-code
+        //return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames.begin(), mvpOrderedConnectedKeyFrames.begin()+n);
+        //new-code
+        return vector<boost::interprocess::offset_ptr<KeyFrame> >(mvpOrderedConnectedKeyFrames->begin(), mvpOrderedConnectedKeyFrames->begin()+n);
     }
 }
 
@@ -592,12 +609,19 @@ void KeyFrame::UpdateConnections(bool upParent)
         unique_lock<mutex> lockCon(mMutexConnections);
 
         mConnectedKeyFrameWeights = KFcounter;
-        mvpOrderedConnectedKeyFrames = vector<boost::interprocess::offset_ptr<KeyFrame> >(lKFs.begin(),lKFs.end());
+        // old-code
+        //mvpOrderedConnectedKeyFrames = vector<boost::interprocess::offset_ptr<KeyFrame> >(lKFs.begin(),lKFs.end());
+        // new-code
+        mvpOrderedConnectedKeyFrames->assign(lKFs.begin(),lKFs.end())
+
         mvOrderedWeights = vector<int>(lWs.begin(), lWs.end());
 
         if(mbFirstConnection && mnId!=mpMap->GetInitKFid())
         {
-            mpParent = mvpOrderedConnectedKeyFrames.front();
+            //old-code
+            //mpParent = mvpOrderedConnectedKeyFrames.front();
+            //new-code
+            mpParent = mvpOrderedConnectedKeyFrames->front();
             mpParent->AddChild(this);
             mbFirstConnection = false;
         }
