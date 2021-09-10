@@ -308,8 +308,10 @@ void KeyFrame::UpdateBestCovisibles()
     //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++) //old-code
     //new-code
     //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
-     for(auto const& mit : mConnectedKeyFrameWeights)
-       vPairs.push_back(make_pair(mit->second,mit->first));
+     for(auto const& mit : (*mConnectedKeyFrameWeights)){
+       //vPairs.push_back(make_pair(mit->second,mit->first));
+        vPairs.push_back(make_pair(mit.second,mit.first));
+   }
 
     sort(vPairs.begin(),vPairs.end());
     list<boost::interprocess::offset_ptr<KeyFrame> > lKFs;
