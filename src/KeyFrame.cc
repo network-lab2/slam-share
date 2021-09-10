@@ -340,8 +340,10 @@ set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetConnectedKeyFrames(
     //old-code
     //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin();mit!=mConnectedKeyFrameWeights.end();mit++)
     //new-code
-    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights->begin();mit!=mConnectedKeyFrameWeights->end();mit++)
-        s.insert(mit->first);
+    //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights->begin();mit!=mConnectedKeyFrameWeights->end();mit++)
+    for(auto const& mit : (*mConnectedKeyFrameWeights)){
+        s.insert(mit.first);
+    }
     return s;
 }
 
