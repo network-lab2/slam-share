@@ -807,7 +807,8 @@ void KeyFrame::SetBadFlag()
     //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
     for(auto const& mit : (*mConnectedKeyFrameWeights))// = mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
     {
-        mit->first->EraseConnection(this);
+        //mit->first->EraseConnection(this);
+        mit.first->EraseConnection(this);
     }
 
     //for(size_t i=0; i<mvpMapPoints.size(); i++)
