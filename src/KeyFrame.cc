@@ -646,7 +646,7 @@ void KeyFrame::UpdateConnections(bool upParent)
         unique_lock<mutex> lockCon(mMutexConnections);
 
         //turned off for check
-        //mConnectedKeyFrameWeights = KFcounter;
+        mConnectedKeyFrameWeights = KFcounter;
         // old-code
         //mvpOrderedConnectedKeyFrames = vector<boost::interprocess::offset_ptr<KeyFrame> >(lKFs.begin(),lKFs.end());
         // new-code
