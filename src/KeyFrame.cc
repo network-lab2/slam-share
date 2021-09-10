@@ -62,7 +62,7 @@ KeyFrame::KeyFrame():
     //mvpMapPoints = mvpMapPoints_original;
 
     //map-keyframe
-    mConnectedKeyFrameWeights = ORB_SLAM3::segment.construct<MyMap>(boost::interprocess::anonymous_instance)(alloc_map_key);
+    mConnectedKeyFrameWeights = ORB_SLAM3::segment.construct<MyMap>(boost::interprocess::anonymous_instance)(std::less<keyType>(),alloc_map_key);
 
     //set-keyframe
     mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
