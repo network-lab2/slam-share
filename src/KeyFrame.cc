@@ -49,6 +49,7 @@ KeyFrame::KeyFrame():
     //allocators first.
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_map_keyframe alloc_map_key(ORB_SLAM3::segment.get_segment_manager());
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -59,6 +60,8 @@ KeyFrame::KeyFrame():
     mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
     //mvpMapPoints = mvpMapPoints_original;
 
+    //map-keyframe
+    mConnectedKeyFrameWeights = ORB_SLAM3::segment.construct<MyMap>(boost::interprocess::anonymous_instance)(alloc_map_key);
 
 }
 
@@ -104,6 +107,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //initializing a vector
     const ShmemAllocator_mappoint alloc_inst(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_map_keyframe alloc_map_key(ORB_SLAM3::segment.get_segment_manager());
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -112,6 +116,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //mappoints ones
     mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
+
+     //map-keyframe
+    mConnectedKeyFrameWeights = ORB_SLAM3::segment.construct<MyMap>(boost::interprocess::anonymous_instance)(alloc_map_key);
 
     //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
@@ -268,12 +275,23 @@ void KeyFrame::AddConnection(boost::interprocess::offset_ptr<KeyFrame> pKF, cons
 {
     {
         unique_lock<mutex> lock(mMutexConnections);
+        //old-code
+        /*
         if(!mConnectedKeyFrameWeights.count(pKF))
             mConnectedKeyFrameWeights[pKF]=weight;
         else if(mConnectedKeyFrameWeights[pKF]!=weight)
             mConnectedKeyFrameWeights[pKF]=weight;
         else
             return;
+        */
+        //new-code
+        if(!mConnectedKeyFrameWeights->count(pKF))
+            mConnectedKeyFrameWeights->at(pKF)=weight;
+        else if(mConnectedKeyFrameWeights->at(pKF)!=weight)
+            mConnectedKeyFrameWeights->at(pKF)=weight;
+        else
+            return;
+
     }
 
     UpdateBestCovisibles();
@@ -283,8 +301,13 @@ void KeyFrame::UpdateBestCovisibles()
 {
     unique_lock<mutex> lock(mMutexConnections);
     vector<pair<int,boost::interprocess::offset_ptr<KeyFrame> > > vPairs;
-    vPairs.reserve(mConnectedKeyFrameWeights.size());
-    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++)
+    
+    //vPairs.reserve(mConnectedKeyFrameWeights.size());//old-code
+    vPairs.reserve(mConnectedKeyFrameWeights->size());
+    
+    //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++) //old-code
+    //new-code
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
        vPairs.push_back(make_pair(mit->second,mit->first));
 
     sort(vPairs.begin(),vPairs.end());
@@ -311,7 +334,10 @@ set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetConnectedKeyFrames(
 {
     unique_lock<mutex> lock(mMutexConnections);
     set<boost::interprocess::offset_ptr<KeyFrame> > s;
-    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin();mit!=mConnectedKeyFrameWeights.end();mit++)
+    //old-code
+    //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin();mit!=mConnectedKeyFrameWeights.end();mit++)
+    //new-code
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights->begin();mit!=mConnectedKeyFrameWeights->end();mit++)
         s.insert(mit->first);
     return s;
 }
@@ -381,8 +407,15 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetCovisiblesByWeig
 int KeyFrame::GetWeight(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexConnections);
+    /* //old code
     if(mConnectedKeyFrameWeights.count(pKF))
         return mConnectedKeyFrameWeights[pKF];
+    else
+        return 0;
+        */
+    //new-code
+    if(mConnectedKeyFrameWeights->count(pKF))
+        return mConnectedKeyFrameWeights->at(pKF);
     else
         return 0;
 }
@@ -763,7 +796,10 @@ void KeyFrame::SetBadFlag()
         }
     }
 
-    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++)
+    //old-code
+    //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++)
+    //new-code
+    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
     {
         mit->first->EraseConnection(this);
     }
@@ -783,7 +819,10 @@ void KeyFrame::SetBadFlag()
         unique_lock<mutex> lock(mMutexConnections);
         unique_lock<mutex> lock1(mMutexFeatures);
 
-        mConnectedKeyFrameWeights.clear();
+        //old-code
+        //mConnectedKeyFrameWeights.clear();
+        //new-code
+        mConnectedKeyFrameWeights->clear();
         //old-code
         //mvpOrderedConnectedKeyFrames.clear();
         //new-code
@@ -873,9 +912,11 @@ void KeyFrame::EraseConnection(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     bool bUpdate = false;
     {
         unique_lock<mutex> lock(mMutexConnections);
-        if(mConnectedKeyFrameWeights.count(pKF))
+        //if(mConnectedKeyFrameWeights.count(pKF)) //old-code
+        if(mConnectedKeyFrameWeights->count(pKF))
         {
-            mConnectedKeyFrameWeights.erase(pKF);
+            //mConnectedKeyFrameWeights.erase(pKF);
+            mConnectedKeyFrameWeights->erase(pKF);
             bUpdate=true;
         }
     }

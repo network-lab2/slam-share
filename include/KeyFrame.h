@@ -39,6 +39,7 @@
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/interprocess/containers/set.hpp>
+#include <boost/interprocess/containers/map.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
 
 
@@ -368,8 +369,21 @@ protected:
     std::vector< std::vector <std::vector<size_t> > > mGrid;
 
 
+
+    //we need different datastructure for maps
+    typedef boost::interprocess::offset_ptr<KeyFrame> keyType;
+    typedef int MappedType;
+    typedef std::pair<boost::interprocess::offset_ptr<KeyFrame>, int> ValueType;
+    typedef boost::interprocess::allocator<ValueType,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_map_keyframe;
+
     //Maps and Vector.
-    std::map<boost::interprocess::offset_ptr<KeyFrame>,int> mConnectedKeyFrameWeights;
+    typedef boost::container::map<keyType,MappedType,std::less<keyType>,ShmemAllocator_map_keyframe> MyMap;
+
+    //old-code : Map
+    //std::map<boost::interprocess::offset_ptr<KeyFrame>,int> mConnectedKeyFrameWeights;
+    //new-code : Map
+    boost::interprocess::offset_ptr<MyMap> mConnectedKeyFrameWeights;
+
 
     //old-code
     //std::vector<boost::interprocess::offset_ptr<KeyFrame> > mvpOrderedConnectedKeyFrames;
@@ -395,7 +409,7 @@ protected:
     //New CODE
     boost::interprocess::offset_ptr<Myset_keyframe> mspMergeEdges;
     std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges_support;
-
+    
 
     // Bad flags
     bool mbNotErase;
