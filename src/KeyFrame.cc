@@ -108,6 +108,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
     mvpMergeCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
+    mvpOrderedConnectedKeyFrames = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
 
     //mappoints ones
     mvpMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst);
