@@ -612,7 +612,7 @@ void KeyFrame::UpdateConnections(bool upParent)
         // old-code
         //mvpOrderedConnectedKeyFrames = vector<boost::interprocess::offset_ptr<KeyFrame> >(lKFs.begin(),lKFs.end());
         // new-code
-        mvpOrderedConnectedKeyFrames->assign(lKFs.begin(),lKFs.end())
+        mvpOrderedConnectedKeyFrames->assign(lKFs.begin(),lKFs.end());
 
         mvOrderedWeights = vector<int>(lWs.begin(), lWs.end());
 
@@ -780,7 +780,10 @@ void KeyFrame::SetBadFlag()
         unique_lock<mutex> lock1(mMutexFeatures);
 
         mConnectedKeyFrameWeights.clear();
-        mvpOrderedConnectedKeyFrames.clear();
+        //old-code
+        //mvpOrderedConnectedKeyFrames.clear();
+        //new-code
+        mvpOrderedConnectedKeyFrames->clear();
 
         // Update Spanning Tree
         set<boost::interprocess::offset_ptr<KeyFrame> > sParentCandidates;
