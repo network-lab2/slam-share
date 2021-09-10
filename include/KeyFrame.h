@@ -54,8 +54,8 @@ class KeyFrameDatabase;
 class GeometricCamera;
 
 struct classcomp {
-  bool operator() (boost::interprocess::offset_ptr<KeyFrame> lhs, boost::interprocess::offset_ptr<KeyFrame> rhs) const
-  {return lhs.get_offset()<rhs.get_offset();}
+  bool operator() (std::pair<boost::interprocess::offset_ptr<KeyFrame>,int> &lhs, std::pair<boost::interprocess::offset_ptr<KeyFrame>,int> &rhs) const
+  {return lhs.second<rhs.second;}
 };
 
 
