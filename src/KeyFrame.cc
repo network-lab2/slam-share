@@ -295,9 +295,9 @@ void KeyFrame::AddConnection(boost::interprocess::offset_ptr<KeyFrame> pKF, cons
         */
         //new-code
         if(!(*mConnectedKeyFrameWeights).count(pKF))
-            (*mConnectedKeyFrameWeights).at(pKF)=weight;
-        else if ((*mConnectedKeyFrameWeights).at(pKF)!=weight)
-            (*mConnectedKeyFrameWeights).at(pKF)=weight;
+            (*mConnectedKeyFrameWeights)[pKF]=weight;
+        else if ((*mConnectedKeyFrameWeights)[pKF]!=weight)
+            (*mConnectedKeyFrameWeights)[pKF]=weight;
         else
             return;
 
