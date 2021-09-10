@@ -312,7 +312,7 @@ void KeyFrame::UpdateBestCovisibles()
     vector<pair<int,boost::interprocess::offset_ptr<KeyFrame> > > vPairs;
     
     //vPairs.reserve(mConnectedKeyFrameWeights.size());//old-code
-    vPairs.reserve(mConnectedKeyFrameWeights->size());
+    vPairs.reserve((*mConnectedKeyFrameWeights).size());
     
     //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit=mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++) //old-code
     //new-code
