@@ -331,7 +331,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetBestCovisibility
     //old-code
     //if((int)mvpOrderedConnectedKeyFrames.size()<N){
     //new code
-    if((int)mvpOrderedConnectedKeyFrames->size()<N){
+    if(((int)(mvpOrderedConnectedKeyFrames->size()))<N){
         std::cout<<"GetBestCovisibilityKeyFrames if (true)\n";
         //old-code
         //return mvpOrderedConnectedKeyFrames;
