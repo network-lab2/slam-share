@@ -327,6 +327,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetVectorCovisibleK
 vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetBestCovisibilityKeyFrames(const int &N)
 {
     unique_lock<mutex> lock(mMutexConnections);
+    std::cout<<"GetBestCovisibilityKeyFrames before IF\n";
     //old-code
     //if((int)mvpOrderedConnectedKeyFrames.size()<N){
     //new code
