@@ -377,7 +377,7 @@ protected:
     typedef boost::interprocess::allocator<ValueType,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_map_keyframe;
 
     //Maps and Vector.
-    typedef boost::container::map<keyType,MappedType,std::less<keyType>,ShmemAllocator_map_keyframe> MyMap;
+    typedef boost::interprocess::map<keyType,MappedType,std::less<keyType>,ShmemAllocator_map_keyframe> MyMap;
 
     //old-code : Map
     //std::map<boost::interprocess::offset_ptr<KeyFrame>,int> mConnectedKeyFrameWeights;
