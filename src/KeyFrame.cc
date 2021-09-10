@@ -801,7 +801,8 @@ void KeyFrame::SetBadFlag()
     //old-code
     //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights.begin(), mend=mConnectedKeyFrameWeights.end(); mit!=mend; mit++)
     //new-code
-    for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
+    //for(map<boost::interprocess::offset_ptr<KeyFrame> ,int>::iterator mit = mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
+    for(auto const& mit : mConnectedKeyFrameWeights)// = mConnectedKeyFrameWeights->begin(), mend=mConnectedKeyFrameWeights->end(); mit!=mend; mit++)
     {
         mit->first->EraseConnection(this);
     }
