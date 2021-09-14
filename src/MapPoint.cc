@@ -537,7 +537,7 @@ void MapPoint::UpdateNormalAndDepth()
         level = pRefKF->mvKeysUn[leftIndex].octave;
     }
     else if(leftIndex != -1){
-        level = pRefKF -> mvKeys[leftIndex].octave;
+        level = (*pRefKF -> mvKeys)[leftIndex].octave;
     }
     else{
         level = pRefKF -> mvKeysRight[rightIndex - pRefKF -> NLeft].octave;

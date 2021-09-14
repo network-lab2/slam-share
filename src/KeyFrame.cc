@@ -980,7 +980,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
             {
                 const cv::KeyPoint &kpUn = (NLeft == -1) ? mvKeysUn[vCell[j]]
-                                                         : (!bRight) ? mvKeys[vCell[j]]
+                                                         : (!bRight) ? (*mvKeys)[vCell[j]]
                                                                      : mvKeysRight[vCell[j]];
                 const float distx = kpUn.pt.x-x;
                 const float disty = kpUn.pt.y-y;
@@ -1004,8 +1004,8 @@ cv::Mat KeyFrame::UnprojectStereo(int i)
     const float z = mvDepth[i];
     if(z>0)
     {
-        const float u = mvKeys[i].pt.x;
-        const float v = mvKeys[i].pt.y;
+        const float u = (*mvKeys)[i].pt.x;
+        const float v = (*mvKeys)[i].pt.y;
         const float x = (u-cx)*z*invfx;
         const float y = (v-cy)*z*invfy;
         cv::Mat x3Dc = (cv::Mat_<float>(3,1) << x, y, z);
@@ -1365,8 +1365,8 @@ cv::Matx31f KeyFrame::UnprojectStereo_(int i) {
     const float z = mvDepth[i];
     if(z>0)
     {
-        const float u = mvKeys[i].pt.x;
-        const float v = mvKeys[i].pt.y;
+        const float u = (*mvKeys)[i].pt.x;
+        const float v = (*mvKeys)[i].pt.y;
         const float x = (u-cx)*z*invfx;
         const float y = (v-cy)*z*invfy;
         cv::Matx31f x3Dc(x,y,z);
