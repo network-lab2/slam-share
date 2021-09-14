@@ -829,7 +829,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
 
-    const vector<cv::KeyPoint> &vKeysUn2 = (*pKF2->mvKeysUn);
+    const vector<cv::KeyPoint> &vKeysUn2 = temp_vec;
     const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
