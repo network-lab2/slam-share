@@ -178,12 +178,23 @@ public:
     bool bImu;
 
 
-    //new code
+    //new code:: Allocators for vectors
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint;
     typedef boost::interprocess::vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
 
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_keyframe;
     typedef boost::interprocess::vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator_keyframe> MyVector_keyframe;
+
+
+    typedef boost::interprocess::allocator<cv::KeyPoint, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_cv_keypoint;
+    typedef boost::interprocess::vector<cv::KeyPoint, ShmemAllocator_cv_keypoint> MyVector_CV;
+
+    typedef boost::interprocess::allocator<float,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_float;
+    typedef boost::interprocess::vector<float, ShmemAllocator_float> MyVector_float;
+
+    typedef boost::interprocess::allocator<int,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_int;
+    typedef boost::interprocess::vector<int, ShmemAllocator_float> MyVector_int;
+
 
 
 
@@ -267,7 +278,11 @@ public:
     const int N;
 
     // KeyPoints, stereo coordinate and descriptors (all associated by an index)
-    const std::vector<cv::KeyPoint> mvKeys;
+    //old code
+    //const std::vector<cv::KeyPoint> mvKeys;
+    //new code
+    boost::interprocess::offset_ptr<MyVector_CV> mvKeys;
+
     const std::vector<cv::KeyPoint> mvKeysUn;
     const std::vector<float> mvuRight; // negative value for monocular points
     const std::vector<float> mvDepth; // negative value for monocular points
