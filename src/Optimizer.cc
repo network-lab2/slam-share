@@ -163,7 +163,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
 
             if(leftIndex != -1 && pKF->mvuRight[get<0>(mit->second)]<0)
             {
-                const cv::KeyPoint &kpUn = pKF->mvKeysUn[leftIndex];
+                const cv::KeyPoint &kpUn = (*pKF->mvKeysUn)[leftIndex];
 
                 Eigen::Matrix<double,2,1> obs;
                 obs << kpUn.pt.x, kpUn.pt.y;
@@ -193,7 +193,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
             }
             else if(leftIndex != -1 && pKF->mvuRight[leftIndex] >= 0) //Stereo observation
             {
-                const cv::KeyPoint &kpUn = pKF->mvKeysUn[leftIndex];
+                const cv::KeyPoint &kpUn = (*pKF->mvKeysUn)[leftIndex];
 
                 Eigen::Matrix<double,3,1> obs;
                 const float kp_ur = pKF->mvuRight[get<0>(mit->second)];
@@ -644,7 +644,7 @@ void Optimizer::FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int it
 
                 if(leftIndex != -1 && pKFi->mvuRight[get<0>(mit->second)]<0) // Monocular observation
                 {
-                    kpUn = pKFi->mvKeysUn[leftIndex];
+                    kpUn = (*pKFi->mvKeysUn)[leftIndex];
                     Eigen::Matrix<double,2,1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y;
 
@@ -670,7 +670,7 @@ void Optimizer::FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int it
                 }
                 else if(leftIndex != -1 && pKFi->mvuRight[leftIndex] >= 0) // stereo observation
                 {
-                    kpUn = pKFi->mvKeysUn[leftIndex];
+                    kpUn = (*pKFi->mvKeysUn)[leftIndex];
                     const float kp_ur = pKFi->mvuRight[leftIndex];
                     Eigen::Matrix<double,3,1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y, kp_ur;
@@ -1369,7 +1369,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 // Monocular observation of Camera 0
                 if(cam0Index != -1 && pKFi->mvuRight[cam0Index]<0)
                 {
-                    const cv::KeyPoint &kpUn = pKFi->mvKeysUn[cam0Index];
+                    const cv::KeyPoint &kpUn = (*pKFi->mvKeysUn)[cam0Index];
                     Eigen::Matrix<double,2,1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y;
 
@@ -1396,7 +1396,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 }
                 else if(cam0Index != -1 && pKFi->mvuRight[cam0Index]>=0)// Stereo observation (with rectified images)
                 {
-                    const cv::KeyPoint &kpUn = pKFi->mvKeysUn[cam0Index];
+                    const cv::KeyPoint &kpUn = (*pKFi->mvKeysUn)[cam0Index];
                     Eigen::Matrix<double,3,1> obs;
                     const float kp_ur = pKFi->mvuRight[cam0Index];
                     obs << kpUn.pt.x, kpUn.pt.y, kp_ur;
@@ -1853,7 +1853,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 // Monocular observation
                 if(leftIndex != -1 && pKFi->mvuRight[get<0>(mit->second)]<0)
                 {
-                    const cv::KeyPoint &kpUn = pKFi->mvKeysUn[leftIndex];
+                    const cv::KeyPoint &kpUn = (*pKFi->mvKeysUn)[leftIndex];
                     Eigen::Matrix<double,2,1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y;
 
@@ -1880,7 +1880,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 }
                 else if(leftIndex != -1 && pKFi->mvuRight[get<0>(mit->second)]>=0)// Stereo observation
                 {
-                    const cv::KeyPoint &kpUn = pKFi->mvKeysUn[leftIndex];
+                    const cv::KeyPoint &kpUn = (*pKFi->mvKeysUn)[leftIndex];
                     Eigen::Matrix<double,3,1> obs;
                     const float kp_ur = pKFi->mvuRight[get<0>(mit->second)];
                     obs << kpUn.pt.x, kpUn.pt.y, kp_ur;
@@ -3345,7 +3345,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
         // Set edge x1 = S12*X2
         Eigen::Matrix<double,2,1> obs1;
-        const cv::KeyPoint &kpUn1 = pKF1->mvKeysUn[i];
+        const cv::KeyPoint &kpUn1 = (*pKF1->mvKeysUn)[i];
         obs1 << kpUn1.pt.x, kpUn1.pt.y;
 
         g2o::EdgeSim3ProjectXYZ* e12 = new g2o::EdgeSim3ProjectXYZ();
@@ -3362,7 +3362,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
         // Set edge x2 = S21*X1
         Eigen::Matrix<double,2,1> obs2;
-        const cv::KeyPoint &kpUn2 = pKF2->mvKeysUn[i2];
+        const cv::KeyPoint &kpUn2 = (*pKF2->mvKeysUn)[i2];
         obs2 << kpUn2.pt.x, kpUn2.pt.y;
 
         g2o::EdgeInverseSim3ProjectXYZ* e21 = new g2o::EdgeInverseSim3ProjectXYZ();
@@ -3577,7 +3577,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
         // Set edge x1 = S12*X2
         Eigen::Matrix<double,2,1> obs1;
-        const cv::KeyPoint &kpUn1 = pKF1->mvKeysUn[i];
+        const cv::KeyPoint &kpUn1 = (*pKF1->mvKeysUn)[i];
         obs1 << kpUn1.pt.x, kpUn1.pt.y;
 
         ORB_SLAM3::EdgeSim3ProjectXYZ* e12 = new ORB_SLAM3::EdgeSim3ProjectXYZ();
@@ -3599,7 +3599,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         bool inKF2;
         if(i2 >= 0)
         {
-            kpUn2 = pKF2->mvKeysUn[i2];
+            kpUn2 = (*pKF2->mvKeysUn)[i2];
             obs2 << kpUn2.pt.x, kpUn2.pt.y;
             inKF2 = true;
 
@@ -3828,7 +3828,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
         // Set edge x1 = S12*X2
         Eigen::Matrix<double,2,1> obs1;
-        const cv::KeyPoint &kpUn1 = pKF1->mvKeysUn[i];
+        const cv::KeyPoint &kpUn1 = (*pKF1->mvKeysUn)[i];
         obs1 << kpUn1.pt.x, kpUn1.pt.y;
 
         ORB_SLAM3::EdgeSim3ProjectXYZ* e12 = new ORB_SLAM3::EdgeSim3ProjectXYZ();
@@ -3848,7 +3848,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         cv::KeyPoint kpUn2;
         if(i2 >= 0 && pKFm == pKF2)
         {
-            kpUn2 = pKFm->mvKeysUn[i2];
+            kpUn2 = (*pKFm->mvKeysUn)[i2];
             obs2 << kpUn2.pt.x, kpUn2.pt.y;
         }
         else
@@ -4333,7 +4333,7 @@ void Optimizer::LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame> pKF, b
                 {
                     mVisEdges[pKFi->mnId]++;
 
-                    kpUn = pKFi->mvKeysUn[leftIndex];
+                    kpUn = (*pKFi->mvKeysUn)[leftIndex];
                     Eigen::Matrix<double,2,1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y;
 
@@ -4363,7 +4363,7 @@ void Optimizer::LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame> pKF, b
                 // Stereo-observation
                 else if(leftIndex != -1)// Stereo observation
                 {
-                    kpUn = pKFi->mvKeysUn[leftIndex];
+                    kpUn = (*pKFi->mvKeysUn)[leftIndex];
                     mVisEdges[pKFi->mnId]++;
 
                     const float kp_ur = pKFi->mvuRight[leftIndex];
@@ -5427,7 +5427,7 @@ void Optimizer::MergeBundleAdjustmentVisual(boost::interprocess::offset_ptr<KeyF
 
             nEdges++;
 
-            const cv::KeyPoint &kpUn = pKF->mvKeysUn[get<0>(mit->second)];
+            const cv::KeyPoint &kpUn = (*pKF->mvKeysUn)[get<0>(mit->second)];
 
             if(pKF->mvuRight[get<0>(mit->second)]<0) //Monocular
             {
@@ -5772,7 +5772,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
 
             nEdges++;
 
-            const cv::KeyPoint &kpUn = pKF->mvKeysUn[get<0>(mit->second)];
+            const cv::KeyPoint &kpUn = (*pKF->mvKeysUn)[get<0>(mit->second)];
 
             if(pKF->mvuRight[get<0>(mit->second)]<0) //Monocular
             {
@@ -6014,7 +6014,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
             if(pKF->isBad() || pKF->mnId>maxKFid || pKF->mnBALocalForKF != pMainKF->mnId || !pKF->GetMapPoint(get<0>(mit->second)))
                 continue;
 
-            const cv::KeyPoint &kpUn = pKF->mvKeysUn[get<0>(mit->second)];
+            const cv::KeyPoint &kpUn = (*pKF->mvKeysUn)[get<0>(mit->second)];
 
             if(pKF->mvuRight[get<0>(mit->second)]<0) //Monocular
             {
@@ -6517,7 +6517,7 @@ void Optimizer::MergeInertialBA(boost::interprocess::offset_ptr<KeyFrame>  pCurr
 
             if(!pKFi->isBad())
             {
-                const cv::KeyPoint &kpUn = pKFi->mvKeysUn[get<0>(mit->second)];
+                const cv::KeyPoint &kpUn = (*pKFi->mvKeysUn)[get<0>(mit->second)];
 
                 if(pKFi->mvuRight[get<0>(mit->second)]<0) // Monocular observation
                 {

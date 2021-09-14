@@ -90,8 +90,8 @@ Sim3Solver::Sim3Solver(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::in
             if(indexKF1<0 || indexKF2<0)
                 continue;
 
-            const cv::KeyPoint &kp1 = pKF1->mvKeysUn[indexKF1];
-            const cv::KeyPoint &kp2 = pKFm->mvKeysUn[indexKF2];
+            const cv::KeyPoint &kp1 = (*pKF1->mvKeysUn)[indexKF1];
+            const cv::KeyPoint &kp2 = (*pKFm->mvKeysUn)[indexKF2];
 
             const float sigmaSquare1 = pKF1->mvLevelSigma2[kp1.octave];
             const float sigmaSquare2 = pKFm->mvLevelSigma2[kp2.octave];

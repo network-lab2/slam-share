@@ -2340,8 +2340,8 @@ void Tracking::MonocularInitialization()
             mInitialFrame = Frame(mCurrentFrame);
             mLastFrame = Frame(mCurrentFrame);
             mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
-            for(size_t i=0; i<mCurrentFrame.mvKeysUn.size(); i++)
-                mvbPrevMatched[i]=mCurrentFrame.mvKeysUn[i].pt;
+            for(size_t i=0; i<(mCurrentFrame.mvKeysUn).size(); i++)
+                mvbPrevMatched[i]=(mCurrentFrame.mvKeysUn)[i].pt;
 
             if(mpInitializer)
                 delete mpInitializer;
@@ -2391,7 +2391,7 @@ void Tracking::MonocularInitialization()
         cv::Mat tcw; // Current Camera Translation
         vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
-        if(mpCamera->ReconstructWithTwoViews(mInitialFrame.mvKeysUn,mCurrentFrame.mvKeysUn,mvIniMatches,Rcw,tcw,mvIniP3D,vbTriangulated))
+        if(mpCamera->ReconstructWithTwoViews((mInitialFrame.mvKeysUn),(mCurrentFrame.mvKeysUn),mvIniMatches,Rcw,tcw,mvIniP3D,vbTriangulated))
         {
             for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
             {
@@ -4070,11 +4070,11 @@ void Tracking::CreateNewMapPoints()
             const int &idx1 = vMatchedIndices[ikp].first;
             const int &idx2 = vMatchedIndices[ikp].second;
 
-            const cv::KeyPoint &kp1 = mpLastKeyFrame->mvKeysUn[idx1];
+            const cv::KeyPoint &kp1 = (*mpLastKeyFrame->mvKeysUn)[idx1];
             const float kp1_ur=mpLastKeyFrame->mvuRight[idx1];
             bool bStereo1 = kp1_ur>=0;
 
-            const cv::KeyPoint &kp2 = pKF2->mvKeysUn[idx2];
+            const cv::KeyPoint &kp2 = (*pKF2->mvKeysUn)[idx2];
             const float kp2_ur = pKF2->mvuRight[idx2];
             bool bStereo2 = kp2_ur>=0;
 
