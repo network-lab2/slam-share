@@ -379,7 +379,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
                         const cv::KeyPoint &kp =
                                 (!pKF->mpCamera2) ? pKF->mvKeysUn[realIdxKF] :
                                 (realIdxKF >= pKF -> NLeft) ? pKF -> mvKeysRight[realIdxKF - pKF -> NLeft]
-                                                            : pKF -> mvKeys[realIdxKF];
+                                                            : (*pKF -> mvKeys)[realIdxKF];
 
                         if(mbCheckOrientation)
                         {
@@ -409,7 +409,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
                             const cv::KeyPoint &kp =
                                     (!pKF->mpCamera2) ? pKF->mvKeysUn[realIdxKF] :
                                     (realIdxKF >= pKF -> NLeft) ? pKF -> mvKeysRight[realIdxKF - pKF -> NLeft]
-                                                                : pKF -> mvKeys[realIdxKF];
+                                                                : (*pKF -> mvKeys)[realIdxKF];
 
                             if(mbCheckOrientation)
                             {
@@ -1081,7 +1081,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                         continue;
 
                     const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? pKF2->mvKeysUn[idx2]
-                                                                    : (idx2 < pKF2 -> NLeft) ? pKF2 -> mvKeys[idx2]
+                                                                    : (idx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[idx2]
                                                                                              : pKF2 -> mvKeysRight[idx2 - pKF2 -> NLeft];
                     const bool bRight2 = (pKF2 -> NLeft == -1 || idx2 < pKF2 -> NLeft) ? false
                                                                                        : true;
@@ -1139,7 +1139,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                 if(bestIdx2>=0)
                 {
                     const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? pKF2->mvKeysUn[bestIdx2]
-                                                                    : (bestIdx2 < pKF2 -> NLeft) ? pKF2 -> mvKeys[bestIdx2]
+                                                                    : (bestIdx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[bestIdx2]
                                                                                                  : pKF2 -> mvKeysRight[bestIdx2 - pKF2 -> NLeft];
                     vMatches12[idx1]=bestIdx2;
                     nmatches++;
@@ -1289,7 +1289,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
 
                     const cv::KeyPoint &kp1 = (pKF1 -> NLeft == -1) ? pKF1->mvKeysUn[idx1]
-                                                                    : (idx1 < pKF1 -> NLeft) ? pKF1 -> mvKeys[idx1]
+                                                                    : (idx1 < pKF1 -> NLeft) ? (*pKF1 -> mvKeys)[idx1]
                                                                                              : pKF1 -> mvKeysRight[idx1 - pKF1 -> NLeft];
 
                     const bool bRight1 = (pKF1 -> NLeft == -1 || idx1 < pKF1 -> NLeft) ? false
@@ -1324,7 +1324,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                             continue;
 
                         const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? pKF2->mvKeysUn[idx2]
-                                                                        : (idx2 < pKF2 -> NLeft) ? pKF2 -> mvKeys[idx2]
+                                                                        : (idx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[idx2]
                                                                                                  : pKF2 -> mvKeysRight[idx2 - pKF2 -> NLeft];
                         const bool bRight2 = (pKF2 -> NLeft == -1 || idx2 < pKF2 -> NLeft) ? false
                                                                                            : true;
@@ -1382,7 +1382,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                     if(bestIdx2>=0)
                     {
                         const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? pKF2->mvKeysUn[bestIdx2]
-                                                                        : (bestIdx2 < pKF2 -> NLeft) ? pKF2 -> mvKeys[bestIdx2]
+                                                                        : (bestIdx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[bestIdx2]
                                                                                                      : pKF2 -> mvKeysRight[bestIdx2 - pKF2 -> NLeft];
                         vMatches12[idx1]=bestIdx2;
                         nmatches++;
@@ -1505,7 +1505,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                         continue;
 
                     const cv::KeyPoint &kp1 = (pKF1 -> NLeft == -1) ? pKF1->mvKeysUn[idx1]
-                                                                    : (idx1 < pKF1 -> NLeft) ? pKF1 -> mvKeys[idx1]
+                                                                    : (idx1 < pKF1 -> NLeft) ? (*pKF1 -> mvKeys)[idx1]
                                                                                              : pKF1 -> mvKeysRight[idx1 - pKF1 -> NLeft];
 
                     const bool bRight1 = (pKF1 -> NLeft == -1 || idx1 < pKF1 -> NLeft) ? false
@@ -1539,7 +1539,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
 
                         const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? pKF2->mvKeysUn[idx2]
-                                                                        : (idx2 < pKF2 -> NLeft) ? pKF2 -> mvKeys[idx2]
+                                                                        : (idx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[idx2]
                                                                                                  : pKF2 -> mvKeysRight[idx2 - pKF2 -> NLeft];
                         const bool bRight2 = (pKF2 -> NLeft == -1 || idx2 < pKF2 -> NLeft) ? false
                                                                                            : true;
@@ -1572,7 +1572,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                     if(bestIdx2>=0)
                     {
                         const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? pKF2->mvKeysUn[bestIdx2]
-                                                                        : (bestIdx2 < pKF2 -> NLeft) ? pKF2 -> mvKeys[bestIdx2]
+                                                                        : (bestIdx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[bestIdx2]
                                                                                                      : pKF2 -> mvKeysRight[bestIdx2 - pKF2 -> NLeft];
                         vMatches12[idx1]=bestIdx2;
                         vMatchesPoints12[idx1] = bestPoint;
@@ -1764,7 +1764,7 @@ int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, const vector
         {
             size_t idx = *vit;
             const cv::KeyPoint &kp = (pKF -> NLeft == -1) ? pKF->mvKeysUn[idx]
-                                                          : (!bRight) ? pKF -> mvKeys[idx]
+                                                          : (!bRight) ? (*pKF -> mvKeys)[idx]
                                                                       : pKF -> mvKeysRight[idx];
 
             const int &kpLevel= kp.octave;
