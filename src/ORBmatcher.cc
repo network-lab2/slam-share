@@ -1046,7 +1046,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
 
                 const cv::KeyPoint &kp1 = (pKF1 -> NLeft == -1) ? pKF1->mvKeysUn[idx1]
-                                                                : (idx1 < pKF1 -> NLeft) ? pKF1 -> (mvKeys.get())[idx1]
+                                                                : (idx1 < pKF1 -> NLeft) ? (pKF1 -> mvKeys).get()[idx1]
                                                                                          : pKF1 -> mvKeysRight[idx1 - pKF1 -> NLeft];
 
                 const bool bRight1 = (pKF1 -> NLeft == -1 || idx1 < pKF1 -> NLeft) ? false
