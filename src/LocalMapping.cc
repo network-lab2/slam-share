@@ -1043,7 +1043,7 @@ void LocalMapping::KeyFrameCulling()
                     if(pMP->Observations()>thObs)
                     {
                         const int &scaleLevel = (pKF -> NLeft == -1) ? pKF->mvKeysUn[i].octave
-                                                                     : (i < pKF -> NLeft) ? pKF -> mvKeys[i].octave
+                                                                     : (i < pKF -> NLeft) ? (*pKF -> mvKeys)[i].octave
                                                                                           : pKF -> mvKeysRight[i].octave;
                         const map<boost::interprocess::offset_ptr<KeyFrame> , tuple<int,int>> observations = pMP->GetObservations();
                         int nObs=0;
@@ -1059,7 +1059,7 @@ void LocalMapping::KeyFrameCulling()
                                 scaleLeveli = pKFi->mvKeysUn[leftIndex].octave;
                             else {
                                 if (leftIndex != -1) {
-                                    scaleLeveli = pKFi->mvKeys[leftIndex].octave;
+                                    scaleLeveli = (*pKFi->mvKeys)[leftIndex].octave;
                                 }
                                 if (rightIndex != -1) {
                                     int rightLevel = pKFi->mvKeysRight[rightIndex - pKFi->NLeft].octave;
