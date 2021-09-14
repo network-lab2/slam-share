@@ -2493,7 +2493,7 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, boost::interprocess::off
 
                     if(mbCheckOrientation)
                     {
-                        float rot = pKF->mvKeysUn[i].angle-CurrentFrame.mvKeysUn[bestIdx2].angle;
+                        float rot = (*pKF->mvKeysUn)[i].angle-CurrentFrame.mvKeysUn[bestIdx2].angle;
                         if(rot<0.0)
                             rot+=360.0f;
                         int bin = round(rot*factor);
