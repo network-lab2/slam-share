@@ -822,7 +822,9 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
 
 int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches12)
 {
-    const vector<cv::KeyPoint> &vKeysUn1 = (pKF1->mvKeysUn);
+    vector<cv::KeyPoint> temp_vec;
+    temp_vec.assign((*pKF1->mvKeysUn).begin(),(*pKF1->mvKeysUn).end());
+    const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
     const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
