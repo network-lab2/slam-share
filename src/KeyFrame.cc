@@ -84,7 +84,9 @@ KeyFrame::KeyFrame():
 
     //float vectors
     mvuRight = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
+    mvDepth = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvuRight->clear();
+    mvDepth->clear();
 
 }
 
@@ -95,7 +97,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mnLoopQuery(0), mnLoopWords(0), mnRelocQuery(0), mnRelocWords(0), mnBAGlobalForKF(0), mnPlaceRecognitionQuery(0), mnPlaceRecognitionWords(0), mPlaceRecognitionScore(0),
     fx(F.fx), fy(F.fy), cx(F.cx), cy(F.cy), invfx(F.invfx), invfy(F.invfy),
     mbf(F.mbf), mb(F.mb), mThDepth(F.mThDepth), N(F.N), /*mvKeys(F.mvKeys), mvKeysUn(F.mvKeysUn),*/
-    /*mvuRight(F.mvuRight),*/ mvDepth(F.mvDepth), mDescriptors(F.mDescriptors.clone()),
+    /*mvuRight(F.mvuRight), mvDepth(F.mvDepth),*/ mDescriptors(F.mDescriptors.clone()),
     mBowVec(F.mBowVec), mFeatVec(F.mFeatVec), mnScaleLevels(F.mnScaleLevels), mfScaleFactor(F.mfScaleFactor),
     mfLogScaleFactor(F.mfLogScaleFactor), mvScaleFactors(F.mvScaleFactors), mvLevelSigma2(F.mvLevelSigma2),
     mvInvLevelSigma2(F.mvInvLevelSigma2), mnMinX(F.mnMinX), mnMinY(F.mnMinY), mnMaxX(F.mnMaxX),
@@ -167,7 +169,10 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //float vectors
     mvuRight = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
+    mvDepth = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvuRight->assign(F.mvuRight.begin(),F.mvuRight.end());
+    mvDepth->assign(F.mvDepth.begin(), F.mvDepth.end());
+
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
@@ -1034,7 +1039,7 @@ bool KeyFrame::IsInImage(const float &x, const float &y) const
 
 cv::Mat KeyFrame::UnprojectStereo(int i)
 {
-    const float z = mvDepth[i];
+    const float z = mvDepth->at(i);//const float z = mvDepth[i];
     if(z>0)
     {
         const float u = (*mvKeys)[i].pt.x;
@@ -1395,7 +1400,7 @@ cv::Matx31f KeyFrame::GetRightCameraCenter_() {
 }
 
 cv::Matx31f KeyFrame::UnprojectStereo_(int i) {
-    const float z = mvDepth[i];
+    const float z = mvDepth->at(i);//const float z = mvDepth[i];
     if(z>0)
     {
         const float u = (*mvKeys)[i].pt.x;
