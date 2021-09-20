@@ -95,8 +95,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //(*mvKeys).assign(F.mvKeys.begin(), F.mvKeys.end());
     //(*mvKeysUn).assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
-    (mvKeys)->assign(F.mvKeys.begin(), F.mvKeys.end());
-    (mvKeysUn)->assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
+    
     
     imgLeft = F.imgLeft.clone();
     imgRight = F.imgRight.clone();
@@ -122,6 +121,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_keyframe alloc_inst_key(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_map_keyframe alloc_map_key(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_cv_keypoint alloc_set_cv(ORB_SLAM3::segment.get_segment_manager());
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -140,6 +140,14 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
+
+    //mvkeys and mvkeysun
+    mvKeys = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
+    mvKeysUn = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
+
+
+    (mvKeys)->assign(F.mvKeys.begin(), F.mvKeys.end());
+    (mvKeysUn)->assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
