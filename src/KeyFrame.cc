@@ -95,6 +95,8 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //(*mvKeys).assign(F.mvKeys.begin(), F.mvKeys.end());
     //(*mvKeysUn).assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
+    (mvKeys)->assign(F.mvKeys.begin(), F.mvKeys.end());
+    (mvKeysUn)->assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
     
     imgLeft = F.imgLeft.clone();
     imgRight = F.imgRight.clone();
