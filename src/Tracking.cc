@@ -4091,9 +4091,9 @@ void Tracking::CreateNewMapPoints()
             float cosParallaxStereo2 = cosParallaxStereo;
 
             if(bStereo1)
-                cosParallaxStereo1 = cos(2*atan2(mpLastKeyFrame->mb/2,mpLastKeyFrame->mvDepth->at(idx1));//cosParallaxStereo1 = cos(2*atan2(mpLastKeyFrame->mb/2,mpLastKeyFrame->mvDepth[idx1]));
+                cosParallaxStereo1 = cos(2*atan2(mpLastKeyFrame->mb/2,mpLastKeyFrame->mvDepth->at(idx1)));//cosParallaxStereo1 = cos(2*atan2(mpLastKeyFrame->mb/2,mpLastKeyFrame->mvDepth[idx1]));
             else if(bStereo2)
-                cosParallaxStereo2 = cos(2*atan2(pKF2->mb/2,pKF2->mvDepth->at(idx2));//cosParallaxStereo2 = cos(2*atan2(pKF2->mb/2,pKF2->mvDepth[idx2]));
+                cosParallaxStereo2 = cos(2*atan2(pKF2->mb/2,pKF2->mvDepth->at(idx2)));//cosParallaxStereo2 = cos(2*atan2(pKF2->mb/2,pKF2->mvDepth[idx2]));
 
             cosParallaxStereo = min(cosParallaxStereo1,cosParallaxStereo2);
 
