@@ -193,7 +193,7 @@ public:
     typedef boost::interprocess::vector<float, ShmemAllocator_float> MyVector_float;
 
     typedef boost::interprocess::allocator<int,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_int;
-    typedef boost::interprocess::vector<int, ShmemAllocator_float> MyVector_int;
+    typedef boost::interprocess::vector<int, ShmemAllocator_int> MyVector_int;
 
 
 
@@ -288,6 +288,7 @@ public:
     //new-code
     boost::interprocess::offset_ptr<MyVector_CV> mvKeysUn;
     
+    //old-code
     const std::vector<float> mvuRight; // negative value for monocular points
     const std::vector<float> mvDepth; // negative value for monocular points
     const cv::Mat mDescriptors;
