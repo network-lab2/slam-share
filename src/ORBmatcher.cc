@@ -1040,7 +1040,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                     continue;
                 }
 
-                const bool bStereo1 = (!pKF1->mpCamera2 && pKF1->mvuRight[idx1]>=0);
+                const bool bStereo1 = (!pKF1->mpCamera2 && pKF1->mvuRight->at(idx1)>=0);//const bool bStereo1 = (!pKF1->mpCamera2 && pKF1->mvuRight[idx1]>=0);
 
                 if(bOnlyStereo)
                     if(!bStereo1)
@@ -1069,7 +1069,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                     if(vbMatched2[idx2] || pMP2)
                         continue;
 
-                    const bool bStereo2 = (!pKF2->mpCamera2 &&  pKF2->mvuRight[idx2]>=0);
+                    const bool bStereo2 = (!pKF2->mpCamera2 &&  pKF2->mvuRight->at(idx2)>=0);//const bool bStereo2 = (!pKF2->mpCamera2 &&  pKF2->mvuRight[idx2]>=0);
 
                     if(bOnlyStereo)
                         if(!bStereo2)
@@ -1283,7 +1283,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                         continue;
                     }
 
-                    const bool bStereo1 = (!pKF1->mpCamera2 && pKF1->mvuRight[idx1]>=0);
+                    const bool bStereo1 = (!pKF1->mpCamera2 && pKF1->mvuRight->at(idx1)>=0);//const bool bStereo1 = (!pKF1->mpCamera2 && pKF1->mvuRight[idx1]>=0);
 
                     if(bOnlyStereo)
                         if(!bStereo1)
@@ -1312,7 +1312,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                         if(vbMatched2[idx2] || pMP2)
                             continue;
 
-                        const bool bStereo2 = (!pKF2->mpCamera2 &&  pKF2->mvuRight[idx2]>=0);
+                        const bool bStereo2 = (!pKF2->mpCamera2 &&  pKF2->mvuRight->at(idx2)>=0);//const bool bStereo2 = (!pKF2->mpCamera2 &&  pKF2->mvuRight[idx2]>=0);
 
                         if(bOnlyStereo)
                             if(!bStereo2)
@@ -1774,12 +1774,12 @@ int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, const vector
             if(kpLevel<nPredictedLevel-1 || kpLevel>nPredictedLevel)
                 continue;
 
-            if(pKF->mvuRight[idx]>=0)
+            if(pKF->mvuRight->at(idx)>=0)//if(pKF->mvuRight[idx]>=0)
             {
                 // Check reprojection error in stereo
                 const float &kpx = kp.pt.x;
                 const float &kpy = kp.pt.y;
-                const float &kpr = pKF->mvuRight[idx];
+                const float &kpr = pKF->mvuRight->at(idx);//const float &kpr = pKF->mvuRight[idx];
                 const float ex = uv.x-kpx;
                 const float ey = uv.y-kpy;
                 const float er = ur-kpr;

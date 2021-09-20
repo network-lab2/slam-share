@@ -289,7 +289,9 @@ public:
     boost::interprocess::offset_ptr<MyVector_CV> mvKeysUn;
     
     //old-code
-    const std::vector<float> mvuRight; // negative value for monocular points
+    //const std::vector<float> mvuRight; // negative value for monocular points
+    //new-cold
+    boost::interprocess::offset_ptr<MyVector_float> mvuRight;
     const std::vector<float> mvDepth; // negative value for monocular points
     const cv::Mat mDescriptors;
 

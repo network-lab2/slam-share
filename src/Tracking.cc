@@ -4071,11 +4071,11 @@ void Tracking::CreateNewMapPoints()
             const int &idx2 = vMatchedIndices[ikp].second;
 
             const cv::KeyPoint &kp1 = (*mpLastKeyFrame->mvKeysUn)[idx1];
-            const float kp1_ur=mpLastKeyFrame->mvuRight[idx1];
+            const float kp1_ur=mpLastKeyFrame->mvuRight->at(idx1);//const float kp1_ur=mpLastKeyFrame->mvuRight[idx1];
             bool bStereo1 = kp1_ur>=0;
 
             const cv::KeyPoint &kp2 = (*pKF2->mvKeysUn)[idx2];
-            const float kp2_ur = pKF2->mvuRight[idx2];
+            const float kp2_ur = pKF2->mvuRight->at(idx2);//const float kp2_ur = pKF2->mvuRight[idx2];
             bool bStereo2 = kp2_ur>=0;
 
             // Check parallax between rays
