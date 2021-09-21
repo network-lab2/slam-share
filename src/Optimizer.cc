@@ -173,7 +173,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
                 e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                 e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                 e->setMeasurement(obs);
-                const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
+                const float &invSigma2 = pKF->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
                 e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                 if(bRobust)
@@ -204,7 +204,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
                 e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                 e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                 e->setMeasurement(obs);
-                const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
+                const float &invSigma2 = pKF->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
                 Eigen::Matrix3d Info = Eigen::Matrix3d::Identity()*invSigma2;
                 e->setInformation(Info);
 
@@ -243,7 +243,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKF->mvInvLevelSigma2[kp.octave];
+                    const float &invSigma2 = pKF->mvInvLevelSigma2->at(kp.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kp.octave];
                     e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -658,7 +658,7 @@ void Optimizer::FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int it
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, VP);
                     e->setMeasurement(obs);
-                    const float invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
 
                     e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
@@ -685,7 +685,7 @@ void Optimizer::FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int it
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, VP);
                     e->setMeasurement(obs);
-                    const float invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
 
                     e->setInformation(Eigen::Matrix3d::Identity()*invSigma2);
 
@@ -716,7 +716,7 @@ void Optimizer::FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int it
                         e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                         e->setVertex(1, VP);
                         e->setMeasurement(obs);
-                        const float invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                        const float invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                         e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                         g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -1378,7 +1378,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                     e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -1406,7 +1406,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                     Eigen::Matrix3d Info = Eigen::Matrix3d::Identity()*invSigma2;
                     e->setInformation(Info);
 
@@ -1444,7 +1444,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                         e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                         e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                         e->setMeasurement(obs);
-                        const float &invSigma2 = pKFi->mvInvLevelSigma2[kp.octave];
+                        const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kp.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kp.octave];
                         e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                         g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -1862,7 +1862,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                     e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -1890,7 +1890,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                     Eigen::Matrix3d Info = Eigen::Matrix3d::Identity()*invSigma2;
                     e->setInformation(Info);
 
@@ -1927,7 +1927,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                         e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                         e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                         e->setMeasurement(obs);
-                        const float &invSigma2 = pKFi->mvInvLevelSigma2[kp.octave];
+                        const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kp.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kp.octave];
                         e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                         g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -3352,7 +3352,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         e12->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id2)));
         e12->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
         e12->setMeasurement(obs1);
-        const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2[kpUn1.octave];
+        const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2->at(kpUn1.octave);//const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2[kpUn1.octave];
         e12->setInformation(Eigen::Matrix2d::Identity()*invSigmaSquare1);
 
         g2o::RobustKernelHuber* rk1 = new g2o::RobustKernelHuber;
@@ -3370,7 +3370,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         e21->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id1)));
         e21->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
         e21->setMeasurement(obs2);
-        float invSigmaSquare2 = pKF2->mvInvLevelSigma2[kpUn2.octave];
+        float invSigmaSquare2 = pKF2->mvInvLevelSigma2->at(kpUn2.octave);//float invSigmaSquare2 = pKF2->mvInvLevelSigma2[kpUn2.octave];
         e21->setInformation(Eigen::Matrix2d::Identity()*invSigmaSquare2);
 
         g2o::RobustKernelHuber* rk2 = new g2o::RobustKernelHuber;
@@ -3585,7 +3585,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         e12->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id2)));
         e12->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
         e12->setMeasurement(obs1);
-        const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2[kpUn1.octave];
+        const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2->at(kpUn1.octave);//const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2[kpUn1.octave];
         e12->setInformation(Eigen::Matrix2d::Identity()*invSigmaSquare1);
 
         g2o::RobustKernelHuber* rk1 = new g2o::RobustKernelHuber;
@@ -3623,7 +3623,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         e21->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id1)));
         e21->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
         e21->setMeasurement(obs2);
-        float invSigmaSquare2 = pKF2->mvInvLevelSigma2[kpUn2.octave];
+        float invSigmaSquare2 = pKF2->mvInvLevelSigma2->at(kpUn2.octave);//float invSigmaSquare2 = pKF2->mvInvLevelSigma2[kpUn2.octave];
         e21->setInformation(Eigen::Matrix2d::Identity()*invSigmaSquare2);
 
         g2o::RobustKernelHuber* rk2 = new g2o::RobustKernelHuber;
@@ -3835,7 +3835,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         e12->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id2)));
         e12->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
         e12->setMeasurement(obs1);
-        const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2[kpUn1.octave];
+        const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2->at(kpUn1.octave);//const float &invSigmaSquare1 = pKF1->mvInvLevelSigma2[kpUn1.octave];
         e12->setInformation(Eigen::Matrix2d::Identity()*invSigmaSquare1);
 
         g2o::RobustKernelHuber* rk1 = new g2o::RobustKernelHuber;
@@ -3869,7 +3869,7 @@ int Optimizer::OptimizeSim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         e21->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id1)));
         e21->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
         e21->setMeasurement(obs2);
-        float invSigmaSquare2 = pKFm->mvInvLevelSigma2[kpUn2.octave];
+        float invSigmaSquare2 = pKFm->mvInvLevelSigma2->at(kpUn2.octave);//float invSigmaSquare2 = pKFm->mvInvLevelSigma2[kpUn2.octave];
         e21->setInformation(Eigen::Matrix2d::Identity()*invSigmaSquare2);
 
         g2o::RobustKernelHuber* rk2 = new g2o::RobustKernelHuber;
@@ -4346,7 +4346,7 @@ void Optimizer::LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame> pKF, b
                     // Add here uncerteinty
                     const float unc2 = pKFi->mpCamera->uncertainty2(obs);
 
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave]/unc2;
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave)/unc2;//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave]/unc2;
                     e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -4379,7 +4379,7 @@ void Optimizer::LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame> pKF, b
                     // Add here uncerteinty
                     const float unc2 = pKFi->mpCamera->uncertainty2(obs.head(2));
 
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave]/unc2;
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave)/unc2;//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave]/unc2;
                     e->setInformation(Eigen::Matrix3d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -4415,7 +4415,7 @@ void Optimizer::LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame> pKF, b
                         // Add here uncerteinty
                         const float unc2 = pKFi->mpCamera->uncertainty2(obs);
 
-                        const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave]/unc2;
+                        const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave)/unc2;//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave]/unc2;
                         e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                         g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -5440,7 +5440,7 @@ void Optimizer::MergeBundleAdjustmentVisual(boost::interprocess::offset_ptr<KeyF
                 e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                 e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                 e->setMeasurement(obs);
-                const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
+                const float &invSigma2 = pKF->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
                 e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                 g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -5469,7 +5469,7 @@ void Optimizer::MergeBundleAdjustmentVisual(boost::interprocess::offset_ptr<KeyF
                 e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                 e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                 e->setMeasurement(obs);
-                const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
+                const float &invSigma2 = pKF->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
                 Eigen::Matrix3d Info = Eigen::Matrix3d::Identity()*invSigma2;
                 e->setInformation(Info);
 
@@ -5786,7 +5786,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                 e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                 e->setMeasurement(obs);
-                const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
+                const float &invSigma2 = pKF->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
                 e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                 g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -5815,7 +5815,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                 e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKF->mnId)));
                 e->setMeasurement(obs);
-                const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
+                const float &invSigma2 = pKF->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKF->mvInvLevelSigma2[kpUn.octave];
                 Eigen::Matrix3d Info = Eigen::Matrix3d::Identity()*invSigma2;
                 e->setInformation(Info);
 
@@ -6528,7 +6528,7 @@ void Optimizer::MergeInertialBA(boost::interprocess::offset_ptr<KeyFrame>  pCurr
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                     e->setInformation(Eigen::Matrix2d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;
@@ -6550,7 +6550,7 @@ void Optimizer::MergeInertialBA(boost::interprocess::offset_ptr<KeyFrame>  pCurr
                     e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(id)));
                     e->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId)));
                     e->setMeasurement(obs);
-                    const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
+                    const float &invSigma2 = pKFi->mvInvLevelSigma2->at(kpUn.octave);//const float &invSigma2 = pKFi->mvInvLevelSigma2[kpUn.octave];
                     e->setInformation(Eigen::Matrix3d::Identity()*invSigma2);
 
                     g2o::RobustKernelHuber* rk = new g2o::RobustKernelHuber;

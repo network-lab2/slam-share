@@ -1790,7 +1790,7 @@ int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, const vector
                 const float er = ur-kpr;
                 const float e2 = ex*ex+ey*ey+er*er;
 
-                if(e2*pKF->mvInvLevelSigma2[kpLevel]>7.8)
+                if(e2*pKF->mvInvLevelSigma2->at(kpLevel)>7.8)//if(e2*pKF->mvInvLevelSigma2[kpLevel]>7.8)
                     continue;
             }
             else
@@ -1801,7 +1801,7 @@ int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, const vector
                 const float ey = uv.y-kpy;
                 const float e2 = ex*ex+ey*ey;
 
-                if(e2*pKF->mvInvLevelSigma2[kpLevel]>5.99)
+                if(e2*pKF->mvInvLevelSigma2->at(kpLevel)>5.99)//if(e2*pKF->mvInvLevelSigma2[kpLevel]>5.99)
                     continue;
             }
 

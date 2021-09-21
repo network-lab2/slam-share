@@ -317,7 +317,10 @@ public:
     //const std::vector<float> mvLevelSigma2;
     //new-code
     boost::interprocess::offset_ptr<MyVector_float> mvLevelSigma2;
-    const std::vector<float> mvInvLevelSigma2;
+    //old-code
+    //const std::vector<float> mvInvLevelSigma2;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_float> mvInvLevelSigma2;
 
     // Image bounds and calibration
     const int mnMinX;
