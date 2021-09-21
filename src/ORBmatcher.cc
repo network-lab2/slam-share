@@ -540,7 +540,7 @@ int ORBmatcher::SearchByProjection(boost::interprocess::offset_ptr<KeyFrame>  pK
         int nPredictedLevel = pMP->PredictScale(dist,pKF);
 
         // Search in a radius
-        const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
+        const float radius = th*pKF->mvScaleFactors->at(nPredictedLevel);//const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
 
         const vector<size_t> vIndices = pKF->GetFeaturesInArea(uv.x,uv.y,radius);
 
@@ -657,7 +657,7 @@ int ORBmatcher::SearchByProjection(boost::interprocess::offset_ptr<KeyFrame>  pK
         int nPredictedLevel = pMP->PredictScale(dist,pKF);
 
         // Search in a radius
-        const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
+        const float radius = th*pKF->mvScaleFactors->at(nPredictedLevel);//const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
 
         const vector<size_t> vIndices = pKF->GetFeaturesInArea(u,v,radius);
 
@@ -1092,7 +1092,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                     {
                         const float distex = ep.x-kp2.pt.x;
                         const float distey = ep.y-kp2.pt.y;
-                        if(distex*distex+distey*distey<100*pKF2->mvScaleFactors[kp2.octave])
+                        if(distex*distex+distey*distey<100*pKF2->mvScaleFactors->at(kp2.octave))//if(distex*distex+distey*distey<100*pKF2->mvScaleFactors[kp2.octave])
                         {
                             continue;
                         }
@@ -1335,7 +1335,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                         {
                             const float distex = ep.x-kp2.pt.x;
                             const float distey = ep.y-kp2.pt.y;
-                            if(distex*distex+distey*distey<100*pKF2->mvScaleFactors[kp2.octave])
+                            if(distex*distex+distey*distey<100*pKF2->mvScaleFactors->at(kp2.octave))//if(distex*distex+distey*distey<100*pKF2->mvScaleFactors[kp2.octave])
                             {
                                 continue;
                             }
@@ -1746,7 +1746,7 @@ int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, const vector
         int nPredictedLevel = pMP->PredictScale(dist3D,pKF);
 
         // Search in a radius
-        const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
+        const float radius = th*pKF->mvScaleFactors->at(nPredictedLevel);//const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
 
         const vector<size_t> vIndices = pKF->GetFeaturesInArea(uv.x,uv.y,radius,bRight);
 
@@ -1913,7 +1913,7 @@ int ORBmatcher::Fuse(boost::interprocess::offset_ptr<KeyFrame> pKF, cv::Mat Scw,
         const int nPredictedLevel = pMP->PredictScale(dist3D,pKF);
 
         // Search in a radius
-        const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
+        const float radius = th*pKF->mvScaleFactors->at(nPredictedLevel);//const float radius = th*pKF->mvScaleFactors[nPredictedLevel];
 
         const vector<size_t> vIndices = pKF->GetFeaturesInArea(uv.x,uv.y,radius);
 
@@ -2053,7 +2053,7 @@ int ORBmatcher::SearchBySim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boo
         const int nPredictedLevel = pMP->PredictScale(dist3D,pKF2);
 
         // Search in a radius
-        const float radius = th*pKF2->mvScaleFactors[nPredictedLevel];
+        const float radius = th*pKF2->mvScaleFactors->at(nPredictedLevel);//const float radius = th*pKF2->mvScaleFactors[nPredictedLevel];
 
         const vector<size_t> vIndices = pKF2->GetFeaturesInArea(u,v,radius);
 
@@ -2133,7 +2133,7 @@ int ORBmatcher::SearchBySim3(boost::interprocess::offset_ptr<KeyFrame> pKF1, boo
         const int nPredictedLevel = pMP->PredictScale(dist3D,pKF1);
 
         // Search in a radius of 2.5*sigma(ScaleLevel)
-        const float radius = th*pKF1->mvScaleFactors[nPredictedLevel];
+        const float radius = th*pKF1->mvScaleFactors->at(nPredictedLevel);//const float radius = th*pKF1->mvScaleFactors[nPredictedLevel];
 
         const vector<size_t> vIndices = pKF1->GetFeaturesInArea(u,v,radius);
 

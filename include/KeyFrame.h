@@ -308,7 +308,11 @@ public:
     const int mnScaleLevels;
     const float mfScaleFactor;
     const float mfLogScaleFactor;
-    const std::vector<float> mvScaleFactors;
+    //Fixing the 3 float vectors for Over
+    //old-code
+    //const std::vector<float> mvScaleFactors;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_float> mvScaleFactors;
     const std::vector<float> mvLevelSigma2;
     const std::vector<float> mvInvLevelSigma2;
 

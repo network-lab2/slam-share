@@ -4205,7 +4205,7 @@ void Tracking::CreateNewMapPoints()
                 continue;
 
             const float ratioDist = dist2/dist1;
-            const float ratioOctave = mpLastKeyFrame->mvScaleFactors[kp1.octave]/pKF2->mvScaleFactors[kp2.octave];
+            const float ratioOctave = mpLastKeyFrame->mvScaleFactors->at(kp1.octave)/pKF2->mvScaleFactors->at(kp2.octave);//const float ratioOctave = mpLastKeyFrame->mvScaleFactors[kp1.octave]/pKF2->mvScaleFactors[kp2.octave];
 
             if(ratioDist*ratioFactor<ratioOctave || ratioDist>ratioOctave*ratioFactor)
                 continue;

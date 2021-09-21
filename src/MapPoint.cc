@@ -543,13 +543,13 @@ void MapPoint::UpdateNormalAndDepth()
         level = pRefKF -> mvKeysRight[rightIndex - pRefKF -> NLeft].octave;
     }
 
-    const float levelScaleFactor =  pRefKF->mvScaleFactors[level];
+    const float levelScaleFactor =  pRefKF->mvScaleFactors->at(level);//const float levelScaleFactor =  pRefKF->mvScaleFactors[level];
     const int nLevels = pRefKF->mnScaleLevels;
 
     {
         unique_lock<mutex> lock3(mMutexPos);
         mfMaxDistance = dist*levelScaleFactor;
-        mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors[nLevels-1];
+        mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors->at(nLevels-1);//mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors[nLevels-1];
         mNormalVector = normal/n;
         mNormalVectorx = cv::Matx31f(mNormalVector.at<float>(0), mNormalVector.at<float>(1), mNormalVector.at<float>(2));
     }
