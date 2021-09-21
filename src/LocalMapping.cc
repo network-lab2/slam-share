@@ -658,7 +658,7 @@ void LocalMapping::CreateNewMapPoints()
                 continue;
 
             //Check reprojection error in first keyframe
-            const float &sigmaSquare1 = mpCurrentKeyFrame->mvLevelSigma2[kp1.octave];
+            const float &sigmaSquare1 = mpCurrentKeyFrame->mvLevelSigma2->at(kp1.octave);//const float &sigmaSquare1 = mpCurrentKeyFrame->mvLevelSigma2[kp1.octave];
             const float x1 = Rcw1.row(0).dot(x3Dt)+tcw1(0);
             const float y1 = Rcw1.row(1).dot(x3Dt)+tcw1(1);
             const float invz1 = 1.0/z1;
@@ -686,7 +686,7 @@ void LocalMapping::CreateNewMapPoints()
             }
 
             //Check reprojection error in second keyframe
-            const float sigmaSquare2 = pKF2->mvLevelSigma2[kp2.octave];
+            const float sigmaSquare2 = pKF2->mvLevelSigma2->at(kp2.octave);//const float sigmaSquare2 = pKF2->mvLevelSigma2[kp2.octave];
             const float x2 = Rcw2.row(0).dot(x3Dt)+tcw2(0);
             const float y2 = Rcw2.row(1).dot(x3Dt)+tcw2(1);
             const float invz2 = 1.0/z2;

@@ -313,7 +313,10 @@ public:
     //const std::vector<float> mvScaleFactors;
     //new-code
     boost::interprocess::offset_ptr<MyVector_float> mvScaleFactors;
-    const std::vector<float> mvLevelSigma2;
+    //old-code
+    //const std::vector<float> mvLevelSigma2;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_float> mvLevelSigma2;
     const std::vector<float> mvInvLevelSigma2;
 
     // Image bounds and calibration

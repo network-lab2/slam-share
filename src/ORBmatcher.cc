@@ -238,10 +238,12 @@ bool ORBmatcher::CheckDistEpipolarLine(const cv::KeyPoint &kp1,const cv::KeyPoin
 
     const float dsqr = num*num/den;
 
-    if(!b1)
-        return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave];
-    else
-        return dsqr<6.63*pKF2->mvLevelSigma2[kp2.octave];
+    if(!b1){
+        return dsqr<3.84*pKF2->mvLevelSigma2->at(kp2.octave);//return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave];
+    }
+    else{
+        return dsqr<6.63*pKF2->mvLevelSigma2->at(kp2.octave);//return dsqr<6.63*pKF2->mvLevelSigma2[kp2.octave];
+    }
 }
 
 bool ORBmatcher::CheckDistEpipolarLine2(const cv::KeyPoint &kp1, const cv::KeyPoint &kp2, const cv::Mat &F12, const boost::interprocess::offset_ptr<KeyFrame> pKF2, const float unc)
@@ -260,10 +262,12 @@ bool ORBmatcher::CheckDistEpipolarLine2(const cv::KeyPoint &kp1, const cv::KeyPo
 
     const float dsqr = num*num/den;
 
-    if(unc==1.f)
-        return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave];
-    else
-        return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave]*unc;
+    if(unc==1.f){
+        return dsqr<3.84*pKF2->mvLevelSigma2->at(kp2.octave);//return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave];
+    }
+    else{
+        return dsqr<3.84*pKF2->mvLevelSigma2->at(kp2.octave)*unc;//return dsqr<3.84*pKF2->mvLevelSigma2[kp2.octave]*unc;
+    }
 }
 
 int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame &F, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPointMatches)
@@ -1130,8 +1134,8 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
                     }
 
-
-                    if(pCamera1->epipolarConstrain(pCamera2,kp1,kp2,R12,t12,pKF1->mvLevelSigma2[kp1.octave],pKF2->mvLevelSigma2[kp2.octave])||bCoarse) // MODIFICATION_2
+                    //if(pCamera1->epipolarConstrain(pCamera2,kp1,kp2,R12,t12,pKF1->mvLevelSigma2[kp1.octave],pKF2->mvLevelSigma2[kp2.octave])||bCoarse) // MODIFICATION_2
+                    if(pCamera1->epipolarConstrain(pCamera2,kp1,kp2,R12,t12,pKF1->mvLevelSigma2->at(kp1.octave),pKF2->mvLevelSigma2->at(kp2.octave))||bCoarse) // MODIFICATION_2
                     {
                         bestIdx2 = idx2;
                         bestDist = dist;
@@ -1373,8 +1377,8 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
                         }
 
-
-                        if(pCamera1->epipolarConstrain_(pCamera2,kp1,kp2,R12,t12,pKF1->mvLevelSigma2[kp1.octave],pKF2->mvLevelSigma2[kp2.octave])||bCoarse) // MODIFICATION_2
+                        //if(pCamera1->epipolarConstrain_(pCamera2,kp1,kp2,R12,t12,pKF1->mvLevelSigma2[kp1.octave],pKF2->mvLevelSigma2[kp2.octave])||bCoarse) // MODIFICATION_2
+                        if(pCamera1->epipolarConstrain_(pCamera2,kp1,kp2,R12,t12,pKF1->mvLevelSigma2->at(kp1.octave),pKF2->mvLevelSigma2->at(kp2.octave))||bCoarse) // MODIFICATION_2
                         {
                             bestIdx2 = idx2;
                             bestDist = dist;
@@ -1563,7 +1567,8 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                         }
 
                         cv::Mat x3D;
-                        if(pCamera1->matchAndtriangulate(kp1,kp2,pCamera2,Tcw1,Tcw2,pKF1->mvLevelSigma2[kp1.octave],pKF2->mvLevelSigma2[kp2.octave],x3D)){
+                        //if(pCamera1->matchAndtriangulate(kp1,kp2,pCamera2,Tcw1,Tcw2,pKF1->mvLevelSigma2[kp1.octave],pKF2->mvLevelSigma2[kp2.octave],x3D)){
+                        if(pCamera1->matchAndtriangulate(kp1,kp2,pCamera2,Tcw1,Tcw2,pKF1->mvLevelSigma2->at(kp1.octave),pKF2->mvLevelSigma2->at(kp2.octave),x3D)){
                             bestIdx2 = idx2;
                             bestDist = dist;
                             bestPoint = x3D;

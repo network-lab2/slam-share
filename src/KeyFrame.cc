@@ -86,9 +86,11 @@ KeyFrame::KeyFrame():
     mvuRight = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvDepth = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvScaleFactors = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
+    mvLevelSigma2 = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvuRight->clear();
     mvDepth->clear();
     mvScaleFactors->clear();
+    mvLevelSigma2->clear();
 
 }
 
@@ -101,7 +103,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mbf(F.mbf), mb(F.mb), mThDepth(F.mThDepth), N(F.N), /*mvKeys(F.mvKeys), mvKeysUn(F.mvKeysUn),*/
     /*mvuRight(F.mvuRight), mvDepth(F.mvDepth),*/ mDescriptors(F.mDescriptors.clone()),
     mBowVec(F.mBowVec), mFeatVec(F.mFeatVec), mnScaleLevels(F.mnScaleLevels), mfScaleFactor(F.mfScaleFactor),
-    mfLogScaleFactor(F.mfLogScaleFactor), /*mvScaleFactors(F.mvScaleFactors),*/ mvLevelSigma2(F.mvLevelSigma2),
+    mfLogScaleFactor(F.mfLogScaleFactor), /*mvScaleFactors(F.mvScaleFactors), mvLevelSigma2(F.mvLevelSigma2),*/
     mvInvLevelSigma2(F.mvInvLevelSigma2), mnMinX(F.mnMinX), mnMinY(F.mnMinY), mnMaxX(F.mnMaxX),
     mnMaxY(F.mnMaxY), mK(F.mK), mPrevKF(NULL), mNextKF(NULL), mpImuPreintegrated(F.mpImuPreintegrated),
     mImuCalib(F.mImuCalib)/*, mvpMapPoints(F.mvpMapPoints)*/, mpKeyFrameDB(pKFDB),
@@ -173,9 +175,11 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mvuRight = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvDepth = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvScaleFactors = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
+    mvLevelSigma2 = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
     mvuRight->assign(F.mvuRight.begin(),F.mvuRight.end());
     mvDepth->assign(F.mvDepth.begin(), F.mvDepth.end());
     mvScaleFactors->assign(F.mvScaleFactors.begin(),F.mvScaleFactors.end());
+    mvLevelSigma2->assign(F.mvLevelSigma2.begin(),F.mvLevelSigma2.end());
 
 
     //creating all the matrix in the keyframe
