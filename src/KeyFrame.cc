@@ -131,7 +131,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const size_t_vector_vector_allocator alloc_size_t_vector_vector (ORB_SLAM3::segment.get_segment_manager());
      /* the triple vector */
     mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_size_t_vector_vector);
-    mGrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_size_t_vector_vector);
+    mGrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
     
     imgLeft = F.imgLeft.clone();
     imgRight = F.imgRight.clone();
@@ -146,6 +146,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     for(int i=0; i<mnGridCols;i++)
     {
         mGrid->at(i).reserve(mnGridRows);//mGrid[i].resize(mnGridRows);
+        std::cout<<"Inside loop after reserve."<<std::endl;
         if(F.Nleft != -1) mGridRight->at(i).reserve(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
             (mGrid->at(i)).at(j).assign(F.mGrid[i][j].begin(),F.mGrid[i][j].end());//mGrid[i][j] = F.mGrid[i][j];
