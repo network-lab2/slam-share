@@ -422,6 +422,8 @@ protected:
     //std::vector< std::vector <std::vector<size_t> > > mGrid;
     //new-code
     boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGrid;
+    size_t_vector first_mgrid;
+    size_t_vector_vector second_mgrid;
 
 
 

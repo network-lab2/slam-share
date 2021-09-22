@@ -131,7 +131,17 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const size_t_vector_vector_allocator alloc_size_t_vector_vector (ORB_SLAM3::segment.get_segment_manager());
      /* the triple vector */
     mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_size_t_vector_vector);
-    mGrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
+    first_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(0,alloc_size_t);
+    second_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(mnGridRows,alloc_size_t_vector);
+
+    for(int i =0l i<mnGridRows; i++){
+        second_mgrid->at(i).assign(first_mgrid->begin(),first_mgrid->end());
+    }
+
+    mGrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(mnGridCols,alloc_size_t_vector_vector);
+    for(int i =0l i<mnGridCols; i++){
+        mGrid->at(i).assign(second_mgrid->begin(),second_mgrid->end());
+    }
     
     imgLeft = F.imgLeft.clone();
     imgRight = F.imgRight.clone();
@@ -140,14 +150,14 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     std::cout<<"Keyframe constructor: mnID "<<mnId<<std::endl;
 
-    mGrid->reserve(mnGridCols);//mGrid.resize(mnGridCols);
-    mGrid->push_back(F.mGrid[0]);
+    //mGrid->reserve(mnGridCols);//mGrid.resize(mnGridCols);
+    //mGrid->push_back(F.mGrid[0]);
     mGridRight->reserve(mnGridCols);
     std::cout<<"Reserve complete\n";
     //if(F.Nleft != -1)  (mGridRight.get())->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
     {
-        mGrid->at(i).reserve(mnGridRows);//mGrid[i].resize(mnGridRows);
+        //mGrid->at(i).reserve(mnGridRows);//mGrid[i].resize(mnGridRows);
         std::cout<<"Inside loop after reserve."<<std::endl;
         if(F.Nleft != -1) mGridRight->at(i).reserve(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
