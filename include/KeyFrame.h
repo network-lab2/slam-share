@@ -467,14 +467,22 @@ public:
     GeometricCamera* mpCamera, *mpCamera2;
 
     //Indexes of stereo observations correspondences
-    std::vector<int> mvLeftToRightMatch, mvRightToLeftMatch;
+    //old-code
+    //std::vector<int> mvLeftToRightMatch, mvRightToLeftMatch;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_int> mvLeftToRightMatch;
+    boost::interprocess::offset_ptr<MyVector_int> mvRightToLeftMatch;
+
 
     //Transformation matrix between cameras in stereo fisheye
     cv::Mat mTlr;
     cv::Mat mTrl;
 
     //KeyPoints in the right image (for stereo fisheye, coordinates are needed)
-    const std::vector<cv::KeyPoint> mvKeysRight;
+    //old-code
+    //const std::vector<cv::KeyPoint> mvKeysRight;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_CV> mvKeysRight;
 
     const int NLeft, NRight;
 

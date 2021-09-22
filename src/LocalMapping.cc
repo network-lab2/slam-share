@@ -500,7 +500,7 @@ void LocalMapping::CreateNewMapPoints()
 
             const cv::KeyPoint &kp1 = (mpCurrentKeyFrame -> NLeft == -1) ? (*mpCurrentKeyFrame->mvKeysUn)[idx1]
                                                                          : (idx1 < mpCurrentKeyFrame -> NLeft) ? (*mpCurrentKeyFrame -> mvKeys)[idx1]
-                                                                                                               : mpCurrentKeyFrame -> mvKeysRight[idx1 - mpCurrentKeyFrame -> NLeft];
+                                                                                                               : (*mpCurrentKeyFrame -> mvKeysRight)[idx1 - mpCurrentKeyFrame -> NLeft];
             const float kp1_ur=mpCurrentKeyFrame->mvuRight->at(idx1);//const float kp1_ur=mpCurrentKeyFrame->mvuRight[idx1];
             bool bStereo1 = (!mpCurrentKeyFrame->mpCamera2 && kp1_ur>=0);
             const bool bRight1 = (mpCurrentKeyFrame -> NLeft == -1 || idx1 < mpCurrentKeyFrame -> NLeft) ? false
@@ -508,7 +508,7 @@ void LocalMapping::CreateNewMapPoints()
 
             const cv::KeyPoint &kp2 = (pKF2 -> NLeft == -1) ? (*pKF2->mvKeysUn)[idx2]
                                                             : (idx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[idx2]
-                                                                                     : pKF2 -> mvKeysRight[idx2 - pKF2 -> NLeft];
+                                                                                     : (*pKF2 -> mvKeysRight)[idx2 - pKF2 -> NLeft];
 
             const float kp2_ur = pKF2->mvuRight->at(idx2);//const float kp2_ur = pKF2->mvuRight[idx2];
             bool bStereo2 = (!pKF2->mpCamera2 && kp2_ur>=0);
@@ -1044,7 +1044,7 @@ void LocalMapping::KeyFrameCulling()
                     {
                         const int &scaleLevel = (pKF -> NLeft == -1) ? (*pKF->mvKeysUn)[i].octave
                                                                      : (i < pKF -> NLeft) ? (*pKF -> mvKeys)[i].octave
-                                                                                          : pKF -> mvKeysRight[i].octave;
+                                                                                          : (*pKF -> mvKeysRight)[i].octave;
                         const map<boost::interprocess::offset_ptr<KeyFrame> , tuple<int,int>> observations = pMP->GetObservations();
                         int nObs=0;
                         for(map<boost::interprocess::offset_ptr<KeyFrame> , tuple<int,int>>::const_iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
@@ -1062,7 +1062,7 @@ void LocalMapping::KeyFrameCulling()
                                     scaleLeveli = (*pKFi->mvKeys)[leftIndex].octave;
                                 }
                                 if (rightIndex != -1) {
-                                    int rightLevel = pKFi->mvKeysRight[rightIndex - pKFi->NLeft].octave;
+                                    int rightLevel = (*pKFi->mvKeysRight)[rightIndex - pKFi->NLeft].octave;
                                     scaleLeveli = (scaleLeveli == -1 || scaleLeveli > rightLevel) ? rightLevel
                                                                                                   : scaleLeveli;
                                 }

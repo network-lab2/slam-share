@@ -112,8 +112,8 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mpORBvocabulary(F.mpORBvocabulary), mbFirstConnection(true), mpParent(NULL), mDistCoef(F.mDistCoef), mbNotErase(false), mnDataset(F.mnDataset),
     mbToBeErased(false), mbBad(false), mHalfBaseline(F.mb/2), mpMap(pMap), mbCurrentPlaceRecognition(false), mNameFile(F.mNameFile), mbHasHessian(false), mnMergeCorrectedForKF(0),
     mpCamera(F.mpCamera), mpCamera2(F.mpCamera2),
-    mvLeftToRightMatch(F.mvLeftToRightMatch),mvRightToLeftMatch(F.mvRightToLeftMatch),mTlr(F.mTlr.clone()),
-    mvKeysRight(F.mvKeysRight), NLeft(F.Nleft), NRight(F.Nright), mTrl(F.mTrl), mnNumberOfOpt(0)
+    /*mvLeftToRightMatch(F.mvLeftToRightMatch),mvRightToLeftMatch(F.mvRightToLeftMatch),*/mTlr(F.mTlr.clone()),
+    /*mvKeysRight(F.mvKeysRight),*/ NLeft(F.Nleft), NRight(F.Nright), mTrl(F.mTrl), mnNumberOfOpt(0)
 {
 
     //(*mvKeys).assign(F.mvKeys.begin(), F.mvKeys.end());
@@ -146,6 +146,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_cv_keypoint alloc_set_cv(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_float alloc_set_float(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_int alloc_set_int(ORB_SLAM3::segment.get_segment_manager());
+    
+
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -165,13 +168,15 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
 
-    //mvkeys and mvkeysun
+    //mvkeys and mvkeysun cv vectors
     mvKeys = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
     mvKeysUn = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
+    mvKeysRight = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
 
 
     (mvKeys)->assign(F.mvKeys.begin(), F.mvKeys.end());
     (mvKeysUn)->assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
+    mvKeysRight->assign(F.mvKeysRight.begin(),F.mvKeysRight.end());
 
     //float vectors
     mvuRight = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_set_float);
@@ -184,6 +189,12 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mvScaleFactors->assign(F.mvScaleFactors.begin(),F.mvScaleFactors.end());
     mvLevelSigma2->assign(F.mvLevelSigma2.begin(),F.mvLevelSigma2.end());
     mvInvLevelSigma2->assign(F.mvInvLevelSigma2.begin(),F.mvInvLevelSigma2.end());
+
+    //int vectors
+    mvLeftToRightMatch = ORB_SLAM3:;segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
+    mvRightToLeftMatch = ORB_SLAM3:;segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
+    mvLeftToRightMatch->assign(F.mvLeftToRightMatch.begin(),F.mvLeftToRightMatch.end());
+    mvRightToLeftMatch->assign(F.mvRightToLeftMatch.begin(),F.mvRightToLeftMatch.end());
 
 
     //creating all the matrix in the keyframe

@@ -231,11 +231,11 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
             if(pKF->mpCamera2){
                 int rightIndex = get<1>(mit->second);
 
-                if(rightIndex != -1 && rightIndex < pKF->mvKeysRight.size()){
+                if(rightIndex != -1 && rightIndex < (*pKF->mvKeysRight).size()){
                     rightIndex -= pKF->NLeft;
 
                     Eigen::Matrix<double,2,1> obs;
-                    cv::KeyPoint kp = pKF->mvKeysRight[rightIndex];
+                    cv::KeyPoint kp = (*pKF->mvKeysRight)[rightIndex];
                     obs << kp.pt.x, kp.pt.y;
 
                     ORB_SLAM3::EdgeSE3ProjectXYZToBody *e = new ORB_SLAM3::EdgeSE3ProjectXYZToBody();
@@ -699,11 +699,11 @@ void Optimizer::FullInertialBA(boost::interprocess::offset_ptr<Map> pMap, int it
                 if(pKFi->mpCamera2){ // Monocular right observation
                     int rightIndex = get<1>(mit->second);
 
-                    if(rightIndex != -1 && rightIndex < pKFi->mvKeysRight.size()){
+                    if(rightIndex != -1 && rightIndex < (*pKFi->mvKeysRight).size()){
                         rightIndex -= pKFi->NLeft;
 
                         Eigen::Matrix<double,2,1> obs;
-                        kpUn = pKFi->mvKeysRight[rightIndex];
+                        kpUn = (*pKFi->mvKeysRight)[rightIndex];
                         obs << kpUn.pt.x, kpUn.pt.y;
 
                         EdgeMono *e = new EdgeMono(1);
@@ -990,7 +990,7 @@ int Optimizer::PoseOptimization(Frame *pFrame)
                     vnIndexEdgeMono.push_back(i);
                 }
                 else {   //Right camera observation
-                    kpUn = pFrame->mvKeysRight[i - pFrame->Nleft];
+                    kpUn = (*pFrame->mvKeysRight)[i - pFrame->Nleft];
 
                     Eigen::Matrix<double, 2, 1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y;
@@ -1436,7 +1436,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                         rightIndex -= pKFi->NLeft;
 
                         Eigen::Matrix<double,2,1> obs;
-                        cv::KeyPoint kp = pKFi->mvKeysRight[rightIndex];
+                        cv::KeyPoint kp = (*pKFi->mvKeysRight)[rightIndex];
                         obs << kp.pt.x, kp.pt.y;
 
                         ORB_SLAM3::EdgeSE3ProjectXYZToBody *e = new ORB_SLAM3::EdgeSE3ProjectXYZToBody();
@@ -1919,7 +1919,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                         rightIndex -= pKFi->NLeft;
 
                         Eigen::Matrix<double,2,1> obs;
-                        cv::KeyPoint kp = pKFi->mvKeysRight[rightIndex];
+                        cv::KeyPoint kp = (*pKFi->mvKeysRight)[rightIndex];
                         obs << kp.pt.x, kp.pt.y;
 
                         ORB_SLAM3::EdgeSE3ProjectXYZToBody *e = new ORB_SLAM3::EdgeSE3ProjectXYZToBody();
@@ -4403,7 +4403,7 @@ void Optimizer::LocalInertialBA(boost::interprocess::offset_ptr<KeyFrame> pKF, b
                         mVisEdges[pKFi->mnId]++;
 
                         Eigen::Matrix<double,2,1> obs;
-                        cv::KeyPoint kp = pKFi->mvKeysRight[rightIndex];
+                        cv::KeyPoint kp = (*pKFi->mvKeysRight)[rightIndex];
                         obs << kp.pt.x, kp.pt.y;
 
                         EdgeMono* e = new EdgeMono(1);

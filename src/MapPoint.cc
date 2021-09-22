@@ -540,7 +540,7 @@ void MapPoint::UpdateNormalAndDepth()
         level = (*pRefKF -> mvKeys)[leftIndex].octave;
     }
     else{
-        level = pRefKF -> mvKeysRight[rightIndex - pRefKF -> NLeft].octave;
+        level = (*pRefKF -> mvKeysRight)[rightIndex - pRefKF -> NLeft].octave;
     }
 
     const float levelScaleFactor =  pRefKF->mvScaleFactors->at(level);//const float levelScaleFactor =  pRefKF->mvScaleFactors[level];
