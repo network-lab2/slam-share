@@ -1055,7 +1055,8 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
             //copy the mgrid vector to return
             std::cout<<"Copy the mgrid vector to return"<<std::endl;
             buffer_mGridRight.clear();
-            buffer_mGridRight.assign((mGridRight->at(ix)).at(iy).begin(),(mGridRight->at(ix)).at(iy).end());
+            if(bRight)
+                buffer_mGridRight.assign((mGridRight->at(ix)).at(iy).begin(),(mGridRight->at(ix)).at(iy).end());
             const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : buffer_mGridRight;//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
             std::cout<<"vCell size: "<<vCell.size()<<std::endl;
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
