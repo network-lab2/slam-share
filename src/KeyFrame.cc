@@ -134,12 +134,12 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     first_mgrid = ORB_SLAM3::segment.construct<size_t_vector>(boost::interprocess::anonymous_instance)(0,alloc_size_t);
     second_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector>(boost::interprocess::anonymous_instance)(mnGridRows,alloc_size_t_vector);
 
-    for(int i =0l i<mnGridRows; i++){
+    for(int i =0; i<mnGridRows; i++){
         second_mgrid->at(i).assign(first_mgrid->begin(),first_mgrid->end());
     }
 
     mGrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(mnGridCols,alloc_size_t_vector_vector);
-    for(int i =0l i<mnGridCols; i++){
+    for(int i =0; i<mnGridCols; i++){
         mGrid->at(i).assign(second_mgrid->begin(),second_mgrid->end());
     }
     
