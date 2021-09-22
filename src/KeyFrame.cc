@@ -1023,6 +1023,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
 {
     vector<size_t> vIndices;
     vIndices.reserve(N);
+    std::vector<size_t> buffer_mGridRight
 
     float factorX = r;
     float factorY = r;
