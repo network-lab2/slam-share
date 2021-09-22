@@ -135,15 +135,15 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     mnId=nNextId++;
 
-    mGrid.resize(mnGridCols);
+    mGrid->reserve(mnGridCols);//mGrid.resize(mnGridCols);
     mGridRight->reserve(mnGridCols);
     //if(F.Nleft != -1)  (mGridRight.get())->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
     {
-        mGrid[i].resize(mnGridRows);
+        mGrid->at(i).reserve(mnGridRows);//mGrid[i].resize(mnGridRows);
         if(F.Nleft != -1) mGridRight->at(i).reserve(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
-            mGrid[i][j] = F.mGrid[i][j];
+            (mGrid->at(i)).at(j).assign(F.mGrid[i][j].begin(),F.mGrid[i][j].end());//mGrid[i][j] = F.mGrid[i][j];
             if(F.Nleft != -1){
                 (mGridRight->at(i)).at(j).assign(F.mGridRight[i][j].begin(),F.mGridRight[i][j].end());//mGridRight[i][j] = F.mGridRight[i][j];
             }
@@ -1057,7 +1057,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
             buffer_mGridRight.clear();
             if(bRight)
                 buffer_mGridRight.assign((mGridRight->at(ix)).at(iy).begin(),(mGridRight->at(ix)).at(iy).end());
-            const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : buffer_mGridRight;//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
+            const vector<size_t> vCell = (!bRight) ? (mGrid->at(ix)).at(iy) : buffer_mGridRight;//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
             std::cout<<"vCell size: "<<vCell.size()<<std::endl;
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
             {
