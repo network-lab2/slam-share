@@ -1056,6 +1056,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
             buffer_mGridRight.clear();
             buffer_mGridRight.assign((mGridRight->at(ix)).at(iy).begin(),(mGridRight->at(ix)).at(iy).end());
             const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : buffer_mGridRight;//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
+            std::cout<<"vCell size: "<<vCell.size()<<std::endl;
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
             {
                 const cv::KeyPoint &kpUn = (NLeft == -1) ? (*mvKeysUn)[vCell[j]]
