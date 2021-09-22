@@ -191,8 +191,8 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mvInvLevelSigma2->assign(F.mvInvLevelSigma2.begin(),F.mvInvLevelSigma2.end());
 
     //int vectors
-    mvLeftToRightMatch = ORB_SLAM3:;segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
-    mvRightToLeftMatch = ORB_SLAM3:;segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
+    mvLeftToRightMatch = ORB_SLAM3::segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
+    mvRightToLeftMatch = ORB_SLAM3::segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
     mvLeftToRightMatch->assign(F.mvLeftToRightMatch.begin(),F.mvLeftToRightMatch.end());
     mvRightToLeftMatch->assign(F.mvRightToLeftMatch.begin(),F.mvRightToLeftMatch.end());
 
