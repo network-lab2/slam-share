@@ -131,8 +131,8 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const size_t_vector_vector_allocator alloc_size_t_vector_vector (ORB_SLAM3::segment.get_segment_manager());
      /* the triple vector */
     mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_size_t_vector_vector);
-    first_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(0,alloc_size_t);
-    second_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(mnGridRows,alloc_size_t_vector);
+    first_mgrid = ORB_SLAM3::segment.construct<size_t_vector>(boost::interprocess::anonymous_instance)(0,alloc_size_t);
+    second_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector>(boost::interprocess::anonymous_instance)(mnGridRows,alloc_size_t_vector);
 
     for(int i =0l i<mnGridRows; i++){
         second_mgrid->at(i).assign(first_mgrid->begin(),first_mgrid->end());
