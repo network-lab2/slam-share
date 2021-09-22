@@ -142,6 +142,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     mGrid->reserve(mnGridCols);//mGrid.resize(mnGridCols);
     mGridRight->reserve(mnGridCols);
+    std::cout<<"Reserve complete\n";
     //if(F.Nleft != -1)  (mGridRight.get())->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
     {
