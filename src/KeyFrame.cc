@@ -1042,7 +1042,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
             {
                 const cv::KeyPoint &kpUn = (NLeft == -1) ? (*mvKeysUn)[vCell[j]]
                                                          : (!bRight) ? (*mvKeys)[vCell[j]]
-                                                                     : mvKeysRight[vCell[j]];
+                                                                     : (*mvKeysRight)[vCell[j]];
                 const float distx = kpUn.pt.x-x;
                 const float disty = kpUn.pt.y-y;
 
