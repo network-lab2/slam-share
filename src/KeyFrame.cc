@@ -136,7 +136,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mnId=nNextId++;
 
     mGrid.resize(mnGridCols);
-    mGridRight.reserve(mnGridCols);
+    mGridRight->reserve(mnGridCols);
     //if(F.Nleft != -1)  (mGridRight.get())->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
     {
