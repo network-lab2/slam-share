@@ -122,7 +122,12 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //(*mvKeys).assign(F.mvKeys.begin(), F.mvKeys.end());
     //(*mvKeysUn).assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
-    
+     //An allocator convertible to any allocator<T, segment_manager_t> type
+    const void_allocator alloc_inst_void (ORB_SLAM3::segment.get_segment_manager());
+     /* the triple vector */
+    mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
+
+
     
     imgLeft = F.imgLeft.clone();
     imgRight = F.imgRight.clone();
@@ -152,8 +157,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_float alloc_set_float(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_int alloc_set_int(ORB_SLAM3::segment.get_segment_manager());
 
-    //An allocator convertible to any allocator<T, segment_manager_t> type
-    const void_allocator alloc_inst_void (ORB_SLAM3::segment.get_segment_manager());
+   
     
 
 
@@ -203,9 +207,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mvLeftToRightMatch->assign(F.mvLeftToRightMatch.begin(),F.mvLeftToRightMatch.end());
     mvRightToLeftMatch->assign(F.mvRightToLeftMatch.begin(),F.mvRightToLeftMatch.end());
 
-    /* the triple vector */
-    mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
-
+   
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
