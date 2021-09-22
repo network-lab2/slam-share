@@ -501,6 +501,7 @@ public:
     //std::vector< std::vector <std::vector<size_t> > > mGridRight;
     //new-code
     boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGridRight;
+    std::vector<size_t> buffer_mGridRight;
 
     cv::Mat GetRightPose();
     cv::Mat GetRightPoseInverse();
