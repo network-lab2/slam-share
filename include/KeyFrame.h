@@ -486,7 +486,21 @@ public:
 
     const int NLeft, NRight;
 
-    std::vector< std::vector <std::vector<size_t> > > mGridRight;
+    //Typedefs of allocators and containers
+    typedef boost::interprocess::managed_shared_memory::segment_manager     segment_manager_t;
+    typedef boost::interprocess::allocator<void, segment_manager_t>         void_allocator;
+    typedef boost::interprocess::allocator<size_t, segment_manager_t>       size_t_allocator;
+    typedef boost::interprocess::vector<size_t, size_t_allocator>           size_t_vector;
+    typedef boost::interprocess::allocator<size_t_vector, segment_manager_t> size_t_vector_allocator;
+    typedef boost::interprocess::vector<size_t_vector, size_t_vector_allocator>  size_t_vector_vector;
+    //next step in the onion
+    typedef boost::interprocess::allocator<size_t_vector_vector, segment_manager_t> size_t_vector_vector_allocator;
+    typedef boost::interprocess::vector<size_t_vector_vector,size_t_vector_vector_allocator> size_t_vector_vector_vector;
+
+    //old-code
+    //std::vector< std::vector <std::vector<size_t> > > mGridRight;
+    //new-code
+    size_t_vector_vector_vector mGridRight;
 
     cv::Mat GetRightPose();
     cv::Mat GetRightPoseInverse();

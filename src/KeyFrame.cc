@@ -57,7 +57,8 @@ KeyFrame::KeyFrame():
     const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_cv_keypoint alloc_set_cv(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_float alloc_set_float(ORB_SLAM3::segment.get_segment_manager());
-
+    //An allocator convertible to any allocator<T, segment_manager_t> type
+    const void_allocator alloc_inst_void (ORB_SLAM3::segment.get_segment_manager());
 
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -94,6 +95,9 @@ KeyFrame::KeyFrame():
     mvLevelSigma2->clear();
     mvInvLevelSigma2->clear();
 
+    /* the triple vector */
+    mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
+
 }
 
 KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrameDatabase *pKFDB):
@@ -126,15 +130,15 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mnId=nNextId++;
 
     mGrid.resize(mnGridCols);
-    if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
+    if(F.Nleft != -1)  (*mGridRight).resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
     {
         mGrid[i].resize(mnGridRows);
-        if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
+        if(F.Nleft != -1) (*mGridRight)[i].resize(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
             mGrid[i][j] = F.mGrid[i][j];
             if(F.Nleft != -1){
-                mGridRight[i][j] = F.mGridRight[i][j];
+                (*mGridRight)[i][j] = F.mGridRight[i][j];//mGridRight[i][j] = F.mGridRight[i][j];
             }
         }
     }
@@ -147,6 +151,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_cv_keypoint alloc_set_cv(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_float alloc_set_float(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_int alloc_set_int(ORB_SLAM3::segment.get_segment_manager());
+
+    //An allocator convertible to any allocator<T, segment_manager_t> type
+    const void_allocator alloc_inst_void (ORB_SLAM3::segment.get_segment_manager());
     
 
 
@@ -195,6 +202,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mvRightToLeftMatch = ORB_SLAM3::segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
     mvLeftToRightMatch->assign(F.mvLeftToRightMatch.begin(),F.mvLeftToRightMatch.end());
     mvRightToLeftMatch->assign(F.mvRightToLeftMatch.begin(),F.mvRightToLeftMatch.end());
+
+    /* the triple vector */
+    mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
 
 
     //creating all the matrix in the keyframe
@@ -1037,7 +1047,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
     {
         for(int iy = nMinCellY; iy<=nMaxCellY; iy++)
         {
-            const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
+            const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : (*mGridRight)[ix][iy];//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
             {
                 const cv::KeyPoint &kpUn = (NLeft == -1) ? (*mvKeysUn)[vCell[j]]
