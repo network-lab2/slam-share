@@ -500,7 +500,7 @@ public:
     //old-code
     //std::vector< std::vector <std::vector<size_t> > > mGridRight;
     //new-code
-    size_t_vector_vector_vector mGridRight;
+    boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGridRight;
 
     cv::Mat GetRightPose();
     cv::Mat GetRightPoseInverse();
