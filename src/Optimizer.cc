@@ -990,7 +990,7 @@ int Optimizer::PoseOptimization(Frame *pFrame)
                     vnIndexEdgeMono.push_back(i);
                 }
                 else {   //Right camera observation
-                    kpUn = (*pFrame->mvKeysRight)[i - pFrame->Nleft];
+                    kpUn = pFrame->mvKeysRight[i - pFrame->Nleft];
 
                     Eigen::Matrix<double, 2, 1> obs;
                     obs << kpUn.pt.x, kpUn.pt.y;
