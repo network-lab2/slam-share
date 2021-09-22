@@ -130,15 +130,15 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mnId=nNextId++;
 
     mGrid.resize(mnGridCols);
-    if(F.Nleft != -1)  (*mGridRight).resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
+    if(F.Nleft != -1)  (mGridRight)->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
     {
         mGrid[i].resize(mnGridRows);
-        if(F.Nleft != -1) (*mGridRight)[i].resize(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
+        if(F.Nleft != -1) mGridRight->at(i)->resize(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
             mGrid[i][j] = F.mGrid[i][j];
             if(F.Nleft != -1){
-                (*mGridRight)[i][j] = F.mGridRight[i][j];//mGridRight[i][j] = F.mGridRight[i][j];
+                mGridRight->at(i)->at(j) = F.mGridRight[i][j];//mGridRight[i][j] = F.mGridRight[i][j];
             }
         }
     }
@@ -1047,7 +1047,7 @@ vector<size_t> KeyFrame::GetFeaturesInArea(const float &x, const float &y, const
     {
         for(int iy = nMinCellY; iy<=nMaxCellY; iy++)
         {
-            const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : (*mGridRight)[ix][iy];//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
+            const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : (mGridRight->at(ix))->at(iy);//const vector<size_t> vCell = (!bRight) ? mGrid[ix][iy] : mGridRight[ix][iy];
             for(size_t j=0, jend=vCell.size(); j<jend; j++)
             {
                 const cv::KeyPoint &kpUn = (NLeft == -1) ? (*mvKeysUn)[vCell[j]]
