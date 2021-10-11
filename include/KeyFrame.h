@@ -58,17 +58,7 @@ struct classcomp {
   {return lhs.second<rhs.second;}
 
 
-   template <typename T>
-    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
-
-    template <typename T>
-    using Vector = boost::container::vector<T, Alloc<T> >;
-
-    template <typename T>
-    using Matrix = Vector<Vector<T> >;
-
-    template <typename T>
-    using Matrix_2 = Vector<Matrix<T> >;
+   
 };
 
 
@@ -502,6 +492,20 @@ public:
     //new-code
     boost::interprocess::offset_ptr<MyVector_int> mvLeftToRightMatch;
     boost::interprocess::offset_ptr<MyVector_int> mvRightToLeftMatch;
+
+    //new templates
+    template <typename T>
+    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Vector = boost::container::vector<T, Alloc<T> >;
+
+    template <typename T>
+    using Matrix = Vector<Vector<T> >;
+
+    template <typename T>
+    using Matrix_2 = Vector<Matrix<T> >;
+
 
 
     //Transformation matrix between cameras in stereo fisheye
