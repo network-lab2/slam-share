@@ -526,7 +526,7 @@ public:
     //new-code
     //boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGridRight;
     boost::interprocess::offset_ptr<Matrix<size_t> > matrix_mgridright;
-    boost::interprocess::offset_ptr<Matrix_2<size_t> > mGridRight;
+    boost::interprocess::offset_ptr<Matrix<size_t> > mGridRight;
     //std::size_t mGridRight[FRAME_GRID_COLS][FRAME_GRID_ROWS];
     //const std::vector<size_t> buffer_mGridRight;
 
