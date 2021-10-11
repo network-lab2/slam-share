@@ -158,7 +158,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //mGridRight->reserve(mnGridCols);
     //std::cout<<"Reserve complete\n";
     
-    mGridRight = ORB_SLAM3::segment.construct<Matrix_1<size_t> > >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
+    mGridRight = ORB_SLAM3::segment.construct<Matrix_1<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
     mGridRight->clear();
     mGridRight->shrink_to_fit();
     //mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
@@ -167,13 +167,13 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     std::cout<<"populating mgridCols\n";
     for(int i=0; i<mnGridCols;i++)
     {
-        mGrid->at(i).reserve(mnGridRows);//mGrid[i].resize(mnGridRows);
+        //mGrid->at(i).resize(mnGridRows);//mGrid[i].resize(mnGridRows);
         std::cout<<"Inside loop after reserve."<<std::endl;
-        if(F.Nleft != -1) mGridRight->at(i).reserve(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
+        //if(F.Nleft != -1) mGridRight->at(i).reserve(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
-            (mGrid->at(i)).at(j).assign(F.mGrid[i][j].begin(),F.mGrid[i][j].end());//mGrid[i][j] = F.mGrid[i][j];
+            mGrid[i][j] = F.mGrid[i][j];//(mGrid->at(i)).at(j)=F.mGrid[i][j];
             if(F.Nleft != -1){
-                (mGridRight->at(i)).at(j).assign(F.mGridRight[i][j].begin(),F.mGridRight[i][j].end());//mGridRight[i][j] = F.mGridRight[i][j];
+               (mGridRight->at(i)).at(j)=F.mGridRight[i][j];//mGridRight[i][j] = F.mGridRight[i][j];//
             }
         }
     }
