@@ -377,6 +377,8 @@ public:
 
     template <typename T>
     using Matrix_2 = Vector<Vector<T> >;
+
+    template <typename T>
     using Matrix_3 = Vector<Matrix_2<T> >;
 
 
