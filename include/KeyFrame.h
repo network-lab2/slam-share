@@ -361,6 +361,20 @@ public:
     cv::Mat mHessianPose;
 
     // The following variables need to be accessed trough a mutex to be thread safe.
+
+     //new templates
+    template <typename T>
+    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Vector = boost::container::vector<T, Alloc<T> >;
+
+    //template <typename T>
+    //using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Matrix_1 = Vector<Vector<T> >; 
+
 protected:
 
     // SE3 Pose and camera center
@@ -424,7 +438,9 @@ protected:
     //old-code
     //std::vector< std::vector <std::vector<size_t> > > mGrid;
     //new-code
-    boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGrid;
+    //boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGrid;
+    boost::interprocess::offset_ptr<Matrix_1<size_t> > mGrid;
+
     size_t_vector* first_mgrid;
     size_t_vector_vector* second_mgrid;
 
@@ -493,19 +509,7 @@ public:
     boost::interprocess::offset_ptr<MyVector_int> mvLeftToRightMatch;
     boost::interprocess::offset_ptr<MyVector_int> mvRightToLeftMatch;
 
-    //new templates
-    template <typename T>
-    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
-
-    template <typename T>
-    using Vector = boost::container::vector<T, Alloc<T> >;
-
-    //template <typename T>
-    //using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
-
-    template <typename T>
-    using Matrix_1 = Vector<Vector<T> >; 
-
+   
     //template <typename T>
     //using Matrix_2 = Vector<Vector<Vector<T> > >;
 
