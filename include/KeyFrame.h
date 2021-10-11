@@ -369,11 +369,16 @@ public:
     template <typename T>
     using Vector = boost::container::vector<T, Alloc<T> >;
 
-    //template <typename T>
-    //using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
+    template <typename T>
+    using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
 
     template <typename T>
     using Matrix_1 = Vector<Vector<T> >; 
+
+    template <typename T>
+    using Matrix_2 = Vector<Vector<T>, Alloc_vec<T> >;
+    using Matrix_3 = Vector<Matrix_2<T> >;
+
 
 protected:
 
@@ -439,7 +444,7 @@ protected:
     //std::vector< std::vector <std::vector<size_t> > > mGrid;
     //new-code
     //boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGrid;
-    boost::interprocess::offset_ptr<Matrix_1<size_t> > mGrid;
+    boost::interprocess::offset_ptr<Matrix_3<size_t> > mGrid;
 
     size_t_vector* first_mgrid;
     size_t_vector_vector* second_mgrid;
