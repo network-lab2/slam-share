@@ -56,6 +56,19 @@ class GeometricCamera;
 struct classcomp {
   bool operator() (std::pair<boost::interprocess::offset_ptr<KeyFrame>,int> &lhs, std::pair<boost::interprocess::offset_ptr<KeyFrame>,int> &rhs) const
   {return lhs.second<rhs.second;}
+
+
+   template <typename T>
+    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Vector = boost::container::vector<T, Alloc<T> >;
+
+    template <typename T>
+    using Matrix = Vector<Vector<T> >;
+
+    template <typename T>
+    using Matrix_2 = Vector<Matrix<T> >;
 };
 
 
@@ -407,7 +420,7 @@ protected:
 
      //Typedefs of allocators and containers
     typedef boost::interprocess::managed_shared_memory::segment_manager     segment_manager_t;
-    typedef boost::interprocess::allocator<void, segment_manager_t>         void_allocator;
+    //typedef boost::interprocess::allocator<void, segment_manager_t>         void_allocator;
     typedef boost::interprocess::allocator<size_t, segment_manager_t>       size_t_allocator;
     typedef boost::interprocess::vector<size_t, size_t_allocator>           size_t_vector;
     typedef boost::interprocess::allocator<size_t_vector, segment_manager_t> size_t_vector_allocator;
@@ -507,7 +520,9 @@ public:
     //old-code
     //std::vector< std::vector <std::vector<size_t> > > mGridRight;
     //new-code
-    boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGridRight;
+    //boost::interprocess::offset_ptr<size_t_vector_vector_vector> mGridRight;
+    boost::interprocess::offset_ptr<Matrix_2<size_t> > mGridRight;
+    //std::size_t mGridRight[FRAME_GRID_COLS][FRAME_GRID_ROWS];
     //const std::vector<size_t> buffer_mGridRight;
 
     cv::Mat GetRightPose();
