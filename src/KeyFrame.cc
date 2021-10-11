@@ -158,10 +158,11 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //mGridRight->reserve(mnGridCols);
     //std::cout<<"Reserve complete\n";
     
-    mGridRight = ORB_SLAM3::segment.construct<Matrix<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
+    mGridRight = ORB_SLAM3::segment.construct<Matrix_2<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
     mGridRight->clear();
     mGridRight->shrink_to_fit();
-    mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
+    //mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
+    mGridRight->assign(1, Matrix<size_t>(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
     if(F.Nleft != -1)  mGridRight->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     std::cout<<"populating mgridCols\n";
     for(int i=0; i<mnGridCols;i++)

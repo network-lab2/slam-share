@@ -501,7 +501,10 @@ public:
     using Vector = boost::container::vector<T, Alloc<T> >;
 
     template <typename T>
-    using Matrix = Vector<Vector<T> >;
+    using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Matrix = Vector<Vector<T> , Alloc_vec<T> >; 
 
     template <typename T>
     using Matrix_2 = Vector<Matrix<T> >;
