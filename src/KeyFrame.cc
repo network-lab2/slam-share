@@ -162,7 +162,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mGridRight->clear();
     mGridRight->shrink_to_fit();
     //mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
-    mGridRight->assign(1, Vector<Matrix_1>(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
+    mGridRight->assign(1, Vector<Vector<size_t> >(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
     if(F.Nleft != -1)  mGridRight->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     std::cout<<"populating mgridCols\n";
     for(int i=0; i<mnGridCols;i++)
