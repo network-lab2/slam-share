@@ -507,7 +507,7 @@ public:
     using Matrix_1 = Vector<Vector<T> >; 
 
     template <typename T>
-    using Matrix_2 = Vector<Matrix_1<T> >;
+    using Matrix_2 = Vector<Vector<Vector<T> > >;
 
 
 
