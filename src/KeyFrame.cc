@@ -126,7 +126,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //(*mvKeys).assign(F.mvKeys.begin(), F.mvKeys.end());
     //(*mvKeysUn).assign(F.mvKeysUn.begin(), F.mvKeysUn.end());
      //An allocator convertible to any allocator<T, segment_manager_t> type
-    const void_allocator alloc_inst_void (ORB_SLAM3::segment.get_segment_manager());
+    //const void_allocator alloc_inst_void (ORB_SLAM3::segment.get_segment_manager());
     const size_t_allocator alloc_size_t (ORB_SLAM3::segment.get_segment_manager());
     const size_t_vector_allocator alloc_size_t_vector(ORB_SLAM3::segment.get_segment_manager());
     const size_t_vector_vector_allocator alloc_size_t_vector_vector (ORB_SLAM3::segment.get_segment_manager());
@@ -162,7 +162,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mGridRight->clear();
     mGridRight->shrink_to_fit();
     //mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
-    mGridRight->assign(1, Vector(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
+    mGridRight->assign(1, Vector<Matrix_1>(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
     if(F.Nleft != -1)  mGridRight->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     std::cout<<"populating mgridCols\n";
     for(int i=0; i<mnGridCols;i++)
