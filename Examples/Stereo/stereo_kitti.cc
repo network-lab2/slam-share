@@ -74,7 +74,11 @@ int main(int argc, char **argv)
         {
             std::cout<<" --- More than 100 images --- we pause now"<<std::endl;
             SLAM.PostLoad(); //run the post load function
-            int flag = std::cin.get();
+            //int flag = std::cin.get();
+            // Stop all threads
+            SLAM.Shutdown();
+            // Save camera trajectory
+           SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
         }
         else{
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
