@@ -97,7 +97,7 @@ KeyFrame::KeyFrame():
 
     /* the triple vector */
     //mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_inst_void);
-    mGridRight = ORB_SLAM3::segment.construct<Matrix_1<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
+    mGridRight = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
     mGrid = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
 
 
@@ -131,20 +131,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const size_t_vector_allocator alloc_size_t_vector(ORB_SLAM3::segment.get_segment_manager());
     const size_t_vector_vector_allocator alloc_size_t_vector_vector (ORB_SLAM3::segment.get_segment_manager());
     
-     /* the triple vector 
-    mGridRight = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(alloc_size_t_vector_vector);
-    first_mgrid = ORB_SLAM3::segment.construct<size_t_vector>(boost::interprocess::anonymous_instance)(1,alloc_size_t);
-    second_mgrid = ORB_SLAM3::segment.construct<size_t_vector_vector>(boost::interprocess::anonymous_instance)(mnGridRows,alloc_size_t_vector);
 
-    for(int i =0; i<mnGridRows; i++){
-        second_mgrid->at(i).assign(first_mgrid->begin(),first_mgrid->end());
-    }
-
-    mGrid = ORB_SLAM3::segment.construct<size_t_vector_vector_vector>(boost::interprocess::anonymous_instance)(mnGridCols,alloc_size_t_vector_vector);
-    for(int i =0; i<mnGridCols; i++){
-        mGrid->at(i).assign(second_mgrid->begin(),second_mgrid->end());
-    }
-    */
     
     imgLeft = F.imgLeft.clone();
     imgRight = F.imgRight.clone();
@@ -153,24 +140,28 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     std::cout<<"Keyframe constructor: mnID "<<mnId<<std::endl;
 
-    //mGrid->reserve(mnGridCols);//mGrid.resize(mnGridCols);
-    //mGrid->push_back(F.mGrid[0]);
-    //mGridRight->reserve(mnGridCols);
-    //std::cout<<"Reserve complete\n";
-    mGrid = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
-    mGrid->assign(1,Vector<size_t>(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
     
-    mGridRight = ORB_SLAM3::segment.construct<Matrix_1<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
+    mGrid = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
+    mGrid->clear();
+    mGrid->shrink_to_fit();
+
+    auto nested = segment.find_or_construct<Matrix_1<size_t> >(boost::interprocess::anonymous_instance)(segment.get_segment_manager());
+    nested->assign(Vector<size_t>(mnGridRows,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager())));
+    mGrid->assign(mnGridCols,nested);
+    
+    mGridRight = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
     mGridRight->clear();
     mGridRight->shrink_to_fit();
-    //mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
-    mGridRight->assign(FRAME_GRID_COLS,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
+    mGridRight->assign(mnGridCols,nested);
+
+
+    
     //if(F.Nleft != -1)  mGridRight->resize(mnGridCols);//if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     std::cout<<"populating mgridCols\n";
     for(int i=0; i<mnGridCols;i++)
     {
         //mGrid->at(i).resize(mnGridRows);//mGrid[i].resize(mnGridRows);
-        std::cout<<"Inside loop after reserve."<<std::endl;
+        //std::cout<<"Inside loop after reserve."<<std::endl;
         //if(F.Nleft != -1) mGridRight->at(i).reserve(mnGridRows);//if(F.Nleft != -1) mGridRight[i].resize(mnGridRows);
         for(int j=0; j<mnGridRows; j++){
             (mGrid->at(i)).at(j).assign(F.mGrid[i][j].begin(),F.mGrid[i][j].end());//mGrid[i][j] = F.mGrid[i][j];//(mGrid->at(i)).at(j)=F.mGrid[i][j];
