@@ -141,11 +141,11 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     std::cout<<"Keyframe constructor: mnID "<<mnId<<std::endl;
 
     
-    mGrid = *(ORB_SLAM3::segment).construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
+    mGrid = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
     mGrid->clear();
     mGrid->shrink_to_fit();
 
-    auto& nested = segment.find_or_construct<Matrix_1<size_t> >(boost::interprocess::anonymous_instance)(segment.get_segment_manager());
+    auto& nested = *(ORB_SLAM3::segment).find_or_construct<Matrix_1<size_t> >(boost::interprocess::anonymous_instance)(segment.get_segment_manager());
     nested->assign(mnGridRows,Vector<size_t>(FRAME_GRID_ROWS,ORB_SLAM3::segment.get_segment_manager()));
     mGrid->assign(mnGridCols,nested);
     
