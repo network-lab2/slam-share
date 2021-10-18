@@ -184,6 +184,7 @@ protected:
     //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspKeyFrames;
     // New-code
     boost::interprocess::offset_ptr<Myset_keyframe> mspKeyFrames;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspKeyFrames_support;
 
 
     boost::interprocess::offset_ptr<KeyFrame> mpKFinitial;
