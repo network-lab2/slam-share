@@ -52,6 +52,9 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
     mspKeyFrames = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
+    const ShmemAllocator_mappoint alloc_inst_mappoint(ORB_SLAM3::segment.get_segment_manager());
+    mvpReferenceMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst_mappoint);
+
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
@@ -88,6 +91,11 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     //for the sets
     const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
     mspKeyFrames = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+
+    //for mappoint reference
+     const ShmemAllocator_mappoint alloc_inst_mappoint(ORB_SLAM3::segment.get_segment_manager());
+    mvpReferenceMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst_mappoint);
+
 }
 
 Map::~Map()
@@ -105,7 +113,10 @@ Map::~Map()
         delete mThumbnail;
     mThumbnail = static_cast<GLubyte*>(NULL);
 
-    mvpReferenceMapPoints.clear();
+    //old
+    //mvpReferenceMapPoints.clear();
+    //new
+    mvpReferenceMapPoints->clear();
     //old
     //mvpKeyFrameOrigins.clear();
     //new
@@ -189,7 +200,9 @@ void Map::EraseKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 void Map::SetReferenceMapPoints(const vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs)
 {
     unique_lock<mutex> lock(mMutexMap);
-    mvpReferenceMapPoints = vpMPs;
+    mvpReferenceMapPoints->clear();
+    mvpReferenceMapPoints->assign(vpMPs.begin(),vpMPs.end());
+    //mvpReferenceMapPoints = vpMPs;
 }
 
 void Map::InformNewBigChange()
@@ -233,7 +246,7 @@ long unsigned int Map::KeyFramesInMap()
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetReferenceMapPoints()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return mvpReferenceMapPoints;
+    return *mvpReferenceMapPoints; //changed here
 }
 
 long unsigned int Map::GetId()
@@ -298,7 +311,11 @@ void Map::clear()
     mnMaxKFid = mnInitKFid;
     mnLastLoopKFid = 0;
     mbImuInitialized = false;
-    mvpReferenceMapPoints.clear();
+    
+    //old-code
+    //mvpReferenceMapPoints.clear();
+    //new-code
+    mvpReferenceMapPoints->clear();
     //old
     //mvpKeyFrameOrigins.clear();
     //new

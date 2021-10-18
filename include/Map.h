@@ -166,6 +166,11 @@ boost::interprocess::offset_ptr<std::mutex> mMutexMapPtr;
  //example
  int a;
  int b;
+
+ //create your own vector!
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint; 
+    //typedef vector
+    typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
 protected:
 
     long unsigned int mnId;
@@ -190,7 +195,9 @@ protected:
     boost::interprocess::offset_ptr<KeyFrame> mpKFinitial;
     boost::interprocess::offset_ptr<KeyFrame> mpKFlowerID;
 
-    std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpReferenceMapPoints;
+    //old-code
+    //std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpReferenceMapPoints;
+    MyVector_mappoint mvpReferenceMapPoints;
 
    
 
