@@ -169,8 +169,21 @@ protected:
 
     long unsigned int mnId;
 
+    //new code for Set -mappoints 
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint_set;
+    typedef boost::interprocess::set<boost::interprocess::offset_ptr<MapPoint>, std::less<boost::interprocess::offset_ptr<MapPoint> >,ShmemAllocator_mappoint_set> Myset_mappoint;
+
+
+    //new code for Set.
+    typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<KeyFrame>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_keyframe_set;
+    typedef boost::interprocess::set<boost::interprocess::offset_ptr<KeyFrame>, std::less<boost::interprocess::offset_ptr<KeyFrame> >,ShmemAllocator_keyframe_set> Myset_keyframe;
+
+    // Old-code
     std::set<boost::interprocess::offset_ptr<MapPoint> > mspMapPoints;
-    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspKeyFrames;
+    //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspKeyFrames;
+    // New-code
+    boost::interprocess::offset_ptr<Myset_keyframe> mspKeyFrames;
+
 
     boost::interprocess::offset_ptr<KeyFrame> mpKFinitial;
     boost::interprocess::offset_ptr<KeyFrame> mpKFlowerID;

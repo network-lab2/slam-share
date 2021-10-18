@@ -49,6 +49,9 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     const ShmemAllocator_longint alloc_inst2(ORB_SLAM3::segment.get_segment_manager());
     mvBackupKeyFrameOriginsId = ORB_SLAM3::segment.construct<MyVector_longint>(boost::interprocess::anonymous_instance)(alloc_inst2);
 
+    const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
+    mspKeyFrames = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
 }
@@ -81,6 +84,10 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
 
     mnId=nNextId++;
     mThumbnail = static_cast<GLubyte*>(NULL);
+
+    //for the sets
+    const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
+    mspKeyFrames = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 }
 
 Map::~Map()
@@ -90,9 +97,9 @@ Map::~Map()
 
     //TODO: erase all keyframes from memory
     //old
-    mspKeyFrames.clear();
+    //mspKeyFrames.clear();
     //new
-    //mspKeyFrames->clear();
+    mspKeyFrames->clear();
 
     if(mThumbnail)
         delete mThumbnail;
@@ -108,13 +115,14 @@ Map::~Map()
 void Map::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexMap);
-    if(mspKeyFrames.empty()){
+    //if(mspKeyFrames.empty()){
+    if(mspKeyFrames->empty()){
         cout << "First KF:" << pKF->mnId << "; Map init KF:" << mnInitKFid << endl;
         mnInitKFid = pKF->mnId;
         mpKFinitial = pKF;
         mpKFlowerID = pKF;
     }
-    mspKeyFrames.insert(pKF);
+    mspKeyFrames->insert(pKF);//mspKeyFrames.insert(pKF);
     if(pKF->mnId>mnMaxKFid)
     {
         mnMaxKFid=pKF->mnId;
@@ -157,12 +165,13 @@ void Map::EraseMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP)
 void Map::EraseKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexMap);
-    mspKeyFrames.erase(pKF);
-    if(mspKeyFrames.size()>0)
+    mspKeyFrames->erase(pKF);//mspKeyFrames.erase(pKF);
+    if(mspKeyFrames->size()>0)//if(mspKeyFrames.size()>0)
     {
         if(pKF->mnId == mpKFlowerID->mnId)
         {
-            vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
+            //vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
+            vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames->begin(),mspKeyFrames->end());
             //sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
             sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
             mpKFlowerID = vpKFs[0];
@@ -198,7 +207,8 @@ int Map::GetLastBigChangeIdx()
 vector<boost::interprocess::offset_ptr<KeyFrame> > Map::GetAllKeyFrames()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
+    //return vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames.begin(),mspKeyFrames.end());
+    return vector<boost::interprocess::offset_ptr<KeyFrame> >(mspKeyFrames->begin(),mspKeyFrames->end());
 }
 
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetAllMapPoints()
@@ -216,7 +226,8 @@ long unsigned int Map::MapPointsInMap()
 long unsigned int Map::KeyFramesInMap()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return mspKeyFrames.size();
+    //return mspKeyFrames.size();
+    return mspKeyFrames->size();
 }
 
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetReferenceMapPoints()
@@ -267,7 +278,8 @@ void Map::clear()
 //    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(), send=mspMapPoints.end(); sit!=send; sit++)
 //        delete *sit;
 
-    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
+    //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
+    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames->begin(), send=mspKeyFrames->end(); sit!=send; sit++)
     {
         boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         pKF->UpdateMap(static_cast<boost::interprocess::offset_ptr<Map> >(NULL));
@@ -275,7 +287,7 @@ void Map::clear()
     }
 
     mspMapPoints.clear();
-    mspKeyFrames.clear();
+    mspKeyFrames->clear();//mspKeyFrames.clear();
     mnMaxKFid = mnInitKFid;
     mnLastLoopKFid = 0;
     mbImuInitialized = false;
@@ -332,7 +344,8 @@ void Map::RotateMap(const cv::Mat &R)
     cv::Mat Ryw = Tyw.rowRange(0,3).colRange(0,3);
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
-    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
+    //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
+    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames->begin(); sit!=mspKeyFrames->end(); sit++)
     {
         boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         cv::Mat Twc = pKF->GetPoseInverse();
@@ -367,7 +380,8 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
     cv::Mat Ryw = Tyw.rowRange(0,3).colRange(0,3);
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
-    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
+    //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
+    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames->begin(); sit!=mspKeyFrames->end(); sit++)
     {
         boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         cv::Mat Twc = pKF->GetPoseInverse();
@@ -473,7 +487,8 @@ void Map::PrintEssentialGraph()
         vstrHeader.push_back("--");
         vpChilds.push_back(pKFi);
     }
-    for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames.size()+10); ++i)
+    //for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames.size()+10); ++i)
+    for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames->size()+10); ++i)
     {
         count++;
         string strHeader = vstrHeader[i];
@@ -488,7 +503,8 @@ void Map::PrintEssentialGraph()
             vstrHeader.push_back(strHeader+"--");
         }
     }
-    if (count == (mspKeyFrames.size()+10))
+    //if (count == (mspKeyFrames.size()+10))
+    if (count == (mspKeyFrames->size()+10))
         cout << "CYCLE!!"    << endl;
 
     cout << "------------------" << endl << "End of the essential graph" << endl;
@@ -522,11 +538,12 @@ bool Map::CheckEssentialGraph(){
 
     set<boost::interprocess::offset_ptr<KeyFrame> > spChilds = pFirstKF->GetChilds();
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpChilds;
-    vpChilds.reserve(mspKeyFrames.size());
+    vpChilds.reserve(mspKeyFrames->size());//vpChilds.reserve(mspKeyFrames.size());
     for(boost::interprocess::offset_ptr<KeyFrame> pKFi : spChilds)
         vpChilds.push_back(pKFi);
 
-    for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames.size()+10); ++i)
+    //for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames.size()+10); ++i)
+    for(int i=0; i<vpChilds.size() && count <= (mspKeyFrames->size()+10); ++i)
     {
         count++;
         boost::interprocess::offset_ptr<KeyFrame> pKFi = vpChilds[i];
@@ -535,8 +552,10 @@ bool Map::CheckEssentialGraph(){
             vpChilds.push_back(pKFj);
     }
 
-    cout << "count/tot" << count << "/" << mspKeyFrames.size() << endl;
-    if (count != (mspKeyFrames.size()-1))
+    //cout << "count/tot" << count << "/" << mspKeyFrames.size() << endl;
+    cout << "count/tot" << count << "/" << mspKeyFrames->size() << endl;
+    //if (count != (mspKeyFrames.size()-1))
+    if (count != (mspKeyFrames->size()-1))
         return false;
     else
         return true;
