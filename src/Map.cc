@@ -246,7 +246,12 @@ long unsigned int Map::KeyFramesInMap()
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetReferenceMapPoints()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return *mvpReferenceMapPoints; //changed here
+    mvpReferenceMapPoints_support.clear();
+    for(auto f: *mvpReferenceMapPoints)
+    {
+        mvpReferenceMapPoints_support.insert(f);
+    }
+    return mvpReferenceMapPoint_support; //changed here
 }
 
 long unsigned int Map::GetId()
