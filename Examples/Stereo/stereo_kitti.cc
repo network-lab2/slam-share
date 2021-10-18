@@ -76,14 +76,22 @@ int main(int argc, char **argv)
             SLAM.PostLoad(); //run the post load function
             //int flag = std::cin.get();
             // Stop all threads
-            SLAM.Shutdown();
+            //SLAM.Shutdown();
             // Save camera trajectory
-           SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
-           int hold;
-           std::cin>>hold;
+           //SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
+           //int hold;
+           //std::cin>>hold;
         }
         else{
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
+        }
+
+        if(count_image>=200)
+        {
+            SLAM.Shutdown();
+            SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
+            std::cout<<"Exiting\n";
+            exit(0);
         }
         // Read left and right images from file
         imLeft = cv::imread(vstrImageLeft[ni],cv::IMREAD_UNCHANGED);
