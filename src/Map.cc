@@ -282,6 +282,7 @@ void Map::clear()
     mspKeyFrames_support.clear();
     for(auto f : *mspKeyFrames){
        mspKeyFrames_support.insert(f);
+   }
 
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
     for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames_support.begin(); sit!=mspKeyFrames_support.end(); sit++)
@@ -353,6 +354,7 @@ void Map::RotateMap(const cv::Mat &R)
     mspKeyFrames_support.clear();
     for(auto f : mspKeyFrames){
        mspKeyFrames_support.insert(f);
+   }
 
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
     for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames_support.begin(); sit!=mspKeyFrames_support.end(); sit++)
