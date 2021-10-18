@@ -251,7 +251,7 @@ vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetReferenceMapPoints()
     {
         mvpReferenceMapPoints_support.insert(f);
     }
-    return mvpReferenceMapPoint_support; //changed here
+    return mvpReferenceMapPoints_support; //changed here
 }
 
 long unsigned int Map::GetId()
