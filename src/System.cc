@@ -892,6 +892,7 @@ void System::PostLoad(){
     //now check. 3 is the starting process. 
     if (*magic_num > 3)
     {
+        //second process
         int previous_num = *magic_num-1;
         char atlasname[7];
 
@@ -917,6 +918,14 @@ void System::PostLoad(){
         std::cout<<std::endl;
         
         std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
+
+        //adding other atlas's map
+        std::cout<<"--- BEGIN MERGING --- Adding Another Atlas's Map \n";
+        std::cout<<"Number of Maps before adding another map: "<<mpAtlas->CountMaps()<<std::endl;
+        //Now try to get the first process's map.
+        mpAtlas->AddMap(otherAtlas->currentMapPtr);
+        std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
+
 
     } 
     else{

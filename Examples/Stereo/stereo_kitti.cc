@@ -79,6 +79,7 @@ int main(int argc, char **argv)
             SLAM.Shutdown();
             // Save camera trajectory
            SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
+           exit(0);
         }
         else{
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";

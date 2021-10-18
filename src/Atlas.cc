@@ -148,10 +148,23 @@ else{
     mspMaps.insert(mpCurrentMap);
 }
 
+/* New function written by Aditya to accomodate new maps found in Shared Memory */
+void Atlas::AddMap(boost::interprocess::offset_ptr<Map>  pMap)
+{
+    // We receive a map already in shared memory "pMap"
+
+    cout<<"Inserting the map into Atlas\n";
+    //try inserting old map.
+    mspMaps.insert(pMap);
+
+}
+
+
+
 void Atlas::ChangeMap(boost::interprocess::offset_ptr<Map>  pMap)
 {
     unique_lock<mutex> lock(mMutexAtlas);
-    cout << "Chage to map with id: " << pMap->GetId() << endl;
+    cout << "Change to map with id: " << pMap->GetId() << endl;
     if(mpCurrentMap){
         mpCurrentMap->SetStoredMap();
     }

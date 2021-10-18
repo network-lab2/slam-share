@@ -55,6 +55,8 @@ public:
 
     void CreateNewMap();
     void ChangeMap(boost::interprocess::offset_ptr<Map>  pMap);
+    /* New function written by Aditya to accomodate new maps found in Shared Memory */
+    void AddMap(boost::interprocess::offset_ptr<Map>  pMap);
 
     unsigned long int GetLastInitKFid();
 
