@@ -381,7 +381,10 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
     mspKeyFrames_support.clear();
-    mspKeyFrames_support.assign(mspKeyFrames->begin(), sit!=mspKeyFrames->end());
+    for(auto f : mspKeyFrames){
+       mspKeyFrames_support.insert(f);
+    }
+    //mspKeyFrames_support.assign(mspKeyFrames->begin(), mspKeyFrames->end());
 
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
     for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames_support.begin(); sit!=mspKeyFrames_support.end(); sit++)
