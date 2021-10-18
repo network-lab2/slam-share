@@ -280,7 +280,7 @@ void Map::clear()
 
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(), send=mspKeyFrames.end(); sit!=send; sit++)
     mspKeyFrames_support.clear();
-    for(auto f : mspKeyFrames){
+    for(auto f : *mspKeyFrames){
        mspKeyFrames_support.insert(f);
 
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
