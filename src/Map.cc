@@ -381,7 +381,7 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
-    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames->begin(); sit!=mspKeyFrames->end(); sit++)
+    for(boost::interprocess::set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames->begin(); sit!=mspKeyFrames->end(); sit++)
     {
         boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         cv::Mat Twc = pKF->GetPoseInverse();
