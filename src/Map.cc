@@ -249,7 +249,7 @@ vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetReferenceMapPoints()
     mvpReferenceMapPoints_support.clear();
     for(auto f: *mvpReferenceMapPoints)
     {
-        mvpReferenceMapPoints_support.insert(f);
+        mvpReferenceMapPoints_support.push_back(f);
     }
     return mvpReferenceMapPoints_support; //changed here
 }
