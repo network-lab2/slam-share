@@ -352,7 +352,7 @@ void Map::RotateMap(const cv::Mat &R)
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
     mspKeyFrames_support.clear();
-    for(auto f : mspKeyFrames){
+    for(auto f : *mspKeyFrames){
        mspKeyFrames_support.insert(f);
    }
 
@@ -393,7 +393,7 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
     mspKeyFrames_support.clear();
-    for(auto f : mspKeyFrames){
+    for(auto f : *mspKeyFrames){
        mspKeyFrames_support.insert(f);
     }
     //mspKeyFrames_support.assign(mspKeyFrames->begin(), mspKeyFrames->end());
