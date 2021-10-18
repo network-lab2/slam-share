@@ -197,7 +197,7 @@ protected:
 
     //old-code
     //std::vector<boost::interprocess::offset_ptr<MapPoint> > mvpReferenceMapPoints;
-    MyVector_mappoint mvpReferenceMapPoints;
+    boost::interprocess::offset_ptr<MyVector_mappoint> mvpReferenceMapPoints;
 
    
 
