@@ -344,8 +344,12 @@ void Map::RotateMap(const cv::Mat &R)
     cv::Mat Ryw = Tyw.rowRange(0,3).colRange(0,3);
     cv::Mat tyw = Tyw.rowRange(0,3).col(3);
 
+     mspKeyFrames_support.clear();
+    for(auto f : mspKeyFrames){
+       mspKeyFrames_support.insert(f);
+
     //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames.begin(); sit!=mspKeyFrames.end(); sit++)
-    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames->begin(); sit!=mspKeyFrames->end(); sit++)
+    for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspKeyFrames_support.begin(); sit!=mspKeyFrames_support.end(); sit++)
     {
         boost::interprocess::offset_ptr<KeyFrame> pKF = *sit;
         cv::Mat Twc = pKF->GetPoseInverse();
