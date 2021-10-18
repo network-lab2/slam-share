@@ -52,6 +52,9 @@ mbFail(false), mIsInUse(false), mHasTumbnail(false), mbBad(false), mnMapChangeNo
     const ShmemAllocator_keyframe_set alloc_set_key(ORB_SLAM3::segment.get_segment_manager());
     mspKeyFrames = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
+    const ShmemAllocator_mappoint_set alloc_set_mappoint(ORB_SLAM3::segment.get_segment_manager());
+    mspMapPoints = ORB_SLAM3::segment.construct<Myset_mappoint>(boost::interprocess::anonymous_instance)(alloc_set_mappoint);
+
     const ShmemAllocator_mappoint alloc_inst_mappoint(ORB_SLAM3::segment.get_segment_manager());
     mvpReferenceMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst_mappoint);
 
@@ -95,6 +98,10 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
     //for mappoint reference
      const ShmemAllocator_mappoint alloc_inst_mappoint(ORB_SLAM3::segment.get_segment_manager());
     mvpReferenceMapPoints = ORB_SLAM3::segment.construct<MyVector_mappoint>(boost::interprocess::anonymous_instance)(alloc_inst_mappoint);
+
+    const ShmemAllocator_mappoint_set alloc_set_mappoint(ORB_SLAM3::segment.get_segment_manager());
+    mspMapPoints = ORB_SLAM3::segment.construct<Myset_mappoint>(boost::interprocess::anonymous_instance)(alloc_set_mappoint);
+
 
 }
 
