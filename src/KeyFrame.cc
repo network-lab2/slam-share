@@ -862,11 +862,11 @@ set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetMergeEdges()
     //new code
     mspMergeEdges_support.clear();
 
-/*
-    for(auto f : mspMergeEdges){
+
+    for(auto f : *mspMergeEdges){
         mspMergeEdges_support.insert(f);
     }
-    */
+    
     //code ends
 
     //old code
