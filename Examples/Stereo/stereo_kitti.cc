@@ -86,7 +86,7 @@ int main(int argc, char **argv)
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
         }
 
-        if(count_image>=200)
+        if(count_images>=200)
         {
             SLAM.Shutdown();
             SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
