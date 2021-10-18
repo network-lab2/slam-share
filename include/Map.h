@@ -185,7 +185,11 @@ protected:
     typedef boost::interprocess::set<boost::interprocess::offset_ptr<KeyFrame>, std::less<boost::interprocess::offset_ptr<KeyFrame> >,ShmemAllocator_keyframe_set> Myset_keyframe;
 
     // Old-code
-    std::set<boost::interprocess::offset_ptr<MapPoint> > mspMapPoints;
+    //std::set<boost::interprocess::offset_ptr<MapPoint> > mspMapPoints;
+    // New-Code
+    boost::interprocess::offset_ptr<Myset_mappoint> mspMapPoints;
+    std::set<boost::interprocess::offset_ptr<MapPoint> > mspMapPoints_support;
+    
     //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspKeyFrames;
     // New-code
     boost::interprocess::offset_ptr<Myset_keyframe> mspKeyFrames;

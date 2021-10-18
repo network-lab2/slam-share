@@ -101,7 +101,8 @@ Map::Map(int initKFid):mnInitKFid(initKFid), mnMaxKFid(initKFid),mnLastLoopKFid(
 Map::~Map()
 {
     //TODO: erase all points from memory
-    mspMapPoints.clear();
+    //mspMapPoints.clear();
+    mspMapPoints->clear();
 
     //TODO: erase all keyframes from memory
     //old
@@ -147,7 +148,8 @@ void Map::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 void Map::AddMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP)
 {
     unique_lock<mutex> lock(mMutexMap);
-    mspMapPoints.insert(pMP);
+    //mspMapPoints.insert(pMP);
+    mspMapPoints->insert(pMP);
 }
 
 void Map::SetImuInitialized()
@@ -167,7 +169,7 @@ bool Map::isImuInitialized()
 void Map::EraseMapPoint(boost::interprocess::offset_ptr<MapPoint> pMP)
 {
     unique_lock<mutex> lock(mMutexMap);
-    mspMapPoints.erase(pMP);
+    mspMapPoints->erase(pMP);//mspMapPoints.erase(pMP);
 
     // TODO: This only erase the pointer.
     // Delete the MapPoint
@@ -227,13 +229,21 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > Map::GetAllKeyFrames()
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetAllMapPoints()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints.begin(),mspMapPoints.end());
+    mspMapPoints_support.clear();
+    for (auto f: *mspMapPoints)
+    {
+        mspMapPoints_support.insert(f);
+    }
+    //old-code
+    //return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints.begin(),mspMapPoints.end());
+    return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints_support.begin(),mspMapPoints_support.end());
 }
 
 long unsigned int Map::MapPointsInMap()
 {
     unique_lock<mutex> lock(mMutexMap);
-    return mspMapPoints.size();
+    //return mspMapPoints.size();
+    return mspMapPoints->size();
 }
 
 long unsigned int Map::KeyFramesInMap()
@@ -311,7 +321,7 @@ void Map::clear()
 //        delete *sit;
     }
 
-    mspMapPoints.clear();
+    mspMapPoints->clear();//mspMapPoints.clear();
     mspKeyFrames->clear();//mspKeyFrames.clear();
     mnMaxKFid = mnInitKFid;
     mnLastLoopKFid = 0;
@@ -391,7 +401,14 @@ void Map::RotateMap(const cv::Mat &R)
         cv::Mat Vw = pKF->GetVelocity();
         pKF->SetVelocity(Ryw*Vw);
     }
-    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
+    mspMapPoints_support.clear();
+    for (auto f: *mspMapPoints)
+    {
+        mspMapPoints_support.insert(f);
+    }
+    //old-code
+    //for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
+    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints_support.begin(); sit!=mspMapPoints_support.end(); sit++)
     {
         boost::interprocess::offset_ptr<MapPoint> pMP = *sit;
         pMP->SetWorldPos(Ryw*pMP->GetWorldPos()+tyw);
@@ -438,7 +455,13 @@ void Map::ApplyScaledRotation(const cv::Mat &R, const float s, const bool bScale
             pKF->SetVelocity(Ryw*Vw*s);
 
     }
-    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
+    mspMapPoints_support.clear();
+    for (auto f: *mspMapPoints)
+    {
+        mspMapPoints_support.insert(f);
+    }
+    //for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints.begin(); sit!=mspMapPoints.end(); sit++)
+    for(set<boost::interprocess::offset_ptr<MapPoint> >::iterator sit=mspMapPoints_support.begin(); sit!=mspMapPoints_support.end(); sit++)
     {
         boost::interprocess::offset_ptr<MapPoint> pMP = *sit;
         pMP->SetWorldPos(s*Ryw*pMP->GetWorldPos()+tyw);
