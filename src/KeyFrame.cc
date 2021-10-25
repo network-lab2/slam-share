@@ -304,10 +304,16 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     std::cout<<"Fix the loop closer matrices\n";
+    /*
     mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
     mVwbGBA = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
     mVwbBefGBA = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
+    */
+    mTcwGBA = cv::Mat(4,4,CV_32F);
+    mTcwBefGBA = cv::Mat(4,4,CV_32F);
+    mVwbGBA = cv::Mat(3,1,CV_32F);
+    mVwbBefGBA = cv::Mat(3,1,CV_32F);
 
     std::cout<<"Fix the main matrices\n";
     pKF->Tcw = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
