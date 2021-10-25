@@ -320,6 +320,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     }
     */
     std::cout<<"Memcpy success?"<<std::endl;
+    fake.addref();
     mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     std::cout<<"Here works?"<<std::endl;
     std::cout<<"Finished release and reinitailizztion\n";
