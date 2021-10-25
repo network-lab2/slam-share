@@ -310,6 +310,10 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     mVwbGBA = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
     mVwbBefGBA = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
     */
+    for(int i =0; i < 16; i++)
+    {
+        std::cout<<((float)Tcw_ptr.get())[i]<<std::endl;
+    }
     pKF->mTcwGBA.release();
     std::cout<<"Here works?"<<std::endl;
     pKF->mTcwGBA = *(new cv::Mat(4,4,CV_32F));
