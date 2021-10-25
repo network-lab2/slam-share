@@ -314,9 +314,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     {
         std::cout<<((float*)(Tcw_ptr.get()))[i]<<std::endl;
     }
-    pKF->mTcwGBA.release();
+    //pKF->mTcwGBA.release();
     std::cout<<"Here works?"<<std::endl;
-    pKF->mTcwGBA = *(new cv::Mat(4,4,CV_32F));
+    pKF->mTcwGBA.data = mTcwGBA_ptr.get();
     std::cout<<"Finished release and reinitailizztion\n";
     mTcwBefGBA = *(new cv::Mat(4,4,CV_32F));
     mVwbGBA = *(new cv::Mat(3,1,CV_32F));
