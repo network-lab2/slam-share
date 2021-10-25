@@ -270,7 +270,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     cv::Mat temp = cv::Mat::zeros(3,1,CV_32F);
 
-    if(F.mVm.empty())
+    if(F.mVw.empty())
         temp.copyTo(Vw);
     else
         F.mVw.copyTo(Vw);
