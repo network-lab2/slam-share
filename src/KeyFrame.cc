@@ -305,6 +305,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     std::cout<<"Fix the loop closer matrices\n";
     std::cout<<"Size of cv::mat: "<<sizeof(cv::Mat)<<std::endl;
+    std::cout<<"Create a fake matrix "<<std::endl;
+    cv::Mat fake = cv::Mat::zeros(4,4,CV_32F);
+    memcpy(&(pKF->mTcwGBA),&fake,sizeof(cv:Mat));
     /*
     mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
@@ -316,9 +319,8 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         std::cout<<((float*)(Tcw_ptr.get()))[i]<<std::endl;
     }
     */
-    pKF->mTcwGBA = cv::Mat::zeros(4,4,CV_32F);
+    mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     std::cout<<"Here works?"<<std::endl;
-    pKF->mTcwGBA.data = (uchar*)*mTcwGBA_ptr;
     std::cout<<"Finished release and reinitailizztion\n";
     mTcwBefGBA = *(new cv::Mat(4,4,CV_32F));
     mVwbGBA = *(new cv::Mat(3,1,CV_32F));
