@@ -255,6 +255,20 @@ public:
     boost::interprocess::offset_ptr<char> mTcwBefGBA_ptr;
     boost::interprocess::offset_ptr<char> mVwbGBA_ptr;
     boost::interprocess::offset_ptr<char> mVwbBefGBA_ptr;
+     // matrices data pointers
+    boost::interprocess::offset_ptr<char> Tcw_ptr;
+    boost::interprocess::offset_ptr<char> Twc_ptr;
+    boost::interprocess::offset_ptr<char> Ow_ptr;
+    boost::interprocess::offset_ptr<char> Cw_ptr;
+    boost::interprocess::offset_ptr<char> Owb_ptr;
+    boost::interprocess::offset_ptr<char> Vw_ptr;
+
+    boost::interprocess::offset_ptr<char> mTcwMerge_ptr;
+    boost::interprocess::offset_ptr<char> mTcwBefMerge_ptr;
+    boost::interprocess::offset_ptr<char> mTwcBefMerge_ptr;
+    boost::interprocess::offset_ptr<char> mVwbMerge_ptr;
+    boost::interprocess::offset_ptr<char> mVwbBefMerge_ptr;
+    
 
     IMU::Bias mBiasGBA;
     long unsigned int mnBAGlobalForKF;
@@ -390,13 +404,7 @@ protected:
     cv::Mat Ow;
     cv::Mat Cw; // Stereo middel point. Only for visualization
 
-    // matrices data pointers
-    boost::interprocess::offset_ptr<char> Tcw_ptr;
-    boost::interprocess::offset_ptr<char> Twc_ptr;
-    boost::interprocess::offset_ptr<char> Ow_ptr;
-    boost::interprocess::offset_ptr<char> Cw_ptr;
-    boost::interprocess::offset_ptr<char> Owb_ptr;
-    boost::interprocess::offset_ptr<char> Vw_ptr;
+   
 
 
 

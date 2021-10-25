@@ -247,17 +247,41 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     Owb_ptr = ORB_SLAM3::allocator_instance.allocate(4*4);
     Vw_ptr = ORB_SLAM3::allocator_instance.allocate(3*4);
 
+    //Other matrices. No idea how big the size it should be.
+    //Good big size. so it works
+    mTcwMerge_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
+    mTcwBefMerge_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
+    mTwcBefMerge_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
+    mVwbMerge_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mVwbBefMerge_ptr = ORB_SLAM3::allocator_instance.allocate(10*4*4);
+
     Tcw = cv::Mat(4,4,CV_32F,Tcw_ptr.get());
     Twc = cv::Mat(4,4,CV_32F,Twc_ptr.get());
     Ow = cv::Mat(3,1,CV_32F,Ow_ptr.get());
     Cw = cv::Mat(4,1,CV_32F,Cw_ptr.get());
     Owb = cv::Mat(3,1,CV_32F,Owb_ptr.get());
 
+    mTcwMerge = cv::Mat(4,4,CV_32F,mTcwMerge_ptr.get());
+    mTcwBefMerge = cv::Mat(4,4,CV_32F,mTcwBefMerge_ptr.get());
+    mTwcBefMerge = cv::Mat(4,4,CV_32F,mTwcBefMerge_ptr.get());
+    mVwbMerge = cv::Mat(3,1,CV_32F,mVwbMerge_ptr.get());
 
+    Vw = cv::Mat(3,1,CV_32F,Vw_ptr.get());
+
+    cv::Mat temp = cv::Mat::zeros(3,1,CV_32F);
+
+    if(F.mVm.empty())
+        temp.copyTo(Vw);
+    else
+        F.mVw.copyTo(Vw);
+    //Old-code for Vw
+   /*
     if(F.mVw.empty())
         Vw = cv::Mat::zeros(3,1,CV_32F);
     else
         Vw = F.mVw.clone();
+
+    */
 
     mImuBias = F.mImuBias;
     SetPose(F.mTcw);
