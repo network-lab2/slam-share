@@ -198,7 +198,8 @@ public:
     typedef boost::interprocess::allocator<int,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_int;
     typedef boost::interprocess::vector<int, ShmemAllocator_int> MyVector_int;
 
-
+    //Aditya-Dhakal new matrix fixing function
+    void FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF);
 
 
     // The following variables are accesed from only 1 thread or never change (no mutex needed).

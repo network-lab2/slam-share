@@ -234,10 +234,15 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
-    mTcwGBA_ptr = ORB_SLAM3::allocator_instance.allocate(10*4*4);
-    mTcwBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate(10*4*4);
-    mVwbGBA_ptr = ORB_SLAM3::allocator_instance.allocate(10*4*4);
+    mTcwGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
+    mTcwBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
+    mVwbGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*4*4);
     mVwbBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate(10*4*4);
+
+    mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
+    mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
+    mVwbGBA = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
+    mVwbBefGBA = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
 
     //for basic matrices.
     Tcw_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
@@ -294,6 +299,35 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
                              mTlr.at<float>(3,0),mTlr.at<float>(3,1),mTlr.at<float>(3,2),mTlr.at<float>(3,3));
 
 }
+
+/* helper functions to fix matrix */
+void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
+{
+    std::cout<<"Fix the loop closer matrices\n";
+    pKF->mTcwGBA = cv::Mat(4,4,CV_32F,pKF->mTcwGBA_ptr.get());
+    pKF->mTcwBefGBA = cv::Mat(4,4,CV_32F,pKF->mTcwBefGBA_ptr.get());
+    pKF->mVwbGBA = cv::Mat(3,1,CV_32F,pKF->mVwbGBA_ptr.get());
+    pKF->mVwbBefGBA = cv::Mat(3,1,CV_32F,pKF->mVwbBefGBA_ptr.get());
+
+    std::cout<<"Fix the main matrices\n";
+    pKF->Tcw = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
+    pKF->Twc = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
+    pKF->Ow = cv::Mat(3,1,CV_32F,pKF->Ow_ptr.get());
+    pKF->Cw = cv::Mat(4,1,CV_32F,pKF->Cw_ptr.get());
+    pKF->Owb = cv::Mat(3,1,CV_32F,pKF->Owb_ptr.get());
+
+    std::cout<<"Fix the merge matrices\n";
+    pKF->mTcwMerge = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
+    pKF->mTcwBefMerge = cv::Mat(4,4,CV_32F,pKF->mTcwBefMerge_ptr.get());
+    pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
+    pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
+
+    std::cout<<"Completed the matrices of the keyFrame: "<<pKF->mnId<<std::endl;
+
+}
+
+
+
 void KeyFrame::ComputeBoW()
 {
     if(mBowVec.empty() || mFeatVec.empty())
