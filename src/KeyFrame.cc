@@ -307,7 +307,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     std::cout<<"Size of cv::mat: "<<sizeof(cv::Mat)<<std::endl;
     std::cout<<"Create a fake matrix "<<std::endl;
     cv::Mat fake = cv::Mat::zeros(4,4,CV_32F);
-    memcpy(&(pKF->mTcwGBA),&fake,sizeof(cv:Mat));
+    memcpy(&(pKF->mTcwGBA),&fake,sizeof(cv::Mat));
     /*
     mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
