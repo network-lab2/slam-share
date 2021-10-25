@@ -925,6 +925,15 @@ void System::PostLoad(){
         //Now try to get the first process's map.
         mpAtlas->AddMap(otherAtlas->currentMapPtr);
         std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
+
+        //before changing map, go through each keyframe of the map and convert the matrices.
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
+
+        for(auto& keyf: allkeyframes){
+            keyf->FixMatrices(keyf);
+        }
+        std::cout<<"Fixed all the matrices in keyframes\n";
+
         //now update the mpAtlas to newly read map
         std::cout<<"Changing the map to new one.\n";
         mpAtlas->ChangeMap(otherAtlas->currentMapPtr);
