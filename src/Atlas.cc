@@ -360,11 +360,11 @@ boost::interprocess::offset_ptr<Map>  Atlas::GetCurrentMap()
 */
    
     //run functions.
-    cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
-    cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
+    //cout<<"GetId: "<<mpCurrentMap->GetId()<<endl;
+    //cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
 
     //let's see if we can access mpCurrentMap
-    cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
+    //cout<<"mpCurrentMap->nNextId: "<<mpCurrentMap->nNextId<<endl;
     //check boolean
     /*
     if(mpCurrentMap->mbBad)
@@ -421,7 +421,7 @@ bool Atlas::isImuInitialized()
     //boost::interprocess::managed_shared_memory segment(boost::interprocess::open_or_create, "MySharedMemory",10737418240);
     //Atlas *atl = segment->find_or_construct<Atlas>("Atlas")();
 
-    cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
+    //cout<<"Address of mpCurrentMap "<<mpCurrentMap<<endl;
     unique_lock<mutex> lock(mMutexAtlas);
     return mpCurrentMap->isImuInitialized();
 }
