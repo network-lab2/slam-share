@@ -935,8 +935,8 @@ void System::PostLoad(){
         std::cout<<"Fixed all the matrices in keyframes\n";
 
         //now update the mpAtlas to newly read map
-        std::cout<<"Changing the map to new one.\n";
-        mpAtlas->ChangeMap(otherAtlas->currentMapPtr);
+        //std::cout<<"Changing the map to new one.\n";
+        //mpAtlas->ChangeMap(otherAtlas->currentMapPtr);
 
 
     } 

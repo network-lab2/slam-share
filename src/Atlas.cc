@@ -212,7 +212,6 @@ void Atlas::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     std::cout<<"Vw: "<<pKF->GetVelocity().size<<" "<<pKF->GetVelocity().total()*pKF->GetVelocity().elemSize()<<std::endl;
     std::cout<<"Owb: "<<pKF->GetImuPosition().size<<" "<<pKF->GetImuPosition().total()*pKF->GetImuPosition().elemSize()<<std::endl;
 
-
 }
 
 void Atlas::AddMapPoint(boost::interprocess::offset_ptr<MapPoint>  pMP)
