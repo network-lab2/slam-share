@@ -306,8 +306,8 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     std::cout<<"Fix the loop closer matrices\n";
     std::cout<<"Size of cv::mat: "<<sizeof(cv::Mat)<<std::endl;
     std::cout<<"Create a fake matrix "<<std::endl;
-    cv::Mat fake = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
-    memcpy(&(pKF->mTcwGBA),&fake,sizeof(cv::Mat));
+    cv::Mat fake1 = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
+    memcpy(&(pKF->mTcwGBA),&fake1,sizeof(cv::Mat));
     /*
     mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
@@ -319,27 +319,72 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         std::cout<<((float*)(Tcw_ptr.get()))[i]<<std::endl;
     }
     */
-    std::cout<<"Memcpy success?"<<std::endl;
-    fake.addref();
+    //std::cout<<"Memcpy success?"<<std::endl;
+    //fake.addref();
     //pKF->mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
-    std::cout<<"Here works?"<<std::endl;
-    std::cout<<"Finished release and reinitailizztion\n";
-    mTcwBefGBA = *(new cv::Mat(4,4,CV_32F));
-    mVwbGBA = *(new cv::Mat(3,1,CV_32F));
-    mVwbBefGBA = *(new cv::Mat(3,1,CV_32F));
+    //std::cout<<"Here works?"<<std::endl;
+    //std::cout<<"Finished release and reinitailizztion\n";
+    
+    //Second merge
+    cv::Mat fake2 = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
+    memcpy(&(pKF->mTcwBefGBA),&fake2,sizeof(cv::Mat));
+
+    //Third merge
+    cv::Mat fake3 = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
+    memcpy(&(pKF->mVwbGBA),&fake3,sizeof(cv::Mat));
+
+    //Third merge
+    cv::Mat fake4 = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
+    memcpy(&(pKF->mVwbBefGBA),&fake4,sizeof(cv::Mat));
+
+    //Previous ones
+    //mTcwBefGBA = *(new cv::Mat(4,4,CV_32F));
+    //mVwbGBA = *(new cv::Mat(3,1,CV_32F));
+    //mVwbBefGBA = *(new cv::Mat(3,1,CV_32F));
 
     std::cout<<"Fix the main matrices\n";
+    cv::Mat fake5 = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
+    memcpy(&(pKF->Tcw), &fake5, sizeof(cv::Mat));
+
+    cv::Mat fake6 = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
+    memcpy(&(pKF->Twc), &fake6, sizeof(cv::Mat));
+
+    cv::Mat fake7 = cv::Mat(3,1,CV_32F,pKF->Ow_ptr.get());
+    memcpy(&(pKF->Ow), &fake7, sizeof(cv::Mat));
+
+    cv::Mat fake8 = cv::Mat(4,1,CV_32F,pKF->Cw_ptr.get());
+    memcpy(&(pKF->Cw), &fake8, sizeof(cv::Mat));
+
+    cv::Mat fake9 = cv::Mat(3,1,CV_32F,pKF->Owb_ptr.get());
+    memcpy(&(pKF->Owb), &fake9, sizeof(cv::Mat));
+
+    /*
     pKF->Tcw = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
     pKF->Twc = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
     pKF->Ow = cv::Mat(3,1,CV_32F,pKF->Ow_ptr.get());
     pKF->Cw = cv::Mat(4,1,CV_32F,pKF->Cw_ptr.get());
     pKF->Owb = cv::Mat(3,1,CV_32F,pKF->Owb_ptr.get());
+    */
 
     std::cout<<"Fix the merge matrices\n";
+
+    cv::Mat fake10 = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
+    cv::Mat fake11 = cv::Mat(4,4,CV_32F,pKF->mTcwBefMerge_ptr.get());
+    cv::Mat fake12 = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
+    cv::Mat fake13 = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
+
+    memcpy(&(pKF->mTcwMerge), &fake10, sizeof(cv::Mat));
+    memcpy(&(pKF->mTcwBefMerge), &fake11, sizeof(cv::Mat));
+    memcpy(&(pKF->mTwcBefMerge), &fake12, sizeof(cv::Mat));
+    memcpy(&(pKF->mVwbMerge), &fake13, sizeof(cv::Mat));
+
+    /*
+
     pKF->mTcwMerge = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
     pKF->mTcwBefMerge = cv::Mat(4,4,CV_32F,pKF->mTcwBefMerge_ptr.get());
     pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
+    */
 
     std::cout<<"Completed the matrices of the keyFrame: "<<pKF->mnId<<std::endl;
 
