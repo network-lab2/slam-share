@@ -929,6 +929,7 @@ void System::PostLoad(){
 
         //before changing map, go through each keyframe of the map and convert the matrices.
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
+        std::cout<<"Size of the vector before fixing: "<<allkeyframes.size()<<std::endl;
 
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
