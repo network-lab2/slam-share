@@ -70,9 +70,13 @@ int main(int argc, char **argv)
 
         //stop after 100 frames.
         count_images++;
-        if(count_images>=100)
+        if(count_images==100)
         {
-            std::cout<<" --- More than 100 images --- we pause now"<<std::endl;
+            std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
             SLAM.PostLoad(); //run the post load function
             //int flag = std::cin.get();
             // Stop all threads
@@ -81,6 +85,12 @@ int main(int argc, char **argv)
            //SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
            //int hold;
            //std::cin>>hold;
+           std::cout<<std::endl<<std::endl;
+           std::cout<<"------------------------------------------------------------"<<std::endl;
+           std::cout<<"------------------------------------------------------------"<<std::endl;
+           std::cout<<"------------------------------------------------------------"<<std::endl;
+           std::cout<<"------------------------------------------------------------"<<std::endl;
+           std::cout<<"------------------------------------------------------------"<<std::endl;
         }
         else{
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
