@@ -189,6 +189,8 @@ void Atlas::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     boost::interprocess::offset_ptr<Map>  pMapKF = pKF->GetMap();
     pMapKF->AddKeyFrame(pKF);
+
+    /*
     // print the sizes of all the matrices
     std::cout<<"----- ==== KEYFRAMES Details ---- ======= \n";
     std::cout<<"mTcwGBA: "<<pKF->mTcwGBA.size<<" "<<pKF->mTcwGBA.total()*pKF->mTcwGBA.elemSize()<<std::endl;
@@ -211,7 +213,7 @@ void Atlas::AddKeyFrame(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     std::cout<<"Cw: "<<pKF->GetStereoCenter().size<<" "<<pKF->GetStereoCenter().total()*pKF->GetStereoCenter().elemSize()<<std::endl;
     std::cout<<"Vw: "<<pKF->GetVelocity().size<<" "<<pKF->GetVelocity().total()*pKF->GetVelocity().elemSize()<<std::endl;
     std::cout<<"Owb: "<<pKF->GetImuPosition().size<<" "<<pKF->GetImuPosition().total()*pKF->GetImuPosition().elemSize()<<std::endl;
-
+*/
     std::cout<<"------- ===== Number of Keyframes now             : "<<pMapKF->KeyFramesInMap()<<" ----- ===========\n";
     std::cout<<"------- ===== The Map ID this keyframe Belongs to : "<<pMapKF->GetId()<<" ----- ===========\n";
 
