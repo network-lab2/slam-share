@@ -922,6 +922,7 @@ void System::PostLoad(){
         //adding other atlas's map
         std::cout<<"--- BEGIN MERGING --- Adding Another Atlas's Map \n";
         std::cout<<"Number of Maps before adding another map: "<<mpAtlas->CountMaps()<<std::endl;
+        std::cout<<"Number of Keyframes before adding the maps: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         //Now try to get the first process's map.
         mpAtlas->AddMap(otherAtlas->currentMapPtr);
         std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
@@ -933,6 +934,7 @@ void System::PostLoad(){
             keyf->FixMatrices(keyf);
         }
         std::cout<<"Fixed all the matrices in keyframes\n";
+        std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to new one.\n";
