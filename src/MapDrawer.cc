@@ -312,6 +312,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
             {
                 boost::interprocess::offset_ptr<KeyFrame> pKF = vpKFs[i];
                 std::cout<<"--- checking the keyframe: "<<i<<std::endl;
+                std::cout<<"width of the matrix "<<keyf->GetPoseInverse().size().width<<std::endl;
                 cv::Mat Twc = pKF->GetPoseInverse().t();
                 unsigned int index_color = pKF->mnOriginMapId;
 

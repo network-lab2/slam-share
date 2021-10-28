@@ -306,14 +306,15 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //std::cout<<"Fix the loop closer matrices\n";
     //std::cout<<"Size of cv::mat: "<<sizeof(cv::Mat)<<std::endl;
     //std::cout<<"Create a fake matrix "<<std::endl;
-    cv::Mat fake1 = cv::Mat(4,4,CV_32F);
+    cv::Mat fake1 = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     memcpy(&(pKF->mTcwGBA),&fake1,sizeof(cv::Mat));
-    std::cout<<"Works with memcpy? "<<std::endl;
-    pKF->mTcwGBA.addref();
-    std::cout<<"Release?"<<std::endl;
+    
+    //std::cout<<"Works with memcpy? "<<std::endl;
+    //pKF->mTcwGBA.addref();
+    //std::cout<<"Release?"<<std::endl;
     //cv::Mat * fake111 = new cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     //pKF->mTcwGBA = *fake111;
-    pKF->mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
+    //pKF->mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     /*
     mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
@@ -325,7 +326,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         std::cout<<((float*)(Tcw_ptr.get()))[i]<<std::endl;
     }
     */
-    std::cout<<"Memcpy success?"<<std::endl;
+    //std::cout<<"Memcpy success?"<<std::endl;
     //fake.addref();
     //pKF->mTcwGBA = cv::Mat(4,4,CV_32F,mTcwGBA_ptr.get());
     //std::cout<<"Here works?"<<std::endl;
@@ -334,16 +335,16 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //Second merge
     cv::Mat fake2 = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
     memcpy(&(pKF->mTcwBefGBA),&fake2,sizeof(cv::Mat));
-    pKF->mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
+    //pKF->mTcwBefGBA = cv::Mat(4,4,CV_32F,mTcwBefGBA_ptr.get());
 
     //Third merge
     cv::Mat fake3 = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
     memcpy(&(pKF->mVwbGBA),&fake3,sizeof(cv::Mat));
-    pKF->mVwbGBA = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
+    //pKF->mVwbGBA = cv::Mat(3,1,CV_32F,mVwbGBA_ptr.get());
     //Third merge
     cv::Mat fake4 = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
     memcpy(&(pKF->mVwbBefGBA),&fake4,sizeof(cv::Mat));
-    pKF->mVwbBefGBA = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
+    //pKF->mVwbBefGBA = cv::Mat(3,1,CV_32F,mVwbBefGBA_ptr.get());
 
     //Previous ones
     //mTcwBefGBA = *(new cv::Mat(4,4,CV_32F));
@@ -353,23 +354,23 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //std::cout<<"Fix the main matrices\n";
     cv::Mat fake5 = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
     memcpy(&(pKF->Tcw), &fake5, sizeof(cv::Mat));
-    pKF->Tcw = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
+    //pKF->Tcw = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
 
     cv::Mat fake6 = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
     memcpy(&(pKF->Twc), &fake6, sizeof(cv::Mat));
-    pKF->Twc = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
+    //pKF->Twc = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
 
     cv::Mat fake7 = cv::Mat(3,1,CV_32F,pKF->Ow_ptr.get());
     memcpy(&(pKF->Ow), &fake7, sizeof(cv::Mat));
-    pKF->Ow = cv::Mat(3,1,CV_32F,pKF->Ow_ptr.get());
+    //pKF->Ow = cv::Mat(3,1,CV_32F,pKF->Ow_ptr.get());
 
     cv::Mat fake8 = cv::Mat(4,1,CV_32F,pKF->Cw_ptr.get());
     memcpy(&(pKF->Cw), &fake8, sizeof(cv::Mat));
-    pKF->Cw = cv::Mat(4,1,CV_32F,pKF->Cw_ptr.get());
+    //pKF->Cw = cv::Mat(4,1,CV_32F,pKF->Cw_ptr.get());
 
     cv::Mat fake9 = cv::Mat(3,1,CV_32F,pKF->Owb_ptr.get());
     memcpy(&(pKF->Owb), &fake9, sizeof(cv::Mat));
-    pKF->Owb = cv::Mat(3,1,CV_32F,pKF->Owb_ptr.get());
+    //pKF->Owb = cv::Mat(3,1,CV_32F,pKF->Owb_ptr.get());
 
     /*
     pKF->Tcw = cv::Mat(4,4,CV_32F,pKF->Tcw_ptr.get());
@@ -391,10 +392,10 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     memcpy(&(pKF->mTwcBefMerge), &fake12, sizeof(cv::Mat));
     memcpy(&(pKF->mVwbMerge), &fake13, sizeof(cv::Mat));
 
-    pKF->mTcwMerge = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
-    pKF->mTcwBefMerge = cv::Mat(4,4,CV_32F,pKF->mTcwBefMerge_ptr.get());
-    pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
-    pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
+    //pKF->mTcwMerge = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
+   // pKF->mTcwBefMerge = cv::Mat(4,4,CV_32F,pKF->mTcwBefMerge_ptr.get());
+    //pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
+    //pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
     /*
 
     pKF->mTcwMerge = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
