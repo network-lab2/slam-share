@@ -299,6 +299,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
 
     if(bDrawKF)
     {
+        std::cout<<"Mapdrawer : if bDrawKF \n";
         for(boost::interprocess::offset_ptr<Map>  pMap : vpMaps)
         {
             if(pMap == mpAtlas->GetCurrentMap())
