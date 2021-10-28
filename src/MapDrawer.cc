@@ -307,16 +307,14 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
 
             vector<boost::interprocess::offset_ptr<KeyFrame> >vpKFs = pMap->GetAllKeyFrames();
 
-            //added this
-            for(auto& keyf: vpKFs){
-            keyf->FixMatrices(keyf);
-            }
+            //change from here 
             std::cout<<"---- Number of keyframes as we cycle through the maps: "<<vpKFs.size()<<std::endl;
             //till here
 
             for(size_t i=0; i<vpKFs.size(); i++)
             {
                 boost::interprocess::offset_ptr<KeyFrame> pKF = vpKFs[i];
+                pKF->FixMatrices(pKF);
                 std::cout<<"--- checking the keyframe: "<<i<<std::endl;
                 std::cout<<"Printing the matrix itself "<<pKF->GetPoseInverse()<<std::endl;
                 cv::Mat Twc = pKF->GetPoseInverse().t();
