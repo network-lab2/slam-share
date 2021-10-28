@@ -934,6 +934,13 @@ void System::PostLoad(){
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
         }
+
+        std::cout<<"---- ===== checking the matrix sizes to validate ----- ==== \n";
+
+        for(auto& keyf: allkeyframes){
+            std::cout<<"Print the pose matrix size "<<keyf->getPose().size()->width<<std::endl;
+        }
+
         std::cout<<"Fixed all the matrices in keyframes\n";
         std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
