@@ -938,7 +938,7 @@ void System::PostLoad(){
         std::cout<<"---- ===== checking the matrix sizes to validate ----- ==== \n";
 
         for(auto& keyf: allkeyframes){
-            std::cout<<"Print the pose matrix size "<<keyf->GetPose().size()->width<<std::endl;
+            std::cout<<"Print the pose matrix size "<<keyf->GetPose().size().width<<std::endl;
         }
 
         std::cout<<"Fixed all the matrices in keyframes\n";
