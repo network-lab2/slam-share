@@ -945,7 +945,7 @@ void System::PostLoad(){
         std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
         //now update the mpAtlas to newly read map
-        std::cout<<"Changing the map to new one.\n";
+        std::cout<<"Changing the map to other atlas.\n";
         mpAtlas->ChangeMap(otherAtlas->currentMapPtr);
 
 
