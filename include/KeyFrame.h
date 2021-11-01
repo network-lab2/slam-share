@@ -69,6 +69,9 @@ public:
     KeyFrame();
     KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrameDatabase* pKFDB);
 
+    //Record the Pid_t of active user
+    pid_t ownerProcess;
+
     // Pose functions
     void SetPose(const cv::Mat &Tcw);
     void SetVelocity(const cv::Mat &Vw_);

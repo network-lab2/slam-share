@@ -100,6 +100,9 @@ KeyFrame::KeyFrame():
     mGridRight = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
     mGrid = ORB_SLAM3::segment.construct<Matrix_3<size_t> >(boost::interprocess::anonymous_instance)(ORB_SLAM3::segment.get_segment_manager());
 
+    //record pid
+    ownerProcess = std::getpid();
+
 
 }
 
@@ -298,11 +301,21 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
                              mTlr.at<float>(2,0),mTlr.at<float>(2,1),mTlr.at<float>(2,2),mTlr.at<float>(2,3),
                              mTlr.at<float>(3,0),mTlr.at<float>(3,1),mTlr.at<float>(3,2),mTlr.at<float>(3,3));
 
+    //record pid
+    ownerProcess = std::getpid();
+
 }
 
 /* helper functions to fix matrix */
 void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
+    // if same pid is calling, don't update
+    if(ownerProcess == std::getpid())
+    {
+        std::cout<<"===== Same PID. Returning ----\n";
+        return;
+    }
+
     //std::cout<<"Fix the loop closer matrices\n";
     //std::cout<<"Size of cv::mat: "<<sizeof(cv::Mat)<<std::endl;
     //std::cout<<"Create a fake matrix "<<std::endl;
@@ -405,6 +418,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     */
 
     std::cout<<"Completed the matrices of the keyFrame: "<<pKF->mnId<<std::endl;
+
+    //update the PID
+    ownerProcess = std::getpid();
 
 }
 
