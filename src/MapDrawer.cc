@@ -176,7 +176,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
         for(size_t i=0; i<vpKFs.size(); i++)
         {
             boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
-            std::cout<<"Which keyframe fails? "<<i<<std::endl;
+            //std::cout<<"Which keyframe fails? "<<i<<std::endl;
             cv::Mat Twc = pKF->GetPoseInverse().t();
             unsigned int index_color = pKF->mnOriginMapId;
 
@@ -299,7 +299,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
 
     if(bDrawKF)
     {
-        std::cout<<"Mapdrawer : if bDrawKF \n";
+        //std::cout<<"Mapdrawer : if bDrawKF \n";
         for(boost::interprocess::offset_ptr<Map>  pMap : vpMaps)
         {
             if(pMap == mpAtlas->GetCurrentMap())
@@ -315,8 +315,8 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
             {
                 boost::interprocess::offset_ptr<KeyFrame> pKF = vpKFs[i];
                 pKF->FixMatrices(pKF);
-                std::cout<<"--- checking the keyframe: "<<i<<std::endl;
-                std::cout<<"Printing the matrix itself "<<pKF->GetPoseInverse()<<std::endl;
+                //std::cout<<"--- checking the keyframe: "<<i<<std::endl;
+                //std::cout<<"Printing the matrix itself "<<pKF->GetPoseInverse()<<std::endl;
                 cv::Mat Twc = pKF->GetPoseInverse().t();
                 unsigned int index_color = pKF->mnOriginMapId;
 
