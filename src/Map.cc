@@ -536,7 +536,8 @@ void Map::PrintEssentialGraph()
 
     int count=0;
     cout << "Number of origin KFs: " << vpOriginKFs.size() << endl;
-    boost::interprocess::offset_ptr<KeyFrame> pFirstKF;
+    //boost::interprocess::offset_ptr<KeyFrame> pFirstKF;
+    KeyFrame *pFirstKF;
     for(boost::interprocess::offset_ptr<KeyFrame> pKFi : vpOriginKFs)
     {
         if(!pFirstKF)
