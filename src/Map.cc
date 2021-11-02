@@ -541,9 +541,9 @@ void Map::PrintEssentialGraph()
     for(boost::interprocess::offset_ptr<KeyFrame> pKFi : vpOriginKFs)
     {
         if(!pFirstKF)
-            pFirstKF = pKFi;
+            pFirstKF = pKFi.get();
         else if(!pKFi->GetParent())
-            pFirstKF = pKFi;
+            pFirstKF = pKFi.get();
     }
     if(pFirstKF->GetParent())
     {
