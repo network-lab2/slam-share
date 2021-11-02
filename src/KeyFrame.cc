@@ -973,13 +973,16 @@ set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetChilds()
 {
     unique_lock<mutex> lockCon(mMutexConnections);
     mspChildrens_support.clear();
+    set<boost::interprocess::offset_ptr<KeyFrame> > temp_set;
 
 
     for(auto f : *mspChildrens){
         mspChildrens_support.insert(f);
+        temp_set.insert(f);
     }
     //return mspChildrens;
-    return mspChildrens_support;
+    //return mspChildrens_support;
+    return temp_set;
 }
 
 boost::interprocess::offset_ptr<KeyFrame>  KeyFrame::GetParent()
