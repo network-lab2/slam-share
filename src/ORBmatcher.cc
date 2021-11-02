@@ -272,6 +272,7 @@ bool ORBmatcher::CheckDistEpipolarLine2(const cv::KeyPoint &kp1, const cv::KeyPo
 
 int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame &F, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMapPointMatches)
 {
+    std::cout<<"SearchByBow: Fails instantly\n";
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPointsKF = pKF->GetMapPointMatches();
     std::cout<<"SearchByBow: after GetMapPointMatches"<<std::endl;
 
