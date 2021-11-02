@@ -499,6 +499,7 @@ protected:
     std::set<boost::interprocess::offset_ptr<KeyFrame> > mspLoopEdges;
 
     boost::interprocess::offset_ptr<Myset_keyframe> mspChildrens;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens_support;
 
     //OLD CODE
     //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges;

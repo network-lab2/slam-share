@@ -972,7 +972,14 @@ void KeyFrame::ChangeParent(boost::interprocess::offset_ptr<KeyFrame> pKF)
 set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetChilds()
 {
     unique_lock<mutex> lockCon(mMutexConnections);
-    return mspChildrens;
+    mspChildrens_support.clear();
+
+
+    for(auto f : *mspChildrens){
+        mspChildrens_support.insert(f);
+    }
+    //return mspChildrens;
+    return mspChildrens_support;
 }
 
 boost::interprocess::offset_ptr<KeyFrame>  KeyFrame::GetParent()
@@ -1112,6 +1119,10 @@ void KeyFrame::SetBadFlag()
         if(mpParent)
             sParentCandidates.insert(mpParent);
 
+        mspChildrens_support.clear();
+         for(auto f : *mspChildrens){
+        mspChildrens_support.insert(f);
+        }
         // Assign at each iteration one children with a parent (the pair with highest covisibility weight)
         // Include that children as new parent candidate for the rest
         while(!mspChildrens->empty())
@@ -1123,7 +1134,7 @@ void KeyFrame::SetBadFlag()
             boost::interprocess::offset_ptr<KeyFrame>  pP;
 
             //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(), send=mspChildrens.end(); sit!=send; sit++)
-            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens->begin(), send=mspChildrens->end(); sit!=send; sit++)
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens_support->begin(), send=mspChildrens_support->end(); sit!=send; sit++)
             {
                 boost::interprocess::offset_ptr<KeyFrame>  pKF = *sit;
                 if(pKF->isBad())
@@ -1160,11 +1171,16 @@ void KeyFrame::SetBadFlag()
                 break;
         }
 
+        mspChildrens_support.clear();
+         for(auto f : *mspChildrens){
+        mspChildrens_support.insert(f);
+        }
+
         // If a children has no covisibility links with any parent candidate, assign to the original parent of this KF
         if(!mspChildrens->empty())//if(!mspChildrens.empty())
         {
             //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(); sit!=mspChildrens.end(); sit++)
-            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens->begin(); sit!=mspChildrens->end(); sit++)
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens_support->begin(); sit!=mspChildrens_support->end(); sit++)
             {
                 (*sit)->ChangeParent(mpParent);
             }
