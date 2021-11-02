@@ -74,6 +74,7 @@ KeyFrame::KeyFrame():
 
     //set-keyframe
     mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+    mspChildrens = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
     //mvkeys and mvkeysun
     mvKeys = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
@@ -201,6 +202,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //set-keyframe
     mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+    mspChildrens = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
     //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
@@ -944,13 +946,13 @@ void KeyFrame::UpdateConnections(bool upParent)
 void KeyFrame::AddChild(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lockCon(mMutexConnections);
-    mspChildrens.insert(pKF);
+    mspChildrens->insert(pKF);
 }
 
 void KeyFrame::EraseChild(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lockCon(mMutexConnections);
-    mspChildrens.erase(pKF);
+    mspChildrens->erase(pKF);
 }
 
 void KeyFrame::ChangeParent(boost::interprocess::offset_ptr<KeyFrame> pKF)
@@ -982,7 +984,7 @@ boost::interprocess::offset_ptr<KeyFrame>  KeyFrame::GetParent()
 bool KeyFrame::hasChild(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lockCon(mMutexConnections);
-    return mspChildrens.count(pKF);
+    return mspChildrens->count(pKF);
 }
 
 void KeyFrame::SetFirstConnection(bool bFirst)
@@ -1112,7 +1114,7 @@ void KeyFrame::SetBadFlag()
 
         // Assign at each iteration one children with a parent (the pair with highest covisibility weight)
         // Include that children as new parent candidate for the rest
-        while(!mspChildrens.empty())
+        while(!mspChildrens->empty())
         {
             bool bContinue = false;
 
@@ -1120,7 +1122,8 @@ void KeyFrame::SetBadFlag()
             boost::interprocess::offset_ptr<KeyFrame>  pC;
             boost::interprocess::offset_ptr<KeyFrame>  pP;
 
-            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(), send=mspChildrens.end(); sit!=send; sit++)
+            //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(), send=mspChildrens.end(); sit!=send; sit++)
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens->begin(), send=mspChildrens->end(); sit!=send; sit++)
             {
                 boost::interprocess::offset_ptr<KeyFrame>  pKF = *sit;
                 if(pKF->isBad())
@@ -1151,16 +1154,17 @@ void KeyFrame::SetBadFlag()
             {
                 pC->ChangeParent(pP);
                 sParentCandidates.insert(pC);
-                mspChildrens.erase(pC);
+                mspChildrens->erase(pC);//mspChildrens.erase(pC);
             }
             else
                 break;
         }
 
         // If a children has no covisibility links with any parent candidate, assign to the original parent of this KF
-        if(!mspChildrens.empty())
+        if(!mspChildrens->empty())//if(!mspChildrens.empty())
         {
-            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(); sit!=mspChildrens.end(); sit++)
+            //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(); sit!=mspChildrens.end(); sit++)
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens->begin(); sit!=mspChildrens->end(); sit++)
             {
                 (*sit)->ChangeParent(mpParent);
             }

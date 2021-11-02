@@ -494,8 +494,12 @@ protected:
     boost::interprocess::offset_ptr<KeyFrame> mpParent;
 
     //replace the STL set with regular set
-    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens;
+    //old-code
+    //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens;
     std::set<boost::interprocess::offset_ptr<KeyFrame> > mspLoopEdges;
+
+    boost::interprocess::offset_ptr<Myset_keyframe> mspChildrens;
+
     //OLD CODE
     //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspMergeEdges;
     //New CODE
