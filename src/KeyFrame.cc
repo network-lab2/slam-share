@@ -1134,7 +1134,7 @@ void KeyFrame::SetBadFlag()
             boost::interprocess::offset_ptr<KeyFrame>  pP;
 
             //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(), send=mspChildrens.end(); sit!=send; sit++)
-            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens_support->begin(), send=mspChildrens_support->end(); sit!=send; sit++)
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens_support.begin(), send=mspChildrens_support.end(); sit!=send; sit++)
             {
                 boost::interprocess::offset_ptr<KeyFrame>  pKF = *sit;
                 if(pKF->isBad())
@@ -1180,7 +1180,7 @@ void KeyFrame::SetBadFlag()
         if(!mspChildrens->empty())//if(!mspChildrens.empty())
         {
             //for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens.begin(); sit!=mspChildrens.end(); sit++)
-            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens_support->begin(); sit!=mspChildrens_support->end(); sit++)
+            for(set<boost::interprocess::offset_ptr<KeyFrame> >::iterator sit=mspChildrens_support.begin(); sit!=mspChildrens_support.end(); sit++)
             {
                 (*sit)->ChangeParent(mpParent);
             }
