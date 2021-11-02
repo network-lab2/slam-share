@@ -486,7 +486,7 @@ cv::Mat KeyFrame::GetPoseInverse()
 {
     unique_lock<mutex> lock(mMutexPose);
     //new code to see why the problem is coming from some matrix.
-    cv::Mat returnable = cv::Mat(4,4,CV_32F,pKF->Twc_ptr.get());
+    cv::Mat returnable = cv::Mat(4,4,CV_32F,Twc_ptr.get());
     //return Twc.clone();
     return returnable.clone();
 }
