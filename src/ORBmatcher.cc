@@ -291,6 +291,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
     DBoW2::FeatureVector::const_iterator KFend = vFeatVecKF.end();
     DBoW2::FeatureVector::const_iterator Fend = F.mFeatVec.end();
 
+    std::cout<<"SearchByBow: failure here."<<std::endl;
+
     while(KFit != KFend && Fit != Fend)
     {
         if(KFit->first == Fit->first)
