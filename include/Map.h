@@ -122,7 +122,8 @@ public:
     typedef vector<boost::interprocess::offset_ptr<KeyFrame>, ShmemAllocator> MyVector;
     //changed the vector //old code
     //vector<boost::interprocess::offset_ptr<KeyFrame> > mvpKeyFrameOrigins;
-    MyVector *mvpKeyFrameOrigins;
+    //MyVector *mvpKeyFrameOrigins;
+    boost::interprocess::offset_ptr<MyVector> mvpKeyFrameOrigins;
     boost::interprocess::offset_ptr<MyVector> keyframeorigins_offsetptr;
 
 
