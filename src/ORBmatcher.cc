@@ -855,6 +855,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
     int nmatches = 0;
 
+    std::cout<<"Before const_iterator\n";
     DBoW2::FeatureVector::const_iterator f1it = vFeatVec1.begin();
     DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
     DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
@@ -943,10 +944,12 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         }
         else if(f1it->first < f2it->first)
         {
+            std::cout<<"Fails else if SearchByBow\n";
             f1it = vFeatVec1.lower_bound(f2it->first);
         }
         else
         {
+            std::cout<<"Fails else SearchByBow\n";
             f2it = vFeatVec2.lower_bound(f1it->first);
         }
     }
