@@ -937,7 +937,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                             if(bin==HISTO_LENGTH)
                                 bin=0;
                             assert(bin>=0 && bin<HISTO_LENGTH);
-                            std::cout<<"Faile before pushback\n";
+                            std::cout<<"Failed before pushback\n";
                             rotHist[bin].push_back(idx1);
                         }
                         nmatches++;
@@ -959,15 +959,17 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
             f2it = vFeatVec2.lower_bound(f1it->first);
         }
     }
+    std::cout<<"Finished the loop?\n";
 
     if(mbCheckOrientation)
     {
+        std::cout<<"mbCheckOrientation 2nd time\n";
         int ind1=-1;
         int ind2=-1;
         int ind3=-1;
 
         ComputeThreeMaxima(rotHist,HISTO_LENGTH,ind1,ind2,ind3);
-
+        std::cout<<"Survived ComputeThreeMaxima\n";
         for(int i=0; i<HISTO_LENGTH; i++)
         {
             if(i==ind1 || i==ind2 || i==ind3)
