@@ -959,7 +959,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
             f2it = vFeatVec2.lower_bound(f1it->first);
         }
     }
-    std::cout<<"Finished the loop?\n";
+    //std::cout<<"Finished the loop?\n";
 
     if(mbCheckOrientation)
     {
