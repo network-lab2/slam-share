@@ -514,6 +514,7 @@ bool LoopClosing::DetectAndReffineSim3FromLastKF(boost::interprocess::offset_ptr
 bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::offset_ptr<KeyFrame> > &vpBowCand, boost::interprocess::offset_ptr<KeyFrame>  &pMatchedKF2, boost::interprocess::offset_ptr<KeyFrame>  &pLastCurrentKF, g2o::Sim3 &g2oScw,
                                              int &nNumCoincidences, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMPs, std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatchedMPs)
 {
+    std::cout<<"DetectCommonRegionsFromBoW 1\n";
     int nBoWMatches = 20;
     int nBoWInliers = 15;
     int nSim3Inliers = 20;
@@ -521,6 +522,8 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
     int nProjOptMatches = 80;
 
     set<boost::interprocess::offset_ptr<KeyFrame> > spConnectedKeyFrames = mpCurrentKF->GetConnectedKeyFrames();
+
+    std::cout<<"DetectCommonRegionsFromBoW 2\n";
 
     int nNumCovisibles = 5;
 
@@ -538,6 +541,8 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
     int numCandidates = vpBowCand.size();
     vector<int> vnStage(numCandidates, 0);
     vector<int> vnMatchesStage(numCandidates, 0);
+
+    std::cout<<"DetectCommonRegionsFromBoW 3\n";
 
     int index = 0;
     for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpBowCand)
@@ -733,6 +738,8 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
         }
         index++;
     }
+
+    std::cout<<"DetectCommonRegionsFromBoW 10\n";
 
     if(nBestMatchesReproj > 0)
     {
