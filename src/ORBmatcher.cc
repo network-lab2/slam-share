@@ -849,7 +849,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
     vector<int> rotHist[HISTO_LENGTH];
     for(int i=0;i<HISTO_LENGTH;i++)
-        rotHist[i].reserve(500);
+        rotHist[i].reserve(2500);
 
     const float factor = 1.0f/HISTO_LENGTH;
 
