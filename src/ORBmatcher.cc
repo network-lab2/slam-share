@@ -867,6 +867,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         {
             for(size_t i1=0, iend1=f1it->second.size(); i1<iend1; i1++)
             {
+                std::cout<<"Looping, loop: "<<i1<<std::endl;
                 const size_t idx1 = f1it->second[i1];
                 if(pKF1 -> NLeft != -1 && idx1 >= (*pKF1 -> mvKeysUn).size()){
                     continue;
@@ -918,13 +919,16 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
                 if(bestDist1<TH_LOW)
                 {
+                    std::cout<<"Best distance less than th_low\n";
                     if(static_cast<float>(bestDist1)<mfNNratio*static_cast<float>(bestDist2))
                     {
+                        std::cout<<"2nd Best distance less than th_low\n";
                         vpMatches12[idx1]=vpMapPoints2[bestIdx2];
                         vbMatched2[bestIdx2]=true;
 
                         if(mbCheckOrientation)
                         {
+                            std::cout<<"mbCheckOrientation\n";
                             float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
                             if(rot<0.0)
                                 rot+=360.0f;
