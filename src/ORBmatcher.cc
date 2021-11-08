@@ -939,6 +939,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                             assert(bin>=0 && bin<HISTO_LENGTH);
                             std::cout<<"Failed before pushback SearchByBoW\n";
                             rotHist[bin].push_back(idx1);
+                            std::cout<<"Failed after pushback SearchByBoW\n";
                         }
                         nmatches++;
                     }
