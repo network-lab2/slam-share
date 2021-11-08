@@ -830,7 +830,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
 
 int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches12)
 {
-    std::cout<<"Usable SearchByBow\n";
+    //std::cout<<"Usable SearchByBow\n";
     vector<cv::KeyPoint> temp_vec;
     temp_vec.assign((*pKF1->mvKeysUn).begin(),(*pKF1->mvKeysUn).end());
     const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
@@ -843,19 +843,19 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
 
-    std::cout<<"ORBmatcher:: Another SearchByBow\n";
+    //std::cout<<"ORBmatcher:: Another SearchByBow\n";
     vpMatches12 = vector<boost::interprocess::offset_ptr<MapPoint> >(vpMapPoints1.size(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
     vector<bool> vbMatched2(vpMapPoints2.size(),false);
 
     vector<int> rotHist[HISTO_LENGTH];
     for(int i=0;i<HISTO_LENGTH;i++)
-        rotHist[i].reserve(2500);
+        rotHist[i].reserve(3000);
 
     const float factor = 1.0f/HISTO_LENGTH;
 
     int nmatches = 0;
 
-    std::cout<<"Before const_iterator\n";
+    //std::cout<<"Before const_iterator\n";
     DBoW2::FeatureVector::const_iterator f1it = vFeatVec1.begin();
     DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
     DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
@@ -867,7 +867,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         {
             for(size_t i1=0, iend1=f1it->second.size(); i1<iend1; i1++)
             {
-                std::cout<<"Looping, loop: "<<i1<<std::endl;
+                //std::cout<<"Looping, loop: "<<i1<<std::endl;
                 const size_t idx1 = f1it->second[i1];
                 if(pKF1 -> NLeft != -1 && idx1 >= (*pKF1 -> mvKeysUn).size()){
                     continue;
@@ -919,25 +919,25 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
                 if(bestDist1<TH_LOW)
                 {
-                    std::cout<<"Best distance less than th_low\n";
+                    //std::cout<<"Best distance less than th_low\n";
                     if(static_cast<float>(bestDist1)<mfNNratio*static_cast<float>(bestDist2))
                     {
-                        std::cout<<"2nd Best distance less than th_low\n";
+                        //std::cout<<"2nd Best distance less than th_low\n";
                         vpMatches12[idx1]=vpMapPoints2[bestIdx2];
                         vbMatched2[bestIdx2]=true;
 
                         if(mbCheckOrientation)
                         {
-                            std::cout<<"mbCheckOrientation\n";
+                            //std::cout<<"mbCheckOrientation\n";
                             float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
                             if(rot<0.0)
                                 rot+=360.0f;
                             int bin = round(rot*factor);
-                            std::cout<<"Fail before bin==Histo\n";
+                            //std::cout<<"Fail before bin==Histo\n";
                             if(bin==HISTO_LENGTH)
                                 bin=0;
                             assert(bin>=0 && bin<HISTO_LENGTH);
-                            std::cout<<"Failed before pushback\n";
+                            std::cout<<"Failed before pushback SearchByBoW\n";
                             rotHist[bin].push_back(idx1);
                         }
                         nmatches++;
@@ -950,12 +950,12 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         }
         else if(f1it->first < f2it->first)
         {
-            std::cout<<"Fails else if SearchByBow\n";
+            //std::cout<<"Fails else if SearchByBow\n";
             f1it = vFeatVec1.lower_bound(f2it->first);
         }
         else
         {
-            std::cout<<"Fails else SearchByBow\n";
+            //std::cout<<"Fails else SearchByBow\n";
             f2it = vFeatVec2.lower_bound(f1it->first);
         }
     }
@@ -963,13 +963,13 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
     if(mbCheckOrientation)
     {
-        std::cout<<"mbCheckOrientation 2nd time\n";
+        //std::cout<<"mbCheckOrientation 2nd time\n";
         int ind1=-1;
         int ind2=-1;
         int ind3=-1;
 
         ComputeThreeMaxima(rotHist,HISTO_LENGTH,ind1,ind2,ind3);
-        std::cout<<"Survived ComputeThreeMaxima\n";
+        //std::cout<<"Survived ComputeThreeMaxima\n";
         for(int i=0; i<HISTO_LENGTH; i++)
         {
             if(i==ind1 || i==ind2 || i==ind3)
