@@ -867,7 +867,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         {
             for(size_t i1=0, iend1=f1it->second.size(); i1<iend1; i1++)
             {
-                //std::cout<<"Looping, loop: "<<i1<<std::endl;
+                std::cout<<"Looping, loop: "<<i1<<std::endl;
                 const size_t idx1 = f1it->second[i1];
                 if(pKF1 -> NLeft != -1 && idx1 >= (*pKF1 -> mvKeysUn).size()){
                     continue;
@@ -916,6 +916,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                         bestDist2=dist;
                     }
                 }
+                std::cout<<"outside 2nd loop\n";
 
                 if(bestDist1<TH_LOW)
                 {
