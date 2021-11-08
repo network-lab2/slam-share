@@ -830,6 +830,7 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
 
 int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches12)
 {
+    std::cout<<"Usable SearchByBow\n";
     vector<cv::KeyPoint> temp_vec;
     temp_vec.assign((*pKF1->mvKeysUn).begin(),(*pKF1->mvKeysUn).end());
     const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
@@ -842,6 +843,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
 
+    std::cout<<"ORBmatcher:: Another SearchByBow\n";
     vpMatches12 = vector<boost::interprocess::offset_ptr<MapPoint> >(vpMapPoints1.size(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
     vector<bool> vbMatched2(vpMapPoints2.size(),false);
 
