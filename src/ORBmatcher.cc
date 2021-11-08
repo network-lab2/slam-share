@@ -923,7 +923,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                     //std::cout<<"Best distance less than th_low\n";
                     if(static_cast<float>(bestDist1)<mfNNratio*static_cast<float>(bestDist2))
                     {
-                        //std::cout<<"2nd Best distance less than th_low\n";
+                        
+                        std::cout<<"2nd Best distance less than th_low\n";
                         vpMatches12[idx1]=vpMapPoints2[bestIdx2];
                         vbMatched2[bestIdx2]=true;
 
