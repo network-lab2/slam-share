@@ -933,9 +933,11 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                             if(rot<0.0)
                                 rot+=360.0f;
                             int bin = round(rot*factor);
+                            std::cout<<"Fail before bin==Histo\n";
                             if(bin==HISTO_LENGTH)
                                 bin=0;
                             assert(bin>=0 && bin<HISTO_LENGTH);
+                            std::cout<<"Faile before pushback\n";
                             rotHist[bin].push_back(idx1);
                         }
                         nmatches++;
