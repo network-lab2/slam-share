@@ -146,6 +146,7 @@ else{
     currentMapPtr = mpCurrentMap;
 
     mspMaps.insert(mpCurrentMap);
+    memcpy(currentMapPtr->map_name,mapname,sizeof(char)*5);
 }
 
 /* New function written by Aditya to accomodate new maps found in Shared Memory */

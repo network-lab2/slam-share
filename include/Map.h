@@ -172,6 +172,9 @@ boost::interprocess::offset_ptr<std::mutex> mMutexMapPtr;
     typedef boost::interprocess::allocator<boost::interprocess::offset_ptr<MapPoint>, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_mappoint; 
     //typedef vector
     typedef vector<boost::interprocess::offset_ptr<MapPoint>, ShmemAllocator_mappoint> MyVector_mappoint;
+
+    //for error catching
+    char map_name[5];
 protected:
 
     long unsigned int mnId;

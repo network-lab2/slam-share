@@ -837,11 +837,14 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
+    std::cout<<"First keyframe belongs to: "<<pKF1->GetMap()->map_name<<std::endl;
+
 
     const vector<cv::KeyPoint> &vKeysUn2 = temp_vec;
     const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
+    std::cout<<"First keyframe belongs to: "<<pKF2->GetMap()->map_name<<std::endl;
 
     //std::cout<<"ORBmatcher:: Another SearchByBow\n";
     vpMatches12 = vector<boost::interprocess::offset_ptr<MapPoint> >(vpMapPoints1.size(),static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
