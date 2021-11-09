@@ -832,7 +832,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 {
     //std::cout<<"Usable SearchByBow\n";
     vector<cv::KeyPoint> temp_vec;
-    temp_vec.assign((*pKF1->mvKeysUn).begin(),(*pKF1->mvKeysUn).end());
+    temp_vec.assign((pKF1->mvKeysUn)->begin(),(pKF1->mvKeysUn)->end());
     const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
     const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
@@ -840,7 +840,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     std::cout<<"First keyframe belongs to: "<<pKF1->GetMap()->map_name<<std::endl;
 
     vector<cv::KeyPoint> temp_vec2;
-    temp_vec.assign((*pKF2->mvKeysUn).begin(),(*pKF2->mvKeysUn).end());
+    temp_vec.assign((pKF2->mvKeysUn)->begin(),(pKF2->mvKeysUn)->end());
     const vector<cv::KeyPoint> &vKeysUn2 = temp_vec2;
     const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
@@ -853,7 +853,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
     vector<int> rotHist[HISTO_LENGTH];
     for(int i=0;i<HISTO_LENGTH;i++)
-        rotHist[i].reserve(2500);
+        rotHist[i].reserve(500);
 
     const float factor = 1.0f/HISTO_LENGTH;
 
