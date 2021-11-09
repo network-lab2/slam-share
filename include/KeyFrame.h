@@ -482,7 +482,10 @@ protected:
     //new-code
     boost::interprocess::offset_ptr<MyVector_keyframe> mvpOrderedConnectedKeyFrames;
 
-    std::vector<int> mvOrderedWeights;
+    //old-code
+    //std::vector<int> mvOrderedWeights;
+    //new-code
+    boost::interprocess::offset_ptr<MyVector_int> mvOrderedWeights;
 
 
     //new code for Set.

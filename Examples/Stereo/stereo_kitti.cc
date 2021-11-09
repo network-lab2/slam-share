@@ -97,7 +97,7 @@ int main(int argc, char **argv)
         }
 
         
-        if(count_images>=400)
+        if(count_images>=600)
         {
             SLAM.Shutdown();
             SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
