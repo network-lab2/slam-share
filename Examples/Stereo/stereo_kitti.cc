@@ -96,7 +96,7 @@ int main(int argc, char **argv)
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
         }
 
-        /*
+        
         if(count_images>=400)
         {
             SLAM.Shutdown();
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
             std::cout<<"Exiting\n";
             exit(0);
         }
-        */
+        
         // Read left and right images from file
         imLeft = cv::imread(vstrImageLeft[ni],cv::IMREAD_UNCHANGED);
         imRight = cv::imread(vstrImageRight[ni],cv::IMREAD_UNCHANGED);

@@ -935,10 +935,14 @@ void System::PostLoad(){
             keyf->FixMatrices(keyf);
         }
 
-        std::cout<<"---- ===== checking the matrix sizes to validate ----- ==== \n";
+        //have to fix all mappoints and then add new mappoints.
+
+
+        std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
 
         for(auto& keyf: allkeyframes){
-            std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
+            //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
+            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
         }
 
         std::cout<<"Fixed all the matrices in keyframes\n";
