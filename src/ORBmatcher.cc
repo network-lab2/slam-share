@@ -919,7 +919,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                         bestDist2=dist;
                     }
                 }
-                std::cout<<"outside 2nd loop\n";
+                //std::cout<<"outside 2nd loop\n";
 
                 if(bestDist1<TH_LOW)
                 {
