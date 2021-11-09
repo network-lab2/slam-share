@@ -672,6 +672,9 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetCovisiblesByWeig
         return vector<boost::interprocess::offset_ptr<KeyFrame> >();
     }
 
+    vector<int> temp;
+    temp.assign(mvOrderedWeights->begin(),mvOrderedWeights->end());
+
     //vector<int>::iterator it = upper_bound(mvOrderedWeights.begin(),mvOrderedWeights.end(),w,KeyFrame::weightComp);
     vector<int>::iterator it = upper_bound(mvOrderedWeights->begin(),mvOrderedWeights->end(),w,KeyFrame::weightComp);
 
