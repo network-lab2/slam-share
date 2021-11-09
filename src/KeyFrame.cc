@@ -496,7 +496,9 @@ cv::Mat KeyFrame::GetPoseInverse()
 cv::Mat KeyFrame::GetCameraCenter()
 {
     unique_lock<mutex> lock(mMutexPose);
-    return Ow.clone();
+    cv::Mat returnable = cv::Mat(3,1,CV_32F,Ow_ptr.get());
+    //return Ow.clone();
+    return returnable.clone();
 }
 
 cv::Mat KeyFrame::GetStereoCenter()
