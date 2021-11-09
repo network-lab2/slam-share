@@ -831,17 +831,17 @@ int ORBmatcher::SearchForInitialization(Frame &F1, Frame &F2, vector<cv::Point2f
 int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatches12)
 {
     //std::cout<<"Usable SearchByBow\n";
-    vector<cv::KeyPoint> temp_vec;
-    temp_vec.assign((pKF1->mvKeysUn)->begin(),(pKF1->mvKeysUn)->end());
-    const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
+    //vector<cv::KeyPoint> temp_vec;
+    //temp_vec.assign((pKF1->mvKeysUn)->begin(),(pKF1->mvKeysUn)->end());
+    //const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
     const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
     std::cout<<"First keyframe belongs to: "<<pKF1->GetMap()->map_name<<std::endl;
 
-    vector<cv::KeyPoint> temp_vec2;
-    temp_vec.assign((pKF2->mvKeysUn)->begin(),(pKF2->mvKeysUn)->end());
-    const vector<cv::KeyPoint> &vKeysUn2 = temp_vec2;
+    //vector<cv::KeyPoint> temp_vec2;
+    //temp_vec.assign((pKF2->mvKeysUn)->begin(),(pKF2->mvKeysUn)->end());
+    //const vector<cv::KeyPoint> &vKeysUn2 = temp_vec2;
     const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
@@ -935,7 +935,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                         if(mbCheckOrientation)
                         {
                             std::cout<<"mbCheckOrientation\n";
-                            float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
+                            //float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
+                            float rot = (*pKF1->mvKeysUn)[idx1].angle-(*pKF2->mvKeysUn)[bestIdx2].angle;
                             if(rot<0.0)
                                 rot+=360.0f;
                             int bin = round(rot*factor);
