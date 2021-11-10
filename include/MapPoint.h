@@ -97,6 +97,7 @@ public:
 
     boost::interprocess::offset_ptr<Map>  GetMap();
     void UpdateMap(boost::interprocess::offset_ptr<Map>  pMap);
+    void FixMatrices();
 
 
 
@@ -136,7 +137,7 @@ public:
     cv::Mat mPosMerge;
     cv::Mat mNormalVectorMerge;
 
-   
+
 
     // Fopr inverse depth optimization
     double mInvDepth;
