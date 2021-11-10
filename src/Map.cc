@@ -236,14 +236,17 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > Map::GetAllKeyFrames()
 vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetAllMapPoints()
 {
     unique_lock<mutex> lock(mMutexMap);
-    mspMapPoints_support.clear();
+    std::vector<boost::interprocess::offset_ptr<MapPoint> > returnable;
+    //mspMapPoints_support.clear();
     for (auto f: *mspMapPoints)
     {
-        mspMapPoints_support.insert(f);
+        //mspMapPoints_support.insert(f);
+        returnable.insert(f);
     }
     //old-code
     //return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints.begin(),mspMapPoints.end());
-    return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints_support.begin(),mspMapPoints_support.end());
+    //return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints_support.begin(),mspMapPoints_support.end());
+    return returnable;
 }
 
 long unsigned int Map::MapPointsInMap()
