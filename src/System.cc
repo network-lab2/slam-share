@@ -944,10 +944,16 @@ void System::PostLoad(){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
         }
-
-        std::cout<<"Fixed all the matrices in keyframes\n";
+        std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
         std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
+        std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
+        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
+
+        for(auto& mapP: allmappoints){
+            mpAtlas->currentMapPtr->AddMapPoint(mapP);
+        }
+        std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
         otherAtlas->currentMapPtr->CheckEssentialGraph();
 
