@@ -96,15 +96,15 @@ int main(int argc, char **argv)
             std::cout<<"@@@@ Counted till: "<<count_images<<" images.\n";
         }
 
-        /*
-        if(count_images>=300)
+        
+        if(count_images>=800)
         {
             SLAM.Shutdown();
             SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
             std::cout<<"Exiting\n";
             exit(0);
         }
-        */
+        
         
         // Read left and right images from file
         imLeft = cv::imread(vstrImageLeft[ni],cv::IMREAD_UNCHANGED);
