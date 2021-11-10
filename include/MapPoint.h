@@ -136,6 +136,7 @@ public:
     cv::Mat mPosMerge;
     cv::Mat mNormalVectorMerge;
 
+   
 
     // Fopr inverse depth optimization
     double mInvDepth;

@@ -171,10 +171,21 @@ void MapPoint::SetWorldPos(const cv::Mat &Pos)
     mWorldPosx = cv::Matx31f(Pos.at<float>(0), Pos.at<float>(1), Pos.at<float>(2));
 }
 
+void MapPoint::FixMatrices(){
+    cv::Mat fake = cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
+    memcpy(&mWorldPos, &fake, sizeof(cv::Mat));
+
+    //now correct mWorldpos with original data
+
+
+}
+
 cv::Mat MapPoint::GetWorldPos()
 {
     unique_lock<mutex> lock(mMutexPos);
-    return mWorldPos.clone();
+    cv::Mat returnable = cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
+    return returnable.clone();
+    //return mWorldPos.clone();
 }
 
 cv::Mat MapPoint::GetNormal()
