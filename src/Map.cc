@@ -241,7 +241,7 @@ vector<boost::interprocess::offset_ptr<MapPoint> > Map::GetAllMapPoints()
     for (auto f: *mspMapPoints)
     {
         //mspMapPoints_support.insert(f);
-        returnable.insert(f);
+        returnable.push_back(f);
     }
     //old-code
     //return vector<boost::interprocess::offset_ptr<MapPoint> >(mspMapPoints.begin(),mspMapPoints.end());
