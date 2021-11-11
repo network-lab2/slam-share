@@ -142,6 +142,7 @@ int main(int argc, char **argv)
                 SLAM.Shutdown();
                 SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
                 SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+                exit(0);
             }
         }
 
