@@ -1228,7 +1228,8 @@ void KeyFrame::SetBadFlag()
 bool KeyFrame::isBad()
 {
     //unique_lock<mutex> lock(mMutexConnections);
-    unique_lock<mutex> try_lock(mMutexConnections);
+    //unique_lock<mutex> try_lock(mMutexConnections);
+    //Aditya: Removed lock to check somethings.
     return mbBad;
 }
 
