@@ -136,7 +136,7 @@ int main(int argc, char **argv)
                 usleep((T-ttrack)*1e6);
 
             std::cout<<ni<<" images completed\n";
-            if(ni>= 200)
+            if(ni>= 500)
              {
                 std::cout<<"200 frames done\n";
                 SLAM.Shutdown();
