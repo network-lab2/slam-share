@@ -135,14 +135,14 @@ int main(int argc, char **argv)
             if(ttrack<T)
                 usleep((T-ttrack)*1e6);
 
-
-        if(ni>= 400)
-        {
-            std::cout<<"400 frames done\n";
-            SLAM.Shutdown();
-            SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
-            SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
-        }
+            std::cout<<ni<<" images completed\n";
+            if(ni>= 200)
+             {
+                std::cout<<"200 frames done\n";
+                SLAM.Shutdown();
+                SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
+                SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+            }
         }
 
         if(seq < num_seq - 1)
