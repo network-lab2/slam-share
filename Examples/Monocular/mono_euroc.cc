@@ -134,6 +134,14 @@ int main(int argc, char **argv)
 
             if(ttrack<T)
                 usleep((T-ttrack)*1e6);
+
+
+        if(ni>= 400)
+        {
+            SLAM.Shutdown();
+            SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
+            SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        }
         }
 
         if(seq < num_seq - 1)
@@ -142,6 +150,8 @@ int main(int argc, char **argv)
 
             SLAM.ChangeDataset();
         }
+
+
 
     }
     // Stop all threads

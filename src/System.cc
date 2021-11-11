@@ -952,6 +952,8 @@ void System::PostLoad(){
 
         for(auto& mapP: allmappoints){
             mpAtlas->currentMapPtr->AddMapPoint(mapP);
+            mapP->FixMatrices();
+
         }
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
