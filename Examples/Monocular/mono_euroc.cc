@@ -136,9 +136,9 @@ int main(int argc, char **argv)
                 usleep((T-ttrack)*1e6);
 
             std::cout<<ni<<" images completed\n";
-            if(ni>= 800)
+            if(ni>= 3000)
              {
-                std::cout<<"200 frames done\n";
+                std::cout<<"3000 frames done\n";
                 SLAM.Shutdown();
                 SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
                 SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
