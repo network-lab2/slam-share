@@ -138,6 +138,7 @@ int main(int argc, char **argv)
 
         if(ni>= 400)
         {
+            std::cout<<"400 frames done\n";
             SLAM.Shutdown();
             SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
             SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
