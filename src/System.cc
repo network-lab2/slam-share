@@ -932,12 +932,12 @@ void System::PostLoad(){
         std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
 
         //adding other atlas's map
-        std::cout<<"--- BEGIN MERGING --- Adding Another Atlas's Map \n";
-        std::cout<<"Number of Maps before adding another map: "<<mpAtlas->CountMaps()<<std::endl;
-        std::cout<<"Number of Keyframes before adding the maps: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+        //std::cout<<"--- BEGIN MERGING --- Adding Another Atlas's Map \n";
+        //std::cout<<"Number of Maps before adding another map: "<<mpAtlas->CountMaps()<<std::endl;
+        //std::cout<<"Number of Keyframes before adding the maps: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         //Now try to get the first process's map.
-        mpAtlas->AddMap(otherAtlas->currentMapPtr);
-        std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
+        //mpAtlas->AddMap(otherAtlas->currentMapPtr);
+        //std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
 
         //before changing map, go through each keyframe of the map and convert the matrices.
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
