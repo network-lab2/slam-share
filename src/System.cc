@@ -167,8 +167,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         std::cout<<"Atlas did not exist"<<std::endl;
         //mpAtlas = segment.construct<Atlas>("Atlas")(0);
         mpAtlas = segment.construct<Atlas>(atlasname)(0);
-        sprintf(&otheratlasname[5],"%d",(*magic_num)-1);
-        Atlas* otherAtlas = (segment.find<Atlas>(atlasname)).first;
+        sprintf(&otherAtlasname[5],"%d",(*magic_num)-1);
+        Atlas* otherAtlas = (segment.find<Atlas>(otherAtlasname)).first;
         if(otherAtlas!=0){
             std::cout<<"Setting up reference points as points of other atlas\n";
 
