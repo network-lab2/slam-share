@@ -958,7 +958,34 @@ void System::PostLoad(){
         }
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
+        std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
+        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints);
+        std::cout<<"Added the Reference Mappoints from Previous Map\n";
+
         otherAtlas->currentMapPtr->CheckEssentialGraph();
+
+        std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = mpAtlas->currentMapPtr->GetAllKeyFrames();
+
+        for(auto k : vkf){
+                    //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
+                    //string tmp;
+                    //getline(cin,tmp);
+                    while(true){
+                            unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
+                            if(!mpLoopCloser->passedChecking){
+                                mpLoopCloser->InsertKeyFrame(k);
+                                mpLoopCloser->passedChecking = true;
+                                break;
+                            }
+                        usleep(1000);
+                    }
+                }
+        std::cout<<"============ Finished updating the mpLoopcloser ================"<<std::endl;
+
+        std::cout<<"Pause\n";
+        int a;
+        std::cin>>a;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to other atlas.\n";
