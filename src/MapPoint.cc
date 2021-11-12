@@ -176,8 +176,6 @@ void MapPoint::FixMatrices(){
     memcpy(&mWorldPos, &fake, sizeof(cv::Mat));
 
     //now correct mWorldpos with original data
-
-
 }
 
 cv::Mat MapPoint::GetWorldPos()

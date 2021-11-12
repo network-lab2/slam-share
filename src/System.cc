@@ -146,6 +146,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //mpAtlas = new Atlas(0);
 
     char atlasname[7];
+    char otherAtlasname[7];
 
     atlasname[0] = 'a';
     atlasname[1] = 't';
@@ -153,6 +154,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     atlasname[3] = 'a';
     atlasname[4] = 's';
     atlasname[6] = '\0';
+
+    memcpy(otherAtlasname,atlasname,sizeof(atlasname));
 
     sprintf(&atlasname[5],"%d",*magic_num);
     mpAtlas = (segment.find<Atlas>(atlasname)).first;
@@ -164,6 +167,14 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         std::cout<<"Atlas did not exist"<<std::endl;
         //mpAtlas = segment.construct<Atlas>("Atlas")(0);
         mpAtlas = segment.construct<Atlas>(atlasname)(0);
+        sprintf(&otheratlasname[5],"%d",(*magic_num)-1);
+        Atlas* otherAtlas = (segment.find<Atlas>(atlasname)).first;
+        if(otherAtlas!=0){
+            std::cout<<"Setting up reference points as points of other atlas\n";
+
+        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+    }
+
     }
     else{
         std::cout<<"Atlas EXISTED!! Using the same Atlas."<<std::endl;
