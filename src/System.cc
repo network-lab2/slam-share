@@ -977,6 +977,7 @@ void System::PostLoad(){
 
         std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = mpAtlas->currentMapPtr->GetAllKeyFrames();
+        mpLoopCloser->NewDetectCommonRegions();
 
         for(auto k : vkf){
                     //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
