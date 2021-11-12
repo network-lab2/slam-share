@@ -952,10 +952,12 @@ void System::PostLoad(){
 
         std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
 
+
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
         }
+        
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
         std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
@@ -988,7 +990,7 @@ void System::PostLoad(){
                             //if(!mpLoopCloser->passedChecking){
                                 mpLoopCloser->InsertKeyFrame(k);
                                 //mpLoopCloser->passedChecking = true;
-                                //break;
+                                break;
                             //}
                         usleep(1000);
                     }
