@@ -972,12 +972,12 @@ void System::PostLoad(){
                     //string tmp;
                     //getline(cin,tmp);
                     while(true){
-                            unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
-                            if(!mpLoopCloser->passedChecking){
+                            //unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
+                            //if(!mpLoopCloser->passedChecking){
                                 mpLoopCloser->InsertKeyFrame(k);
-                                mpLoopCloser->passedChecking = true;
-                                break;
-                            }
+                                //mpLoopCloser->passedChecking = true;
+                                //break;
+                            //}
                         usleep(1000);
                     }
                 }
