@@ -766,6 +766,7 @@ void System::SaveTrajectoryKITTI(const string &filename)
     }
 
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
+    cout<<endl<<" [[[[{{{{ The number of Keyframes considered for output : "<<vpKFs.size()<<endl;
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
