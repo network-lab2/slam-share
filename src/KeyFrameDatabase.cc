@@ -634,6 +634,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
             }
         }
     }
+    std::cout<<"DetectNBestCandidates: after loop\n";
     if(lKFsSharingWords.empty())
         return;
 
