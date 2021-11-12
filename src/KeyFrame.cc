@@ -245,6 +245,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
+    std::cout<<" mBowVec amd mFeatVec sizes respectively: "<<mBowVec.size()<<" -- "<<mFeatVec.size()<<std::endl;
     mTcwGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
     mTcwBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
     mVwbGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*4*4);
