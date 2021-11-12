@@ -320,7 +320,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     // if same pid is calling, don't update
     if(ownerProcess == getpid())
     {
-        std::cout<<"===== Same PID. Returning ----\n";
+        //std::cout<<"===== Same PID. Returning ----\n";
         return;
     }
 
