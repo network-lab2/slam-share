@@ -959,7 +959,7 @@ void System::PostLoad(){
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
-        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints);
+        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
         std::cout<<"Added the Reference Mappoints from Previous Map\n";
 
         otherAtlas->currentMapPtr->CheckEssentialGraph();
