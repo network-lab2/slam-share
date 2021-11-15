@@ -309,6 +309,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mDescriptors_ptr = ORB_SLAM3::allocator_instance.allocate(F.mDescriptors.total()*F.mDescriptors.elemSize());
     mDescriptors = cv::Mat(mDescriptors_size,F.mDescriptors.type(),mDescriptors_ptr.get());
     F.mDescriptors.copyTo(mDescriptors);
+    mDescriptors_type = F.mDescriptors.type;
 
     mImuBias = F.mImuBias;
     SetPose(F.mTcw);
@@ -435,8 +436,8 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
     */
-    cv::Mat fake14 = cv::Mat(mDescriptors_rows,mDescriptors_cols,CV_8U,pKF->mDescriptors_ptr.get());
-    memcpy(&(pKF->mDescriptors), &fake14, sizeof(cv::Mat));
+    cv::Mat *fake14 = cv::Mat(mDescriptors_rows,mDescriptors_cols,mDescriptors_type,pKF->mDescriptors_ptr.get());
+    memcpy(&(pKF->mDescriptors), fake14, sizeof(cv::Mat));
 
 
 

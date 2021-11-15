@@ -326,6 +326,7 @@ public:
     cv::Mat mDescriptors;
     int mDescriptors_rows;
     int mDescriptors_cols;
+    int mDescriptors_type;
 
     //new templates for working with nested datastructures
     template <typename T>
