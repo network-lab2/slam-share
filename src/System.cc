@@ -950,14 +950,17 @@ void System::PostLoad(){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
             std::cout<<"Size of Feature vectors: "<<k->mFeatVec.size()<<std::endl;
             std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors.size()<<std::endl;
+            std::cout<<"Size of the element of mDescriptors: "<<k->mDescriptors.elemSize()<<std::endl;
         }
 
 
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
-        }
 
-        
+            //we should fix the descriptors differently.
+            //with ORB vocab from new map
+            thesekeyframes.at(0)->ComputeBoW()
+        }
 
         //have to fix all mappoints and then add new mappoints.
 

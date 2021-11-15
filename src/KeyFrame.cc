@@ -303,6 +303,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     */
     //size of the descriptor matrix
     cv::Size mDescriptors_size = F.mDescriptors.size();
+    mDescriptors_rows = mDescriptors_size.height;
+    mDescriptors_cols = mDescriptors_size.width;
+
     mDescriptors_ptr = ORB_SLAM3::allocator_instance.allocate(F.mDescriptors.total()*F.mDescriptors.elemSize());
     mDescriptors = cv::Mat(mDescriptors_size,F.mDescriptors.type(),mDescriptors_ptr.get());
     F.mDescriptors.copyTo(mDescriptors);
@@ -432,23 +435,20 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
     */
+    cv::Mat fake13 = cv::Mat(mDescriptors_rows,mDescriptors_cols,CV_32F,pKF->mDescriptors_ptr.get());
+
 
     std::cout<<"Completed the matrices of the keyFrame: "<<pKF->mnId<<std::endl;
 
     //update the PID
     ownerProcess = getpid();
 
-    // we will fix the Bag of words then
-    //mBowVec = new DBoW2::BowVector();
-    //now update it with all the existing BOW
-    //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec_shared->begin(), vend=pKF->mBowVec_shared->end(); vit != vend; vit++)
-    //{
-
-
-    //}
-
+   
 }
 
+void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
+
+}
 
 
 void KeyFrame::ComputeBoW()
