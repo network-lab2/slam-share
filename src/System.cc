@@ -493,6 +493,9 @@ void System::ResetActiveMap()
 
 void System::Shutdown()
 {
+    std::cout<<"Shutting down.... enter a number to continue shutdown\n";
+    int aa;
+    std::cin>>aa;
     mpLocalMapper->RequestFinish();
     mpLoopCloser->RequestFinish();
     if(mpViewer)
