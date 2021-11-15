@@ -172,7 +172,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         if(otherAtlas!=0){
             std::cout<<"Setting up reference points as points of other atlas\n";
 
-        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+        //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
     }
 
     }
