@@ -435,9 +435,11 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
     */
-    cv::Mat fake13 = cv::Mat(mDescriptors_rows,mDescriptors_cols,CV_32F,pKF->mDescriptors_ptr.get());
+    cv::Mat fake14 = cv::Mat(mDescriptors_rows,mDescriptors_cols,CV_32F,pKF->mDescriptors_ptr.get());
+    memcpy(&(pKF->mDescriptors), &fake14, sizeof(cv::Mat));
 
-
+    mBowVec = new DBoW2::BowVector();
+    mFeatVec = new DBoW2::FeatureVector();
     std::cout<<"Completed the matrices of the keyFrame: "<<pKF->mnId<<std::endl;
 
     //update the PID
@@ -447,6 +449,13 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 }
 
 void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
+    if(pKF->mBowVec->empty() || pKF->mFeatVec->empty())
+    {
+        vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(*(pKF->mDescriptors));
+        // Feature vector associate features with nodes in the 4th level (from leaves up)
+        // We assume the vocabulary tree has 6 levels, change the 4 otherwise
+        mpORBvocabulary->transform(vCurrentDesc,*(pKF->mBowVec),*(pKF->mFeatVec),4);
+    }
 
 }
 

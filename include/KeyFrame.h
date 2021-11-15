@@ -203,6 +203,8 @@ public:
 
     //Aditya-Dhakal new matrix fixing function
     void FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF);
+    //new Bow Fixing function
+    void FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF);
 
 
     // The following variables are accesed from only 1 thread or never change (no mutex needed).
