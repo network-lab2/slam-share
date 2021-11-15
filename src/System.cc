@@ -963,7 +963,7 @@ void System::PostLoad(){
 
             //we should fix the descriptors differently.
             //with ORB vocab from new map
-            KeyFrame::FixBow(keyf,mpAtlas->GetORBVocabulary());
+            thesekeyframes.at(0).FixBow(keyf,mpAtlas->GetORBVocabulary());
         }
 
         //have to fix all mappoints and then add new mappoints.
