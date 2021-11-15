@@ -458,8 +458,8 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         //memcpy(&(pKF->mBowVec), &mBowVec, sizeof(DBoW2::BowVector));
         //memcpy(&(pKF->mFeatVec), &mFeatVec, sizeof(DBoW2::FeatureVector));
 
-        DBoW2::BowVector newBow = new DBoW2::BowVector();// = mBowVec;
-        DBoW2::FeatureVector newFeat= new DBoW2::FeatureVector();
+        DBoW2::BowVector newBow;// = new DBoW2::BowVector();// = mBowVec;
+        DBoW2::FeatureVector newFeat;//= new DBoW2::FeatureVector();
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
         std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
