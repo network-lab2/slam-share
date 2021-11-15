@@ -436,8 +436,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
     */
-    cv::Mat *fake14 = new cv::Mat(mDescriptors_rows,mDescriptors_cols,mDescriptors_type,pKF->mDescriptors_ptr.get());
-    memcpy(&(pKF->mDescriptors), fake14, sizeof(cv::Mat));
+    //cv::Mat *fake14 = new cv::Mat(mDescriptors_rows,mDescriptors_cols,mDescriptors_type,pKF->mDescriptors_ptr.get());
+    cv::Mat fake14 = cv::Mat(mDescriptors_rows,mDescriptors_cols,mDescriptors_type,pKF->mDescriptors_ptr.get());
+    memcpy(&(pKF->mDescriptors), &fake14, sizeof(cv::Mat));
 
 
 
@@ -467,8 +468,10 @@ void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         std::cout<<"Or fails here\n";
         mpORBvocabulary->transform(vCurrentDesc,newBow,newFeat,4);
-        memcpy(&(pKF->mBowVec), &newBow, sizeof(DBoW2::BowVector));
-        memcpy(&(pKF->mFeatVec), &newFeat, sizeof(DBoW2::FeatureVector));
+        //memcpy(&(pKF->mBowVec), &newBow, sizeof(DBoW2::BowVector));
+        //memcpy(&(pKF->mFeatVec), &newFeat, sizeof(DBoW2::FeatureVector));
+        pKF->mBowVec = newBow;
+        pKF->mFeatVec = newFeat;
     //}
         std:;cout<<"Fixed BOW\n";
 
