@@ -1039,10 +1039,11 @@ void System::PostLoad(){
         std::cout<<"--- Still in First process. No need to merge\n";
         // print the number of keyframes.
         std::cout<<"Point distribution of This Atlas:(mnFrameID) "<<std::endl;//otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution()<<std::endl;
-        otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
+        
+        //otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
         std::cout<<std::endl;
-        std::cout<<"Num of mappoints to currentMapPtr in THIS atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
-    }   std::cout<<"Other atlas timestamp:** "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
+        //std::cout<<"Num of mappoints to currentMapPtr in THIS atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
+    }   //std::cout<<"Other atlas timestamp:** "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
 
 }
 
