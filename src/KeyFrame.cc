@@ -302,7 +302,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     */
     //size of the descriptor matrix
-    cv:Size mDescriptors_size = F.mDescriptors.size();
+    cv::Size mDescriptors_size = F.mDescriptors.size();
     mDescriptors_ptr = ORB_SLAM3::allocator_instance.allocate(F.mDescriptors.total()*F.mDescriptors.elemSize());
     mDescriptors = cv::Mat(mDescriptors_size,F.mDescriptors.type(),mDescriptors_ptr.get());
     F.mDescriptors.copyTo(mDescriptors);
