@@ -455,9 +455,11 @@ void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
     //{
         pKF->mBowVec = mBowVec;
         pKF->mFeatVec = mFeatVec;
+        std::cout<<"Fails here?\n";
         vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(pKF->mDescriptors);
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
+        std::cout<<"Or fails here\n";
         mpORBvocabulary->transform(vCurrentDesc,(pKF->mBowVec),(pKF->mFeatVec),4);
     //}
         std:;cout<<"Fixed BOW\n";
