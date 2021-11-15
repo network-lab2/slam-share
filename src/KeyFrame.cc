@@ -452,7 +452,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
    
 }
 
-void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF,ORBVocabulary* mpORBVocabulary){
+void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF,ORBVocabulary* mpORBVocabulary_2){
     //if(pKF->mBowVec.empty() || pKF->mFeatVec.empty())
     //{
         //memcpy(&(pKF->mBowVec), &mBowVec, sizeof(DBoW2::BowVector));
@@ -467,8 +467,10 @@ void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF,ORBVocabular
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
-        mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
+        mpORBvocabulary_2->transform(vCurrentDesc,*newBow,*newFeat,4);
+        std::cout<<"Transform passed\n";
         memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
+        std::cout<<"first memcpy passed\n";
         memcpy(&(pKF->mFeatVec), newFeat, sizeof(DBoW2::FeatureVector));
         
         //pKF->mBowVec = newBow;
