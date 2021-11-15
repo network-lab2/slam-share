@@ -242,7 +242,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //the map for bow vec
     mBowVec_shared = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(alloc_map_bow);
-    mFeatVec_shared = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
+    //mFeatVec_shared = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
 
    
 

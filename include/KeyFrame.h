@@ -318,6 +318,28 @@ public:
     boost::interprocess::offset_ptr<MyVector_float> mvDepth; // negative value for monocular points
     const cv::Mat mDescriptors;
 
+    //new templates for working with nested datastructures
+    template <typename T>
+    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Vector = boost::container::vector<T, Alloc<T> >;
+
+    template <typename T>
+    using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
+
+    template <typename T>
+    using Matrix_1 = Vector<Vector<T> >; 
+
+    template <typename T>
+    using Matrix_2 = Vector<Vector<T> >;
+
+    template <typename T>
+    using Matrix_3 = Vector<Vector<Vector<T> > >;
+
+
+
+
     //BoW
     DBoW2::BowVector mBowVec;
     DBoW2::FeatureVector mFeatVec;
@@ -399,24 +421,7 @@ public:
 
     // The following variables need to be accessed trough a mutex to be thread safe.
 
-     //new templates
-    template <typename T>
-    using Alloc = boost::interprocess::allocator<T,  boost::interprocess::managed_shared_memory::segment_manager>;
-
-    template <typename T>
-    using Vector = boost::container::vector<T, Alloc<T> >;
-
-    template <typename T>
-    using Alloc_vec = boost::interprocess::allocator<Vector<T>,  boost::interprocess::managed_shared_memory::segment_manager>;
-
-    template <typename T>
-    using Matrix_1 = Vector<Vector<T> >; 
-
-    template <typename T>
-    using Matrix_2 = Vector<Vector<T> >;
-
-    template <typename T>
-    using Matrix_3 = Vector<Vector<Vector<T> > >;
+   
 
 
 protected:
