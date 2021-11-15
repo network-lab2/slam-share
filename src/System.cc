@@ -942,12 +942,14 @@ void System::PostLoad(){
         //before changing map, go through each keyframe of the map and convert the matrices.
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
         std::cout<<"Size of the vector before fixing: "<<allkeyframes.size()<<std::endl;
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes = mpAtlas->currentMapPtr->GetAllKeyFrames();
+
 
         std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
-        for(auto k:allkeyframes){
+        for(auto k:thesekeyframes){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
             std::cout<<"Size of Feature vectors: "<<k->mFeatVec.size()<<std::endl;
-            std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors<<std::endl;
+            std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors.size()<<std::endl;
         }
 
 
