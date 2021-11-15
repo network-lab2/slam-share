@@ -452,7 +452,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
    
 }
 
-void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
+void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF,ORBVocabulary* mpORBVocabulary){
     //if(pKF->mBowVec.empty() || pKF->mFeatVec.empty())
     //{
         //memcpy(&(pKF->mBowVec), &mBowVec, sizeof(DBoW2::BowVector));
