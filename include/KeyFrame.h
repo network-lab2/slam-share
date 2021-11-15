@@ -319,7 +319,8 @@ public:
     //old-code
     //const std::vector<float> mvDepth; // negative value for monocular points
     boost::interprocess::offset_ptr<MyVector_float> mvDepth; // negative value for monocular points
-    const cv::Mat mDescriptors;
+    //removed the const
+    cv::Mat mDescriptors;
 
     //new templates for working with nested datastructures
     template <typename T>
