@@ -117,7 +117,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mnLoopQuery(0), mnLoopWords(0), mnRelocQuery(0), mnRelocWords(0), mnBAGlobalForKF(0), mnPlaceRecognitionQuery(0), mnPlaceRecognitionWords(0), mPlaceRecognitionScore(0),
     fx(F.fx), fy(F.fy), cx(F.cx), cy(F.cy), invfx(F.invfx), invfy(F.invfy),
     mbf(F.mbf), mb(F.mb), mThDepth(F.mThDepth), N(F.N), /*mvKeys(F.mvKeys), mvKeysUn(F.mvKeysUn),*/
-    /*mvuRight(F.mvuRight), mvDepth(F.mvDepth),*/ mDescriptors(F.mDescriptors.clone()),
+    /*mvuRight(F.mvuRight), mvDepth(F.mvDepth),*/ /*mDescriptors(F.mDescriptors.clone()),*/
     mBowVec(F.mBowVec), mFeatVec(F.mFeatVec), mnScaleLevels(F.mnScaleLevels), mfScaleFactor(F.mfScaleFactor),
     mfLogScaleFactor(F.mfLogScaleFactor), /*mvScaleFactors(F.mvScaleFactors), mvLevelSigma2(F.mvLevelSigma2),
     mvInvLevelSigma2(F.mvInvLevelSigma2),*/ mnMinX(F.mnMinX), mnMinY(F.mnMinY), mnMaxX(F.mnMaxX),
@@ -301,6 +301,11 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
         Vw = F.mVw.clone();
 
     */
+    //size of the descriptor matrix
+    cv:Size mDescriptors_size = F.mDescriptors.size();
+    mDescriptors_ptr = ORB_SLAM3::allocator_instance.allocate(F.mDescriptors.total()*F.mDescriptors.elemSize());
+    mDescriptors = cv::Mat(mDescriptors_size,F.mDescriptors.type(),mDescriptors_ptr.get());
+    F.mDescriptors.copyTo(mDescriptors);
 
     mImuBias = F.mImuBias;
     SetPose(F.mTcw);
