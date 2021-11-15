@@ -453,8 +453,11 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
     //if(pKF->mBowVec.empty() || pKF->mFeatVec.empty())
     //{
-        pKF->mBowVec = mBowVec;
-        pKF->mFeatVec = mFeatVec;
+        memcpy(&(pKF->mBowVec), &mBowVec, sizeof(DBoW2::BowVector));
+        memcpy(&(pKF->mFeatVec), &mFeatVec, sizeof(DBoW2::FeatureVector));
+
+        //pKF->mBowVec = mBowVec;
+        //pKF->mFeatVec = mFeatVec;
         std::cout<<"Fails here?\n";
         vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(pKF->mDescriptors);
         // Feature vector associate features with nodes in the 4th level (from leaves up)
