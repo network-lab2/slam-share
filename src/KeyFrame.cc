@@ -433,6 +433,15 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //update the PID
     ownerProcess = getpid();
 
+    // we will fix the Bag of words then
+    //mBowVec = new DBoW2::BowVector();
+    //now update it with all the existing BOW
+    //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec_shared->begin(), vend=pKF->mBowVec_shared->end(); vit != vend; vit++)
+    //{
+
+
+    //}
+
 }
 
 

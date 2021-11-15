@@ -934,7 +934,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
                         if(mbCheckOrientation)
                         {
-                            std::cout<<"mbCheckOrientation\n";
+                            //std::cout<<"mbCheckOrientation\n";
                             //float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
                             float rot = (*pKF1->mvKeysUn)[idx1].angle-(*pKF2->mvKeysUn)[bestIdx2].angle;
                             if(rot<0.0)
@@ -946,7 +946,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                             assert(bin>=0 && bin<HISTO_LENGTH);
                             //std::cout<<"Failed before pushback SearchByBoW: "<<(rotHist[bin].size())<<"\n";
                             rotHist[bin].push_back(idx1);
-                            std::cout<<"Failed after pushback SearchByBoW\n";
+                            //std::cout<<"Failed after pushback SearchByBoW\n";
                         }
                         nmatches++;
                     }

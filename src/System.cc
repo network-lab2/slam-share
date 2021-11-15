@@ -985,6 +985,7 @@ void System::PostLoad(){
         for(auto k:vkf){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
             std::cout<<"Size of Feature vectors: "<<k->mFeatVec.size()<<std::endl;
+            std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors.size()<<std::endl;
         }
 
         for(auto k : vkf){

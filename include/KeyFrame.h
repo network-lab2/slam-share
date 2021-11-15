@@ -272,6 +272,9 @@ public:
     boost::interprocess::offset_ptr<char> mTwcBefMerge_ptr;
     boost::interprocess::offset_ptr<char> mVwbMerge_ptr;
     boost::interprocess::offset_ptr<char> mVwbBefMerge_ptr;
+
+    //discriptor
+    boost::interprocess::offset_ptr<char> mDescriptors_ptr;
     
 
     IMU::Bias mBiasGBA;
