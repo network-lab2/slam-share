@@ -449,9 +449,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 }
 
 void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
-    if(pKF->mBowVec->empty() || pKF->mFeatVec->empty())
+    if(pKF->mBowVec.empty() || pKF->mFeatVec.empty())
     {
-        vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(*(pKF->mDescriptors));
+        vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector((*pKF->mDescriptors));
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         mpORBvocabulary->transform(vCurrentDesc,(*pKF->mBowVec),(*pKF->mFeatVec),4);
