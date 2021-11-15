@@ -128,10 +128,13 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         *magic_num = newnum;
         std::cout<<"Made the magic-num memory. Value: "<<*magic_num<<std::endl;
 
+
     }
     else{
         std::cout<<"Not first process. Magic Num: "<<(*(ret.first))<<std::endl;
         magic_num = ret.first;
+        KeyFrame::nNextId = 500;
+        MapPoint::nNextId = 500;
 
     }
 
@@ -951,6 +954,7 @@ void System::PostLoad(){
             std::cout<<"Size of Feature vectors: "<<k->mFeatVec.size()<<std::endl;
             std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors.size()<<std::endl;
             std::cout<<"Size of the element of mDescriptors: "<<k->mDescriptors.elemSize()<<std::endl;
+            std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
         }
 
 
