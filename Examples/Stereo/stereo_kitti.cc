@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
         //stop after 100 frames.
         count_images++;
-        if(count_images==100)
+        if(count_images==0)
         {
             std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
