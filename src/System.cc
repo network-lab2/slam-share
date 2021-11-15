@@ -943,10 +943,6 @@ void System::PostLoad(){
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
         std::cout<<"Size of the vector before fixing: "<<allkeyframes.size()<<std::endl;
 
-        for(auto& keyf: allkeyframes){
-            keyf->FixMatrices(keyf);
-        }
-
         std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
         for(auto k:allkeyframes){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
@@ -954,6 +950,12 @@ void System::PostLoad(){
             std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors<<std::endl;
         }
 
+
+        for(auto& keyf: allkeyframes){
+            keyf->FixMatrices(keyf);
+        }
+
+        
 
         //have to fix all mappoints and then add new mappoints.
 
