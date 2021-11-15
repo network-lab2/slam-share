@@ -322,6 +322,16 @@ public:
     DBoW2::BowVector mBowVec;
     DBoW2::FeatureVector mFeatVec;
 
+    //BoW value holders
+    // Rather than changing the BoW library, we will hold the values in the shared memory.
+    // Recreate the BoWVector with these values when reading 
+    //we need different datastructure for maps
+    typedef std::pair<const unsigned int, double> ValueType_bow;
+    typedef boost::interprocess::allocator<ValueType_bow,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_bow;
+    typedef boost::interprocess::map<unsigned int,double,std::less<unsigned int >,ShmemAllocator_bow> bowMap;
+    boost::interprocess::offset_ptr<bowMap> mBowVec_shared;
+
+
     // Pose relative to parent (this is computed when bad flag is activated)
     cv::Mat mTcp;
 

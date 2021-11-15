@@ -186,10 +186,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_cv_keypoint alloc_set_cv(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_float alloc_set_float(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_int alloc_set_int(ORB_SLAM3::segment.get_segment_manager());
-
-
-   
-    
+    const ShmemAllocator_bow alloc_map_bow(ORB_SLAM3::segment.get_segment_manager());
 
 
     //keyframes ones
@@ -238,14 +235,16 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mvRightToLeftMatch = ORB_SLAM3::segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
     mvLeftToRightMatch->assign(F.mvLeftToRightMatch.begin(),F.mvLeftToRightMatch.end());
     mvRightToLeftMatch->assign(F.mvRightToLeftMatch.begin(),F.mvRightToLeftMatch.end());
-
     mvOrderedWeights = ORB_SLAM3::segment.construct<MyVector_int>(boost::interprocess::anonymous_instance)(alloc_set_int);
+
+
+    //the map for bow vec
+    mBowVec_shared = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(alloc_map_bow);
 
    
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
-    std::cout<<" mBowVec amd mFeatVec sizes respectively: "<<F.mBowVec.size()<<" -- "<<F.mFeatVec.size()<<std::endl;
     mTcwGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
     mTcwBefGBA_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
     mVwbGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*4*4);

@@ -984,6 +984,7 @@ void System::PostLoad(){
         std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
         for(auto k:vkf){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
+            std::cout<<"Size of Feature vectors: "<<k->mFeatVec.size()<<std::endl;
         }
 
         for(auto k : vkf){
