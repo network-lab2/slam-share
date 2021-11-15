@@ -309,7 +309,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mDescriptors_ptr = ORB_SLAM3::allocator_instance.allocate(F.mDescriptors.total()*F.mDescriptors.elemSize());
     mDescriptors = cv::Mat(mDescriptors_size,F.mDescriptors.type(),mDescriptors_ptr.get());
     F.mDescriptors.copyTo(mDescriptors);
-    mDescriptors_type = F.mDescriptors.type;
+    mDescriptors_type = F.mDescriptors.type();
 
     mImuBias = F.mImuBias;
     SetPose(F.mTcw);
