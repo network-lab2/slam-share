@@ -435,7 +435,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     pKF->mTwcBefMerge = cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     pKF->mVwbMerge = cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
     */
-    cv::Mat fake14 = cv::Mat(mDescriptors_rows,mDescriptors_cols,CV_32F,pKF->mDescriptors_ptr.get());
+    cv::Mat fake14 = cv::Mat(mDescriptors_rows,mDescriptors_cols,CV_8U,pKF->mDescriptors_ptr.get());
     memcpy(&(pKF->mDescriptors), &fake14, sizeof(cv::Mat));
 
 
