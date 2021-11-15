@@ -981,6 +981,11 @@ void System::PostLoad(){
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = mpAtlas->currentMapPtr->GetAllKeyFrames();
         //mpLoopCloser->RequestReset();
 
+        std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
+        for(auto k:vkf){
+            std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
+        }
+
         for(auto k : vkf){
                     //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
                     //string tmp;
