@@ -187,6 +187,8 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_float alloc_set_float(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_int alloc_set_int(ORB_SLAM3::segment.get_segment_manager());
     const ShmemAllocator_bow alloc_map_bow(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_vec_unsigned_int alloc_vector_uint(ORB_SLAM3::segment.get_segment_manager());
+    const ShmemAllocator_feat alloc_feat_bow(ORB_SLAM3::segment.get_segment_manager());
 
 
     //keyframes ones
@@ -240,6 +242,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //the map for bow vec
     mBowVec_shared = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(alloc_map_bow);
+    mFeatVec_shared = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
 
    
 

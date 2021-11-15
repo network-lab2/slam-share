@@ -331,6 +331,15 @@ public:
     typedef boost::interprocess::map<unsigned int,double,std::less<unsigned int >,ShmemAllocator_bow> bowMap;
     boost::interprocess::offset_ptr<bowMap> mBowVec_shared;
 
+    typedef boost::interprocess::allocator<unsigned int, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_vec_unsigned_int;
+    typedef boost::interprocess::vector<unsigned int, ShmemAllocator_vec_unsigned_int> MyVector_unsigned_int;
+    typedef std::pair<unsigned int, MyVector_unsigned_int> ValueType_feat;
+    typedef boost::interprocess::allocator<ValueType_feat,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_feat;
+    typedef boost::interprocess::map<unsigned int,MyVector_unsigned_int,std::less<unsigned int >,ShmemAllocator_feat> featMap;
+    boost::interprocess::offset_ptr<featMap> mFeatVec_shared;
+
+
+
 
     // Pose relative to parent (this is computed when bad flag is activated)
     cv::Mat mTcp;
