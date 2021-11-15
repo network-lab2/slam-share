@@ -459,7 +459,7 @@ void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
         //memcpy(&(pKF->mFeatVec), &mFeatVec, sizeof(DBoW2::FeatureVector));
 
         DBoW2::BowVector *newBow = new DBoW2::BowVector();// = mBowVec;
-        DBoW2::FeatureVector newFeat;// = mFeatVec;
+        DBoW2::FeatureVector *newFeat= new DBoW2::FeatureVector();
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
         std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
@@ -467,9 +467,9 @@ void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF){
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
-        mpORBvocabulary->transform(vCurrentDesc,*newBow,newFeat,4);
+        mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
         memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
-        //memcpy(&(pKF->mFeatVec), &newFeat, sizeof(DBoW2::FeatureVector));
+        memcpy(&(pKF->mFeatVec), newFeat, sizeof(DBoW2::FeatureVector));
         
         //pKF->mBowVec = newBow;
         //pKF->mFeatVec = newFeat;
