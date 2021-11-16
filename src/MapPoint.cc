@@ -229,13 +229,13 @@ void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, in
 
     //if(mObservations.count(pKF)){
     if(mObservations->count(pKF)){
-        //indexes = mObservations[pKF];
-        indexes = mObservations->at(pKF);
+        indexes = mObservations[pKF];
+        //indexes = mObservations->at(pKF);
     }
     else{
         indexes = tuple<int,int>(-1,-1);
     }
-    std::cout<<"AddObservation1.\n";
+    //std::cout<<"AddObservation1.\n";
 
     if(pKF -> NLeft != -1 && idx >= pKF -> NLeft){
         get<1>(indexes) = idx;
@@ -244,15 +244,15 @@ void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, in
         get<0>(indexes) = idx;
     }
 
-    std::cout<<"AddObservation2.\n";
+    //std::cout<<"AddObservation2.\n";
     //mObservations[pKF]=indexes;
     (*mObservations)[pKF] = indexes;
-    std::cout<<"AddObservation3.\n";
+    //std::cout<<"AddObservation3.\n";
     if(!pKF->mpCamera2 && pKF->mvuRight->at(idx)>=0)//if(!pKF->mpCamera2 && pKF->mvuRight[idx]>=0)
         nObs+=2;
     else
         nObs++;
-    std::cout<<"AddObservation4.\n";
+    //std::cout<<"AddObservation4.\n";
 }
 
 void MapPoint::EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF)
