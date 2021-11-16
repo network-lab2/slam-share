@@ -450,7 +450,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     ownerProcess = getpid();
 
     UpdateBestCovisibles();
-    std::cout<<"Updated the Best Covisibles--"<<std::endl;
+    //std::cout<<"Updated the Best Covisibles--"<<std::endl;
 
    
 }
@@ -465,13 +465,13 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         DBoW2::FeatureVector *newFeat = new DBoW2::FeatureVector();
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
-        std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
+        //std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
         vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(pKF->mDescriptors);
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
-        std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
+        //std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
         mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
-        std::cout<<"Transform passed\n";
+        //std::cout<<"Transform passed\n";
         //pKF->mBowVec = *newBow;
         memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
         //std::cout<<"first memcpy passed\n";
