@@ -235,6 +235,7 @@ void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, in
     else{
         indexes = tuple<int,int>(-1,-1);
     }
+    std::cout<<"AddObservation 1\n";
 
     if(pKF -> NLeft != -1 && idx >= pKF -> NLeft){
         get<1>(indexes) = idx;
