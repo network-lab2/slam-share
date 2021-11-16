@@ -38,7 +38,9 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 
 void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
+    std::cout<<"KeyFrameDatabase::add entry\n";
     unique_lock<mutex> lock(mMutex);
+    std::cout<<"KeyFrameDatabase::after lock\n";
 
     for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
         mvInvertedFile[vit->first].push_back(pKF);

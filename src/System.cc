@@ -1015,7 +1015,7 @@ void System::PostLoad(){
                             //unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
                             //if(!mpLoopCloser->passedChecking){
                             mpKeyFrameDatabase->add(k);
-                            //mpLoopCloser->InsertKeyFrame(k);
+                            mpLoopCloser->InsertKeyFrame(k);
                             
                             //mpLoopCloser->passedChecking = true;
                             //break;
