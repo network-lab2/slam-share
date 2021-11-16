@@ -127,15 +127,13 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
         *magic_num = newnum;
         std::cout<<"Made the magic-num memory. Value: "<<*magic_num<<std::endl;
-        KeyFrame::nNextId = 100;
-        MapPoint::nNextId = 100;
+        
 
     }
     else{
         std::cout<<"Not first process. Magic Num: "<<(*(ret.first))<<std::endl;
         magic_num = ret.first;
-        KeyFrame::nNextId = 15000;
-        MapPoint::nNextId = 15000;
+        
 
     }
 
@@ -172,9 +170,13 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         //mpAtlas = segment.construct<Atlas>("Atlas")(0);
         mpAtlas = segment.construct<Atlas>(atlasname)(0);
         sprintf(&otherAtlasname[5],"%d",(*magic_num)-1);
+        KeyFrame::nNextId = 100;
+        MapPoint::nNextId = 100;
         Atlas* otherAtlas = (segment.find<Atlas>(otherAtlasname)).first;
         if(otherAtlas!=0){
             std::cout<<"Setting up reference points as points of other atlas\n";
+            KeyFrame::nNextId = 1500;
+            MapPoint::nNextId = 1500;
 
         //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
     }
