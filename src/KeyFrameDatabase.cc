@@ -619,9 +619,11 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
         unique_lock<mutex> lock(mMutex);
 
         spConnectedKF = pKF->GetConnectedKeyFrames();
+        int counter = 0;
 
         for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
         {
+            std::cout<<"Counter: DetectNBestCandidates: "<<counter++<<std::endl;
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
             for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lKFs.begin(), lend= lKFs.end(); lit!=lend; lit++)
