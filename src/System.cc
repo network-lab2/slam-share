@@ -980,6 +980,8 @@ void System::PostLoad(){
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
 
         }
+
+
         
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
         std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
@@ -991,8 +993,9 @@ void System::PostLoad(){
             mpAtlas->currentMapPtr->AddMapPoint(mapP);
             mapP->FixMatrices();
 
-
         }
+
+         mpLoopCloser->NewDetectCommonRegions();
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
