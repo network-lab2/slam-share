@@ -184,8 +184,8 @@ void MapPoint::SetWorldPos(const cv::Mat &Pos)
 }
 
 void MapPoint::FixMatrices(){
-    cv::Mat fake = cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
-    memcpy(&mWorldPos, &fake, sizeof(cv::Mat));
+    cv::Mat *fake = new cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
+    memcpy(&mWorldPos, fake, sizeof(cv::Mat));
 
     //now correct mWorldpos with original data
 }
