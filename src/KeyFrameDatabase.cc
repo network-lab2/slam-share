@@ -623,7 +623,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
 
         for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
         {
-            std::cout<<"Counter: DetectNBestCandidates: "<<counter++<<std::endl;
+            //std::cout<<"Counter: DetectNBestCandidates: "<<counter++<<std::endl;
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
             for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lKFs.begin(), lend= lKFs.end(); lit!=lend; lit++)
@@ -642,6 +642,8 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
                 pKFi->mnPlaceRecognitionWords++;
 
             }
+            if(counter++>=pKF->mBowVec.size())
+                break;
         }
     }
     std::cout<<"DetectNBestCandidates: after loop\n";
