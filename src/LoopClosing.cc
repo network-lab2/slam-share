@@ -764,6 +764,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
             std::cout<<"DetectCommonRegionsFromBoW 9\n";
         }
         index++;
+        std::cout<<"DetectCommonRegionsFromBoW 9.1\n";
     }
 
     std::cout<<"DetectCommonRegionsFromBoW 10\n";
