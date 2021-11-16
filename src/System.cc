@@ -978,7 +978,7 @@ void System::PostLoad(){
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
-            mpKeyFrameDatabase->AddKeyFrame(keyf);
+            mpKeyFrameDatabase->add(keyf);
         }
         
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
