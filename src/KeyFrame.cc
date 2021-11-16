@@ -449,6 +449,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //update the PID
     ownerProcess = getpid();
 
+    UpdateBestCovisibles();
+    std::cout<<"Updated the Best Covisibles--"<<std::endl;
+
    
 }
 

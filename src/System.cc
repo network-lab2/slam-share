@@ -960,7 +960,7 @@ void System::PostLoad(){
             std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
         }
 
-
+        //the keyframes from the other atlas
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
 
@@ -978,6 +978,7 @@ void System::PostLoad(){
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            mpKeyFrameDatabase->AddKeyFrame(keyf);
         }
         
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
