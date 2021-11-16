@@ -163,7 +163,11 @@ public:
     boost::interprocess::offset_ptr<char> mNormalVectorx_ptr;
     boost::interprocess::offset_ptr<char> mDescriptor_ptr;
 
-
+    //we need different datastructure for maps
+    typedef std::pair<const boost::interprocess::offset_ptr<KeyFrame>, std::tuple<int,int> > ValueType;
+    typedef boost::interprocess::allocator<ValueType,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_observation;
+    //observations map
+    typedef boost::interprocess::map<boost::interprocess::offset_ptr<KeyFrame>,std::tuple<int,int>,std::less<boost::interprocess::offset_ptr<KeyFrame> >,ShmemAllocator_observation> Observe_map;
 
 protected:    
 
@@ -172,7 +176,10 @@ protected:
      cv::Matx31f mWorldPosx;
 
      // Keyframes observing the point and associated index in keyframe
-     std::map<boost::interprocess::offset_ptr<KeyFrame> ,std::tuple<int,int> > mObservations;
+     //Old-code
+     //std::map<boost::interprocess::offset_ptr<KeyFrame> ,std::tuple<int,int> > mObservations;
+     //new-code
+     boost::interprocess::offset_ptr<Observe_map> mObservations;
 
      // Mean viewing direction
      cv::Mat mNormalVector;

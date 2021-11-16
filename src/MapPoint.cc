@@ -72,6 +72,10 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
     // MapPoints can be created from Tracking and Local Mapping. This mutex avoid conflicts with id.
     unique_lock<mutex> lock(mpMap->mMutexPointCreation);
     mnId=nNextId++;
+
+    //the observations
+    const ShmemAllocator_observation alloc_map_observe(ORB_SLAM3::segment.get_segment_manager());
+    mObservations = ORB_SLAM3::segment.construct<Observe_map>(boost::interprocess::anonymous_instance)(alloc_map_observe);
 }
 
 MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interprocess::offset_ptr<KeyFrame>  pRefKF, boost::interprocess::offset_ptr<KeyFrame>  pHostKF, boost::interprocess::offset_ptr<Map>  pMap):
@@ -106,6 +110,10 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     // MapPoints can be created from Tracking and Local Mapping. This mutex avoid conflicts with id.
     unique_lock<mutex> lock(mpMap->mMutexPointCreation);
     mnId=nNextId++;
+
+    //the observations
+    const ShmemAllocator_observation alloc_map_observe(ORB_SLAM3::segment.get_segment_manager());
+    mObservations = ORB_SLAM3::segment.construct<Observe_map>(boost::interprocess::anonymous_instance)(alloc_map_observe);
 }
 
 MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMap, Frame* pFrame, const int &idxF):
@@ -161,6 +169,10 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     // MapPoints can be created from Tracking and Local Mapping. This mutex avoid conflicts with id.
     unique_lock<mutex> lock(mpMap->mMutexPointCreation);
     mnId=nNextId++;
+
+    //the observations
+    const ShmemAllocator_observation alloc_map_observe(ORB_SLAM3::segment.get_segment_manager());
+    mObservations = ORB_SLAM3::segment.construct<Observe_map>(boost::interprocess::anonymous_instance)(alloc_map_observe);
 }
 
 void MapPoint::SetWorldPos(const cv::Mat &Pos)
@@ -215,8 +227,10 @@ void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, in
     unique_lock<mutex> lock(mMutexFeatures);
     tuple<int,int> indexes;
 
-    if(mObservations.count(pKF)){
-        indexes = mObservations[pKF];
+    //if(mObservations.count(pKF)){
+    if(mObservations->count(pKF)){
+        //indexes = mObservations[pKF];
+        indexes = mObservations->at(pKF);
     }
     else{
         indexes = tuple<int,int>(-1,-1);
@@ -229,7 +243,8 @@ void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, in
         get<0>(indexes) = idx;
     }
 
-    mObservations[pKF]=indexes;
+    //mObservations[pKF]=indexes;
+    mObservations->at(pKF) = indexes;
 
     if(!pKF->mpCamera2 && pKF->mvuRight->at(idx)>=0)//if(!pKF->mpCamera2 && pKF->mvuRight[idx]>=0)
         nObs+=2;
@@ -242,9 +257,11 @@ void MapPoint::EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     bool bBad=false;
     {
         unique_lock<mutex> lock(mMutexFeatures);
-        if(mObservations.count(pKF))
+        //if(mObservations.count(pKF))
+        if(mObservations->count(pKF))
         {
-            tuple<int,int> indexes = mObservations[pKF];
+            //tuple<int,int> indexes = mObservations[pKF];
+            tuple<int,int> indexes = mObservations->at(pKF);
             int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
 
             if(leftIndex != -1){
@@ -257,10 +274,13 @@ void MapPoint::EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF)
                 nObs--;
             }
 
-            mObservations.erase(pKF);
+            //mObservations.erase(pKF);
+            mObservations->erase(pKF);
 
-            if(mpRefKF==pKF)
-                mpRefKF=mObservations.begin()->first;
+            if(mpRefKF==pKF){
+                //mpRefKF=mObservations.begin()->first;
+                mpRefKF=mObservations->begin()->first;
+            }
 
             // If only 2 observations or less, discard point
             if(nObs<=2)
@@ -276,7 +296,11 @@ void MapPoint::EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 std::map<boost::interprocess::offset_ptr<KeyFrame> , std::tuple<int,int>>  MapPoint::GetObservations()
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    return mObservations;
+    std::map<boost::interprocess::offset_ptr<KeyFrame> , std::tuple<int,int>> returnable;
+
+    returnable.insert(mObservations->begin(), mObservations->end());
+    //return mObservations;
+    return returnable;
 }
 
 int MapPoint::Observations()
@@ -292,8 +316,10 @@ void MapPoint::SetBadFlag()
         unique_lock<mutex> lock1(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPos);
         mbBad=true;
-        obs = mObservations;
-        mObservations.clear();
+        obs.insert(mObservations->begin(), mObservations->end());
+        //obs = mObservations;
+        //mObservations.clear();
+        mObservations->clear();
     }
     for(map<boost::interprocess::offset_ptr<KeyFrame> , tuple<int,int>>::iterator mit=obs.begin(), mend=obs.end(); mit!=mend; mit++)
     {
@@ -327,8 +353,10 @@ void MapPoint::Replace(boost::interprocess::offset_ptr<MapPoint>  pMP)
     {
         unique_lock<mutex> lock1(mMutexFeatures);
         unique_lock<mutex> lock2(mMutexPos);
-        obs=mObservations;
-        mObservations.clear();
+        obs.insert(mObservations->begin(), mObservations->end());
+        mObservations->clear();
+        //obs=mObservations;
+        //mObservations.clear();
         mbBad=true;
         nvisible = mnVisible;
         nfound = mnFound;
@@ -409,7 +437,8 @@ void MapPoint::ComputeDistinctiveDescriptors()
         unique_lock<mutex> lock1(mMutexFeatures);
         if(mbBad)
             return;
-        observations=mObservations;
+        //observations=mObservations;
+        observations.insert(mObservations->begin(), mObservations->end());
     }
 
     if(observations.empty())
@@ -483,8 +512,10 @@ cv::Mat MapPoint::GetDescriptor()
 tuple<int,int> MapPoint::GetIndexInKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    if(mObservations.count(pKF))
-        return mObservations[pKF];
+    //if(mObservations.count(pKF))
+    //    return mObservations[pKF];
+    if(mObservations->count(pKF))
+        return mObservations->at(pKF);
     else
         return tuple<int,int>(-1,-1);
 }
@@ -492,7 +523,8 @@ tuple<int,int> MapPoint::GetIndexInKeyFrame(boost::interprocess::offset_ptr<KeyF
 bool MapPoint::IsInKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexFeatures);
-    return (mObservations.count(pKF));
+    //return (mObservations.count(pKF));
+    return (mObservations->count(pKF));
 }
 
 void MapPoint::UpdateNormalAndDepth()
@@ -505,7 +537,8 @@ void MapPoint::UpdateNormalAndDepth()
         unique_lock<mutex> lock2(mMutexPos);
         if(mbBad)
             return;
-        observations=mObservations;
+        //observations=mObservations;
+        observations.insert(mObservations->begin(), mObservations->end());
         pRefKF=mpRefKF;
         Pos = mWorldPos.clone();
     }
