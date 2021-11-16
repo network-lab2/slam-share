@@ -657,6 +657,8 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
                 vpCovKFi = pMostBoWMatchesKF->GetBestCovisibilityKeyFrames(nNumCovisibles);
                 int nInitialCov = vpCovKFi.size();
                 vpCovKFi.push_back(pMostBoWMatchesKF);
+                std::cout<<"DetectCommonRegionsFromBoW 6.4\n";
+
                 set<boost::interprocess::offset_ptr<KeyFrame> > spCheckKFs(vpCovKFi.begin(), vpCovKFi.end());
 
                 set<boost::interprocess::offset_ptr<MapPoint> > spMapPoints;
@@ -677,7 +679,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
                         }
                     }
                 }
-                std::cout<<"DetectCommonRegionsFromBoW 6.3\n";
+                std::cout<<"DetectCommonRegionsFromBoW 6.5\n";
                 g2o::Sim3 gScm(Converter::toMatrix3d(solver.GetEstimatedRotation()),Converter::toVector3d(solver.GetEstimatedTranslation()),solver.GetEstimatedScale());
                 g2o::Sim3 gSmw(Converter::toMatrix3d(pMostBoWMatchesKF->GetRotation()),Converter::toVector3d(pMostBoWMatchesKF->GetTranslation()),1.0);
                 g2o::Sim3 gScw = gScm*gSmw; // Similarity matrix of current from the world position
