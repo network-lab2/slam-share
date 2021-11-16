@@ -1005,7 +1005,7 @@ void System::PostLoad(){
         otherAtlas->currentMapPtr->CheckEssentialGraph();
 
         std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = other->currentMapPtr->GetAllKeyFrames();
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = otherAtlas->currentMapPtr->GetAllKeyFrames();
         //mpLoopCloser->RequestReset();
         //mpKeyFrameDatabase->clear();
 
