@@ -277,8 +277,11 @@ void LoopClosing::Run()
 void LoopClosing::InsertKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lock(mMutexLoopQueue);
+    std::cout<<"mMutexLoop queue passed\n";
     if(pKF->mnId!=0)
         mlpLoopKeyFrameQueue.push_back(pKF);
+
+    std::cout<<"Added to mlpLoopKeyFrameQueue\n";
 }
 
 bool LoopClosing::CheckNewKeyFrames()
