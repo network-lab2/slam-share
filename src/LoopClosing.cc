@@ -639,6 +639,8 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
             Sim3Solver solver = Sim3Solver(mpCurrentKF, pMostBoWMatchesKF, vpMatchedPoints, bFixedScale, vpKeyFrameMatchedMP);
             solver.SetRansacParameters(0.99, nBoWInliers, 300); // at least 15 inliers
 
+            std::cout<<"DetectCommonRegionsFromBoW 6.1\n";
+
             bool bNoMore = false;
             vector<bool> vbInliers;
             int nInliers;
