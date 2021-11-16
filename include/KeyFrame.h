@@ -274,6 +274,7 @@ public:
     boost::interprocess::offset_ptr<char> mTwcBefMerge_ptr;
     boost::interprocess::offset_ptr<char> mVwbMerge_ptr;
     boost::interprocess::offset_ptr<char> mVwbBefMerge_ptr;
+    boost::interprocess::offset_ptr<char> mk_ptr;
 
     //discriptor
     boost::interprocess::offset_ptr<char> mDescriptors_ptr;
@@ -399,6 +400,7 @@ public:
     const int mnMinY;
     const int mnMaxX;
     const int mnMaxY;
+    int mk_rows, mk_cols,mk_type;
     const cv::Mat mK;
 
     // Preintegrated IMU measurements from previous keyframe
