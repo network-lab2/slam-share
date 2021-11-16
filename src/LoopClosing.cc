@@ -63,6 +63,7 @@ void LoopClosing::Run()
         //----------------------------
         if(CheckNewKeyFrames())
         {
+            std::cout<<"New KeyFrames\n";
             if(mpLastCurrentKF)
             {
                 //OLD CODE:

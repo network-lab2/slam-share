@@ -1021,8 +1021,8 @@ void System::PostLoad(){
                             //mpKeyFrameDatabase->add(k);
                             
             mpLoopCloser->InsertKeyFrame(k);
-            string tmp;
-            getline(cin,tmp);
+            //string tmp;
+            //getline(cin,tmp);
                             
                             //mpLoopCloser->passedChecking = true;
                             //break;

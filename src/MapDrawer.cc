@@ -169,7 +169,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
     //mpAtlas = segment.find_or_construct<Atlas>("Atlas")();
 
     const vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
-    std::cout<<"--------MapDrawer::DrawKeyFrames.. Number of Keyframes: "<<vpKFs.size()<<std::endl;
+    //std::cout<<"--------MapDrawer::DrawKeyFrames.. Number of Keyframes: "<<vpKFs.size()<<std::endl;
 
     if(bDrawKF)
     {
