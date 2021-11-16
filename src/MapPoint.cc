@@ -229,8 +229,9 @@ void MapPoint::AddObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF, in
 
     //if(mObservations.count(pKF)){
     if(mObservations->count(pKF)){
-        indexes = mObservations[pKF];
+        //indexes = mObservations[pKF];
         //indexes = mObservations->at(pKF);
+        indexs = (*mObservations)[pKF];
     }
     else{
         indexes = tuple<int,int>(-1,-1);
