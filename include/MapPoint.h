@@ -31,6 +31,7 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/array.hpp>
 #include <boost/serialization/map.hpp>
+#include <boost/interprocess/containers/map.hpp>
 
 namespace ORB_SLAM3
 {
