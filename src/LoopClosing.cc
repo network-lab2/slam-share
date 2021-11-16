@@ -71,6 +71,7 @@ void LoopClosing::Run()
                 //NEW CODE:
                 mpLastCurrentKF->mvpLoopCandKFs->clear();
                 mpLastCurrentKF->mvpMergeCandKFs->clear();
+                std::cout<<"===== Loop closing, if mpLastCurrentKF\n";
             }
 #ifdef REGISTER_TIMES
             timeDetectBoW = 0;
