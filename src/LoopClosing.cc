@@ -587,6 +587,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > vpKeyFrameMatchedMP = std::vector<boost::interprocess::offset_ptr<KeyFrame> >(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL));
 
         int nIndexMostBoWMatchesKF=0;
+        std::cout<<"DetectCommonRegionsFromBoW 4\n";
         for(int j=0; j<vpCovKFi.size(); ++j)
         {
             if(!vpCovKFi[j] || vpCovKFi[j]->isBad())
@@ -599,7 +600,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
                 nIndexMostBoWMatchesKF = j;
             }
         }
-
+        std::cout<<"DetectCommonRegionsFromBoW 5\n";
         bool bAbortByNearKF = false;
         for(int j=0; j<vpCovKFi.size(); ++j)
         {
@@ -625,6 +626,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
                 }
             }
         }
+        std::cout<<"DetectCommonRegionsFromBoW 6\n";
 
         if(!bAbortByNearKF && numBoWMatches >= nBoWMatches) // TODO pick a good threshold
         {
@@ -678,14 +680,14 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
                 g2o::Sim3 gSmw(Converter::toMatrix3d(pMostBoWMatchesKF->GetRotation()),Converter::toVector3d(pMostBoWMatchesKF->GetTranslation()),1.0);
                 g2o::Sim3 gScw = gScm*gSmw; // Similarity matrix of current from the world position
                 cv::Mat mScw = Converter::toCvMat(gScw);
-
+                std::cout<<"DetectCommonRegionsFromBoW 7\n";
 
                 vector<boost::interprocess::offset_ptr<MapPoint> > vpMatchedMP;
                 vpMatchedMP.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
                 vector<boost::interprocess::offset_ptr<KeyFrame> > vpMatchedKF;
                 vpMatchedKF.resize(mpCurrentKF->GetMapPointMatches().size(), static_cast<boost::interprocess::offset_ptr<KeyFrame> >(NULL));
                 int numProjMatches = matcher.SearchByProjection(mpCurrentKF, mScw, vpMapPoints, vpKeyFrames, vpMatchedMP, vpMatchedKF, 8, 1.5);
-
+                std::cout<<"DetectCommonRegionsFromBoW 8\n";
                 if(numProjMatches >= nProjMatches)
                 {
                     // Optimize Sim3 transformation with every matches

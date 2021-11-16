@@ -265,7 +265,7 @@ void MapPoint::EraseObservation(boost::interprocess::offset_ptr<KeyFrame>  pKF)
         if(mObservations->count(pKF))
         {
             //tuple<int,int> indexes = mObservations[pKF];
-            tuple<int,int> indexes = mObservations->at(pKF);
+            tuple<int,int> indexes = (*mObservations)[pKF];
             int leftIndex = get<0>(indexes), rightIndex = get<1>(indexes);
 
             if(leftIndex != -1){
@@ -519,7 +519,7 @@ tuple<int,int> MapPoint::GetIndexInKeyFrame(boost::interprocess::offset_ptr<KeyF
     //if(mObservations.count(pKF))
     //    return mObservations[pKF];
     if(mObservations->count(pKF))
-        return mObservations->at(pKF);
+        return (*mObservations)[pKF];
     else
         return tuple<int,int>(-1,-1);
 }
