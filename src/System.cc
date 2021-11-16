@@ -127,14 +127,15 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         magic_num = ORB_SLAM3::segment.construct<int>("magic-num")(newnum);
         *magic_num = newnum;
         std::cout<<"Made the magic-num memory. Value: "<<*magic_num<<std::endl;
-
+        KeyFrame::nNextId = 100;
+        MapPoint::nNextId = 100;
 
     }
     else{
         std::cout<<"Not first process. Magic Num: "<<(*(ret.first))<<std::endl;
         magic_num = ret.first;
-        KeyFrame::nNextId = 500;
-        MapPoint::nNextId = 500;
+        KeyFrame::nNextId = 15000;
+        MapPoint::nNextId = 15000;
 
     }
 
