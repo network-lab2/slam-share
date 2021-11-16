@@ -93,6 +93,7 @@ void LoopClosing::Run()
 
             if(bDetected)
             {
+                std::cout<<"****------***** NewDetectCommonRegions returned true.____---"<<std::endl;
                 if(mbMergeDetected)
                 {
                     if ((mpTracker->mSensor==System::IMU_MONOCULAR ||mpTracker->mSensor==System::IMU_STEREO) &&
