@@ -122,6 +122,10 @@ Sim3Solver::Sim3Solver(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::in
 
     SetRansacParameters();
 }
+Sim3Solver::~Sim3Solver(){
+    std::cout<<"Destructor called in Sim3Solver\n";
+
+}
 
 void Sim3Solver::SetRansacParameters(double probability, int minInliers, int maxIterations)
 {

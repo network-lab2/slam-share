@@ -36,6 +36,7 @@ public:
 
     Sim3Solver(boost::interprocess::offset_ptr<KeyFrame>  pKF1, boost::interprocess::offset_ptr<KeyFrame>  pKF2, const std::vector<boost::interprocess::offset_ptr<MapPoint> > &vpMatched12, const bool bFixScale = true,
                const vector<boost::interprocess::offset_ptr<KeyFrame> > vpKeyFrameMatchedMP = vector<boost::interprocess::offset_ptr<KeyFrame> >());
+    ~Sim3Solver();
 
     void SetRansacParameters(double probability = 0.99, int minInliers = 6 , int maxIterations = 300);
 
