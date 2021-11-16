@@ -328,6 +328,8 @@ bool LoopClosing::NewDetectCommonRegions()
         return false;
     }
 
+    std::cout<<"New detect common regions 3.\n";
+
     //Check the last candidates with geometric validation
     // Loop candidates
     bool bLoopDetectedInKF = false;
@@ -382,6 +384,8 @@ bool LoopClosing::NewDetectCommonRegions()
         }
     }
 
+    std::cout<<"New detect common regions 4.\n";
+
     //Merge candidates
     bool bMergeDetectedInKF = false;
     if(mnMergeNumCoincidences > 0)
@@ -425,6 +429,8 @@ bool LoopClosing::NewDetectCommonRegions()
 
         }
     }
+
+    std::cout<<"New detect common regions 5.\n";
 
     if(mbMergeDetected || mbLoopDetected)
     {
