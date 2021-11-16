@@ -650,7 +650,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
             {
                 mTcm = solver.iterate(20,bNoMore, vbInliers, nInliers, bConverge);
             }
-            std::cout<<"DetectCommonRegionsFromBoW 6.2\nmTcm size"<<mTcm.size()<<" bconverge "<<bConverge<<stdn::endl;
+            std::cout<<"DetectCommonRegionsFromBoW 6.2\nmTcm size"<<mTcm.size()<<" bconverge "<<bConverge<<std::endl;
             if(bConverge)
             {
                 vpCovKFi.clear();
