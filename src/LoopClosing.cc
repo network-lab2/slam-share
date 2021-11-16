@@ -293,6 +293,7 @@ bool LoopClosing::CheckNewKeyFrames()
 
 bool LoopClosing::NewDetectCommonRegions()
 {
+    std::cout<<"New detect common regions 1.\n";
     {
         unique_lock<mutex> lock(mMutexLoopQueue);
         mpCurrentKF = mlpLoopKeyFrameQueue.front();
@@ -303,6 +304,8 @@ bool LoopClosing::NewDetectCommonRegions()
 
         mpLastMap = mpCurrentKF->GetMap();
     }
+
+    std::cout<<"New detect common regions 2\n";
 
     if(mpLastMap->IsInertial() && !mpLastMap->GetIniertialBA1())
     {
