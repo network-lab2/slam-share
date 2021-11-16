@@ -472,6 +472,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
         mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
         std::cout<<"Transform passed\n";
+        pKF->mBowVec = *newBow;
         memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
         std::cout<<"first memcpy passed\n";
         memcpy(&(pKF->mFeatVec), newFeat, sizeof(DBoW2::FeatureVector));
