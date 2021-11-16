@@ -1004,22 +1004,23 @@ void System::PostLoad(){
         std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = mpAtlas->currentMapPtr->GetAllKeyFrames();
         //mpLoopCloser->RequestReset();
-
+        mpKeyFrameDatabase->clear();
 
         for(auto k : vkf){
+            cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
                     //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
                     //string tmp;
                     //getline(cin,tmp);
-                    while(true){
+                    //while(true){
                             //unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
                             //if(!mpLoopCloser->passedChecking){
                             mpKeyFrameDatabase->add(k);
-                                mpLoopCloser->InsertKeyFrame(k);
+                            mpLoopCloser->InsertKeyFrame(k);
                                 //mpLoopCloser->passedChecking = true;
-                                break;
+                            //break;
                             //}
                         usleep(1000);
-                    }
+                    //}
                 }
         std::cout<<"============ Finished updating the mpLoopcloser ================"<<std::endl;
 
