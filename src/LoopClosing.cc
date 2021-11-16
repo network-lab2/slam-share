@@ -434,12 +434,15 @@ bool LoopClosing::NewDetectCommonRegions()
 
     if(mbMergeDetected || mbLoopDetected)
     {
+        std::cout<<"New detect common regions 6.\n";
         mpKeyFrameDB->add(mpCurrentKF);
         return true;
     }
 
     const vector<boost::interprocess::offset_ptr<KeyFrame> > vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
     const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
+
+    std::cout<<"New detect common regions 7.\n";
 
     // Extract candidates from the bag of words
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpMergeBowCand, vpLoopBowCand;
@@ -456,6 +459,7 @@ bool LoopClosing::NewDetectCommonRegions()
 #endif
     }
 
+    std::cout<<"New detect common regions 8.\n";
 
     if(!bLoopDetectedInKF && !vpLoopBowCand.empty())
     {
@@ -467,9 +471,9 @@ bool LoopClosing::NewDetectCommonRegions()
     {
         mbMergeDetected = DetectCommonRegionsFromBoW(vpMergeBowCand, mpMergeMatchedKF, mpMergeLastCurrentKF, mg2oMergeSlw, mnMergeNumCoincidences, mvpMergeMPs, mvpMergeMatchedMPs);
     }
-
+    std::cout<<"New detect common regions 9.\n";
     mpKeyFrameDB->add(mpCurrentKF);
-
+    std::cout<<"New detect common regions 10.\n";
     if(mbMergeDetected || mbLoopDetected)
     {
         return true;
