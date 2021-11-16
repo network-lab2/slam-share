@@ -995,7 +995,7 @@ void System::PostLoad(){
 
         }
 
-         mpLoopCloser->NewDetectCommonRegions();
+        //mpLoopCloser->NewDetectCommonRegions();
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
@@ -1005,9 +1005,9 @@ void System::PostLoad(){
         otherAtlas->currentMapPtr->CheckEssentialGraph();
 
         std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = mpAtlas->currentMapPtr->GetAllKeyFrames();
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = other->currentMapPtr->GetAllKeyFrames();
         //mpLoopCloser->RequestReset();
-        mpKeyFrameDatabase->clear();
+        //mpKeyFrameDatabase->clear();
 
         for(auto k : vkf){
             cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
@@ -1017,8 +1017,10 @@ void System::PostLoad(){
                     //while(true){
                             //unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
                             //if(!mpLoopCloser->passedChecking){
-                            mpKeyFrameDatabase->add(k);
+                            //mpKeyFrameDatabase->add(k);
+                            
                             mpLoopCloser->InsertKeyFrame(k);
+
                             
                             //mpLoopCloser->passedChecking = true;
                             //break;
