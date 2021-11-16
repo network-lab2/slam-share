@@ -44,6 +44,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 
     for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
         mvInvertedFile[vit->first].push_back(pKF);
+    std::cout<<"Finished pushing the keyframe into Inverted File\n";
 }
 
 void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
