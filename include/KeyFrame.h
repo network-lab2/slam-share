@@ -401,7 +401,7 @@ public:
     const int mnMaxX;
     const int mnMaxY;
     int mk_rows, mk_cols,mk_type;
-    const cv::Mat mK;
+    cv::Mat mK;
 
     // Preintegrated IMU measurements from previous keyframe
     boost::interprocess::offset_ptr<KeyFrame> mPrevKF;
