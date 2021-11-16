@@ -654,6 +654,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
             if(bConverge)
             {
                 vpCovKFi.clear();
+                std::cout<<"DetectCommonRegionsFromBoW 6.3\n";
                 vpCovKFi = pMostBoWMatchesKF->GetBestCovisibilityKeyFrames(nNumCovisibles);
                 int nInitialCov = vpCovKFi.size();
                 vpCovKFi.push_back(pMostBoWMatchesKF);
