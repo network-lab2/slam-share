@@ -42,8 +42,10 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     unique_lock<mutex> lock(mMutex);
     std::cout<<"KeyFrameDatabase::after lock. mBowVec Size: "<<pKF->mBowVec.size()<<" mvInvertedFile size: "<<mvInvertedFile.size()<<std::endl;
 
-    for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
+    for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
+        std::cout<<"BowVec: "<<vit->first<<std::endl;
         mvInvertedFile[vit->first].push_back(pKF);
+    }
     std::cout<<"Finished pushing the keyframe into Inverted File\n";
 }
 
