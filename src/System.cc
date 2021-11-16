@@ -978,7 +978,7 @@ void System::PostLoad(){
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
-            mpKeyFrameDatabase->add(keyf);
+
         }
         
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
@@ -990,6 +990,7 @@ void System::PostLoad(){
         for(auto& mapP: allmappoints){
             mpAtlas->currentMapPtr->AddMapPoint(mapP);
             mapP->FixMatrices();
+
 
         }
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
@@ -1012,6 +1013,7 @@ void System::PostLoad(){
                     while(true){
                             //unique_lock<mutex> lock(mpLoopCloser->passedCheckingMutex);
                             //if(!mpLoopCloser->passedChecking){
+                            mpKeyFrameDatabase->add(keyf);
                                 mpLoopCloser->InsertKeyFrame(k);
                                 //mpLoopCloser->passedChecking = true;
                                 break;
