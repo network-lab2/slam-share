@@ -650,7 +650,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
             {
                 mTcm = solver.iterate(20,bNoMore, vbInliers, nInliers, bConverge);
             }
-
+            std::cout<<"DetectCommonRegionsFromBoW 6.2\n";
             if(bConverge)
             {
                 vpCovKFi.clear();
@@ -677,7 +677,7 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
                         }
                     }
                 }
-
+                std::cout<<"DetectCommonRegionsFromBoW 6.3\n";
                 g2o::Sim3 gScm(Converter::toMatrix3d(solver.GetEstimatedRotation()),Converter::toVector3d(solver.GetEstimatedTranslation()),solver.GetEstimatedScale());
                 g2o::Sim3 gSmw(Converter::toMatrix3d(pMostBoWMatchesKF->GetRotation()),Converter::toVector3d(pMostBoWMatchesKF->GetTranslation()),1.0);
                 g2o::Sim3 gScw = gScm*gSmw; // Similarity matrix of current from the world position
