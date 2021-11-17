@@ -59,8 +59,8 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
 
 
     //initialize data for cv matrix mDescriptor
-    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
-    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr.get());
+    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(32*1*4);
+    mDescriptor = cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
 
     //mNormalVector_ptr = mNormalVector_data;
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
@@ -99,8 +99,8 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
 
 
     //initialize data for cv matrix mDescriptor
-    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
-    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr.get());
+    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(32*1*4);
+    mDescriptor = cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
 
     //mNormalVector_ptr = mNormalVector_data;
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
@@ -129,8 +129,8 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     // create mworldpos data
 
     //initialize data for cv matrix mDescriptor
-    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
-    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr.get());
+    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(32*1*4);
+    mDescriptor = cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
     
     //initialize data for cv matrix mNormalVector
     mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
@@ -191,7 +191,7 @@ void MapPoint::FixMatrices(){
     cv::Mat *fake = new cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
     memcpy(&mWorldPos, fake, sizeof(cv::Mat));
 
-    cv::Mat *fake1 = new cv::Mat(3,1,CV_32F,mDescriptor_ptr.get());
+    cv::Mat *fake1 = new cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
     memcpy(&mDescriptor, fake1, sizeof(cv::Mat));
 
     //now correct mWorldpos with original data
