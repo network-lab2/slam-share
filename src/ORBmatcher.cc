@@ -866,6 +866,9 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
 
     std::cout<<"SearchByBow 2\n";
+    std::cout<<"Size of featvec1 and featvec2: "<<vFeatVec1.size()<<" "<<vFeatVec2.size()<<std::endl;
+    int f1it_counter = 0;
+    int f2it_counter = 0;
 
     while(f1it != f1end && f2it != f2end)
     {
@@ -923,7 +926,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                     }
                 }
                 //std::cout<<"outside 2nd loop\n";
-                std::cout<<"SearchByBow 3\n";
+                //std::cout<<"SearchByBow 3\n";
 
                 if(bestDist1<TH_LOW)
                 {
@@ -937,7 +940,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
                         if(mbCheckOrientation)
                         {
-                            //std::cout<<"mbCheckOrientation\n";
+                            std::cout<<"mbCheckOrientation\n";
                             //float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
                             float rot = (*pKF1->mvKeysUn)[idx1].angle-(*pKF2->mvKeysUn)[bestIdx2].angle;
                             if(rot<0.0)
@@ -947,7 +950,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                             if(bin==HISTO_LENGTH)
                                 bin=0;
                             assert(bin>=0 && bin<HISTO_LENGTH);
-                            //std::cout<<"Failed before pushback SearchByBoW: "<<(rotHist[bin].size())<<"\n";
+                            std::cout<<"Failed before pushback SearchByBoW: "<<(rotHist[bin].size())<<"\n";
                             rotHist[bin].push_back(idx1);
                             //std::cout<<"Failed after pushback SearchByBoW\n";
                         }
@@ -955,10 +958,16 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                     }
                 }
             }
-            std::cout<<"SearchByBow 4\n";
+            //std::cout<<"SearchByBow 4\n";
 
             f1it++;
             f2it++;
+            f1it_counter++;
+            f2it_counter++;
+            if((f1it_counter>=vFeatVec1.size()) ||(f2it_counter>=vFeatVec2.size()))
+            {
+                break;
+            }
         }
         else if(f1it->first < f2it->first)
         {
