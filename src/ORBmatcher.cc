@@ -1253,6 +1253,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
     int ORBmatcher::SearchForTriangulation_(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, cv::Matx33f F12,
                                            vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, const bool bCoarse)
     {
+        std::cout<<"SearchForTriangulation_1\n";
         const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
         const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
 
@@ -1263,6 +1264,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
         auto C2 = R2w*Cw+t2w;
 
         cv::Point2f ep = pKF2->mpCamera->project(C2);
+        std::cout<<"SearchForTriangulation_2\n";
 
         auto R1w = pKF1->GetRotation_();
         auto t1w = pKF1->GetTranslation_();
@@ -1290,7 +1292,7 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
             trl = pKF1->GetRightRotation_() * (-pKF2->GetRotation_().t() * pKF2->GetTranslation_()) + pKF1->GetRightTranslation_();
             trr = pKF1->GetRightRotation_() * (-pKF2->GetRightRotation_().t() * pKF2->GetRightTranslation_()) + pKF1->GetRightTranslation_();
         }
-
+        std::cout<<"SearchForTriangulation_3\n";
         // Find matches between not tracked keypoints
         // Matching speed-up by ORB Vocabulary
         // Compare only ORB that share the same node
@@ -1309,6 +1311,9 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
         DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
         DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
         DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
+        std::cout<<"SearchForTriangulation_4\n";
+        int vFeatVec1_counter = 0;
+        int vFeatVec2_counter = 0;
 
         while(f1it!=f1end && f2it!=f2end)
         {
@@ -1444,6 +1449,12 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                             rotHist[bin].push_back(idx1);
                         }
                     }
+                }
+                vFeatVec1_counter++;
+                vFeatVec2_counter++;
+                if(vFeatVec1_counter>= vFeatVec1.size() || vFeatVec2_counter>= vFeatVec2.size()){
+                    std::cout<<"Breaking in SearchForTriangulation_\n";
+                    break;
                 }
 
                 f1it++;
