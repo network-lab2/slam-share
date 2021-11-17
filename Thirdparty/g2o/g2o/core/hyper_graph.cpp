@@ -28,7 +28,7 @@
 
 #include <assert.h>
 #include <queue>
-#include <stdio.h>
+#include <iostream>
 
 namespace g2o {
 
@@ -104,10 +104,10 @@ namespace g2o {
       return false;
     int counter =0 ; //aditya-code
     for (std::vector<Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
-      printf("counter: %d\n",counter);
+      std::cout<<"Counter first: "<<counter<<"\n";
       Vertex* v = *it;
       v->edges().insert(e);
-      printf("counter after: %d\n",counter);
+      std::cout<<"Counter after: "<<counter<<"\n";
       counter++;
     }
     return true;
