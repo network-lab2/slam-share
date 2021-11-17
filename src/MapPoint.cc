@@ -511,6 +511,7 @@ void MapPoint::ComputeDistinctiveDescriptors()
     {
         unique_lock<mutex> lock(mMutexFeatures);
         //mDescriptor = vDescriptors[BestIdx].clone();
+        std::cout<<"vDescriptors[BestIdx] size: "<<vDescriptors[BestIdx].size()<<" and size of mDescriptor "<<mDescriptor.size()<<std::endl;
         vDescriptors[BestIdx].copyTo(mDescriptor);
     }
 }
