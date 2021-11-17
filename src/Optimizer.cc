@@ -1768,12 +1768,19 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
 
     unsigned long maxKFid = 0;
 
+    
+
     // Set Local KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lLocalKeyFrames.begin(), lend=lLocalKeyFrames.end(); lit!=lend; lit++)
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
+        //aditya's code
+        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<std::endl;
+        cv::Mat temp_pose = pKFi->GetPose();
+        std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
-        vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
+        //vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
+        vSE3->setEstimate(Converter::toSE3Quat(temp_pose));
         vSE3->setId(pKFi->mnId);
         vSE3->setFixed(pKFi->mnId==pMap->GetInitKFid());
         optimizer.addVertex(vSE3);
@@ -1786,8 +1793,13 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
+        //aditya's code
+        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<std::endl;
+        cv::Mat temp_pose = pKFi->GetPose();
+        std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
-        vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
+        //vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
+        vSE3->setEstimate(Converter::toSE3Quat(temp_pose));
         vSE3->setId(pKFi->mnId);
         vSE3->setFixed(true);
         optimizer.addVertex(vSE3);
