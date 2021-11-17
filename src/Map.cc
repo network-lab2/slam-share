@@ -611,6 +611,7 @@ bool Map::CheckEssentialGraph(){
     if(pFirstKF->GetParent())
     {
         cout << "First KF in the essential graph has a parent, which is not possible" << endl;
+        cout<<"ID of the parent of "<<pFirstKF->mnID<<" is "<<pFirstKF->GetParent()->mnId;
     }
 
     set<boost::interprocess::offset_ptr<KeyFrame> > spChilds = pFirstKF->GetChilds();
