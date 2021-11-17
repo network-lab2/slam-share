@@ -101,9 +101,13 @@ namespace g2o {
     std::pair<EdgeSet::iterator, bool> result = _edges.insert(e);
     if (! result.second)
       return false;
+    int counter =0 ; //aditya-code
     for (std::vector<Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
+      std::cout<<"Counter:Addedge: "<<counter<<std::endl;
       Vertex* v = *it;
       v->edges().insert(e);
+      std::cout<<"Counter:Finished: "<<counter<<std::endl;
+      counter++;
     }
     return true;
   }
