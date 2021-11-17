@@ -865,6 +865,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
     DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
 
+    std::cout<<"SearchByBow 2\n";
+
     while(f1it != f1end && f2it != f2end)
     {
         if(f1it->first == f2it->first)
@@ -921,6 +923,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                     }
                 }
                 //std::cout<<"outside 2nd loop\n";
+                std::cout<<"SearchByBow 3\n";
 
                 if(bestDist1<TH_LOW)
                 {
@@ -952,6 +955,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                     }
                 }
             }
+            std::cout<<"SearchByBow 4\n";
 
             f1it++;
             f2it++;
@@ -968,7 +972,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         }
     }
     //std::cout<<"Finished the loop?\n";
-
+    std::cout<<"SearchByBow 5\n";
     if(mbCheckOrientation)
     {
         //std::cout<<"mbCheckOrientation 2nd time\n";
@@ -989,6 +993,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
             }
         }
     }
+    std::cout<<"SearchByBow 6\n";
 
     return nmatches;
 }
