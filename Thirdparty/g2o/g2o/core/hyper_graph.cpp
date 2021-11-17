@@ -103,10 +103,10 @@ namespace g2o {
       return false;
     int counter =0 ; //aditya-code
     for (std::vector<Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
-      std::cout<<"Counter:Addedge: "<<counter<<std::endl;
+      printf("counter: %d\n",counter);
       Vertex* v = *it;
       v->edges().insert(e);
-      std::cout<<"Counter:Finished: "<<counter<<std::endl;
+      printf("counter after: %d\n",counter);
       counter++;
     }
     return true;
