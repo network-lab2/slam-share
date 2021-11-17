@@ -557,10 +557,12 @@ void KeyFrame::SetVelocity(const cv::Mat &Vw_)
 
 cv::Mat KeyFrame::GetPose()
 {
-    std::cout<<"Before making a clone1\n";
+    //std::cout<<"Before making a clone1\n";
     unique_lock<mutex> lock(mMutexPose);
-    std::cout<<"Before making a clone2\n";
-    return Tcw.clone();
+    cv::Mat returnable = cv::Mat(4,4,CV_32F,Tcw_ptr.get());
+    //std::cout<<"Before making a clone2\n";
+    //return Tcw.clone();
+    return returnable.clone();
 }
 
 cv::Mat KeyFrame::GetPoseInverse()
