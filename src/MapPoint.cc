@@ -127,6 +127,10 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     // get size from above.
     //void *mworldPos_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     // create mworldpos data
+
+    //initialize data for cv matrix mDescriptor
+    mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mDescriptor = cv::Mat(3,1,CV_32F,mDescriptor_ptr.get());
     
     //initialize data for cv matrix mNormalVector
     mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
@@ -186,6 +190,9 @@ void MapPoint::SetWorldPos(const cv::Mat &Pos)
 void MapPoint::FixMatrices(){
     cv::Mat *fake = new cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
     memcpy(&mWorldPos, fake, sizeof(cv::Mat));
+
+    cv:Mat *fake1 = new cv::Mat();
+    memcpy(&mDescriptor, fake1, sizeof(cv::Mat));
 
     //now correct mWorldpos with original data
 }
