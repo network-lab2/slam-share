@@ -1924,9 +1924,9 @@ std::cout<<"LocalBundleAdjustment5.1\n";
                     e->bf = pKFi->mbf;
                     //std::cout<<"KeyFrameID: "<<pKFi->mnId<<std::endl;
                     int e_counter = 0;
-                    for (std::vector<Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
+                    for (std::vector<g2o::OptimizableGraph::Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
                         std::cout<<"e counter: "<<e_counter<<std::endl;
-                        Vertex* v = *it;
+                        g2o::OptimizableGraph::Vertex* v = *it;
                          v->edges().insert(e);
                          e_counter++;
                      }
