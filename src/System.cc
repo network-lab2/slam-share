@@ -1009,7 +1009,7 @@ void System::PostLoad(){
         std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
         
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
-        std::cout<<"First map keyframes: "<<allmappoints.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+        std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
         
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;

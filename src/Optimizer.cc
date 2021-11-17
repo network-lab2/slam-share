@@ -1789,13 +1789,14 @@ std::cout<<"LocalBundleAdjustment5.1\n";
             maxKFid=pKFi->mnId;
     }
     num_OptKF = lLocalKeyFrames.size();
-    std::cout<<"LocalBundleAdjustment5.3\n";
+    std::cout<<"LocalBundleAdjustment5.3\n Size of lFixedCameras:"<<lFixedCameras.size()<<std::endl;
+    int counter = 0;
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         //aditya's code
-        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<std::endl;
+        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
         cv::Mat temp_pose = pKFi->GetPose();
         std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
