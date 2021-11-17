@@ -123,6 +123,11 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     mnFound(1), mbBad(false), mpReplaced(NULL), mpMap(pMap), mnOriginMapId(pMap->GetId())
 {
 
+    //initialize data for cv matrix mNormalVector
+    mNormalVector_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    memset(mNormalVector_ptr.get(), 0, 3*4);//zeroing the mNormalVector
+    mNormalVector = cv::Mat(3,1,CV_32F,mNormalVector_ptr.get());
+
     //initialize all the cv matrix here:
     // get size from above.
     //void *mworldPos_data = ORB_SLAM3::allocator_instance.allocate(3*1*4);
@@ -152,8 +157,11 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
 
         Ow = Rwl * tlr + twl;
     }
-    mNormalVector = mWorldPos - Ow;
-    mNormalVector = mNormalVector/cv::norm(mNormalVector);
+    cv::Mat normaltemp =  mWorldPos - Ow;
+    normaltemp = normaltemp/cv::norm(normaltemp);
+    //mNormalVector = mWorldPos - Ow;
+    //mNormalVector = mNormalVector/cv::norm(mNormalVector);
+    normaltemp.copyTo(mNormalVector);
     mNormalVectorx = cv::Matx31f(mNormalVector.at<float>(0), mNormalVector.at<float>(1), mNormalVector.at<float>(2));
 
 
@@ -193,6 +201,9 @@ void MapPoint::FixMatrices(){
 
     cv::Mat *fake1 = new cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
     memcpy(&mDescriptor, fake1, sizeof(cv::Mat));
+
+    cv::Mat *fake2 = new cv::Mat(3,1,CV_32F,mNormalVector_ptr.get());
+    memcpy(&mNormalVector,fake2, sizeof(cv::Mat));
 
     //now correct mWorldpos with original data
 }
@@ -607,7 +618,9 @@ void MapPoint::UpdateNormalAndDepth()
         unique_lock<mutex> lock3(mMutexPos);
         mfMaxDistance = dist*levelScaleFactor;
         mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors->at(nLevels-1);//mfMinDistance = mfMaxDistance/pRefKF->mvScaleFactors[nLevels-1];
-        mNormalVector = normal/n;
+        //mNormalVector = normal/n;
+        cv::Mat temp = normal/n;
+        temp.copyTo(mNormalVector);
         mNormalVectorx = cv::Matx31f(mNormalVector.at<float>(0), mNormalVector.at<float>(1), mNormalVector.at<float>(2));
     }
     std::cout<<"UpdateNormalAndDepth6\n";
