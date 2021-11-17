@@ -966,6 +966,7 @@ void System::PostLoad(){
         //the keyframes from the other atlas
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
+            keyf->ResetCamera(mpAtlas->getCurrentCamera());
 
             //we should fix the descriptors differently.
             //with ORB vocab from new map

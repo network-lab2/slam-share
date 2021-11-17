@@ -226,6 +226,11 @@ void Atlas::AddMapPoint(boost::interprocess::offset_ptr<MapPoint>  pMP)
     pMapMP->AddMapPoint(pMP);
 }
 
+vector<GeometricCamera*> Atlas::getCurrentCamera(){
+    std::cout<<"Number of Cameras: "<<mvpCameras.size()<<std::endl;
+    return mvpCameras;
+}
+
 void Atlas::AddCamera(GeometricCamera* pCam)
 {
     mvpCameras.push_back(pCam);

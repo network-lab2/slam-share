@@ -465,6 +465,14 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
    
 }
 
+ void KeyFrame::ResetCamera(std::vector<GeometricCamera* >newCameras){
+    mpCamera = newCameras[0];
+    if(newCameras.size()>1){
+        mpCamera2 = newCameras[1];
+    }
+
+ }
+
  void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF,ORBVocabulary* mpORBVocabulary_2){
     //if(pKF->mBowVec.empty() || pKF->mFeatVec.empty())
     //{

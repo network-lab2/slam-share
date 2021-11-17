@@ -118,6 +118,8 @@ public:
      int a;
     int b;
 
+    std::vector<GeometricCamera*> getCurrentCamera();
+
     //for managed shared memory converted
     //boost::interprocess::fixed_managed_shared_memory *segment;
     boost::interprocess::managed_shared_memory *segment;

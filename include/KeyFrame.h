@@ -76,6 +76,8 @@ public:
     void SetPose(const cv::Mat &Tcw);
     void SetVelocity(const cv::Mat &Vw_);
 
+    void ResetCamera(GeometricCamera* newCamera);
+
     cv::Mat GetPose();
     cv::Mat GetPoseInverse();
     cv::Mat GetCameraCenter();
