@@ -973,6 +973,7 @@ void System::PostLoad(){
             //we should fix the descriptors differently.
             //with ORB vocab from new map
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
+            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
         }
 
         //have to fix all mappoints and then add new mappoints.
@@ -995,7 +996,7 @@ void System::PostLoad(){
 
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
-            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            
             mpLocalMapper->InsertKeyFrame(keyf);
 
         }

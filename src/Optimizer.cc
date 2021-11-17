@@ -1639,14 +1639,14 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
 {    
     //Aditya... fix the KF to be able to read the matrices.
     //pKF->FixMatrices(pKF);
-
+    std::cout<<"LocalBundleAdjustment1\n";
     // Local KeyFrames: First Breath Search from Current Keyframe
     list<boost::interprocess::offset_ptr<KeyFrame> > lLocalKeyFrames;
 
     lLocalKeyFrames.push_back(pKF);
     pKF->mnBALocalForKF = pKF->mnId;
     boost::interprocess::offset_ptr<Map>  pCurrentMap = pKF->GetMap();
-
+    std::cout<<"LocalBundleAdjustment2\n";
     const vector<boost::interprocess::offset_ptr<KeyFrame> > vNeighKFs = pKF->GetVectorCovisibleKeyFrames();
     for(int i=0, iend=vNeighKFs.size(); i<iend; i++)
     {
@@ -1684,7 +1684,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
         }
     }
     num_MPs = lLocalMapPoints.size();
-
+    std::cout<<"LocalBundleAdjustment3\n";
     // Fixed Keyframes. Keyframes that see Local MapPoints but that are not Local Keyframes
     list<boost::interprocess::offset_ptr<KeyFrame> > lFixedCameras;
     for(list<boost::interprocess::offset_ptr<MapPoint> >::iterator lit=lLocalMapPoints.begin(), lend=lLocalMapPoints.end(); lit!=lend; lit++)
@@ -1702,6 +1702,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
             }
         }
     }
+    std::cout<<"LocalBundleAdjustment4\n";
     num_fixedKF = lFixedCameras.size() + num_fixedKF;
     if(num_fixedKF < 2)
     {
@@ -1740,7 +1741,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
             num_fixedKF++;
         }
     }
-
+    std::cout<<"LocalBundleAdjustment5\n";
     if(num_fixedKF == 0)
     {
         Verbose::PrintMess("LM-LBA: There are 0 fixed KF in the optimizations, LBA aborted", Verbose::VERBOSITY_QUIET);
@@ -1793,7 +1794,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
         if(pKFi->mnId>maxKFid)
             maxKFid=pKFi->mnId;
     }
-
+    std::cout<<"LocalBundleAdjustment6\n";
     // Set MapPoint vertices
     const int nExpectedSize = (lLocalKeyFrames.size()+lFixedCameras.size())*lLocalMapPoints.size();
 
@@ -1830,7 +1831,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
     int nPoints = 0;
 
     int nKFs = lLocalKeyFrames.size()+lFixedCameras.size(), nEdges = 0;
-
+    std::cout<<"LocalBundleAdjustment7\n";
     for(list<boost::interprocess::offset_ptr<MapPoint> >::iterator lit=lLocalMapPoints.begin(), lend=lLocalMapPoints.end(); lit!=lend; lit++)
     {
         boost::interprocess::offset_ptr<MapPoint>  pMP = *lit;
@@ -1952,6 +1953,8 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
             }
         }
     }
+
+    std::cout<<"LocalBundleAdjustment8\n";
     num_edges = nEdges;
 
     if(pbStopFlag)
