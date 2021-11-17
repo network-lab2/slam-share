@@ -973,7 +973,7 @@ void System::PostLoad(){
             //we should fix the descriptors differently.
             //with ORB vocab from new map
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
-            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
         }
 
         //have to fix all mappoints and then add new mappoints.
@@ -1020,7 +1020,7 @@ void System::PostLoad(){
         std::cout<<"First update maps of all keyframes\n";
         for(auto k : vkf){
 
-            cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
+            //cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
                     //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
                     //string tmp;
                     //getline(cin,tmp);
@@ -1029,7 +1029,7 @@ void System::PostLoad(){
                             //if(!mpLoopCloser->passedChecking){
                             //mpKeyFrameDatabase->add(k);
                             
-            mpLoopCloser->InsertKeyFrame(k);
+            //mpLoopCloser->InsertKeyFrame(k);
             //string tmp;
             //getline(cin,tmp);
                             
