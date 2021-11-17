@@ -1794,6 +1794,7 @@ std::cout<<"LocalBundleAdjustment5.1\n";
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
+        std::cout<<"Sanity counter: "<<counter<<std::endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         //aditya's code
         std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
