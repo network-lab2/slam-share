@@ -592,13 +592,15 @@ bool LoopClosing::DetectCommonRegionsFromBoW(std::vector<boost::interprocess::of
         {
             if(!vpCovKFi[j] || vpCovKFi[j]->isBad())
                 continue;
-
+            std::cout<<"DetectCommonRegionsFromBoW 4.1\n";
             int num = matcherBoW.SearchByBoW(mpCurrentKF, vpCovKFi[j], vvpMatchedMPs[j]);
+            std::cout<<"DetectCommonRegionsFromBoW 4.2\n";
             if (num > nMostBoWNumMatches)
             {
                 nMostBoWNumMatches = num;
                 nIndexMostBoWMatchesKF = j;
             }
+            std::cout<<"DetectCommonRegionsFromBoW 4.3\n";
         }
         std::cout<<"DetectCommonRegionsFromBoW 5\n";
         bool bAbortByNearKF = false;
