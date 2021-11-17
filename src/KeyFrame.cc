@@ -470,6 +470,8 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     if(newCameras.size()>1){
         mpCamera2 = newCameras[1];
     }
+    else
+        mpCamera2 = NULL;
 
  }
 
