@@ -1000,11 +1000,16 @@ void System::PostLoad(){
             mpLocalMapper->InsertKeyFrame(keyf);
 
         }
+        std::cout<<"Stop for keyframes in queue."<<mpLocalMapper->KeyframesInQueue()<<std::endl;
+        while(mpLocalMapper->KeyframesInQueue())
+        {
+            usleep(1000);
+        }
 
-
+        std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
         
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
-        std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+        std::cout<<"First map keyframes: "<<otherAtlas->KeyFramesInMap()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
         
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
@@ -1013,12 +1018,12 @@ void System::PostLoad(){
 
         otherAtlas->currentMapPtr->CheckEssentialGraph();
 
-        std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = otherAtlas->currentMapPtr->GetAllKeyFrames();
+        //std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
+        //std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = otherAtlas->currentMapPtr->GetAllKeyFrames();
         //mpLoopCloser->RequestReset();
         //mpKeyFrameDatabase->clear();
-        std::cout<<"First update maps of all keyframes\n";
-        for(auto k : vkf){
+        //std::cout<<"First update maps of all keyframes\n";
+        //for(auto k : vkf){
 
             //cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
                     //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
@@ -1038,8 +1043,11 @@ void System::PostLoad(){
                             //}
                         usleep(1000);
                     //}
-                }
+        //}
         std::cout<<"============ Finished updating the mpLoopcloser ================"<<std::endl;
+
+        //Details before pause:
+
 
         std::cout<<"Pause\n";
         int a;
