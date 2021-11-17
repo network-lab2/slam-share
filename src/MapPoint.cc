@@ -511,7 +511,7 @@ void MapPoint::ComputeDistinctiveDescriptors()
     {
         unique_lock<mutex> lock(mMutexFeatures);
         //mDescriptor = vDescriptors[BestIdx].clone();
-        std::cout<<"vDescriptors[BestIdx] size: "<<vDescriptors[BestIdx].size()<<" and size of mDescriptor "<<mDescriptor.size()<<std::endl;
+        //std::cout<<"vDescriptors[BestIdx] size: "<<vDescriptors[BestIdx].size()<<" and size of mDescriptor "<<mDescriptor.size()<<std::endl;
         vDescriptors[BestIdx].copyTo(mDescriptor);
     }
 }
@@ -542,6 +542,7 @@ bool MapPoint::IsInKeyFrame(boost::interprocess::offset_ptr<KeyFrame> pKF)
 
 void MapPoint::UpdateNormalAndDepth()
 {
+    std::cout<<"UpdateNormalAndDepth1\n";
     map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations;
     boost::interprocess::offset_ptr<KeyFrame>  pRefKF;
     cv::Mat Pos;
@@ -555,12 +556,13 @@ void MapPoint::UpdateNormalAndDepth()
         pRefKF=mpRefKF;
         Pos = mWorldPos.clone();
     }
-
+    std::cout<<"UpdateNormalAndDepth2\n";
     if(observations.empty())
         return;
 
     cv::Mat normal = cv::Mat::zeros(3,1,CV_32F);
     int n=0;
+    std::cout<<"UpdateNormalAndDepth3\n";
     for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKF = mit->first;
@@ -581,7 +583,7 @@ void MapPoint::UpdateNormalAndDepth()
             n++;
         }
     }
-
+    std::cout<<"UpdateNormalAndDepth4\n";
     cv::Mat PC = Pos - pRefKF->GetCameraCenter();
     const float dist = cv::norm(PC);
 
@@ -597,7 +599,7 @@ void MapPoint::UpdateNormalAndDepth()
     else{
         level = (*pRefKF -> mvKeysRight)[rightIndex - pRefKF -> NLeft].octave;
     }
-
+    std::cout<<"UpdateNormalAndDepth5\n";
     const float levelScaleFactor =  pRefKF->mvScaleFactors->at(level);//const float levelScaleFactor =  pRefKF->mvScaleFactors[level];
     const int nLevels = pRefKF->mnScaleLevels;
 
@@ -608,6 +610,7 @@ void MapPoint::UpdateNormalAndDepth()
         mNormalVector = normal/n;
         mNormalVectorx = cv::Matx31f(mNormalVector.at<float>(0), mNormalVector.at<float>(1), mNormalVector.at<float>(2));
     }
+    std::cout<<"UpdateNormalAndDepth6\n";
 }
 
 void MapPoint::SetNormalVector(cv::Mat& normal)
