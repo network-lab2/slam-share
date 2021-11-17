@@ -1873,7 +1873,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                     rk->setDelta(thHuberMono);
 
                     e->pCamera = pKFi->mpCamera;
-                    std::cout<<"Edge 1 fails\n";
+                    //std::cout<<"Edge 1 fails\n";
                     optimizer.addEdge(e);
                     vpEdgesMono.push_back(e);
                     vpEdgeKFMono.push_back(pKFi);
@@ -1906,7 +1906,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                     e->cx = pKFi->cx;
                     e->cy = pKFi->cy;
                     e->bf = pKFi->mbf;
-                    std::cout<<"Edge 2 fails\n";
+                    std::cout<<"KeyFrameID: "<<pKFi->mnId<<std::endl;
                     optimizer.addEdge(e);
                     vpEdgesStereo.push_back(e);
                     vpEdgeKFStereo.push_back(pKFi);
