@@ -168,7 +168,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     if(0 == mpAtlas){
         std::cout<<"Atlas did not exist"<<std::endl;
         //mpAtlas = segment.construct<Atlas>("Atlas")(0);
-        mpAtlas = segment.construct<Atlas>(atlasname)(0);
+        mpAtlas = segment.construct<Atlas>(atlasname)(*magic_num*200);
         sprintf(&otherAtlasname[5],"%d",(*magic_num)-1);
         KeyFrame::nNextId = *magic_num*200;
         MapPoint::nNextId = *magic_num*10000;
