@@ -28,7 +28,7 @@
 
 #include <assert.h>
 #include <queue>
-#include <iostream>
+
 
 namespace g2o {
 
@@ -102,13 +102,9 @@ namespace g2o {
     std::pair<EdgeSet::iterator, bool> result = _edges.insert(e);
     if (! result.second)
       return false;
-    int counter =0 ; //aditya-code
     for (std::vector<Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
-      std::cout<<"Counter first: "<<counter<<"\n";
       Vertex* v = *it;
       v->edges().insert(e);
-      std::cout<<"Counter after: "<<counter<<"\n";
-      counter++;
     }
     return true;
   }
