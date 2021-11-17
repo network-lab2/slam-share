@@ -28,6 +28,7 @@
 
 #include <assert.h>
 #include <queue>
+#include <stdio.h>
 
 namespace g2o {
 
