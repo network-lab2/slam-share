@@ -933,11 +933,11 @@ void KeyFrame::UpdateConnections(bool upParent)
         unique_lock<mutex> lockMPs(mMutexFeatures);
         //vpMP = mvpMapPoints;
         //vpMP = (*mvpMapPoints);
-        mvpMapPoints_vector.clear();
+        //mvpMapPoints_vector.clear();
     for(size_t i=0; i<mvpMapPoints->size(); i++){
-        mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
+        vpMP.push_back((*mvpMapPoints)[i]);
     }
-        vpMP = mvpMapPoints_vector;
+        //vpMP = mvpMapPoints_vector;
 
     }
 
@@ -965,8 +965,10 @@ void KeyFrame::UpdateConnections(bool upParent)
     }
 
     // This should not happen
-    if(KFcounter.empty())
+    if(KFcounter.empty()){
+        std::cout<<"KFcounter is empty.\n";
         return;
+    }
 
     //If the counter is greater than threshold add connection
     //In case no keyframe counter is over threshold add the one with maximum counter
