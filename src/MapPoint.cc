@@ -510,7 +510,8 @@ void MapPoint::ComputeDistinctiveDescriptors()
 
     {
         unique_lock<mutex> lock(mMutexFeatures);
-        mDescriptor = vDescriptors[BestIdx].clone();
+        //mDescriptor = vDescriptors[BestIdx].clone();
+        vDescriptors[BestIdx].copyTo(mDescriptor);
     }
 }
 
