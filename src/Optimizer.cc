@@ -1769,7 +1769,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
     unsigned long maxKFid = 0;
 
     
-
+std::cout<<"LocalBundleAdjustment5.1\n";
     // Set Local KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lLocalKeyFrames.begin(), lend=lLocalKeyFrames.end(); lit!=lend; lit++)
     {
@@ -1783,12 +1783,13 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
         vSE3->setEstimate(Converter::toSE3Quat(temp_pose));
         vSE3->setId(pKFi->mnId);
         vSE3->setFixed(pKFi->mnId==pMap->GetInitKFid());
+        std::cout<<"LocalBundleAdjustment5.2\n";
         optimizer.addVertex(vSE3);
         if(pKFi->mnId>maxKFid)
             maxKFid=pKFi->mnId;
     }
     num_OptKF = lLocalKeyFrames.size();
-
+    std::cout<<"LocalBundleAdjustment5.3\n";
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
@@ -1801,10 +1802,12 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
         //vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
         vSE3->setEstimate(Converter::toSE3Quat(temp_pose));
         vSE3->setId(pKFi->mnId);
+        std::cout<<"LocalBundleAdjustment5.4\n";
         vSE3->setFixed(true);
         optimizer.addVertex(vSE3);
         if(pKFi->mnId>maxKFid)
             maxKFid=pKFi->mnId;
+        std::cout<<"LocalBundleAdjustment5.5\n";
     }
     std::cout<<"LocalBundleAdjustment6\n";
     // Set MapPoint vertices
