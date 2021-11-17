@@ -556,6 +556,7 @@ void KeyFrame::SetVelocity(const cv::Mat &Vw_)
 cv::Mat KeyFrame::GetPose()
 {
     unique_lock<mutex> lock(mMutexPose);
+    std::cout<<"Before making a clone\n";
     return Tcw.clone();
 }
 
