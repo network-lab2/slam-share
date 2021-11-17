@@ -967,6 +967,9 @@ void System::PostLoad(){
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
             keyf->ResetCamera(mpAtlas->getCurrentCamera());
+            keyf->UpdateMap(mpAtlas->currentMapPtr);
+            keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
+            keyf->SetKeyFrameDatabase(mpAtlas->GetKeyFrameDatabase());
 
             //we should fix the descriptors differently.
             //with ORB vocab from new map
@@ -974,6 +977,19 @@ void System::PostLoad(){
         }
 
         //have to fix all mappoints and then add new mappoints.
+        std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
+        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
+
+        for(auto& mapP: allmappoints){
+            mapP->UpdateMap(mpAtlas->currentMapPtr);
+            mpAtlas->currentMapPtr->AddMapPoint(mapP);
+            mapP->FixMatrices();
+
+        }
+
+        //mpLoopCloser->NewDetectCommonRegions();
+        std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
+
 
 
         std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
@@ -990,19 +1006,7 @@ void System::PostLoad(){
         std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
         std::cout<<"Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
-        std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
-        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
-
-        for(auto& mapP: allmappoints){
-            mapP->UpdateMap(mpAtlas->currentMapPtr);
-            mpAtlas->currentMapPtr->AddMapPoint(mapP);
-            mapP->FixMatrices();
-
-        }
-
-        //mpLoopCloser->NewDetectCommonRegions();
-        std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
-
+        
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
         //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
         //std::cout<<"Added the Reference Mappoints from Previous Map\n";
@@ -1014,11 +1018,6 @@ void System::PostLoad(){
         //mpLoopCloser->RequestReset();
         //mpKeyFrameDatabase->clear();
         std::cout<<"First update maps of all keyframes\n";
-        for(auto k : vkf){
-            k->UpdateMap(mpAtlas->currentMapPtr);
-
-        }
-
         for(auto k : vkf){
 
             cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
