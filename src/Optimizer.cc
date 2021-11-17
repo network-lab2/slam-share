@@ -2702,7 +2702,7 @@ void Optimizer::OptimizeEssentialGraph6DoF(boost::interprocess::offset_ptr<KeyFr
         //pKFi->mTcwBefMerge = pKFi->GetPose();
         //pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
         pKFi->GetPose().copyTo(pKFi->mTcwBefMerge);
-        pkFi->GetPoseInverse().copyTo(pKFi->mTwcBefMerge);
+        pKFi->GetPoseInverse().copyTo(pKFi->mTwcBefMerge);
         pKFi->SetPose(Tiw);
     }
 
