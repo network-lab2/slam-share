@@ -1922,15 +1922,10 @@ std::cout<<"LocalBundleAdjustment5.1\n";
                     e->cx = pKFi->cx;
                     e->cy = pKFi->cy;
                     e->bf = pKFi->mbf;
-                    //std::cout<<"KeyFrameID: "<<pKFi->mnId<<std::endl;
-                    int e_counter = 0;
-                    for (std::vector<g2o::OptimizableGraph::Vertex*>::iterator it = e->vertices().begin(); it != e->vertices().end(); ++it) {
-                        std::cout<<"e counter: "<<e_counter<<std::endl;
-                        g2o::OptimizableGraph::Vertex* v = *it;
-                         v->edges().insert(e);
-                         e_counter++;
-                     }
+                    std::cout<<"KeyFrameID addEdge: "<<pKFi->mnId<<std::endl;
+
                     optimizer.addEdge(e);
+                    std::cout<<"KeyFrameID addEdge (passed): "<<pKFi->mnId<<std::endl;
                     vpEdgesStereo.push_back(e);
                     vpEdgeKFStereo.push_back(pKFi);
                     vpMapPointEdgeStereo.push_back(pMP);
