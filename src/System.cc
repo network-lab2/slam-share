@@ -978,10 +978,10 @@ void System::PostLoad(){
 
         std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
 
-
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            mpLocalMapper->InsertKeyFrame(keyf);
 
         }
 
@@ -994,6 +994,7 @@ void System::PostLoad(){
         std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
 
         for(auto& mapP: allmappoints){
+            mapP->UpdateMap(mpAtlas->currentMapPtr);
             mpAtlas->currentMapPtr->AddMapPoint(mapP);
             mapP->FixMatrices();
 
@@ -1012,8 +1013,14 @@ void System::PostLoad(){
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = otherAtlas->currentMapPtr->GetAllKeyFrames();
         //mpLoopCloser->RequestReset();
         //mpKeyFrameDatabase->clear();
+        std::cout<<"First update maps of all keyframes\n";
+        for(auto k : vkf){
+            k->UpdateMap(mpAtlas->currentMapPtr);
+
+        }
 
         for(auto k : vkf){
+
             cout<<"KeyFrame adding to KeyFrameDatabase: "<<k->mnId<<std::endl;
                     //cout << "------press enter to continue------vkf size: " << vkf.size() << endl;
                     //string tmp;

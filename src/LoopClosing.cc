@@ -105,6 +105,7 @@ void LoopClosing::Run()
                     else
                     {
                         Verbose::PrintMess("*Merged detected", Verbose::VERBOSITY_QUIET);
+                        std::cout<<"Merged detected -----\n";
                         Verbose::PrintMess("Number of KFs in the current map: " + to_string(mpCurrentKF->GetMap()->KeyFramesInMap()), Verbose::VERBOSITY_DEBUG);
                         cv::Mat mTmw = mpMergeMatchedKF->GetPose();
                         g2o::Sim3 gSmw2(Converter::toMatrix3d(mTmw.rowRange(0, 3).colRange(0, 3)),Converter::toVector3d(mTmw.rowRange(0, 3).col(3)),1.0);
