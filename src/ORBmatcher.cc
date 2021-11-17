@@ -865,8 +865,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
     DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
 
-    std::cout<<"SearchByBow 2\n";
-    std::cout<<"Size of featvec1 and featvec2: "<<vFeatVec1.size()<<" "<<vFeatVec2.size()<<std::endl;
+    //std::cout<<"SearchByBow 2\n";
+    //std::cout<<"Size of featvec1 and featvec2: "<<vFeatVec1.size()<<" "<<vFeatVec2.size()<<std::endl;
     int f1it_counter = 0;
     int f2it_counter = 0;
 
@@ -940,7 +940,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 
                         if(mbCheckOrientation)
                         {
-                            std::cout<<"mbCheckOrientation\n";
+                            //std::cout<<"mbCheckOrientation\n";
                             //float rot = vKeysUn1[idx1].angle-vKeysUn2[bestIdx2].angle;
                             float rot = (*pKF1->mvKeysUn)[idx1].angle-(*pKF2->mvKeysUn)[bestIdx2].angle;
                             if(rot<0.0)
@@ -950,7 +950,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
                             if(bin==HISTO_LENGTH)
                                 bin=0;
                             assert(bin>=0 && bin<HISTO_LENGTH);
-                            std::cout<<"Failed before pushback SearchByBoW: "<<(rotHist[bin].size())<<"\n";
+                            //std::cout<<"Failed before pushback SearchByBoW: "<<(rotHist[bin].size())<<"\n";
                             rotHist[bin].push_back(idx1);
                             //std::cout<<"Failed after pushback SearchByBoW\n";
                         }
