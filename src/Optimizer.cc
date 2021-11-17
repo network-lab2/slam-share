@@ -1638,7 +1638,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
 void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> pKF, bool* pbStopFlag, boost::interprocess::offset_ptr<Map>  pMap, int& num_fixedKF, int& num_OptKF, int& num_MPs, int& num_edges)
 {    
     //Aditya... fix the KF to be able to read the matrices.
-    pKF->FixMatrices(pKF);
+    //pKF->FixMatrices(pKF);
 
     // Local KeyFrames: First Breath Search from Current Keyframe
     list<boost::interprocess::offset_ptr<KeyFrame> > lLocalKeyFrames;
@@ -2698,8 +2698,11 @@ void Optimizer::OptimizeEssentialGraph6DoF(boost::interprocess::offset_ptr<KeyFr
 
         cv::Mat Tiw = Converter::toCvSE3(eigR,eigt);
 
-        pKFi->mTcwBefMerge = pKFi->GetPose();
-        pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+        //Aditya-edited
+        //pKFi->mTcwBefMerge = pKFi->GetPose();
+        //pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+        pKFi->GetPose().copyTo(pKFi->mTcwBefMerge);
+        pkFi->GetPoseInverse().copyTo(pKFi->mTwcBefMerge);
         pKFi->SetPose(Tiw);
     }
 
