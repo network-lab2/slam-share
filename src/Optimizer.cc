@@ -1922,7 +1922,7 @@ std::cout<<"LocalBundleAdjustment5.1\n";
                     e->cx = pKFi->cx;
                     e->cy = pKFi->cy;
                     e->bf = pKFi->mbf;
-                    std::cout<<"KeyFrameID: "<<pKFi->mnId<<std::endl;
+                    //std::cout<<"KeyFrameID: "<<pKFi->mnId<<std::endl;
                     optimizer.addEdge(e);
                     vpEdgesStereo.push_back(e);
                     vpEdgeKFStereo.push_back(pKFi);
