@@ -170,8 +170,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         //mpAtlas = segment.construct<Atlas>("Atlas")(0);
         mpAtlas = segment.construct<Atlas>(atlasname)(0);
         sprintf(&otherAtlasname[5],"%d",(*magic_num)-1);
-        KeyFrame::nNextId = 100;
-        MapPoint::nNextId = 100;
+        KeyFrame::nNextId = *magic_num*100;
+        MapPoint::nNextId = *magic_num*100;
         Atlas* otherAtlas = (segment.find<Atlas>(otherAtlasname)).first;
         if(otherAtlas!=0){
             std::cout<<"Setting up reference points as points of other atlas\n";
@@ -180,7 +180,6 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
         //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
     }
-
     }
     else{
         std::cout<<"Atlas EXISTED!! Using the same Atlas."<<std::endl;
