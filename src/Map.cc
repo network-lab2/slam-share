@@ -258,7 +258,7 @@ long unsigned int Map::MapPointsInMap()
 
 long unsigned int Map::KeyFramesInMap()
 {
-    unique_lock<mutex> lock(mMutexMap);
+    //unique_lock<mutex> lock(mMutexMap);
     //return mspKeyFrames.size();
     return mspKeyFrames->size();
 }
