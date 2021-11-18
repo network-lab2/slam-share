@@ -28,6 +28,7 @@
 #include "Frame.h"
 #include "KeyFrameDatabase.h"
 #include "ImuTypes.h"
+#include "Converter.h"
 
 #include "GeometricCamera.h"
 
