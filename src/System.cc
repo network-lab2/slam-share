@@ -999,15 +999,23 @@ void System::PostLoad(){
             //with ORB vocab from new map
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
-            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
             //mpKeyFrameDatabase->add(keyf);
         }
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
+        int count_kf = 0;
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             std::cout<<"~~~~~~~~~~~~~~~~~~~~~ mpLocalMapper working on keyframe: "<<keyf->mnId<<" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
             mpLocalMapper->InsertKeyFrame(keyf);
+            count_kf++;
+            int aaa;
+            if(count_kf>=10)
+            {
+                std::cout<"STOP... Pause... after 10 keyframes\n";
+                cin>>aaa;
+            }
 
         }
 
@@ -1020,9 +1028,9 @@ void System::PostLoad(){
         {
             usleep(1000);
         }
-        std::cout<<"****** GlobalBundleAdjustemnt started\n";
-        mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,700);
-        std::cout<<"------ GlobalBundleAdjustemnt finished\n";
+        //std::cout<<"****** GlobalBundleAdjustemnt started\n";
+        //mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,700);
+        //std::cout<<"------ GlobalBundleAdjustemnt finished\n";
 
         
 
