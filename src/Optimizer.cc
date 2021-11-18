@@ -1733,7 +1733,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 pSecondLowerKF = pKFi;
             }
         }
-        std::cout<<"------ lFixedCameras have pushed: "<<lowerID<<std::endl;
+        std::cout<<"------ lFixedCameras have pushed: "<<lowerId<<std::endl;
         lFixedCameras.push_back(pLowerKf);
         lLocalKeyFrames.remove(pLowerKf);
         num_fixedKF++;
@@ -1793,7 +1793,7 @@ std::cout<<"LocalBundleAdjustment5.1\n";
             maxKFid=pKFi->mnId;
     }
     num_OptKF = lLocalKeyFrames.size();
-    std::cout<<"LocalBundleAdjustment5.3\n Size of lFixedCameras:"<<lFixedCameras.size()<<std::endl;
+    std::cout<<"LocalBundleAdjustment5.3 ... Size of lFixedCameras:"<<lFixedCameras.size()<<std::endl;
     int counter = 0;
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
