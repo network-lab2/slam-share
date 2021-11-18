@@ -497,6 +497,8 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         //std::cout<<"Transform passed\n";
         pKF->mBowVec = *newBow;
         pKF->mFeatVec = *newFeat;
+
+        mpORBvocabulary->transform(vCurrentDesc,pKF->mBowVec,pKF->mFeatVec,4);
         
         
         //pKF->mBowVec = newBow;
