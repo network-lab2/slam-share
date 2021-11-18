@@ -997,7 +997,7 @@ void System::PostLoad(){
     for(auto& keyf: allkeyframes){
         //we should fix the descriptors differently.
             //with ORB vocab from new map
-            keyf->FixBow(keyf,mpAtlas->GetORBVocabulary());
+            thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
             //mpKeyFrameDatabase->add(keyf);
