@@ -1009,7 +1009,7 @@ void System::PostLoad(){
 
         }
         std::cout<<"****** GlobalBundleAdjustemnt started\n";
-        mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,20);
+        mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,1600);
         std::cout<<"------ GlobalBundleAdjustemnt finished\n";
 
         std::cout<<"Stop for keyframes in queue."<<mpLocalMapper->KeyframesInQueue()<<std::endl;
