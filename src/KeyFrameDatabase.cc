@@ -38,7 +38,7 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 
 void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
-    std::cout<<"KeyFrameDatabase::add1\n";
+    std::cout<<"KeyFrameDatabase::add1: Pk-id "<<pKF->mnId<<std::endl;
     //std::cout<<"KeyFrameDatabase::add entry\n";
     //unique_lock<mutex> lock(mMutex);
     //std::cout<<"KeyFrameDatabase::after lock. mBowVec Size: "<<pKF->mBowVec.size()<<" mvInvertedFile size: "<<mvInvertedFile.size()<<std::endl;
