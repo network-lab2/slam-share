@@ -49,7 +49,7 @@ class KeyFrameDatabase
 
 public:
 
-    KeyFrameDatabase(const ORBVocabulary &voc);
+  KeyFrameDatabase(const ORBVocabulary &voc);
 
    void add(boost::interprocess::offset_ptr<KeyFrame>  pKF);
 

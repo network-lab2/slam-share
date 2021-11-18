@@ -44,7 +44,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     cv::Mat descriptor_mat;
     pKF->mDescriptors.copyTo(descriptor_mat);
     vector<cv::Mat> vCurrentDesc;
-    {
+    
              
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
@@ -55,7 +55,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
         //std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
         mpVoc->transform(vCurrentDesc,newBow,newFeat,4);
 
-    }
+    
     std::cout<<"KeyFrameDatabase::add entry"<<newBow.size()<<std::endl;
     //unique_lock<mutex> lock(mMutex);
     //std::cout<<"KeyFrameDatabase::after lock. mBowVec Size: "<<pKF->mBowVec.size()<<" mvInvertedFile size: "<<mvInvertedFile.size()<<std::endl;
