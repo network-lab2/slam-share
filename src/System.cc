@@ -1028,9 +1028,9 @@ void System::PostLoad(){
         {
             usleep(1000);
         }
-        //std::cout<<"****** GlobalBundleAdjustemnt started\n";
-        //mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,700);
-        //std::cout<<"------ GlobalBundleAdjustemnt finished\n";
+        std::cout<<"****** GlobalBundleAdjustemnt started\n";
+        mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,600);
+        std::cout<<"------ GlobalBundleAdjustemnt finished\n";
 
         
 

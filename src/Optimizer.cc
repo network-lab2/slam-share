@@ -2122,7 +2122,7 @@ list_of_available_ids.reserve(500);
             pMPi->EraseObservation(pKFi);
         }
     }
-
+     std::cout<<"LocalBundleAdjustment9\n";
     // Recover optimized data
     //Keyframes
     bool bShowStats = false;
@@ -2143,7 +2143,7 @@ list_of_available_ids.reserve(500);
         pMP->SetWorldPos(Converter::toCvMat(vPoint->estimate()));
         pMP->UpdateNormalAndDepth();
     }
-
+     std::cout<<"LocalBundleAdjustment10\n";
     // TODO Check this changeindex
     pMap->IncreaseChangeIndex();
 }
