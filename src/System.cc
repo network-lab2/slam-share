@@ -1005,9 +1005,13 @@ void System::PostLoad(){
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
             mpKeyFrameDatabase->add(keyf);
-            mpLocalMapper->InsertKeyFrame(keyf);
+            //mpLocalMapper->InsertKeyFrame(keyf);
 
         }
+        std::cout<<"****** GlobalBundleAdjustemnt started\n";
+        Optimizer::GlobalBundleAdjustemnt(mpAtlas->currentMapPtr);
+        std::cout<<"------ GlobalBundleAdjustemnt finished\n";
+
         std::cout<<"Stop for keyframes in queue."<<mpLocalMapper->KeyframesInQueue()<<std::endl;
         while(mpLocalMapper->KeyframesInQueue())
         {

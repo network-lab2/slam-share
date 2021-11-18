@@ -1774,6 +1774,8 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
 
     
 std::cout<<"LocalBundleAdjustment5.1\n";
+std::vector<long unsigned int> list_of_available_ids;
+list_of_available_ids.reserve(500);
     // Set Local KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lLocalKeyFrames.begin(), lend=lLocalKeyFrames.end(); lit!=lend; lit++)
     {
@@ -1867,6 +1869,7 @@ std::cout<<"LocalBundleAdjustment5.1\n";
         std::cout<<"------------------- Mappoint being inserted into graph: ID: ----------------------"<<pMP->mnId<<std::endl;
 
         const map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations = pMP->GetObservations();
+        std::cout<<"Number of Observations: "<<
 
         //Set edges
         for(map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>>::const_iterator mit=observations.begin(), mend=observations.end(); mit!=mend; mit++)
