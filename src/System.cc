@@ -1000,12 +1000,13 @@ void System::PostLoad(){
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            mpKeyFrameDatabase->add(keyf);
         }
 
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
-            mpKeyFrameDatabase->add(keyf);
-            //mpLocalMapper->InsertKeyFrame(keyf);
+            
+            mpLocalMapper->InsertKeyFrame(keyf);
 
         }
         std::cout<<"****** GlobalBundleAdjustemnt started\n";
