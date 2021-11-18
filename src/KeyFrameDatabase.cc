@@ -42,7 +42,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     DBoW2::BowVector newBow; //= DBoW2::BowVector();// = mBowVec;
     DBoW2::FeatureVector newFeat;// = DBoW2::FeatureVector();
     cv::Mat descriptor_mat;
-    pF->mDescriptors.copyTo(descriptor_mat);
+    pKF->mDescriptors.copyTo(descriptor_mat);
     vector<cv::Mat> vCurrentDesc;
     {
              
