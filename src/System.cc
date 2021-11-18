@@ -1011,11 +1011,12 @@ void System::PostLoad(){
             mpLocalMapper->InsertKeyFrame(keyf);
             count_kf++;
             int aaa;
-            if(count_kf>=10)
-            {
-                std::cout<<"STOP... Pause... after 10 keyframes\n";
-                cin>>aaa;
-            }
+            sleep(1);
+            //if(count_kf>=10)
+            //{
+             //   std::cout<<"STOP... Pause... after 10 keyframes\n";
+             //   cin>>aaa;
+            //}
 
         }
 
