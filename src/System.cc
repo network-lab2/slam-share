@@ -1009,15 +1009,16 @@ void System::PostLoad(){
             mpLocalMapper->InsertKeyFrame(keyf);
 
         }
-        std::cout<<"****** GlobalBundleAdjustemnt started\n";
-        mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,1600);
-        std::cout<<"------ GlobalBundleAdjustemnt finished\n";
-
         std::cout<<"Stop for keyframes in queue."<<mpLocalMapper->KeyframesInQueue()<<std::endl;
         while(mpLocalMapper->KeyframesInQueue())
         {
             usleep(1000);
         }
+        std::cout<<"****** GlobalBundleAdjustemnt started\n";
+        mpLoopCloser->RunGlobalBundleAdjustment(mpAtlas->currentMapPtr,700);
+        std::cout<<"------ GlobalBundleAdjustemnt finished\n";
+
+        
 
         std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
         
