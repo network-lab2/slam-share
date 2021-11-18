@@ -1785,15 +1785,15 @@ list_of_available_ids.reserve(500);
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         //aditya's code
-        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<std::endl;
+        //std::cout<<"Getting pose of ID: "<<pKFi->mnId<<std::endl;
         cv::Mat temp_pose = pKFi->GetPose();
-        std::cout<<"Got pose\n";
+        //std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
         //vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
         vSE3->setEstimate(Converter::toSE3Quat(temp_pose));
         vSE3->setId(pKFi->mnId);
         vSE3->setFixed(pKFi->mnId==pMap->GetInitKFid());
-        std::cout<<"LocalBundleAdjustment5.2\n";
+        //std::cout<<"LocalBundleAdjustment5.2\n";
         optimizer.addVertex(vSE3);
         if(pKFi->mnId>maxKFid)
             maxKFid=pKFi->mnId;
@@ -1804,22 +1804,22 @@ list_of_available_ids.reserve(500);
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
-        std::cout<<"Sanity counter: "<<counter<<std::endl;
+        //std::cout<<"Sanity counter: "<<counter<<std::endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         //aditya's code
-        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
+        //std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
         cv::Mat temp_pose = pKFi->GetPose();
-        std::cout<<"Got pose\n";
+        //std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
         //vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
         vSE3->setEstimate(Converter::toSE3Quat(temp_pose));
         vSE3->setId(pKFi->mnId);
-        std::cout<<"LocalBundleAdjustment5.4\n";
+        //std::cout<<"LocalBundleAdjustment5.4\n";
         vSE3->setFixed(true);
         optimizer.addVertex(vSE3);
         if(pKFi->mnId>maxKFid)
             maxKFid=pKFi->mnId;
-        std::cout<<"LocalBundleAdjustment5.5\n";
+        //std::cout<<"LocalBundleAdjustment5.5\n";
     }
     std::cout<<"LocalBundleAdjustment6\n";
     // Set MapPoint vertices
@@ -1937,10 +1937,10 @@ list_of_available_ids.reserve(500);
                     e->cx = pKFi->cx;
                     e->cy = pKFi->cy;
                     e->bf = pKFi->mbf;
-                    std::cout<<"KeyFrameID addEdge: "<<pKFi->mnId<<std::endl;
+                    //std::cout<<"KeyFrameID addEdge: "<<pKFi->mnId<<std::endl;
 
                     optimizer.addEdge(e);
-                    std::cout<<"KeyFrameID addEdge (passed): "<<pKFi->mnId<<std::endl;
+                    //std::cout<<"KeyFrameID addEdge (passed): "<<pKFi->mnId<<std::endl;
                     vpEdgesStereo.push_back(e);
                     vpEdgeKFStereo.push_back(pKFi);
                     vpMapPointEdgeStereo.push_back(pMP);

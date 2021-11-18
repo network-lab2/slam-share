@@ -953,6 +953,7 @@ void System::PostLoad(){
         std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes = mpAtlas->currentMapPtr->GetAllKeyFrames();
 
 
+
         std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
         for(auto k:thesekeyframes){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec.size()<<std::endl;
@@ -962,11 +963,45 @@ void System::PostLoad(){
             std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
         }
 
-
-
-        //have to fix all mappoints and then add new mappoints.
+        auto stopped_map = mpAtlas->currentMapPtr;
+        // create a new map.
+        mpAtlas->CreateNewMap();
+        //this should shift the new map as current
+        //need to initialize the keyframe 
+        for(auto& camera: stopped_map->getCurrentCamera()){
+            mpAtlas->AddCamera(camera);
+        }
+         //have to fix all mappoints and then add new mappoints.
         std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
         std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
+        //fix all the mapppoints.
+        for(auto& mapP: allmappoints){
+            mapP->UpdateMap(mpAtlas->currentMapPtr);
+            mapP->FixMatrices();
+            mpAtlas->currentMapPtr->AddMapPoint(mapP);
+        }
+
+        for(auto& keyf: allkeyframes){
+            keyf->FixMatrices(keyf);
+            keyf->ResetCamera(mpAtlas->getCurrentCamera());
+            keyf->UpdateMap(mpAtlas->currentMapPtr);
+            keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
+            keyf->SetKeyFrameDatabase(mpAtlas->GetKeyFrameDatabase());
+
+            //we should fix the descriptors differently.
+            //with ORB vocab from new map
+            thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
+
+            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            //mpKeyFrameDatabase->add(keyf);
+        }
+        for(auto& keyf: allkeyframes){
+            mpAtlas->GetKeyFrameDatabase()->add(keyf);
+        }
+
+        std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+
+       
 
         for(auto& mapP: allmappoints){
             mapP->UpdateMap(mpAtlas->currentMapPtr);
@@ -1006,6 +1041,7 @@ void System::PostLoad(){
         }
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
+        /*
         int count_kf = 0;
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
@@ -1022,7 +1058,7 @@ void System::PostLoad(){
 
         }
 
-        mpTracker->UpdateLocalMap();
+
 
         std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
         
@@ -1074,6 +1110,7 @@ void System::PostLoad(){
                         usleep(1000);
                     //}
         //}
+                        */
         std::cout<<"============ Finished updating the mpLoopcloser ================"<<std::endl;
 
         //Details before pause:
