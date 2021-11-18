@@ -968,9 +968,11 @@ void System::PostLoad(){
         mpAtlas->CreateNewMap();
         //this should shift the new map as current
         //need to initialize the keyframe 
-        for(auto& camera: stopped_map->getCurrentCamera()){
-            mpAtlas->AddCamera(camera);
-        }
+        
+        //for(auto& camera: mpAtlas->getCurrentCamera()){
+        //    mpAtlas->AddCamera(camera);
+        //}
+        
          //have to fix all mappoints and then add new mappoints.
         std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
         std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
