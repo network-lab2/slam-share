@@ -392,7 +392,7 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
             //Rather than creating a new matrix here. we will make a memory buffer for the 
             // matrix that resides in shared memory.
             
-            
+
             //pMP->mPosGBA.create(3,1,CV_32F);
             Converter::toCvMat(vPoint->estimate()).copyTo(pMP->mPosGBA);
             pMP->mnBAGlobalForKF = nLoopKF;
@@ -1641,6 +1641,8 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
 {    
     //Aditya... fix the KF to be able to read the matrices.
     //pKF->FixMatrices(pKF);
+
+    std::cout<<"======================= Local BundleAdjustment started for KeyFrame: "<<pKF->mnId<<"  ==============================\n";
     std::cout<<"LocalBundleAdjustment1\n";
     // Local KeyFrames: First Breath Search from Current Keyframe
     list<boost::interprocess::offset_ptr<KeyFrame> > lLocalKeyFrames;
