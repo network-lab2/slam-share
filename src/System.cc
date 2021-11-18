@@ -975,6 +975,8 @@ void System::PostLoad(){
 
         }
 
+        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+
         //mpLoopCloser->NewDetectCommonRegions();
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
@@ -1019,6 +1021,8 @@ void System::PostLoad(){
             //}
 
         }
+
+        mpTracker->UpdateLocalMap();
 
         std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
         
