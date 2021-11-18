@@ -964,8 +964,10 @@ void System::PostLoad(){
         }
 
         auto stopped_map = mpAtlas->currentMapPtr;
+        std::cout<<" -------old map ID: "<<mpAtlas->currentMapPtr->mnId<<std::endl;
         // create a new map.
         mpAtlas->CreateNewMap();
+        std::cout<<"---- New Map ID: ----"<<mpAtlas->currentMapPtr->mnId<<std::endl;" -------old map ID: "<<mpAtlas->currentMapPtr->mnId
         //this should shift the new map as current
         //need to initialize the keyframe 
         
