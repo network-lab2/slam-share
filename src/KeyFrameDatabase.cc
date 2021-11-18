@@ -39,8 +39,8 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     std::cout<<"KeyFrameDatabase::add1: Pk-id "<<pKF->mnId<<std::endl;
-    DBoW2::BowVector newBow; //= DBoW2::BowVector();// = mBowVec;
-    DBoW2::FeatureVector newFeat;// = DBoW2::FeatureVector();
+    DBoW2::BowVector newBow = DBoW2::BowVector();// = mBowVec;
+    DBoW2::FeatureVector newFeat = DBoW2::FeatureVector();
     cv::Mat descriptor_mat;
     pKF->mDescriptors.copyTo(descriptor_mat);
     std::vector<cv::Mat> vCurrentDesc;
