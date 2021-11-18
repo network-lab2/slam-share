@@ -1011,6 +1011,7 @@ void System::PostLoad(){
         
 
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+        mpAtlas->ChangeMap(stopped_map);
 
        /*
 

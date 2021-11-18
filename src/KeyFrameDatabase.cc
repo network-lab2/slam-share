@@ -69,13 +69,13 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
     //for(DBoW2::BowVector::const_iterator vit= newBow.begin(), vend=newBow.end(); vit!=vend; vit++){
         //std::cout<<"Crash?"<<std::endl;
-        std::cout<<"BowVec output: "<<vit->first<<std::endl;
+        //std::cout<<"BowVec output: "<<vit->first<<std::endl;
         counter++;
         mvInvertedFile[vit->first].push_back(pKF);
         if(counter>=pKF->mBowVec.size())
             break;
     }
-    std::cout<<"KeyFrameDatabase::add2\n";
+    //std::cout<<"KeyFrameDatabase::add2\n";
     //std::cout<<"Finished pushing the keyframe into Inverted File\n";
 }
 
