@@ -1697,8 +1697,10 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
             if(pKFi->mnBALocalForKF!=pKF->mnId && pKFi->mnBAFixedForKF!=pKF->mnId )
             {                
                 pKFi->mnBAFixedForKF=pKF->mnId;
-                if(!pKFi->isBad() && pKFi->GetMap() == pCurrentMap)
+                if(!pKFi->isBad() && pKFi->GetMap() == pCurrentMap){
+                    std::cout<<"################# pushing back: "<<pKFi->mnId<<" to lFixedCameras\n";
                     lFixedCameras.push_back(pKFi);
+                }
             }
         }
     }
