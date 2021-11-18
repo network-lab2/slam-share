@@ -43,13 +43,17 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     DBoW2::FeatureVector newFeat;// = DBoW2::FeatureVector();
     cv::Mat descriptor_mat;
     pKF->mDescriptors.copyTo(descriptor_mat);
-    vector<cv::Mat> vCurrentDesc;
+    std::vector<cv::Mat> vCurrentDesc;
+
+    vCurrentDesc.reserve(descriptor_mat.rows);
+    for (int j=0;j<descriptor_mat.rows;j++)
+        vCurrentDesc.push_back(descriptor_mat.row(j));
     
              
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
         std::cout<<"Fails here? descriptor size: "<<descriptor_mat<<std::endl;
-        vCurrentDesc = Converter::toDescriptorVector(descriptor_mat);
+        //vCurrentDesc = Converter::toDescriptorVector(descriptor_mat);
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         //std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
