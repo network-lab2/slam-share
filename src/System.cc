@@ -1003,9 +1003,11 @@ void System::PostLoad(){
             //mpKeyFrameDatabase->add(keyf);
 
         }
-        for(auto& keyf: allkeyframes){
-            mpAtlas->GetKeyFrameDatabase()->add(keyf);
+        //for(auto& keyf: allkeyframes){
+        for(int ii = 0; ii<allkeyframes.size(); ii++){
+            mpAtlas->GetKeyFrameDatabase()->add(allkeyframes[ii]);
         }
+        
 
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
