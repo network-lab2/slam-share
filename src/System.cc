@@ -999,7 +999,7 @@ void System::PostLoad(){
             //with ORB vocab from new map
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
-            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
         }
 
         for(auto& keyf: allkeyframes){
