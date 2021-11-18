@@ -980,10 +980,10 @@ void System::PostLoad(){
 
 
         std::cout<<"-----======= === === Completely cleaning the KeyFrameDatabase\n";
-        KeyFrameDatabase->clearMap(mpAtlas->currentMapPtr);
+        mpKeyFrameDatabase->clearMap(mpAtlas->currentMapPtr);
 
-        for(auto& keyfra : thesekeyframes){
-            KeyFrameDatabase->add(keyfra);
+        for(auto& keyfra: thesekeyframes){
+            mpKeyFrameDatabase->add(keyfra);
         }
 
         std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
@@ -1004,7 +1004,7 @@ void System::PostLoad(){
 
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
-            KeyFrameDatabase->add(keyf);
+            mpKeyFrameDatabase->add(keyf);
             mpLocalMapper->InsertKeyFrame(keyf);
 
         }
