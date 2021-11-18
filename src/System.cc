@@ -962,19 +962,7 @@ void System::PostLoad(){
             std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
         }
 
-        //the keyframes from the other atlas
-        for(auto& keyf: allkeyframes){
-            keyf->FixMatrices(keyf);
-            keyf->ResetCamera(mpAtlas->getCurrentCamera());
-            keyf->UpdateMap(mpAtlas->currentMapPtr);
-            keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
-            keyf->SetKeyFrameDatabase(mpAtlas->GetKeyFrameDatabase());
 
-            //we should fix the descriptors differently.
-            //with ORB vocab from new map
-            thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
-            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
-        }
 
         //have to fix all mappoints and then add new mappoints.
         std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
@@ -991,12 +979,32 @@ void System::PostLoad(){
         std::cout<<"Number of MapPointsInMap: "<<mpAtlas->MapPointsInMap()<<std::endl;
 
 
+        std::cout<<"-----======= === === Completely cleaning the KeyFrameDatabase\n";
+        KeyFrameDatabase->clearMap(mpAtlas->currentMapPtr);
+
+        for(auto& keyfra : thesekeyframes){
+            KeyFrameDatabase->add(keyfra);
+        }
 
         std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
+        //the keyframes from the other atlas
+        for(auto& keyf: allkeyframes){
+            keyf->FixMatrices(keyf);
+            keyf->ResetCamera(mpAtlas->getCurrentCamera());
+            keyf->UpdateMap(mpAtlas->currentMapPtr);
+            keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
+            keyf->SetKeyFrameDatabase(mpAtlas->GetKeyFrameDatabase());
+
+            //we should fix the descriptors differently.
+            //with ORB vocab from new map
+            thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
+
+            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+        }
 
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
-            
+            KeyFrameDatabase->add(keyf);
             mpLocalMapper->InsertKeyFrame(keyf);
 
         }

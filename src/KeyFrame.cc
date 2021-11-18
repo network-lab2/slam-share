@@ -912,13 +912,13 @@ vector<boost::interprocess::offset_ptr<MapPoint> > KeyFrame::GetMapPointMatches(
     //mvpMapPoints_vector.clear();
     
     vector<boost::interprocess::offset_ptr<MapPoint> > returnvec;
-    returnvec.assign(mvpMapPoints.get()->begin(),mvpMapPoints.get()->end());
+    //returnvec.assign(mvpMapPoints.get()->begin(),mvpMapPoints.get()->end());
 
-    /*
+    
     for(size_t i=0; i<mvpMapPoints->size(); i++){
-        mvpMapPoints_vector.push_back((*mvpMapPoints)[i]);
+        returnvec.push_back((*mvpMapPoints)[i]);
     }
-    */
+    
     //mvpMapPoints_vector.assign(mvpMapPoints.get()->begin(),mvpMapPoints.get()->end());
     //return (*(mvpMapPoints.get()));
     //return mvpMapPoints_vector;
