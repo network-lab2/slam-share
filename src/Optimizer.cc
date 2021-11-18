@@ -1862,6 +1862,8 @@ std::cout<<"LocalBundleAdjustment5.1\n";
         optimizer.addVertex(vPoint);
         nPoints++;
 
+        std::cout<<"------------------- Mappoint being inserted into graph: ID: ----------------------"<<pMP->mnID<<std::endl;
+
         const map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations = pMP->GetObservations();
 
         //Set edges

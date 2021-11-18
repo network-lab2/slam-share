@@ -1024,7 +1024,7 @@ void System::PostLoad(){
         //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
         //std::cout<<"Added the Reference Mappoints from Previous Map\n";
 
-        otherAtlas->currentMapPtr->CheckEssentialGraph();
+        mpAtlas->currentMapPtr->CheckEssentialGraph();
 
         //std::cout<<"Add the existing keyframes from map to loopcloser to just seer if it works\n";
         //std::vector<boost::interprocess::offset_ptr<KeyFrame> > vkf = otherAtlas->currentMapPtr->GetAllKeyFrames();
@@ -1058,8 +1058,8 @@ void System::PostLoad(){
 
 
         std::cout<<"Pause\n";
-        int a;
-        std::cin>>a;
+        //int a;
+        //std::cin>>a;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to other atlas.\n";
