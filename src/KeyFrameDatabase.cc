@@ -39,10 +39,10 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     std::cout<<"KeyFrameDatabase::add1: Pk-id "<<pKF->mnId<<std::endl;
+     DBoW2::BowVector newBow; //= DBoW2::BowVector();// = mBowVec;
+        DBoW2::FeatureVector newFeat;// = DBoW2::FeatureVector();
     {
-        
-        DBoW2::BowVector *newBow = new DBoW2::BowVector();// = mBowVec;
-        DBoW2::FeatureVector *newFeat = new DBoW2::FeatureVector();
+             
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
         //std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
@@ -50,7 +50,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         //std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
-        mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
+        mpORBvocabulary->transform(vCurrentDesc,newBow,newFeat,4);
 
     }
     //std::cout<<"KeyFrameDatabase::add entry\n";
