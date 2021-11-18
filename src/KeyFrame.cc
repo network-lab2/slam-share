@@ -490,7 +490,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         //std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
-        mpORBVocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
+        mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
         //std::cout<<"Transform passed\n";
         //pKF->mBowVec = *newBow;
         memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
