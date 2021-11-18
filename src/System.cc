@@ -1013,7 +1013,7 @@ void System::PostLoad(){
             int aaa;
             if(count_kf>=10)
             {
-                std::cout<"STOP... Pause... after 10 keyframes\n";
+                std::cout<<"STOP... Pause... after 10 keyframes\n";
                 cin>>aaa;
             }
 
