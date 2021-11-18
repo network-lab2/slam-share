@@ -72,7 +72,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
         std::cout<<"BowVec output: "<<vit->first<<std::endl;
         counter++;
         mvInvertedFile[vit->first].push_back(pKF);
-        if(counter>=pKf->mBowVec.size())
+        if(counter>=pKF->mBowVec.size())
             break;
     }
     std::cout<<"KeyFrameDatabase::add2\n";
