@@ -62,6 +62,10 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
     mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(32*1*4);
     mDescriptor = cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
 
+    //mposgba
+    mPosGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mPosGBA = cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
+
     //mNormalVector_ptr = mNormalVector_data;
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVectorx = cv::Matx31f::zeros();
@@ -102,6 +106,10 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(32*1*4);
     mDescriptor = cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
 
+     //mposgba
+    mPosGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mPosGBA = cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
+
     //mNormalVector_ptr = mNormalVector_data;
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVectorx = cv::Matx31f::zeros();
@@ -140,6 +148,10 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     //initialize data for cv matrix mNormalVector
     mWorldPos_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     mWorldPos = cv::Mat(3,1,CV_32F,mWorldPos_ptr.get());
+
+    //mposgba
+    mPosGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mPosGBA = cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
 
     //std::cout<<"Shared memory data for worldpos "<<mWorldPos_ptr<<std::endl;
 
@@ -204,6 +216,9 @@ void MapPoint::FixMatrices(){
 
     cv::Mat *fake2 = new cv::Mat(3,1,CV_32F,mNormalVector_ptr.get());
     memcpy(&mNormalVector,fake2, sizeof(cv::Mat));
+
+    cv::Mat *fake3 = new cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
+    memcpy(&mPosGBA, fake3, sizeof(cv::Mat));
 
     //now correct mWorldpos with original data
 }

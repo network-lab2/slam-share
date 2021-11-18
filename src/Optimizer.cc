@@ -298,8 +298,9 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
         }
         else
         {
-
-            pKF->mTcwGBA.create(4,4,CV_32F);
+            cv::Mat temp = cv::Mat(4,4,CV_32F);
+            temp.copyTo(pKF->mTcwGBA);
+            //pKF->mTcwGBA.create(4,4,CV_32F);
             //pKF->mTcwGBA.create(4,4,CV_32F,ORB_SLAM3::region.get_address());
             Converter::toCvMat(SE3quat).copyTo(pKF->mTcwGBA);
             pKF->mnBAGlobalForKF = nLoopKF;
@@ -391,7 +392,8 @@ void Optimizer::BundleAdjustment(const vector<boost::interprocess::offset_ptr<Ke
             //Rather than creating a new matrix here. we will make a memory buffer for the 
             // matrix that resides in shared memory.
             
-            pMP->mPosGBA.create(3,1,CV_32F);
+            
+            //pMP->mPosGBA.create(3,1,CV_32F);
             Converter::toCvMat(vPoint->estimate()).copyTo(pMP->mPosGBA);
             pMP->mnBAGlobalForKF = nLoopKF;
         }
