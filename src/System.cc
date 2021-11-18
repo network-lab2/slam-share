@@ -980,11 +980,11 @@ void System::PostLoad(){
 
 
         std::cout<<"-----======= === === Completely cleaning the KeyFrameDatabase\n";
-        mpKeyFrameDatabase->clearMap(mpAtlas->currentMapPtr);
+        //mpKeyFrameDatabase->clearMap(mpAtlas->currentMapPtr);
 
-        for(auto& keyfra: thesekeyframes){
-            mpKeyFrameDatabase->add(keyfra);
-        }
+        //for(auto& keyfra: thesekeyframes){
+         //   mpKeyFrameDatabase->add(keyfra);
+        //}
 
         std::cout<<"---- ===== adding the keyframe to new map ----- ==== \n";
         //the keyframes from the other atlas
@@ -1000,15 +1000,21 @@ void System::PostLoad(){
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
             mpAtlas->currentMapPtr->AddKeyFrame(keyf);
-            mpKeyFrameDatabase->add(keyf);
+            //mpKeyFrameDatabase->add(keyf);
         }
+        std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
-            
+            std::cout<<"~~~~~~~~~~~~~~~~~~~~~ mpLocalMapper working on keyframe: "<<keyf->mnId<<" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
             mpLocalMapper->InsertKeyFrame(keyf);
 
         }
+
+        std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
+        
+        std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
+        
         std::cout<<"Stop for keyframes in queue."<<mpLocalMapper->KeyframesInQueue()<<std::endl;
         while(mpLocalMapper->KeyframesInQueue())
         {
@@ -1020,10 +1026,7 @@ void System::PostLoad(){
 
         
 
-        std::cout<<"Finished all keyframes in queue in local mapper~~~~~~~\n";
         
-        std::cout<<"++++ Finished adding all the keyframes. Finished fixing all the matrices.\n";
-        std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
         
         std::cout<<"Adding the reference mappoints from older map:"<<std::endl;
