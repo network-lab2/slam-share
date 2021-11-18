@@ -38,6 +38,7 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 
 void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
+    /*
     std::cout<<"KeyFrameDatabase::add1: Pk-id "<<pKF->mnId<<std::endl;
     DBoW2::BowVector newBow = DBoW2::BowVector();// = mBowVec;
     DBoW2::FeatureVector newFeat = DBoW2::FeatureVector();
@@ -63,15 +64,15 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     std::cout<<"KeyFrameDatabase::add entry"<<newBow.size()<<std::endl;
     //unique_lock<mutex> lock(mMutex);
     //std::cout<<"KeyFrameDatabase::after lock. mBowVec Size: "<<pKF->mBowVec.size()<<" mvInvertedFile size: "<<mvInvertedFile.size()<<std::endl;
+    */
     int counter = 0;
-
-    //for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
-    for(DBoW2::BowVector::const_iterator vit= newBow.begin(), vend=newBow.end(); vit!=vend; vit++){
-        std::cout<<"Crash?"<<std::endl;
+    for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
+    //for(DBoW2::BowVector::const_iterator vit= newBow.begin(), vend=newBow.end(); vit!=vend; vit++){
+        //std::cout<<"Crash?"<<std::endl;
         std::cout<<"BowVec output: "<<vit->first<<std::endl;
         counter++;
         mvInvertedFile[vit->first].push_back(pKF);
-        if(counter>=newBow.size())
+        if(counter>=pKf->mBowVec.size())
             break;
     }
     std::cout<<"KeyFrameDatabase::add2\n";
