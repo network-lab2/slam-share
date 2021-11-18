@@ -39,14 +39,15 @@ KeyFrameDatabase::KeyFrameDatabase (const ORBVocabulary &voc):
 void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     std::cout<<"KeyFrameDatabase::add1: Pk-id "<<pKF->mnId<<std::endl;
-     DBoW2::BowVector newBow; //= DBoW2::BowVector();// = mBowVec;
+    DBoW2::BowVector newBow; //= DBoW2::BowVector();// = mBowVec;
     DBoW2::FeatureVector newFeat;// = DBoW2::FeatureVector();
+    vector<cv::Mat> vCurrentDesc;
     {
              
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
-        //std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
-        vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(pKF->mDescriptors);
+        std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
+        vCurrentDesc = Converter::toDescriptorVector(pKF->mDescriptors);
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
         //std::cout<<"Or fails here. vCurrentDesc size: "<<vCurrentDesc.size()<<std::endl;
@@ -59,10 +60,10 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     int counter = 0;
     //for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
     for(DBoW2::BowVector::const_iterator vit= newBow.begin(), vend=newBow.end(); vit!=vend; vit++){
-        std::cout<<"BowVec Size: "<<pKF->mBowVec.size()<<" Counter: "<<counter<<std::endl;
+        //std::cout<<"BowVec Size: "<<pKF->mBowVec.size()<<" Counter: "<<counter<<std::endl;
         counter++;
         mvInvertedFile[vit->first].push_back(pKF);
-        if(counter>=pKF->mBowVec.size())
+        if(counter>=newBow.size())
             break;
     }
     std::cout<<"KeyFrameDatabase::add2\n";
