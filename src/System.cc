@@ -994,7 +994,7 @@ void System::PostLoad(){
             //with ORB vocab from new map
             thesekeyframes.at(0)->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
-            //mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
             //mpKeyFrameDatabase->add(keyf);
         }
         for(auto& keyf: allkeyframes){
@@ -1003,7 +1003,7 @@ void System::PostLoad(){
 
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
-       
+       /*
 
         for(auto& mapP: allmappoints){
             mapP->UpdateMap(mpAtlas->currentMapPtr);
@@ -1043,7 +1043,7 @@ void System::PostLoad(){
         }
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
 
-        /*
+        
         int count_kf = 0;
         for(auto& keyf: allkeyframes){
             //std::cout<<"Print the pose inverse matrix size "<<keyf->GetPoseInverse().t()<<std::endl;
