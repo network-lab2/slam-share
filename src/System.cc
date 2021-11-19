@@ -981,13 +981,17 @@ void System::PostLoad(){
         std::cout<<"---- Number of Maps: -----"<<mpAtlas->CountMaps()<<std::endl;
         //this should shift the new map as current
         //need to initialize the keyframe 
-        
+        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+
+        std::cout<<"************ Paused after Changing Reference Mappoints ********************\n";
+        cin>>pause;
+
         //for(auto& camera: mpAtlas->getCurrentCamera()){
         //    mpAtlas->AddCamera(camera);
         //}
         std::cout<<"How many mappoints are there in current map?: "<<mpAtlas->GetCurrentMap()->GetAllMapPoints().size()<<std::endl;
 
-        int pause;
+        
         std::cout<<"************ Paused to see above Points ********************\n";
         cin>>pause;
         
@@ -1008,11 +1012,7 @@ void System::PostLoad(){
         std::cout<<"************ 2nd time Paused to see above Points ********************\n";
         cin>>pause;
 
-        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
-
-        std::cout<<"************ Paused after Changing Reference Mappoints ********************\n";
-        cin>>pause;
-
+        
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
             keyf->ResetCamera(mpAtlas->getCurrentCamera());
