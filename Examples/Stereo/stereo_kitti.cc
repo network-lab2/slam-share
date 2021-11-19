@@ -99,11 +99,11 @@ int main(int argc, char **argv)
         
         if(count_images>=199)
         {
-            SLAM.Shutdown();
-            SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
-            std::cout<<"Exiting\n";
+            std::cout<<"==== @@@@ ==== Exiting. Before shutdown. ==== @@@@ ==== \n";
             int aa;
             std::cin>>aa;
+            SLAM.Shutdown();
+            SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
             exit(0);
         }
         
