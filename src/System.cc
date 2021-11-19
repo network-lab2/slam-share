@@ -927,6 +927,7 @@ void System::PostLoad(){
         otherAtlas = (segment.find<Atlas>(atlasname)).first;
 
         std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
+        std::cout<<"Check if the map is bad:"<<otherAtlas->GetCurrentMap()->isBad()<<std::endl;
 
         //std::cout<<"Other atlas timestamp:-- "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
         std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->GetCurrentMap()->MapPointsInMap()<<std::endl;
