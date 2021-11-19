@@ -929,15 +929,15 @@ void System::PostLoad(){
         std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
 
         //std::cout<<"Other atlas timestamp:-- "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
-        std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
+        std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->GetCurrentMap()->MapPointsInMap()<<std::endl;
         
-        std::cout<<"Other atlas timestamp:-- "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
+        std::cout<<"Other atlas timestamp:-- "<<otherAtlas->GetCurrentMap()->GetOriginKF()->GetNumberMPs()<<"\n";
         //std::cout<<"This atlas timestamp:-- "<<mpAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
         std::cout<<"Point distribution of Other Atlas: (mnFrameID) "<<std::endl;
-        otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
+        otherAtlas->GetCurrentMap()->GetOriginKF()->PrintPointDistribution();
         std::cout<<std::endl;
         
-        std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
+        std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->GetCurrentMap()->MapPointsInMap()<<std::endl;
 
         //adding other atlas's map
         //std::cout<<"--- BEGIN MERGING --- Adding Another Atlas's Map \n";
@@ -948,9 +948,9 @@ void System::PostLoad(){
         //std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
 
         //before changing map, go through each keyframe of the map and convert the matrices.
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->GetCurrentMap()->GetAllKeyFrames();
         std::cout<<"Size of the vector before fixing: "<<allkeyframes.size()<<std::endl;
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes = mpAtlas->currentMapPtr->GetAllKeyFrames();
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes = mpAtlas->GetCurrentMap()->GetAllKeyFrames();
 
 
 
@@ -963,53 +963,58 @@ void System::PostLoad(){
             std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
         }
 
-        auto stopped_map = mpAtlas->currentMapPtr;
-        std::cout<<" -------old map ID: "<<mpAtlas->currentMapPtr->GetId()<<std::endl;
+        auto stopped_map = mpAtlas->GetCurrentMap();
+        std::cout<<" -------old map ID: "<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
         // create a new map.
         mpAtlas->CreateNewMap();
-        std::cout<<"---- New Map ID: ----"<<mpAtlas->currentMapPtr->GetId()<<std::endl;
+        std::cout<<"---- New Map ID: ----"<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
+        std::cout<<"---- Number of Maps: -----"<<mpAtlas->CountMaps()<<std::endl;
         //this should shift the new map as current
         //need to initialize the keyframe 
         
         //for(auto& camera: mpAtlas->getCurrentCamera()){
         //    mpAtlas->AddCamera(camera);
         //}
+        int pause;
+        std::cout<<"************ Paused to see above Points ********************\n";
+        cin>>pause;
         
          //have to fix all mappoints and then add new mappoints.
         std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
-        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
+        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->GetCurrentMap()->GetAllMapPoints();
         //fix all the mapppoints.
         for(auto& mapP: allmappoints){
-            mapP->UpdateMap(mpAtlas->currentMapPtr);
+            mapP->UpdateMap(mpAtlas->GetCurrentMap());
             mapP->FixMatrices();
-            mpAtlas->currentMapPtr->AddMapPoint(mapP);
+            mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
         }
+
+        mpAtlas->SetReferenceMapPoints(otherAtlas->GetReferenceMapPoints);
 
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
             keyf->ResetCamera(mpAtlas->getCurrentCamera());
-            keyf->UpdateMap(mpAtlas->currentMapPtr);
+            keyf->UpdateMap(mpAtlas->GetCurrentMap());
             keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
             keyf->SetKeyFrameDatabase(mpAtlas->GetKeyFrameDatabase());
 
             
         }
-    for(auto& keyf: allkeyframes){
+        for(auto& keyf: allkeyframes){
         //we should fix the descriptors differently.
             //with ORB vocab from new map
             thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
-            mpAtlas->currentMapPtr->AddKeyFrame(keyf);
+            mpAtlas->GetCurrentMap()->AddKeyFrame(keyf);
             //mpKeyFrameDatabase->add(keyf);
 
         }
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+        
         //for(auto& keyf: allkeyframes){
         //for(int ii = 0; ii<(allkeyframes.size()-1); ii++){
         //    mpAtlas->GetKeyFrameDatabase()->add(allkeyframes[ii]);
        // }
-        
-
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         mpAtlas->ChangeMap(stopped_map);
 
@@ -1129,8 +1134,8 @@ void System::PostLoad(){
 
 
         std::cout<<"Pause\n";
-        //int a;
-        //std::cin>>a;
+        int a;
+        std::cin>>a;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to other atlas.\n";
