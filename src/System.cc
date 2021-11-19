@@ -1014,6 +1014,10 @@ void System::PostLoad(){
 
             
         }
+
+        std::cout<<"************ Paused after fixing matrices. ********************\n";
+        cin>>pause;
+
         for(auto& keyf: allkeyframes){
         //we should fix the descriptors differently.
             //with ORB vocab from new map
@@ -1023,13 +1027,15 @@ void System::PostLoad(){
             //mpKeyFrameDatabase->add(keyf);
 
         }
+        std::cout<<"************ Paused after ADDING keyframes ********************\n";
+        cin>>pause;
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
         //for(auto& keyf: allkeyframes){
         //for(int ii = 0; ii<(allkeyframes.size()-1); ii++){
         //    mpAtlas->GetKeyFrameDatabase()->add(allkeyframes[ii]);
        // }
-        std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
+        //std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
 
         int counter_kf = 0;
@@ -1042,7 +1048,8 @@ void System::PostLoad(){
             usleep(2000);
         }
 
-        std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n";
+        std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
+        cin>>pause;
         mpAtlas->ChangeMap(stopped_map);
        /*
 
