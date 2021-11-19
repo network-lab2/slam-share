@@ -977,6 +977,7 @@ void System::PostLoad(){
 
         // create a new map.
         mpAtlas->CreateNewMap();
+        mpAtlas->GetCurrentMap()->SetInitKFid(otherAtlas->currentMapPtr->GetInitKFid());
         std::cout<<"---- New Map ID: ----"<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
         std::cout<<"---- Number of Maps: -----"<<mpAtlas->CountMaps()<<std::endl;
         //this should shift the new map as current
