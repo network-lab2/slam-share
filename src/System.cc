@@ -989,7 +989,7 @@ void System::PostLoad(){
             mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
         }
 
-        mpAtlas->SetReferenceMapPoints(otherAtlas->GetReferenceMapPoints);
+        mpAtlas->SetReferenceMapPoints(otherAtlas->GetReferenceMapPoints());
 
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
