@@ -1807,8 +1807,8 @@ list_of_available_ids.reserve(500);
         //std::cout<<"Sanity counter: "<<counter<<std::endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         //aditya's code
-        //std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
-        cv::Mat temp_pose = pKFi->GetPose();
+        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
+        cv::Mat temp_pose = pKFi.get()->GetPose();
         //std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
         //vSE3->setEstimate(Converter::toSE3Quat(pKFi->GetPose()));
