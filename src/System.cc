@@ -1058,7 +1058,7 @@ void System::PostLoad(){
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         cin>>pause;
-        mpAtlas->ChangeMap(stopped_map);
+        //mpAtlas->ChangeMap(stopped_map);
        /*
 
         for(auto& mapP: allmappoints){
