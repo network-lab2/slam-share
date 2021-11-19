@@ -1017,7 +1017,7 @@ void System::PostLoad(){
         //    mpAtlas->GetKeyFrameDatabase()->add(allkeyframes[ii]);
        // }
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
-        mpAtlas->ChangeMap(stopped_map);
+        
 
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
@@ -1026,6 +1026,7 @@ void System::PostLoad(){
         }
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n";
+        mpAtlas->ChangeMap(stopped_map);
        /*
 
         for(auto& mapP: allmappoints){
