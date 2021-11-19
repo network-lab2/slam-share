@@ -965,6 +965,7 @@ void System::PostLoad(){
         }
 
         auto stopped_map = mpAtlas->GetCurrentMap();
+        int num_keyframes = mpAtlas->GetCurrentMap()->GetAllKeyFrames().size();
         std::cout<<" -------old map ID: "<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
         // create a new map.
         mpAtlas->CreateNewMap();
@@ -976,6 +977,8 @@ void System::PostLoad(){
         //for(auto& camera: mpAtlas->getCurrentCamera()){
         //    mpAtlas->AddCamera(camera);
         //}
+        std::cout<<"How many mappoints are there in current map?: "<<mpAtlas->GetCurrentMap()->GetAllMapPoints().size()<<std::endl;
+
         int pause;
         std::cout<<"************ Paused to see above Points ********************\n";
         cin>>pause;
@@ -990,7 +993,17 @@ void System::PostLoad(){
             mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
         }
 
+        std::cout<<"How many mappoints were there?: "<<allmappoints.size()<<std::endl;
+        std::cout<<"How many mappoints are there in current map?: "<<mpAtlas->GetCurrentMap()->GetAllMapPoints().size()<<std::endl;
+
+        
+        std::cout<<"************ 2nd time Paused to see above Points ********************\n";
+        cin>>pause;
+
         mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+
+        std::cout<<"************ Paused after Changing Reference Mappoints ********************\n";
+        cin>>pause;
 
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
@@ -1022,7 +1035,7 @@ void System::PostLoad(){
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
-            if(counter_kf++<=allkeyframes.size()){
+            if(counter_kf++<=num_keyframes){
                 continue;
             }
             mpLoopCloser->InsertKeyFrame(keyframe);
