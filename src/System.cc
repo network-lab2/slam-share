@@ -982,7 +982,7 @@ void System::PostLoad(){
         
          //have to fix all mappoints and then add new mappoints.
         std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
-        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->GetCurrentMap()->GetAllMapPoints();
+        std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints = otherAtlas->currentMapPtr->GetAllMapPoints();
         //fix all the mapppoints.
         for(auto& mapP: allmappoints){
             mapP->UpdateMap(mpAtlas->GetCurrentMap());
