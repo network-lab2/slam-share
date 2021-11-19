@@ -1019,8 +1019,12 @@ void System::PostLoad(){
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
 
+        int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
+            if(counter_kf++<=allkeyframes.size()){
+                continue;
+            }
             mpLoopCloser->InsertKeyFrame(keyframe);
             usleep(2000);
         }
