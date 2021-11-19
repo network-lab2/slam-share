@@ -308,7 +308,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
             vector<boost::interprocess::offset_ptr<KeyFrame> >vpKFs = pMap->GetAllKeyFrames();
 
             //change from here 
-            std::cout<<"---- Number of keyframes as we cycle through the maps: "<<vpKFs.size()<<std::endl;
+            //std::cout<<"---- Number of keyframes as we cycle through the maps: "<<vpKFs.size()<<std::endl;
             //till here
 
             for(size_t i=0; i<vpKFs.size(); i++)

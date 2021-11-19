@@ -1870,7 +1870,7 @@ list_of_available_ids.reserve(500);
         optimizer.addVertex(vPoint);
         nPoints++;
 
-        std::cout<<"------------------- Mappoint being inserted into graph: ID: ----------------------"<<pMP->mnId<<std::endl;
+        //std::cout<<"------------------- Mappoint being inserted into graph: ID: ----------------------"<<pMP->mnId<<std::endl;
 
         const map<boost::interprocess::offset_ptr<KeyFrame> ,tuple<int,int>> observations = pMP->GetObservations();
         //std::cout<<"Number of Observations: "<<
