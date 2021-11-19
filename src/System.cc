@@ -930,12 +930,12 @@ void System::PostLoad(){
         std::cout<<"Check if the map is bad:"<<otherAtlas->currentMapPtr->IsBad()<<std::endl;
 
         //std::cout<<"Other atlas timestamp:-- "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
-        std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->GetCurrentMap()->MapPointsInMap()<<std::endl;
+        std::cout<<"Num of mappoints to currentMapPtr in OTHER atlas: "<<otherAtlas->currentMapPtr->MapPointsInMap()<<std::endl;
         
-        std::cout<<"Other atlas timestamp:-- "<<otherAtlas->GetCurrentMap()->GetOriginKF()->GetNumberMPs()<<"\n";
+        std::cout<<"Other atlas timestamp:-- "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
         //std::cout<<"This atlas timestamp:-- "<<mpAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
         std::cout<<"Point distribution of Other Atlas: (mnFrameID) "<<std::endl;
-        otherAtlas->GetCurrentMap()->GetOriginKF()->PrintPointDistribution();
+        otherAtlas->currentMapPtr->GetOriginKF()->PrintPointDistribution();
         std::cout<<std::endl;
         
         std::cout<<"Num of mappoints to currentMapPtr in CURRENT atlas: "<<mpAtlas->GetCurrentMap()->MapPointsInMap()<<std::endl;
@@ -949,9 +949,9 @@ void System::PostLoad(){
         //std::cout<<"Number of maps in the Atlas now: "<<mpAtlas->CountMaps()<<std::endl;
 
         //before changing map, go through each keyframe of the map and convert the matrices.
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->GetCurrentMap()->GetAllKeyFrames();
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > allkeyframes = otherAtlas->currentMapPtr->GetAllKeyFrames();
         std::cout<<"Size of the vector before fixing: "<<allkeyframes.size()<<std::endl;
-        std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes = mpAtlas->GetCurrentMap()->GetAllKeyFrames();
+        std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes = mpAtlas->currentMapPtr->GetAllKeyFrames();
 
 
 
