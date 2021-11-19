@@ -1019,7 +1019,7 @@ void System::PostLoad(){
             keyf->UpdateMap(mpAtlas->GetCurrentMap());
             keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
             keyf->SetKeyFrameDatabase(mpAtlas->GetKeyFrameDatabase());
-
+            std::cout<<"KeyFrame: "<<keyf->mnId<<std::endl;
             
         }
 
