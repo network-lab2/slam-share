@@ -967,6 +967,14 @@ void System::PostLoad(){
         auto stopped_map = mpAtlas->GetCurrentMap();
         int num_keyframes = mpAtlas->GetCurrentMap()->GetAllKeyFrames().size();
         std::cout<<" -------old map ID: "<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
+
+        std::cout<<"How many mappoints are there in current map?: "<<mpAtlas->GetCurrentMap()->GetAllMapPoints().size()<<std::endl;
+
+        int pause;
+        std::cout<<"************ Paused to see above Points ********************\n";
+        cin>>pause;
+        
+
         // create a new map.
         mpAtlas->CreateNewMap();
         std::cout<<"---- New Map ID: ----"<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
