@@ -1354,7 +1354,8 @@ void LoopClosing::MergeLocal()
         //pMPi->mPosMerge = cvCorrectedP3Dw;
         cvCorrectedP3Dw.copyTo(pMPi->mPosMerge);
         //pMPi->mNormalVectorMerge = Converter::toCvMat(Rcor) * pMPi->GetNormal();
-        (Converter::toCvMat(Rcor) * pMPi->GetNormal()).copyTo(pMPi->mNormalVectorMerge);
+        cv::Mat temp_mat = Converter::toCvMat(Rcor) * pMPi->GetNormal();
+        temp_mat.copyTo(pMPi->mNormalVectorMerge);
     }
 
      std::cout<<"Merge local 6\n";
