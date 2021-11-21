@@ -1065,6 +1065,12 @@ void System::PostLoad(){
             keyframe->UpdateBestCovisibles();
         }
 
+        std::vector<boost::interprocess::offset_ptr<MapPoint> > newmappoints = mpAtlas->GetCurrentMap()->GetAllMapPoints();
+        //fix all the mapppoints.
+        for(auto& mapP: newmappoints){
+            mapP->UpdateNormalAndDepth();
+        }
+
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         cin>>pause;
         //mpAtlas->ChangeMap(stopped_map);
