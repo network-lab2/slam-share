@@ -62,6 +62,9 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<KeyFrame>
     mDescriptor_ptr = ORB_SLAM3::allocator_instance.allocate(32*1*4);
     mDescriptor = cv::Mat(32,1,CV_32F,mDescriptor_ptr.get());
 
+    mPosMerge_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mPosMerge = cv::Mat(1,3,CV_32F,mPosMerge_ptr.get());
+
     //mposgba
     mPosGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     mPosGBA = cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
@@ -110,6 +113,9 @@ MapPoint::MapPoint(const double invDepth, cv::Point2f uv_init, boost::interproce
     mPosGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     mPosGBA = cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
 
+    mPosMerge_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mPosMerge = cv::Mat(1,3,CV_32F,mPosMerge_ptr.get());
+
     //mNormalVector_ptr = mNormalVector_data;
     //mNormalVector = cv::Mat::zeros(3,1,CV_32F);
     mNormalVectorx = cv::Matx31f::zeros();
@@ -152,6 +158,9 @@ MapPoint::MapPoint(const cv::Mat &Pos, boost::interprocess::offset_ptr<Map>  pMa
     //mposgba
     mPosGBA_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     mPosGBA = cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
+
+    mPosMerge_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
+    mPosMerge = cv::Mat(1,3,CV_32F,mPosMerge_ptr.get());
 
     //std::cout<<"Shared memory data for worldpos "<<mWorldPos_ptr<<std::endl;
 
@@ -219,6 +228,10 @@ void MapPoint::FixMatrices(){
 
     cv::Mat *fake3 = new cv::Mat(3,1,CV_32F,mPosGBA_ptr.get());
     memcpy(&mPosGBA, fake3, sizeof(cv::Mat));
+
+    cv::Mat *fake4 = new cv::Mat(1,3,CV_32F,mPosMerge_ptr.get());
+    memcpy(&mPosMerge, fake4, sizeof(cv::Mat));
+
 
     //now correct mWorldpos with original data
 }
