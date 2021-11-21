@@ -2066,12 +2066,14 @@ void LoopClosing::RunGlobalBundleAdjustment(boost::interprocess::offset_ptr<Map>
                     {
                         cv::Mat Tchildc = pChild->GetPose()*Twc;
                         //pChild->mTcwGBA = Tchildc*pKF->mTcwGBA;
-                        (Tchildc*pKF->mTcwGBA).copyTo(pChild->mTcwGBA);
+                        cv::Mat temp_mat1 = Tchildc*pKF->mTcwGBA;
+                        (temp_mat1).copyTo(pChild->mTcwGBA);
 
                         cv::Mat Rcor = pChild->mTcwGBA.rowRange(0,3).colRange(0,3).t()*pChild->GetRotation();
                         if(!pChild->GetVelocity().empty()){
                             //pChild->mVwbGBA = Rcor*pChild->GetVelocity();
-                            (Rcor*pChild->GetVelocity()).copyTo(pChild->mVwbGBA);
+                            cv::Mat temp_mat2 = Rcor*pChild->GetVelocity();
+                            (temp_mat2).copyTo(pChild->mVwbGBA);
                         }
                         else
                             Verbose::PrintMess("Child velocity empty!! ", Verbose::VERBOSITY_NORMAL);
