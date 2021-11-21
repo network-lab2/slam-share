@@ -3026,8 +3026,11 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
 
         cv::Mat Tiw = Converter::toCvSE3(eigR,eigt);
 
-        pKFi->mTcwBefMerge = pKFi->GetPose();
-        pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+        //pKFi->mTcwBefMerge = pKFi->GetPose();
+        //pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+        pKFi->GetPose().copyTo(pKFi->mTcwBefMerge);
+        pKFi->GetPoseInverse().copyTo(pKFi->mTwcBefMerge);
+        
         pKFi->SetPose(Tiw);
     }
     std::cout<<"OptimizeEssentialGraph 10\n";
