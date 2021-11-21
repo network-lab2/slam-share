@@ -2065,11 +2065,13 @@ void LoopClosing::RunGlobalBundleAdjustment(boost::interprocess::offset_ptr<Map>
                     if(pChild->mnBAGlobalForKF!=nLoopKF)
                     {
                         cv::Mat Tchildc = pChild->GetPose()*Twc;
-                        pChild->mTcwGBA = Tchildc*pKF->mTcwGBA;
+                        //pChild->mTcwGBA = Tchildc*pKF->mTcwGBA;
+                        (Tchildc*pKF->mTcwGBA).copyTo(pChild->mTcwGBA);
 
                         cv::Mat Rcor = pChild->mTcwGBA.rowRange(0,3).colRange(0,3).t()*pChild->GetRotation();
                         if(!pChild->GetVelocity().empty()){
-                            pChild->mVwbGBA = Rcor*pChild->GetVelocity();
+                            //pChild->mVwbGBA = Rcor*pChild->GetVelocity();
+                            (Rcor*pChild->GetVelocity()).copyTo(pChild->mVwbGBA);
                         }
                         else
                             Verbose::PrintMess("Child velocity empty!! ", Verbose::VERBOSITY_NORMAL);
@@ -2084,12 +2086,14 @@ void LoopClosing::RunGlobalBundleAdjustment(boost::interprocess::offset_ptr<Map>
                     lpKFtoCheck.push_back(pChild);
                 }
 
-                pKF->mTcwBefGBA = pKF->GetPose();
+                //pKF->mTcwBefGBA = pKF->GetPose();
+                pKF->GetPose().copyTo(pKF->mTcwBefGBA);
                 pKF->SetPose(pKF->mTcwGBA);
 
                 if(pKF->bImu)
                 {
-                    pKF->mVwbBefGBA = pKF->GetVelocity();
+                    //pKF->mVwbBefGBA = pKF->GetVelocity();
+                    pKF->GetVelocity().copyTo(pKF->mVwbBefGBA);
                     if (pKF->mVwbGBA.empty())
                         Verbose::PrintMess("pKF->mVwbGBA is empty", Verbose::VERBOSITY_NORMAL);
 
