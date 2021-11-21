@@ -979,12 +979,12 @@ void System::PostLoad(){
 
         // create a new map.
         mpAtlas->CreateNewMap();
-        mpAtlas->GetCurrentMap()->SetInitKFid(otherAtlas->currentMapPtr->GetInitKFid());
+        //mpAtlas->GetCurrentMap()->SetInitKFid(otherAtlas->currentMapPtr->GetInitKFid());
         std::cout<<"---- New Map ID: ----"<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
         std::cout<<"---- Number of Maps: -----"<<mpAtlas->CountMaps()<<std::endl;
         //this should shift the new map as current
         //need to initialize the keyframe 
-        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+        //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
 
         std::cout<<"************ Paused after Changing Reference Mappoints ********************\n";
         cin>>pause;
@@ -1053,9 +1053,9 @@ void System::PostLoad(){
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
-            if(counter_kf++<=num_keyframes){
-                continue;
-            }
+            //if(counter_kf++<=num_keyframes){
+            //    continue;
+            //}
             mpLoopCloser->InsertKeyFrame(keyframe);
             usleep(2000);
         }
