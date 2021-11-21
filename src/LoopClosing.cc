@@ -1321,7 +1321,8 @@ void LoopClosing::MergeLocal()
 
         cv::Mat correctedTiw = Converter::toCvSE3(eigR,eigt);
 
-        pKFi->mTcwMerge = correctedTiw;
+        //pKFi->mTcwMerge = correctedTiw;
+        correctedTiw.copyTo(pKFi->mTcwMerge);
 
         if(pCurrentMap->isImuInitialized())
         {
@@ -1350,8 +1351,10 @@ void LoopClosing::MergeLocal()
 
         cv::Mat cvCorrectedP3Dw = Converter::toCvMat(eigCorrectedP3Dw);
 
-        pMPi->mPosMerge = cvCorrectedP3Dw;
-        pMPi->mNormalVectorMerge = Converter::toCvMat(Rcor) * pMPi->GetNormal();
+        //pMPi->mPosMerge = cvCorrectedP3Dw;
+        cvCorrectedP3Dw.copyTo(pMPi->mPosMerge);
+        //pMPi->mNormalVectorMerge = Converter::toCvMat(Rcor) * pMPi->GetNormal();
+        (Converter::toCvMat(Rcor) * pMPi->GetNormal()).copyTo(pMPi->mNormalVectorMerge);
     }
 
      std::cout<<"Merge local 6\n";
@@ -1366,8 +1369,10 @@ void LoopClosing::MergeLocal()
                 continue;
             }
 
-            pKFi->mTcwBefMerge = pKFi->GetPose();
-            pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+            //pKFi->mTcwBefMerge = pKFi->GetPose();
+            //pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+            pKFi->GetPose().copyTo(pKFi->mTcwBefMerge);
+            pKFi->GetPoseInverse().copyTo(pKFi->mTwcBefMerge);
             pKFi->SetPose(pKFi->mTcwMerge);
 
             // Make sure connections are updated
