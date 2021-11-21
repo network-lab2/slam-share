@@ -1049,7 +1049,7 @@ void System::PostLoad(){
        // }
         //std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
-/*
+
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
@@ -1059,14 +1059,14 @@ void System::PostLoad(){
             mpLoopCloser->InsertKeyFrame(keyframe);
             usleep(2000);
         }
-
-        sleep(5);
-        mpLoopCloser->RequestFinish();
+/*
+        //sleep(5);
+        //mpLoopCloser->RequestFinish();
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
             keyframe->UpdateBestCovisibles();
         }
-*
+
         std::vector<boost::interprocess::offset_ptr<MapPoint> > newmappoints = mpAtlas->GetCurrentMap()->GetAllMapPoints();
         //fix all the mapppoints.
         for(auto& mapP: newmappoints){
