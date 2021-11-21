@@ -1175,7 +1175,8 @@ void KeyFrame::SetErase()
 {
     {
         unique_lock<mutex> lock(mMutexConnections);
-        if(mspLoopEdges.empty())
+        //if(mspLoopEdges.empty())
+        if(mspLoopEdges->empty())
         {
             mbNotErase = false;
         }
