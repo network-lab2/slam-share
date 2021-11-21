@@ -261,7 +261,9 @@ cv::Mat MapPoint::GetWorldPos()
 cv::Mat MapPoint::GetNormal()
 {
     unique_lock<mutex> lock(mMutexPos);
-    return mNormalVector.clone();
+    cv::Mat temp = cv::Mat(3,1,CV_32F,mNormalVector_ptr.get());
+    return temp.clone();
+    //return mNormalVector.clone();
 }
 
 cv::Matx31f MapPoint::GetWorldPos2()
