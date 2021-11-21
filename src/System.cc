@@ -1003,6 +1003,7 @@ void System::PostLoad(){
         for(auto& mapP: allmappoints){
             mapP->UpdateMap(mpAtlas->GetCurrentMap());
             mapP->FixMatrices();
+            mapP->UpdateNormalAndDepth()
             mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
         }
 
