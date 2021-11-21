@@ -538,7 +538,8 @@ protected:
     //replace the STL set with regular set
     //old-code
     //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens;
-    std::set<boost::interprocess::offset_ptr<KeyFrame> > mspLoopEdges;
+    //std::set<boost::interprocess::offset_ptr<KeyFrame> > mspLoopEdges;
+    boost::interprocess::offset_ptr<Myset_keyframe> mspLoopEdges;
 
     boost::interprocess::offset_ptr<Myset_keyframe> mspChildrens;
     std::set<boost::interprocess::offset_ptr<KeyFrame> > mspChildrens_support;

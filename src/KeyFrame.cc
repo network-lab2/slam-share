@@ -76,6 +76,8 @@ KeyFrame::KeyFrame():
     //set-keyframe
     mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
     mspChildrens = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+    mspLoopEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+
 
     //mvkeys and mvkeysun
     mvKeys = ORB_SLAM3::segment.construct<MyVector_CV>(boost::interprocess::anonymous_instance)(alloc_set_cv);
@@ -206,6 +208,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     //set-keyframe
     mspMergeEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
     mspChildrens = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
+    mspLoopEdges = ORB_SLAM3::segment.construct<Myset_keyframe>(boost::interprocess::anonymous_instance)(alloc_set_key);
 
     //mvpMapPoints = mvpMapPoints_original;
     (*mvpMapPoints).assign(F.mvpMapPoints.begin(), F.mvpMapPoints.end());
@@ -1117,13 +1120,19 @@ void KeyFrame::AddLoopEdge(boost::interprocess::offset_ptr<KeyFrame> pKF)
 {
     unique_lock<mutex> lockCon(mMutexConnections);
     mbNotErase = true;
-    mspLoopEdges.insert(pKF);
+    //mspLoopEdges.insert(pKF);
+    mspLoopEdges->insert(pKF);
 }
 
 set<boost::interprocess::offset_ptr<KeyFrame> > KeyFrame::GetLoopEdges()
 {
     unique_lock<mutex> lockCon(mMutexConnections);
-    return mspLoopEdges;
+    std::set<boost::interprocess::offset_ptr<KeyFrame> >temp;
+    for(auto  loopedge: *mspLoopEdges){
+        temp.insert(loopedge);
+    }
+    //return mspLoopEdges;
+    return temp;
 }
 
 void KeyFrame::AddMergeEdge(boost::interprocess::offset_ptr<KeyFrame>  pKF)
