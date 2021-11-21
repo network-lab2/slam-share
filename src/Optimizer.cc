@@ -1804,7 +1804,7 @@ list_of_available_ids.reserve(500);
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
-        //std::cout<<"Sanity counter: "<<counter<<std::endl;
+        std::cout<<"Sanity counter in lfixedcameras: "<<counter<<std::endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         //aditya's code
         std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
