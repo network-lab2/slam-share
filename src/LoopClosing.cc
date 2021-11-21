@@ -1353,6 +1353,8 @@ void LoopClosing::MergeLocal()
 
         cv::Mat cvCorrectedP3Dw = Converter::toCvMat(eigCorrectedP3Dw);
 
+        std::cout<<"Size of cvCorrectedP3Dw: (mPosMerge) "<<cvCorrectedP3Dw.size()<<" element size: "<<cvCorrectedP3Dw.elemSize()<<std::endl;
+
         //pMPi->mPosMerge = cvCorrectedP3Dw;
         cvCorrectedP3Dw.copyTo(pMPi->mPosMerge);
         //pMPi->mNormalVectorMerge = Converter::toCvMat(Rcor) * pMPi->GetNormal();
