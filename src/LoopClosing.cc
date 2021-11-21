@@ -1361,7 +1361,7 @@ void LoopClosing::MergeLocal()
 
         //pMPi->mNormalVectorMerge = Converter::toCvMat(Rcor) * pMPi->GetNormal();
         cv::Mat temp_mat = Converter::toCvMat(Rcor) * pMPi->GetNormal();
-        std::cout<<"Size of temp_map: (mNormalVectorMerge) "<<temp_mat.size()<<" element size: "<<temp_mat.elemSize()<<std::endl;
+        //std::cout<<"Size of temp_map: (mNormalVectorMerge) "<<temp_mat.size()<<" element size: "<<temp_mat.elemSize()<<std::endl;
         temp_mat.copyTo(pMPi->mNormalVectorMerge);
     }
 
