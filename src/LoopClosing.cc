@@ -1309,8 +1309,8 @@ void LoopClosing::MergeLocal()
         {
             g2oCorrectedSiw = g2oCorrectedScw;
         }
-        pKFi->mTcwMerge  = pKFi->GetPose();
-
+        //pKFi->mTcwMerge  = pKFi->GetPose();
+        pKFi->GetPose().copyTo(pKFi->mTcwMerge);
         // Update keyframe pose with corrected Sim3. First transform Sim3 to SE3 (scale translation)
         Eigen::Matrix3d eigR = g2oCorrectedSiw.rotation().toRotationMatrix();
         Eigen::Vector3d eigt = g2oCorrectedSiw.translation();
@@ -1327,7 +1327,9 @@ void LoopClosing::MergeLocal()
         if(pCurrentMap->isImuInitialized())
         {
             Eigen::Matrix3d Rcor = eigR.transpose()*vNonCorrectedSim3[pKFi].rotation().toRotationMatrix();
-            pKFi->mVwbMerge = Converter::toCvMat(Rcor)*pKFi->GetVelocity();
+            cv::Mat temp1 = Converter::toCvMat(Rcor)*pKFi->GetVelocity();
+            temp1.copyTo(pKFi->mVwbMerge);
+            //pKFi->mVwbMerge = Converter::toCvMat(Rcor)*pKFi->GetVelocity();
         }
 
     }
