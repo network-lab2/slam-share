@@ -173,11 +173,12 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         //KeyFrame::nNextId = *magic_num*200;
         //MapPoint::nNextId = *magic_num*10000;
         Atlas* otherAtlas = (segment.find<Atlas>(otherAtlasname)).first;
-        mpAtlas->AddMap(otherAtlas->currentMapPtr);
+
         if(otherAtlas!=0){
+            mpAtlas->AddMap(otherAtlas->currentMapPtr);
             std::cout<<"Setting up reference points as points of other atlas\n";
-            KeyFrame::nNextId = 1500;
-            MapPoint::nNextId = 1500;
+            //KeyFrame::nNextId = 1500;
+            //MapPoint::nNextId = 1500;
 
         //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
     }
