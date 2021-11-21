@@ -1813,6 +1813,7 @@ list_of_available_ids.reserve(500);
     {
         std::cout<<"Sanity counter in lfixedcameras: "<<counter<<std::endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
+        if(pKFi){
         //aditya's code
         std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
         cv::Mat temp_pose = pKFi.get()->GetPose();
@@ -1827,6 +1828,7 @@ list_of_available_ids.reserve(500);
         if(pKFi->mnId>maxKFid)
             maxKFid=pKFi->mnId;
         //std::cout<<"LocalBundleAdjustment5.5\n";
+    }
     }
     std::cout<<"LocalBundleAdjustment6\n";
     // Set MapPoint vertices
