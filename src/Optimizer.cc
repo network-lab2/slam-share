@@ -1743,7 +1743,14 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
         num_fixedKF++;
         if(num_fixedKF < 2)
         {
-            std::cout<<"------ lFixedCameras have pushed (2nd time): "<<pSecondLowerKF->mnId<<std::endl;
+            if(pSecondLowerKF){
+                std::cout<<"------ lFixedCameras have pushed (2nd time): "<<secondLowerId<<std::endl;
+                std::cout<<"------ lFixedCameras have pushed (2nd time): "<<pSecondLowerKF->mnId<<std::endl;
+            }
+            else
+            {
+                std::cout<<"pSecondLowerKF is null\n";
+            }
             lFixedCameras.push_back(pSecondLowerKF);
             lLocalKeyFrames.remove(pSecondLowerKF);
             num_fixedKF++;
