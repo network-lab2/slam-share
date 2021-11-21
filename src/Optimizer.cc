@@ -2794,6 +2794,7 @@ void Optimizer::OptimizeEssentialGraph6DoF(boost::interprocess::offset_ptr<KeyFr
 void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>  pCurKF, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpFixedKFs, vector<boost::interprocess::offset_ptr<KeyFrame> > &vpFixedCorrectedKFs,
                                        vector<boost::interprocess::offset_ptr<KeyFrame> > &vpNonFixedKFs, vector<boost::interprocess::offset_ptr<MapPoint> > &vpNonCorrectedMPs)
 {
+    std::cout<<"OptimizeEssentialGraph 1\n";
     g2o::SparseOptimizer optimizer;
     optimizer.setVerbose(false);
     g2o::BlockSolver_7_3::LinearSolverType * linearSolver =
@@ -2813,7 +2814,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
 
     const int minFeat = 100;
 
-
+    std::cout<<"OptimizeEssentialGraph 2\n";
     for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpFixedKFs)
     {
         if(pKFi->isBad())
@@ -2840,6 +2841,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
 
         vpVertices[nIDi]=VSim3;
     }
+    std::cout<<"OptimizeEssentialGraph 3\n";
     Verbose::PrintMess("Opt_Essential: vpFixedKFs loaded", Verbose::VERBOSITY_DEBUG);
 
     set<unsigned long> sIdKF;
@@ -2874,6 +2876,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
 
         sIdKF.insert(nIDi);
     }
+    std::cout<<"OptimizeEssentialGraph 4\n";
     Verbose::PrintMess("Opt_Essential: vpFixedCorrectedKFs loaded", Verbose::VERBOSITY_DEBUG);
 
     for(boost::interprocess::offset_ptr<KeyFrame>  pKFi : vpNonFixedKFs)
@@ -2906,6 +2909,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
         sIdKF.insert(nIDi);
 
     }
+    std::cout<<"OptimizeEssentialGraph 5\n";
     Verbose::PrintMess("Opt_Essential: vpNonFixedKFs loaded", Verbose::VERBOSITY_DEBUG);
 
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs;
@@ -2915,6 +2919,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
     vpKFs.insert(vpKFs.end(),vpNonFixedKFs.begin(),vpNonFixedKFs.end());
     set<boost::interprocess::offset_ptr<KeyFrame> > spKFs(vpKFs.begin(), vpKFs.end());
 
+    std::cout<<"OptimizeEssentialGraph 6\n";
     Verbose::PrintMess("Opt_Essential: List of KF loaded", Verbose::VERBOSITY_DEBUG);
 
     const Eigen::Matrix<double,7,7> matLambda = Eigen::Matrix<double,7,7>::Identity();
@@ -2966,7 +2971,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
                 num_connections++;
             }
         }
-
+        std::cout<<"OptimizeEssentialGraph 7\n";
         // Covisibility graph edges
         const vector<boost::interprocess::offset_ptr<KeyFrame> > vpConnectedKFs = pKFi->GetCovisiblesByWeight(minFeat);
         for(vector<boost::interprocess::offset_ptr<KeyFrame> >::const_iterator vit=vpConnectedKFs.begin(); vit!=vpConnectedKFs.end(); vit++)
@@ -2993,10 +2998,12 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
         }
     }
 
+    std::cout<<"OptimizeEssentialGraph 8\n";
     // Optimize!
     optimizer.initializeOptimization();
     optimizer.optimize(20);
 
+    std::cout<<"OptimizeEssentialGraph 9\n";
 
     unique_lock<mutex> lock(pMap->mMutexMapUpdate);
 
@@ -3023,6 +3030,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
         pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
         pKFi->SetPose(Tiw);
     }
+    std::cout<<"OptimizeEssentialGraph 10\n";
 
     // Correct points. Transform to "non-optimized" reference keyframe pose and transform back with optimized pose
     for(boost::interprocess::offset_ptr<MapPoint>  pMPi : vpNonCorrectedMPs)
@@ -3064,6 +3072,7 @@ void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>
 
         pMPi->UpdateNormalAndDepth();
     }
+    std::cout<<"OptimizeEssentialGraph 11\n";
 }
 
 void Optimizer::OptimizeEssentialGraph(boost::interprocess::offset_ptr<KeyFrame>  pCurKF,
