@@ -175,7 +175,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         Atlas* otherAtlas = (segment.find<Atlas>(otherAtlasname)).first;
 
         if(otherAtlas!=0){
-            mpAtlas->AddMap(otherAtlas->currentMapPtr);
+            //mpAtlas->AddMap(otherAtlas->currentMapPtr);
             std::cout<<"Setting up reference points as points of other atlas\n";
             //KeyFrame::nNextId = 1500;
             //MapPoint::nNextId = 1500;
@@ -250,7 +250,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mpLoopCloser->SetLocalMapper(mpLocalMapper);
 
     // Fix verbosity
-    Verbose::SetTh(Verbose::VERBOSITY_QUIET);
+    Verbose::SetTh(Verbose::VERBOSITY_NORMAL);
 
 }
 

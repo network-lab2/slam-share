@@ -1091,6 +1091,7 @@ void LoopClosing::CorrectLoop()
 
 void LoopClosing::MergeLocal()
 {
+    std::cout<<"Merge local 1\n";
     Verbose::PrintMess("MERGE: Merge Visual detected!!!!", Verbose::VERBOSITY_NORMAL);
 
     int numTemporalKFs = 15;
@@ -1121,6 +1122,7 @@ void LoopClosing::MergeLocal()
         }
         bRelaunchBA = true;
     }
+     std::cout<<"Merge local 2\n";
 
     Verbose::PrintMess("MERGE: Request Stop Local Mapping", Verbose::VERBOSITY_DEBUG);
     mpLocalMapper->RequestStop();
@@ -1206,6 +1208,7 @@ void LoopClosing::MergeLocal()
         set<boost::interprocess::offset_ptr<MapPoint> > spMPs = pKFi->GetMapPoints();
         spLocalWindowMPs.insert(spMPs.begin(), spMPs.end());
     }
+     std::cout<<"Merge local 3\n";
 
     set<boost::interprocess::offset_ptr<KeyFrame> > spMergeConnectedKFs;
     if(pCurrentMap->IsInertial() && pMergeMap->IsInertial()) //TODO Check the correct initialization
@@ -1262,6 +1265,8 @@ void LoopClosing::MergeLocal()
     vector<boost::interprocess::offset_ptr<MapPoint> > vpCheckFuseMapPoint;
     vpCheckFuseMapPoint.reserve(spMapPointMerge.size());
     std::copy(spMapPointMerge.begin(), spMapPointMerge.end(), std::back_inserter(vpCheckFuseMapPoint));
+
+    std::cout<<"Merge local 4\n";
 
     cv::Mat Twc = mpCurrentKF->GetPoseInverse();
 
@@ -1326,6 +1331,7 @@ void LoopClosing::MergeLocal()
 
     }
 
+     std::cout<<"Merge local 5\n";
     for(boost::interprocess::offset_ptr<MapPoint>  pMPi : spLocalWindowMPs)
     {
         if(!pMPi || pMPi->isBad())
@@ -1348,6 +1354,7 @@ void LoopClosing::MergeLocal()
         pMPi->mNormalVectorMerge = Converter::toCvMat(Rcor) * pMPi->GetNormal();
     }
 
+     std::cout<<"Merge local 6\n";
     {
         unique_lock<mutex> currentLock(pCurrentMap->mMutexMapUpdate); // We update the current map with the Merge information
         unique_lock<mutex> mergeLock(pMergeMap->mMutexMapUpdate); // We remove the Kfs and MPs in the merged area from the old map
@@ -1392,6 +1399,7 @@ void LoopClosing::MergeLocal()
         pMergeMap->IncreaseChangeIndex();
     }
 
+     std::cout<<"Merge local 7\n";
 
     //Rebuild the essential graph in the local window
     pCurrentMap->GetOriginKF()->SetFirstConnection(false);
@@ -1439,6 +1447,8 @@ void LoopClosing::MergeLocal()
         pKFi->UpdateConnections();
     }
 
+     std::cout<<"Merge local 8\n";
+
     bool bStop = false;
     Verbose::PrintMess("MERGE: Start local BA ", Verbose::VERBOSITY_DEBUG);
     vpLocalCurrentWindowKFs.clear();
@@ -1459,6 +1469,7 @@ void LoopClosing::MergeLocal()
 
     Verbose::PrintMess("MERGE: Finish the LBA", Verbose::VERBOSITY_DEBUG);
 
+     std::cout<<"Merge local 9\n";
 
     ////
     //Update the non critical area from the current map to the merged map
@@ -1511,8 +1522,11 @@ void LoopClosing::MergeLocal()
 
                     cv::Mat correctedTiw = Converter::toCvSE3(eigR,eigt);
 
-                    pKFi->mTcwBefMerge = pKFi->GetPose();
-                    pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+                    //pKFi->mTcwBefMerge = pKFi->GetPose();
+                    //pKFi->mTwcBefMerge = pKFi->GetPoseInverse();
+
+                    pKFi->GetPose().copyTo(pKFi->mTcwBefMerge);
+                    pKFi->GetPoseInverse().copyTo(pKFi->mTwcBefMerge);
 
                     pKFi->SetPose(correctedTiw);
 
@@ -1544,6 +1558,7 @@ void LoopClosing::MergeLocal()
                 }
             }
         }
+        std::cout<<"Merge local 10\n";
 
         mpLocalMapper->RequestStop();
         // Wait until Local Mapping has effectively stopped
@@ -1590,6 +1605,7 @@ void LoopClosing::MergeLocal()
     }
 
     mpLocalMapper->Release();
+    std::cout<<"Merge local 11\n";
 
     Verbose::PrintMess("MERGE:Completed!!!!!", Verbose::VERBOSITY_DEBUG);
 
