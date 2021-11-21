@@ -542,11 +542,11 @@ int ORBmatcher::SearchByProjection(boost::interprocess::offset_ptr<KeyFrame>  pK
         // Viewing angle must be less than 60 deg
         cv::Mat Pn = pMP->GetNormal();
 
-        std::cout<<"Before dot: SearchByProjection 1\n ";
+        //std::cout<<"Before dot: SearchByProjection 1\n ";
         if(PO.dot(Pn)<0.5*dist)
             continue;
 
-        std::cout<<"After dot: SearchByProjection 1.1\n ";
+        //std::cout<<"After dot: SearchByProjection 1.1\n ";
         int nPredictedLevel = pMP->PredictScale(dist,pKF);
 
         // Search in a radius
