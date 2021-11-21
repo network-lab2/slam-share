@@ -1003,7 +1003,7 @@ void System::PostLoad(){
         for(auto& mapP: allmappoints){
             mapP->UpdateMap(mpAtlas->GetCurrentMap());
             mapP->FixMatrices();
-            mapP->UpdateNormalAndDepth()
+            mapP->UpdateNormalAndDepth();
             mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
         }
 
@@ -1056,6 +1056,13 @@ void System::PostLoad(){
             }
             mpLoopCloser->InsertKeyFrame(keyframe);
             usleep(2000);
+        }
+
+        sleep(5);
+        mpLoopCloser->RequestFinish();
+        for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
+        {
+            keyframe->UpdateBestCovisibles();
         }
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";

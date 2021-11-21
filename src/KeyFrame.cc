@@ -459,7 +459,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //update the PID
     ownerProcess = getpid();
 
-    SetPose(Tcw);
+    //SetPose(Tcw);
 
     //UpdateBestCovisibles();
     //std::cout<<"Updated the Best Covisibles--"<<std::endl;
