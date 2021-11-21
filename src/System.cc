@@ -1005,7 +1005,7 @@ void System::PostLoad(){
         for(auto& mapP: allmappoints){
             mapP->UpdateMap(mpAtlas->GetCurrentMap());
             mapP->FixMatrices();
-            mapP->UpdateNormalAndDepth();
+            //mapP->UpdateNormalAndDepth();
             mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
         }
 
@@ -1049,7 +1049,7 @@ void System::PostLoad(){
        // }
         //std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
-
+/*
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
@@ -1066,12 +1066,13 @@ void System::PostLoad(){
         {
             keyframe->UpdateBestCovisibles();
         }
-
+*
         std::vector<boost::interprocess::offset_ptr<MapPoint> > newmappoints = mpAtlas->GetCurrentMap()->GetAllMapPoints();
         //fix all the mapppoints.
         for(auto& mapP: newmappoints){
             mapP->UpdateNormalAndDepth();
         }
+        */
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         cin>>pause;
