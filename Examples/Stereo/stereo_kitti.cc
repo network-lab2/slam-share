@@ -97,7 +97,7 @@ int main(int argc, char **argv)
         }
 
         
-        if(count_images>=199)
+        if(count_images>=1999)
         {
             std::cout<<"==== @@@@ ==== Exiting. Before shutdown. ==== @@@@ ==== \n";
             int aa;
