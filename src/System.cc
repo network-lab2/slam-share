@@ -783,12 +783,7 @@ void System::SaveTrajectoryKITTI(const string &filename)
     //pausing so that we can save "corrected trajectory"
     int code = 0;
 
-    std::cout<<"#######################################################################\n";
-    std::cout<<"---------------- Paused to wait for merged co-ordinates ---------------\n";
-    std::cout<<"---------------- Enter code: 2234 after the other map ends ------------\n";
-
-    cin>>code;
-
+   
 
     if(mSensor==MONOCULAR)
     {
@@ -799,6 +794,13 @@ void System::SaveTrajectoryKITTI(const string &filename)
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
     cout<<endl<<" [[[[{{{{ The number of Keyframes considered for output : }}}"<<vpKFs.size()<<endl;
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
+
+    std::cout<<"#######################################################################\n";
+    std::cout<<"---------------- Paused to wait for merged co-ordinates ---------------\n";
+    std::cout<<"---------------- Enter code: 2234 after the other map ends ------------\n";
+
+    cin>>code;
+
 
     if(code==2234)
     {
