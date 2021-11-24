@@ -780,6 +780,16 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
 void System::SaveTrajectoryKITTI(const string &filename)
 {
     cout << endl << "Saving camera trajectory to " << filename << " ..." << endl;
+    //pausing so that we can save "corrected trajectory"
+    int code = 0;
+
+    std::cout<<"#######################################################################\n";
+    std::cout<<"---------------- Paused to wait for merged co-ordinates ---------------\n";
+    std::cout<<"---------------- Enter code: 2234 after the other map ends ------------\n";
+
+    cin>>code;
+
+
     if(mSensor==MONOCULAR)
     {
         cerr << "ERROR: SaveTrajectoryKITTI cannot be used for monocular." << endl;
@@ -787,8 +797,18 @@ void System::SaveTrajectoryKITTI(const string &filename)
     }
 
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = mpAtlas->GetAllKeyFrames();
-    cout<<endl<<" [[[[{{{{ The number of Keyframes considered for output : "<<vpKFs.size()<<endl;
+    cout<<endl<<" [[[[{{{{ The number of Keyframes considered for output : }}}"<<vpKFs.size()<<endl;
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
+
+    if(code==2234)
+    {
+        for(int i =0; i<vpKFs.size(); i++){
+            vpKFs.at(i)->FixMatrices(vpKFs.at(i));
+        }
+        std::cout<<"We have fixed the matrices for the keyframes.\n"
+        
+    }
+
 
     // Transform all keyframes so that the first keyframe is at the origin.
     // After a loop closure the first keyframe might not be at the origin.
