@@ -805,7 +805,7 @@ void System::SaveTrajectoryKITTI(const string &filename)
         for(int i =0; i<vpKFs.size(); i++){
             vpKFs.at(i)->FixMatrices(vpKFs.at(i));
         }
-        std::cout<<"We have fixed the matrices for the keyframes.\n"
+        std::cout<<"We have fixed the matrices for the keyframes.\n";
         
     }
 
