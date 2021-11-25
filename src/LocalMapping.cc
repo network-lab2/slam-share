@@ -518,6 +518,7 @@ void LocalMapping::CreateNewMapPoints()
             const bool bRight2 = (pKF2 -> NLeft == -1 || idx2 < pKF2 -> NLeft) ? false
                                                                                : true;
 
+            std::cout<<"CreateNewMapPoints 4\n";
             if(mpCurrentKeyFrame->mpCamera2 && pKF2->mpCamera2){
                 if(bRight1 && bRight2){
                     Rcw1 = mpCurrentKeyFrame->GetRightRotation_();
@@ -585,6 +586,7 @@ void LocalMapping::CreateNewMapPoints()
                 }
             }
 
+            std::cout<<"CreateNewMapPoints 5\n";
             // Check parallax between rays
             auto xn1 = pCamera1->unprojectMat_(kp1.pt);
             auto xn2 = pCamera2->unprojectMat_(kp2.pt);
@@ -648,6 +650,7 @@ void LocalMapping::CreateNewMapPoints()
                 continue; //No stereo and very low parallax
             }
 
+            std::cout<<"CreateNewMapPoints 6\n";
             cv::Matx13f x3Dt = x3D.t();
 
             if(!bEstimated) continue;
@@ -687,7 +690,7 @@ void LocalMapping::CreateNewMapPoints()
                 if((errX1*errX1+errY1*errY1+errX1_r*errX1_r)>7.8*sigmaSquare1)
                     continue;
             }
-
+            std::cout<<"CreateNewMapPoints 7\n";
             //Check reprojection error in second keyframe
             const float sigmaSquare2 = pKF2->mvLevelSigma2->at(kp2.octave);//const float sigmaSquare2 = pKF2->mvLevelSigma2[kp2.octave];
             const float x2 = Rcw2.row(0).dot(x3Dt)+tcw2(0);
@@ -712,6 +715,7 @@ void LocalMapping::CreateNewMapPoints()
                 if((errX2*errX2+errY2*errY2+errX2_r*errX2_r)>7.8*sigmaSquare2)
                     continue;
             }
+            std::cout<<"CreateNewMapPoints 8\n";
 
             //Check scale consistency
             auto normal1 = x3D-Ow1;
