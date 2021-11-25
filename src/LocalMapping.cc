@@ -515,9 +515,10 @@ void LocalMapping::CreateNewMapPoints()
                                                             : (idx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[idx2]
                                                                                      : (*pKF2 -> mvKeysRight)[idx2 - pKF2 -> NLeft];
 
-            std::cout<<"CreateNewMapPoints 3.3: idx2\n"<<idx2<<std::endl;
+            std::cout<<"CreateNewMapPoints 3.3: idx2: "<<idx2<<std::endl;
 
-            const float kp2_ur = pKF2->mvuRight->at(idx2);//const float kp2_ur = pKF2->mvuRight[idx2];
+            //const float kp2_ur = pKF2->mvuRight->at(idx2);//const float kp2_ur = pKF2->mvuRight[idx2];
+            const float kp2_ur = (*pKF2->mvuRight)[idx2];
             bool bStereo2 = (!pKF2->mpCamera2 && kp2_ur>=0);
             const bool bRight2 = (pKF2 -> NLeft == -1 || idx2 < pKF2 -> NLeft) ? false
                                                                                : true;
