@@ -393,6 +393,7 @@ void LocalMapping::MapPointCulling()
 
 void LocalMapping::CreateNewMapPoints()
 {
+    std::cout<<"CreateNewMapPoints 1\n";
     // Retrieve neighbor keyframes in covisibility graph
     int nn = 10;
     // For stereo inertial case
@@ -413,6 +414,7 @@ void LocalMapping::CreateNewMapPoints()
         }
     }
 
+    std::cout<<"CreateNewMapPoints 2\n";
     float th = 0.6f;
 
     ORBmatcher matcher(th,false);
@@ -491,6 +493,7 @@ void LocalMapping::CreateNewMapPoints()
         const float &invfx2 = pKF2->invfx;
         const float &invfy2 = pKF2->invfy;
 
+        std::cout<<"CreateNewMapPoints 3\n";
         // Triangulate each match
         const int nmatches = vMatchedIndices.size();
         for(int ikp=0; ikp<nmatches; ikp++)
