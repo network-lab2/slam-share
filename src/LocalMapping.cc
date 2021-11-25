@@ -1048,7 +1048,7 @@ void LocalMapping::KeyFrameCulling()
                 {
                     if(!mbMonocular)
                     {
-                        if(pKF->mvDepth->at(i)>pKF->mThDepth || pKF->mvDepth->at(i)<0)//if(pKF->mvDepth[i]>pKF->mThDepth || pKF->mvDepth[i]<0)
+                        if((*pKF->mvDepth)[i]>pKF->mThDepth || (*pKF->mvDepth)[i]<0) //if(pKF->mvDepth->at(i)>pKF->mThDepth || pKF->mvDepth->at(i)<0)//if(pKF->mvDepth[i]>pKF->mThDepth || pKF->mvDepth[i]<0)
                             continue;
                     }
 
