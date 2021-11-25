@@ -214,9 +214,25 @@ int main(int argc, char **argv)
 
 
             std::cout<<ni<<" images completed\n";
-            if(ni>= 2000)
+            if(ni==100){
+                std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            SLAM.PostLoad(); //run the post load function
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            }
+
+
+            if(ni>= 1100)
              {
-                std::cout<<"2000 frames done\n";
+                std::cout<<"1100 frames done\n";
                 SLAM.Shutdown();
                 SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
                 SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
