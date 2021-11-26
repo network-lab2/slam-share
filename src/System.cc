@@ -701,7 +701,8 @@ void System::SaveTrajectoryEuRoC(const string &filename)
             pKF = pKF->GetParent();
         }
 
-        if(!pKF || pKF->GetMap() != pBiggerMap)
+        /
+        if(!pKF)// || pKF->GetMap() != pBiggerMap)
         {
             continue;
         }
@@ -1084,12 +1085,12 @@ void System::PostLoad(){
             //    continue;
             //}
             mpLoopCloser->InsertKeyFrame(keyframe);
-            //usleep(2000);
-        }
-        while(mpLoopCloser->isFinished())
-        {
             usleep(1000);
         }
+//        while(mpLoopCloser->isFinished())
+//        {
+//            usleep(1000);
+//        }
 /*
         //sleep(5);
         //mpLoopCloser->RequestFinish();
