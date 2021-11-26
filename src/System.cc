@@ -676,6 +676,8 @@ void System::SaveTrajectoryEuRoC(const string &filename)
     list<bool>::iterator lbL = mpTracker->mlbLost.begin();
 
     std::cout<<"----- Waiting for the 2nd process to finish --------- \n";
+    int stop;
+    cin>>stop;
 
     for(list<cv::Mat>::iterator lit=mpTracker->mlRelativeFramePoses.begin(),
         lend=mpTracker->mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lT++, lbL++)
