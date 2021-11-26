@@ -1311,7 +1311,9 @@ void KeyFrame::SetBadFlag()
 
         if(mpParent){
             mpParent->EraseChild(this);
-            mTcp = Tcw*mpParent->GetPoseInverse();
+            cv::Mat temp_map = Tcw*mpParent->GetPoseInverse(); 
+            //mTcp = Tcw*mpParent->GetPoseInverse();
+            temp_map.copyTo(mTcp);
         }
         mbBad = true;
     }
