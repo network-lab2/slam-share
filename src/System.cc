@@ -675,6 +675,8 @@ void System::SaveTrajectoryEuRoC(const string &filename)
     list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
     list<bool>::iterator lbL = mpTracker->mlbLost.begin();
 
+    std::cout<<"----- Waiting for the 2nd process to finish --------- \n";
+
     for(list<cv::Mat>::iterator lit=mpTracker->mlRelativeFramePoses.begin(),
         lend=mpTracker->mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lT++, lbL++)
     {
@@ -683,6 +685,7 @@ void System::SaveTrajectoryEuRoC(const string &filename)
 
 
         boost::interprocess::offset_ptr<KeyFrame>  pKF = *lRit;
+        pKF->FixMatrices(pKF);
 
         cv::Mat Trw = cv::Mat::eye(4,4,CV_32F);
 
