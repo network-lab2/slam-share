@@ -135,13 +135,30 @@ int main(int argc, char **argv)
             if(ttrack<T)
                 usleep((T-ttrack)*1e6);
 
+             if(ni==100){
+                std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            SLAM.PostLoad(); //run the post load function
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            }
+
+
+
             std::cout<<ni<<" images completed\n";
-            if(ni>= 1200)
+            if(ni>= 1000)
              {
-                std::cout<<"1200 frames done\n";
+                std::cout<<"1000 frames done\n";
                 SLAM.Shutdown();
-                SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
-                SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+                SLAM.SaveTrajectoryEuRoC("CameraTrajectory_1000.txt");
+                SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory_1000.txt");
                 exit(0);
             }
         }
@@ -169,8 +186,8 @@ int main(int argc, char **argv)
     }
     else
     {
-        SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
-        SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        SLAM.SaveTrajectoryEuRoC("CameraTrajectory_merged.txt");
+        SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory_merged.txt");
     }
 
     return 0;
