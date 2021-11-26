@@ -701,7 +701,7 @@ void System::SaveTrajectoryEuRoC(const string &filename)
             pKF = pKF->GetParent();
         }
 
-        /
+        
         if(!pKF)// || pKF->GetMap() != pBiggerMap)
         {
             continue;
