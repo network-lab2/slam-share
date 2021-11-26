@@ -276,12 +276,14 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     mTwcBefMerge_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
     mVwbMerge_ptr = ORB_SLAM3::allocator_instance.allocate(3*1*4);
     mVwbBefMerge_ptr = ORB_SLAM3::allocator_instance.allocate(10*4*4);
+    mTcp_ptr = ORB_SLAM3::allocator_instance.allocate(4*4*4);
 
     Tcw = cv::Mat(4,4,CV_32F,Tcw_ptr.get());
     Twc = cv::Mat(4,4,CV_32F,Twc_ptr.get());
     Ow = cv::Mat(3,1,CV_32F,Ow_ptr.get());
     Cw = cv::Mat(4,1,CV_32F,Cw_ptr.get());
     Owb = cv::Mat(3,1,CV_32F,Owb_ptr.get());
+    mTcp = cv::Mat(4,4,CV_32F,mTcp_ptr.get());
 
     mTcwMerge = cv::Mat(4,4,CV_32F,mTcwMerge_ptr.get());
     mTcwBefMerge = cv::Mat(4,4,CV_32F,mTcwBefMerge_ptr.get());
@@ -430,10 +432,13 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     cv::Mat *fake12 = new cv::Mat(4,4,CV_32F,pKF->mTwcBefMerge_ptr.get());
     cv::Mat *fake13 = new cv::Mat(3,1,CV_32F,pKF->mVwbMerge_ptr.get());
 
+    cv::Mat *fake16 = new cv::Mat(4,4,CV_32F, pKF->mTcp_ptr.get());
+
     memcpy(&(pKF->mTcwMerge), fake10, sizeof(cv::Mat));
     memcpy(&(pKF->mTcwBefMerge), fake11, sizeof(cv::Mat));
     memcpy(&(pKF->mTwcBefMerge), fake12, sizeof(cv::Mat));
     memcpy(&(pKF->mVwbMerge), fake13, sizeof(cv::Mat));
+    memcpy(&(pKF->mTcp), fake16, sizeof(cv::Mat));
 
     //pKF->mTcwMerge = cv::Mat(4,4,CV_32F,pKF->mTcwMerge_ptr.get());
    // pKF->mTcwBefMerge = cv::Mat(4,4,CV_32F,pKF->mTcwBefMerge_ptr.get());
@@ -1312,7 +1317,7 @@ void KeyFrame::SetBadFlag()
         if(mpParent){
             mpParent->EraseChild(this);
             cv::Mat temp_map = Tcw*mpParent->GetPoseInverse(); 
-            std::cout<<"Size of temp_map is: "<<temp_map.size()<<std::endl;
+            std::cout<<"Size of temp_map is: "<<temp_map.size()<<" element size: "<<temp_map.elemSize()<<std::endl;
             //mTcp = Tcw*mpParent->GetPoseInverse();
             temp_map.copyTo(mTcp);
         }

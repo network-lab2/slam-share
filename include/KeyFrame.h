@@ -379,6 +379,7 @@ public:
 
     // Pose relative to parent (this is computed when bad flag is activated)
     cv::Mat mTcp;
+    boost::interprocess::offset_ptr<char> mTcp_ptr;
 
     // Scale
     const int mnScaleLevels;
