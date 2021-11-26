@@ -1312,6 +1312,7 @@ void KeyFrame::SetBadFlag()
         if(mpParent){
             mpParent->EraseChild(this);
             cv::Mat temp_map = Tcw*mpParent->GetPoseInverse(); 
+            std::cout<<"Size of temp_map is: "<<temp_map.size()<<std::endl;
             //mTcp = Tcw*mpParent->GetPoseInverse();
             temp_map.copyTo(mTcp);
         }
