@@ -1064,7 +1064,7 @@ void System::PostLoad(){
             thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
             mpAtlas->GetCurrentMap()->AddKeyFrame(keyf);
-            //mpKeyFrameDatabase->add(keyf);
+            mpKeyFrameDatabase->add(keyf);
 
         }
         std::cout<<"************ Paused after ADDING keyframes ********************\n";

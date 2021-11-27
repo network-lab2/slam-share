@@ -459,6 +459,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
     memcpy (&(pKF->mK), fake15, sizeof(cv::Mat));
 
 
+    //SetKeyFrameDatabase(pKF->;
 
     //mBowVec = new DBoW2::BowVector();
     //mFeatVec = new DBoW2::FeatureVector();
