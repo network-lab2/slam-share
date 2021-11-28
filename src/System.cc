@@ -761,6 +761,7 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
     for(size_t i=0; i<vpKFs.size(); i++)
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
+        pKF->FixMatrices(pKF);
 
         if(pKF->isBad())
             continue;

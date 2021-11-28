@@ -81,6 +81,7 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
 
 void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
+    //remove
     //unique_lock<mutex> lock(mMutex);
 
     // Erase elements in the Inverse File for the entry
