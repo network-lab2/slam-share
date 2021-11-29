@@ -89,19 +89,17 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     {
         // List of keyframes that share the word
         list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
-        if(!lKFs)
-        {
-            //if we don't find a list for the bowvec. finish the loop.
-            break;
-        }
+
 
         for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lKFs.begin(), lend= lKFs.end(); lit!=lend; lit++)
         {
+            if(lit){
             if(pKF==*lit)
             {
                 lKFs.erase(lit);
                 break;
             }
+        }
         }
     }
 }
