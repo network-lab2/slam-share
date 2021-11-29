@@ -93,7 +93,7 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 
         for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lKFs.begin(), lend= lKFs.end(); lit!=lend; lit++)
         {
-            if(lit){
+            if(*lit){
             if(pKF==*lit)
             {
                 lKFs.erase(lit);
