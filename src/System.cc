@@ -753,6 +753,7 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
     }
 
     vector<boost::interprocess::offset_ptr<KeyFrame> > vpKFs = pBiggerMap->GetAllKeyFrames();
+    std::cout<<"SaveKeyFrameTrajectoryEuRoC: Number of KeyFrames: "<<vpKFs.size()<<std::endl;
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
@@ -766,8 +767,10 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
         boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
         //pKF->FixMatrices(pKF);
 
-        if(pKF->isBad())
+        if(pKF->isBad()){
+            std::cout<<"KeyFrame: "<<pKF->mnId<<" is BAD~~~~\n";
             continue;
+        }
         if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO)
         {
             cv::Mat R = pKF->GetImuRotation().t();
