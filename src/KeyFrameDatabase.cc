@@ -90,7 +90,7 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
     {
         std::cout<<"KeyFrameDatabase erase 1.1\n";
-        if(vit->first > mvInvertedFile.size())
+        if(!vit)
         {
             break;
         }
