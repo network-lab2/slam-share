@@ -1086,12 +1086,12 @@ void System::PostLoad(){
             //    continue;
             //}
             mpLoopCloser->InsertKeyFrame(keyframe);
+            usleep(2000);
+        }
+        while(mpLoopCloser->isFinished())
+        {
             usleep(1000);
         }
-//        while(mpLoopCloser->isFinished())
-//        {
-//            usleep(1000);
-//        }
 /*
         //sleep(5);
         //mpLoopCloser->RequestFinish();
