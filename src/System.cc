@@ -1091,8 +1091,10 @@ void System::PostLoad(){
             mpLoopCloser->InsertKeyFrame(keyframe);
             usleep(2000);
         }
-        while(mpLoopCloser->isFinished())
+        int lcloser_counter = 0;
+        while(!mpLoopCloser->isFinished())
         {
+            std::cout<<"MPLoopCloser waiting.... counter... "<<lcloser_counter++<<std::endl;
             usleep(1000);
         }
 /*
