@@ -86,9 +86,8 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     std::cout<<"KeyFrameDatabase erase 1\n";
 
     int counter = 0;
-    auto& voc = const_cast<ORBVocabulary&>(mpVoc);
 
-    pKF->FixBow(pKF,voc);
+    pKF->FixBow(pKF,nullptr);
     // Erase elements in the Inverse File for the entry
     for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
     {
