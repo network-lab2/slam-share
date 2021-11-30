@@ -1096,6 +1096,10 @@ void System::PostLoad(){
         {
             std::cout<<"MPLoopCloser waiting.... counter... "<<lcloser_counter++<<std::endl;
             usleep(1000);
+            if(lcloser_counter>50000){
+                mpLoopCloser->RequestFinish();
+                break;
+            }
         }
 /*
         //sleep(5);
