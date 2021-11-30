@@ -86,14 +86,11 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
     std::cout<<"KeyFrameDatabase erase 1\n";
 
     int counter = 0;
+    pKF->FixBow(pKF,mpVoc);
     // Erase elements in the Inverse File for the entry
     for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
     {
         std::cout<<"KeyFrameDatabase erase 1.1\n";
-        if(!vit)
-        {
-            break;
-        }
         std::cout<<"KeyFrameDatabase erase 1.2\n";
         // List of keyframes that share the word
         list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
