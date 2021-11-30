@@ -517,6 +517,7 @@ void System::Shutdown()
         if(!mpLoopCloser->isFinished()){
             cout << "mpLoopCloser is not finished" << endl;
             mpLoopCloser->RequestFinish();
+            break;
         }
         if(mpLoopCloser->isRunningGBA()){
             cout << "mpLoopCloser is running GBA" << endl;
