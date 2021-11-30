@@ -514,8 +514,10 @@ void System::Shutdown()
     {
         if(!mpLocalMapper->isFinished())
             cout << "mpLocalMapper is not finished" << endl;
-        if(!mpLoopCloser->isFinished())
+        if(!mpLoopCloser->isFinished()){
             cout << "mpLoopCloser is not finished" << endl;
+            mpLoopCloser->RequestFinish();
+        }
         if(mpLoopCloser->isRunningGBA()){
             cout << "mpLoopCloser is running GBA" << endl;
             cout << "break anyway..." << endl;
