@@ -83,7 +83,7 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 {
     
     //temp-temp-temp-- don't erase anything
-    return;
+    //return;
 
     //remove
     //unique_lock<mutex> lock(mMutex);
