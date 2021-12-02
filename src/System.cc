@@ -1019,7 +1019,7 @@ void System::PostLoad(){
         std::cout<<"---- Number of Maps: -----"<<mpAtlas->CountMaps()<<std::endl;
         //this should shift the new map as current
         //need to initialize the keyframe 
-        mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
+        //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
 
         std::cout<<"************ Paused after Changing Reference Mappoints ********************\n";
         cin>>pause;
