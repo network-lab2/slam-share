@@ -1094,6 +1094,7 @@ void System::PostLoad(){
             mpLoopCloser->InsertKeyFrame(keyframe);
             usleep(2000);
         }
+        /* //delays the program without benefit
         int lcloser_counter = 0;
         while(!mpLoopCloser->isFinished())
         {
@@ -1104,6 +1105,7 @@ void System::PostLoad(){
                 break;
             }
         }
+        */
 /*
         //sleep(5);
         //mpLoopCloser->RequestFinish();
