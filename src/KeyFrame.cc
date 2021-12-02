@@ -504,13 +504,13 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         
         mpORBvocabulary->transform(vCurrentDesc,*newBow,*newFeat,4);
         
-        //memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
+        memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
         //std::cout<<"first memcpy passed\n";
-        //memcpy(&(pKF->mFeatVec), newFeat, sizeof(DBoW2::FeatureVector));
+        memcpy(&(pKF->mFeatVec), newFeat, sizeof(DBoW2::FeatureVector));
         
         //std::cout<<"Transform passed\n";
-        pKF->mBowVec = *newBow;
-        pKF->mFeatVec = *newFeat;
+        //pKF->mBowVec = *newBow;
+        //pKF->mFeatVec = *newFeat;
 
         //mpORBvocabulary->transform(vCurrentDesc,pKF->mBowVec,pKF->mFeatVec,4);
         
