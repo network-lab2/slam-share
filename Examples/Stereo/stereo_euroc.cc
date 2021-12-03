@@ -230,7 +230,7 @@ int main(int argc, char **argv)
             }
 
 
-            if(ni>= 1500)
+            if(ni>= 1400)
              {
                 std::cout<<"1500 frames done\n";
                 SLAM.Shutdown();
