@@ -230,9 +230,9 @@ int main(int argc, char **argv)
             }
 
 
-            if(ni>= 800)
+            if(ni>= 1800)
              {
-                std::cout<<"1500 frames done\n";
+                std::cout<<"1800 frames done\n";
                 SLAM.Shutdown();
                 SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
                 SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
