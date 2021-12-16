@@ -129,6 +129,8 @@ int main(int argc, char **argv)
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::STEREO, true);
 
     cv::Mat imLeft, imRight, imLeftRect, imRightRect;
+    std::chrono::monotonic_clock::time_point Start_frame = std::chrono::monotonic_clock::now();
+    double time_for_postload;
     for (seq = 0; seq<num_seq; seq++)
     {
 
@@ -220,7 +222,10 @@ int main(int argc, char **argv)
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::monotonic_clock::time_point postLoad_start = std::chrono::monotonic_clock::now();
             SLAM.PostLoad(); //run the post load function
+            std::chrono::monotonic_clock::time_point postLoad_end = std::chrono::monotonic_clock::now();
+            time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
             std::cout<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
@@ -248,8 +253,12 @@ int main(int argc, char **argv)
         }
 
     }
+    std::chrono::monotonic_clock::time_point End_frame = std::chrono::monotonic_clock::now();
+    double total_time_process = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
+    std::cout<<"Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
     // Stop all threads
     SLAM.Shutdown();
+
 
     // Save camera trajectory
     if (bFileName)

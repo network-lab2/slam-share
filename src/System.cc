@@ -1007,10 +1007,11 @@ void System::PostLoad(){
 
         std::cout<<"How many mappoints are there in current map?: "<<mpAtlas->GetCurrentMap()->GetAllMapPoints().size()<<std::endl;
 
+        /*
         int pause;
         std::cout<<"************ Paused to see above Points ********************\n";
         cin>>pause;
-        
+        */
 
         // create a new map.
         mpAtlas->CreateNewMap();
@@ -1022,7 +1023,7 @@ void System::PostLoad(){
         //mpAtlas->SetReferenceMapPoints(otherAtlas->currentMapPtr->GetReferenceMapPoints());
 
         std::cout<<"************ Paused after Changing Reference Mappoints ********************\n";
-        cin>>pause;
+        //cin>>pause;
 
         //for(auto& camera: mpAtlas->getCurrentCamera()){
         //    mpAtlas->AddCamera(camera);
@@ -1031,7 +1032,7 @@ void System::PostLoad(){
 
         
         std::cout<<"************ Paused to see above Points ********************\n";
-        cin>>pause;
+        //cin>>pause;
         
          //have to fix all mappoints and then add new mappoints.
         std::cout<<"------ ====== Adding all the mappoints ------ ========\n";
@@ -1049,7 +1050,7 @@ void System::PostLoad(){
 
         
         std::cout<<"************ 2nd time Paused to see above Points ********************\n";
-        cin>>pause;
+        //cin>>pause;
 
         
         for(auto& keyf: allkeyframes){
@@ -1063,7 +1064,7 @@ void System::PostLoad(){
         }
 
         std::cout<<"************ Paused after fixing matrices. ********************\n";
-        cin>>pause;
+        //cin>>pause;
 
         for(auto& keyf: allkeyframes){
         //we should fix the descriptors differently.
@@ -1075,7 +1076,7 @@ void System::PostLoad(){
 
         }
         std::cout<<"************ Paused after ADDING keyframes ********************\n";
-        cin>>pause;
+        //cin>>pause;
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
         //for(auto& keyf: allkeyframes){
@@ -1122,7 +1123,7 @@ void System::PostLoad(){
         */
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
-        cin>>pause;
+        //cin>>pause;
         //mpAtlas->ChangeMap(stopped_map);
        /*
 
@@ -1241,7 +1242,7 @@ void System::PostLoad(){
 
         std::cout<<"Pause\n";
         int a;
-        std::cin>>a;
+        //std::cin>>a;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to other atlas.\n";
