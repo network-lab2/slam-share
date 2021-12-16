@@ -1094,7 +1094,7 @@ void System::PostLoad(){
             //    continue;
             //}
             mpLoopCloser->InsertKeyFrame(keyframe);
-            usleep(100);
+            usleep(1000);
         }
         /* //delays the program without benefit
         int lcloser_counter = 0;
