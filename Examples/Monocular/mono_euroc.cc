@@ -179,7 +179,8 @@ int main(int argc, char **argv)
     }
     std::chrono::steady_clock::time_point End_frame = std::chrono::steady_clock::now();
     double total_time_process = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
-    std::cout<<"Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
+    std::cout<<"*************Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
+    std::cout<<"============================================================ \n";
     // Stop all threads
     SLAM.Shutdown();
 
