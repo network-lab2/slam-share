@@ -80,7 +80,8 @@ int main(int argc, char **argv)
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
-
+    std::chrono::steady_clock::time_point Start_frame = std::chrono::steady_clock::now();
+    double time_for_postload;
     for (seq = 0; seq<num_seq; seq++)
     {
 
@@ -141,7 +142,10 @@ int main(int argc, char **argv)
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point postLoad_start = std::chrono::steady_clock::now();
             SLAM.PostLoad(); //run the post load function
+            std::chrono::steady_clock::time_point postLoad_end = std::chrono::steady_clock::now();
+            time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
             std::cout<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
@@ -153,9 +157,9 @@ int main(int argc, char **argv)
 
 
             std::cout<<ni<<" images completed\n";
-            if(ni>= 1000)
+            if(ni>= 1800)
              {
-                std::cout<<"1000 frames done\n";
+                std::cout<<"1800 frames done\n";
                 SLAM.Shutdown();
                 SLAM.SaveTrajectoryEuRoC("CameraTrajectory_1000.txt");
                 SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory_1000.txt");
@@ -173,6 +177,9 @@ int main(int argc, char **argv)
 
 
     }
+    std::chrono::steady_clock::time_point End_frame = std::chrono::steady_clock::now();
+    double total_time_process = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
+    std::cout<<"Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
     // Stop all threads
     SLAM.Shutdown();
 
