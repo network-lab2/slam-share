@@ -65,6 +65,9 @@ int main(int argc, char **argv)
     // Main loop
     cv::Mat imLeft, imRight;
     int count_images = 0;
+
+    std::chrono::steady_clock::time_point Start_frame = std::chrono::steady_clock::now();
+    double time_for_postload;
     for(int ni=0; ni<nImages; ni++)
     {
 
@@ -77,7 +80,10 @@ int main(int argc, char **argv)
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point postLoad_start = std::chrono::steady_clock::now();
             SLAM.PostLoad(); //run the post load function
+            std::chrono::steady_clock::time_point postLoad_end = std::chrono::steady_clock::now();
+            time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
             //int flag = std::cin.get();
             // Stop all threads
             //SLAM.Shutdown();
@@ -99,6 +105,10 @@ int main(int argc, char **argv)
         
         if(count_images>=1999)
         {
+            std::cout<<"1999 frames done\n";
+            std::chrono::steady_clock::time_point End_frame_n = std::chrono::steady_clock::now();
+            double total_time_process_n = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame_n - Start_frame).count();
+            std::cout<<"Time taken for this process: "<<total_time_process_n<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
             std::cout<<"==== @@@@ ==== Exiting. Before shutdown. ==== @@@@ ==== \n";
             int aa;
             std::cin>>aa;
@@ -152,6 +162,9 @@ int main(int argc, char **argv)
             usleep((T-ttrack)*1e6);
     }
 
+    std::chrono::steady_clock::time_point End_frame = std::chrono::steady_clock::now();
+    double total_time_process = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
+    std::cout<<"Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
     // Stop all threads
     SLAM.Shutdown();
 
