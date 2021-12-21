@@ -393,7 +393,7 @@ void LocalMapping::MapPointCulling()
 
 void LocalMapping::CreateNewMapPoints()
 {
-    std::cout<<"CreateNewMapPoints 1\n";
+    //std::cout<<"CreateNewMapPoints 1\n";
     // Retrieve neighbor keyframes in covisibility graph
     int nn = 10;
     // For stereo inertial case
@@ -414,7 +414,7 @@ void LocalMapping::CreateNewMapPoints()
         }
     }
 
-    std::cout<<"CreateNewMapPoints 2\n";
+    //std::cout<<"CreateNewMapPoints 2\n";
     float th = 0.6f;
 
     ORBmatcher matcher(th,false);
@@ -493,19 +493,19 @@ void LocalMapping::CreateNewMapPoints()
         const float &invfx2 = pKF2->invfx;
         const float &invfy2 = pKF2->invfy;
 
-        std::cout<<"CreateNewMapPoints 3\n";
+        //std::cout<<"CreateNewMapPoints 3\n";
         // Triangulate each match
         const int nmatches = vMatchedIndices.size();
         for(int ikp=0; ikp<nmatches; ikp++)
         {
             const int &idx1 = vMatchedIndices[ikp].first;
             const int &idx2 = vMatchedIndices[ikp].second;
-            std::cout<<"CreateNewMapPoints 3.1\n";
+            //std::cout<<"CreateNewMapPoints 3.1\n";
 
             const cv::KeyPoint &kp1 = (mpCurrentKeyFrame -> NLeft == -1) ? (*mpCurrentKeyFrame->mvKeysUn)[idx1]
                                                                          : (idx1 < mpCurrentKeyFrame -> NLeft) ? (*mpCurrentKeyFrame -> mvKeys)[idx1]
                                                                                                                : (*mpCurrentKeyFrame -> mvKeysRight)[idx1 - mpCurrentKeyFrame -> NLeft];
-            std::cout<<"CreateNewMapPoints 3.2\n";
+            //std::cout<<"CreateNewMapPoints 3.2\n";
             //const float kp1_ur=mpCurrentKeyFrame->mvuRight->at(idx1);//const float kp1_ur=mpCurrentKeyFrame->mvuRight[idx1];
             const float kp1_ur=(*mpCurrentKeyFrame->mvuRight)[idx1];
             bool bStereo1 = (!mpCurrentKeyFrame->mpCamera2 && kp1_ur>=0);
@@ -516,7 +516,7 @@ void LocalMapping::CreateNewMapPoints()
                                                             : (idx2 < pKF2 -> NLeft) ? (*pKF2 -> mvKeys)[idx2]
                                                                                      : (*pKF2 -> mvKeysRight)[idx2 - pKF2 -> NLeft];
 
-            std::cout<<"CreateNewMapPoints 3.3: idx2: "<<idx2<<std::endl;
+            //std::cout<<"CreateNewMapPoints 3.3: idx2: "<<idx2<<std::endl;
 
             //const float kp2_ur = pKF2->mvuRight->at(idx2);//const float kp2_ur = pKF2->mvuRight[idx2];
             const float kp2_ur = (*pKF2->mvuRight)[idx2];
@@ -524,7 +524,7 @@ void LocalMapping::CreateNewMapPoints()
             const bool bRight2 = (pKF2 -> NLeft == -1 || idx2 < pKF2 -> NLeft) ? false
                                                                                : true;
 
-            std::cout<<"CreateNewMapPoints 4\n";
+            //std::cout<<"CreateNewMapPoints 4\n";
             if(mpCurrentKeyFrame->mpCamera2 && pKF2->mpCamera2){
                 if(bRight1 && bRight2){
                     Rcw1 = mpCurrentKeyFrame->GetRightRotation_();
@@ -592,7 +592,7 @@ void LocalMapping::CreateNewMapPoints()
                 }
             }
 
-            std::cout<<"CreateNewMapPoints 5\n";
+            //std::cout<<"CreateNewMapPoints 5\n";
             // Check parallax between rays
             auto xn1 = pCamera1->unprojectMat_(kp1.pt);
             auto xn2 = pCamera2->unprojectMat_(kp2.pt);
@@ -656,7 +656,7 @@ void LocalMapping::CreateNewMapPoints()
                 continue; //No stereo and very low parallax
             }
 
-            std::cout<<"CreateNewMapPoints 6\n";
+            //std::cout<<"CreateNewMapPoints 6\n";
             cv::Matx13f x3Dt = x3D.t();
 
             if(!bEstimated) continue;
@@ -696,7 +696,7 @@ void LocalMapping::CreateNewMapPoints()
                 if((errX1*errX1+errY1*errY1+errX1_r*errX1_r)>7.8*sigmaSquare1)
                     continue;
             }
-            std::cout<<"CreateNewMapPoints 7\n";
+            //std::cout<<"CreateNewMapPoints 7\n";
             //Check reprojection error in second keyframe
             const float sigmaSquare2 = pKF2->mvLevelSigma2->at(kp2.octave);//const float sigmaSquare2 = pKF2->mvLevelSigma2[kp2.octave];
             const float x2 = Rcw2.row(0).dot(x3Dt)+tcw2(0);
@@ -721,7 +721,7 @@ void LocalMapping::CreateNewMapPoints()
                 if((errX2*errX2+errY2*errY2+errX2_r*errX2_r)>7.8*sigmaSquare2)
                     continue;
             }
-            std::cout<<"CreateNewMapPoints 8\n";
+            //std::cout<<"CreateNewMapPoints 8\n";
 
             //Check scale consistency
             auto normal1 = x3D-Ow1;

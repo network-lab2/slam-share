@@ -1643,14 +1643,14 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
     //pKF->FixMatrices(pKF);
 
     std::cout<<"======================= Local BundleAdjustment started for KeyFrame: "<<pKF->mnId<<"  ==============================\n";
-    std::cout<<"LocalBundleAdjustment1\n";
+    //std::cout<<"LocalBundleAdjustment1\n";
     // Local KeyFrames: First Breath Search from Current Keyframe
     list<boost::interprocess::offset_ptr<KeyFrame> > lLocalKeyFrames;
 
     lLocalKeyFrames.push_back(pKF);
     pKF->mnBALocalForKF = pKF->mnId;
     boost::interprocess::offset_ptr<Map>  pCurrentMap = pKF->GetMap();
-    std::cout<<"LocalBundleAdjustment2\n";
+    //std::cout<<"LocalBundleAdjustment2\n";
     const vector<boost::interprocess::offset_ptr<KeyFrame> > vNeighKFs = pKF->GetVectorCovisibleKeyFrames();
     for(int i=0, iend=vNeighKFs.size(); i<iend; i++)
     {
@@ -1688,7 +1688,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
         }
     }
     num_MPs = lLocalMapPoints.size();
-    std::cout<<"LocalBundleAdjustment3\n";
+    //std::cout<<"LocalBundleAdjustment3\n";
     // Fixed Keyframes. Keyframes that see Local MapPoints but that are not Local Keyframes
     list<boost::interprocess::offset_ptr<KeyFrame> > lFixedCameras;
     for(list<boost::interprocess::offset_ptr<MapPoint> >::iterator lit=lLocalMapPoints.begin(), lend=lLocalMapPoints.end(); lit!=lend; lit++)
@@ -1702,13 +1702,13 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
             {                
                 pKFi->mnBAFixedForKF=pKF->mnId;
                 if(!pKFi->isBad() && pKFi->GetMap() == pCurrentMap){
-                    std::cout<<"################# pushing back: "<<pKFi->mnId<<" to lFixedCameras\n";
+                    //std::cout<<"################# pushing back: "<<pKFi->mnId<<" to lFixedCameras\n";
                     lFixedCameras.push_back(pKFi);
                 }
             }
         }
     }
-    std::cout<<"LocalBundleAdjustment4\n";
+    //std::cout<<"LocalBundleAdjustment4\n";
     num_fixedKF = lFixedCameras.size() + num_fixedKF;
     if(num_fixedKF < 2)
     {
@@ -1737,19 +1737,19 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
                 pSecondLowerKF = pKFi;
             }
         }
-        std::cout<<"------ lFixedCameras have pushed: "<<lowerId<<std::endl;
+        //std::cout<<"------ lFixedCameras have pushed: "<<lowerId<<std::endl;
         lFixedCameras.push_back(pLowerKf);
         lLocalKeyFrames.remove(pLowerKf);
         num_fixedKF++;
         if(num_fixedKF < 2)
         {
             if(pSecondLowerKF){
-                std::cout<<"------ lFixedCameras have pushed (2nd time): "<<secondLowerId<<std::endl;
-                std::cout<<"------ lFixedCameras have pushed (2nd time): "<<pSecondLowerKF->mnId<<std::endl;
+                //std::cout<<"------ lFixedCameras have pushed (2nd time): "<<secondLowerId<<std::endl;
+                //std::cout<<"------ lFixedCameras have pushed (2nd time): "<<pSecondLowerKF->mnId<<std::endl;
             }
             else
             {
-                std::cout<<"pSecondLowerKF is null\n";
+                //std::cout<<"pSecondLowerKF is null\n";
             }
             lFixedCameras.push_back(pSecondLowerKF);
             lLocalKeyFrames.remove(pSecondLowerKF);
@@ -1784,7 +1784,7 @@ void Optimizer::LocalBundleAdjustment(boost::interprocess::offset_ptr<KeyFrame> 
     unsigned long maxKFid = 0;
 
     
-std::cout<<"LocalBundleAdjustment5.1\n";
+//std::cout<<"LocalBundleAdjustment5.1\n";
 std::vector<long unsigned int> list_of_available_ids;
 list_of_available_ids.reserve(500);
     // Set Local KeyFrame vertices
@@ -1806,16 +1806,16 @@ list_of_available_ids.reserve(500);
             maxKFid=pKFi->mnId;
     }
     num_OptKF = lLocalKeyFrames.size();
-    std::cout<<"LocalBundleAdjustment5.3 ... Size of lFixedCameras:"<<lFixedCameras.size()<<std::endl;
+    //std::cout<<"LocalBundleAdjustment5.3 ... Size of lFixedCameras:"<<lFixedCameras.size()<<std::endl;
     int counter = 0;
     // Set Fixed KeyFrame vertices
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lFixedCameras.begin(), lend=lFixedCameras.end(); lit!=lend; lit++)
     {
-        std::cout<<"Sanity counter in lfixedcameras: "<<counter<<std::endl;
+        //std::cout<<"Sanity counter in lfixedcameras: "<<counter<<std::endl;
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         if(pKFi){
         //aditya's code
-        std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
+        //std::cout<<"Getting pose of ID: "<<pKFi->mnId<<" counter "<<counter++<<std::endl;
         cv::Mat temp_pose = pKFi.get()->GetPose();
         //std::cout<<"Got pose\n";
         g2o::VertexSE3Expmap * vSE3 = new g2o::VertexSE3Expmap();
@@ -1830,7 +1830,7 @@ list_of_available_ids.reserve(500);
         //std::cout<<"LocalBundleAdjustment5.5\n";
     }
     }
-    std::cout<<"LocalBundleAdjustment6\n";
+    //std::cout<<"LocalBundleAdjustment6\n";
     // Set MapPoint vertices
     const int nExpectedSize = (lLocalKeyFrames.size()+lFixedCameras.size())*lLocalMapPoints.size();
 
@@ -1867,7 +1867,7 @@ list_of_available_ids.reserve(500);
     int nPoints = 0;
 
     int nKFs = lLocalKeyFrames.size()+lFixedCameras.size(), nEdges = 0;
-    std::cout<<"LocalBundleAdjustment7\n";
+    //std::cout<<"LocalBundleAdjustment7\n";
     for(list<boost::interprocess::offset_ptr<MapPoint> >::iterator lit=lLocalMapPoints.begin(), lend=lLocalMapPoints.end(); lit!=lend; lit++)
     {
         boost::interprocess::offset_ptr<MapPoint>  pMP = *lit;
@@ -1982,7 +1982,7 @@ list_of_available_ids.reserve(500);
                         e->mTrl = Converter::toSE3Quat(pKFi->mTrl);
 
                         e->pCamera = pKFi->mpCamera2;
-                        std::cout<<"Edge 3 fails\n";
+                        //std::cout<<"Edge 3 fails\n";
                         optimizer.addEdge(e);
                         vpEdgesBody.push_back(e);
                         vpEdgeKFBody.push_back(pKFi);
@@ -1995,7 +1995,7 @@ list_of_available_ids.reserve(500);
         }
     }
 
-    std::cout<<"LocalBundleAdjustment8\n";
+    //std::cout<<"LocalBundleAdjustment8\n";
     num_edges = nEdges;
 
     if(pbStopFlag)
@@ -2131,7 +2131,7 @@ list_of_available_ids.reserve(500);
             pMPi->EraseObservation(pKFi);
         }
     }
-     std::cout<<"LocalBundleAdjustment9\n";
+     //std::cout<<"LocalBundleAdjustment9\n";
     // Recover optimized data
     //Keyframes
     bool bShowStats = false;
@@ -2152,7 +2152,7 @@ list_of_available_ids.reserve(500);
         pMP->SetWorldPos(Converter::toCvMat(vPoint->estimate()));
         pMP->UpdateNormalAndDepth();
     }
-     std::cout<<"LocalBundleAdjustment10\n";
+     //std::cout<<"LocalBundleAdjustment10\n";
     // TODO Check this changeindex
     pMap->IncreaseChangeIndex();
 }
