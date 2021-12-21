@@ -239,7 +239,7 @@ int main(int argc, char **argv)
              {
                 std::cout<<"1800 frames done\n";
                 std::chrono::steady_clock::time_point End_frame_n = std::chrono::steady_clock::now();
-                double total_time_process_n = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
+                double total_time_process_n = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame_n - Start_frame).count();
                 std::cout<<"Time taken for this process: "<<total_time_process_n<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
                 SLAM.Shutdown();
                 SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
