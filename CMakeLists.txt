@@ -47,12 +47,16 @@ MESSAGE(${OpenCV_VERSION})
 find_package(Eigen3 3.1.0 REQUIRED)
 find_package(Pangolin REQUIRED)
 find_package(realsense2)
+#find_package(Boost COMPONENTS program_options log log_setup REQUIRED)
+FIND_PACKAGE(Boost 1.58.0 REQUIRED COMPONENTS log_setup log system thread)
+
 
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/include
 ${PROJECT_SOURCE_DIR}/include/CameraModels
 ${EIGEN3_INCLUDE_DIR}
+${Boost_INCLUDE_DIRS}
 ${Pangolin_INCLUDE_DIRS}
 )
 
