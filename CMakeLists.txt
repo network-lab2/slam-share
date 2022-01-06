@@ -85,6 +85,7 @@ src/CameraModels/KannalaBrandt8.cpp
 src/OptimizableTypes.cpp
 src/MLPnPsolver.cpp
 src/TwoViewReconstruction.cc
+src/Server.cc
 include/System.h
 include/Tracking.h
 include/LocalMapping.h
@@ -113,6 +114,7 @@ include/OptimizableTypes.h
 include/MLPnPsolver.h
 include/TwoViewReconstruction.h
 include/Config.h
+include/Server.h
 )
 
 add_subdirectory(Thirdparty/g2o)

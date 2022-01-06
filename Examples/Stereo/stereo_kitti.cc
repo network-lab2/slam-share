@@ -220,3 +220,4 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
         vstrImageRight[i] = strPrefixRight + ss.str() + ".png";
     }
 }
+
