@@ -123,6 +123,10 @@ include/Server.h
 
 add_subdirectory(Thirdparty/g2o)
 
+target_compile_options(${PROJECT_NAME}
+  PUBLIC
+    -DBOOST_LOG_DYN_LINK
+  )
 target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
 ${EIGEN3_LIBS}
@@ -134,6 +138,11 @@ ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
 -lboost_system
 -lboost_log
 -g
+Boost::log_setup
+Boost::log
+Boost::system
+Boost::thread
+Boost::filesystem
 )
 
 
