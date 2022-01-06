@@ -128,6 +128,7 @@ ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
 -lboost_serialization
 -lcrypto
 -lboost_system
+-lboost_log
 -g
 )
 
