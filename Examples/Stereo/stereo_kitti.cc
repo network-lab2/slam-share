@@ -47,6 +47,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    
     // Retrieve paths to images
     vector<string> vstrImageLeft;
     vector<string> vstrImageRight;
@@ -60,6 +61,18 @@ int main(int argc, char **argv)
 
     // Vector for tracking time statistics
     vector<float> vTimesTrack;
+    
+
+    //if enabled the SLAM program will rather get images from Network than from disk.
+    int frames_processed = 0;
+    //vector<char*> buffImageLeft;
+    //vector<char*> buffImageRight;
+    if(GET_IMAGE_FROM_NETWORK){
+        getImageNetwork(&SLAM, buffImageLeft, vTimesTrack);
+    }
+    else{
+    
+    //resize time tracker
     vTimesTrack.resize(nImages);  
 
     // Main loop
@@ -165,6 +178,9 @@ int main(int argc, char **argv)
     std::chrono::steady_clock::time_point End_frame = std::chrono::steady_clock::now();
     double total_time_process = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
     std::cout<<"Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
+
+} //The main processing loop without network ends here.
+
     // Stop all threads
     SLAM.Shutdown();
 
@@ -184,6 +200,40 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
+void getImageNetwork(ORB_SLAM3::System *SLAM, int frames_processed, vector<float> vTimesTrack){
+    boost::circular_buffer<char*> leftImages(1000);
+    boost::circular_buffer<char*> rightImages(1000);
+    // For the network receive:
+    try{
+        boost::asio::io_service ioService;
+        Server server(ioService, 8080,leftImages,rightImages);
+        //ioService.run(); //use poll option when polling this.
+    } catch(std::exception& e){
+        std::cerr<<"Network Exception: "<<e.what()<<"\n";
+    }
+    // Main loop
+    cv::Mat imLeft, imRight;
+
+    //run the polling loop.
+    while(1){
+        //Poll the network connection
+        ioService.poll();
+
+        //check if there are new images.
+        if(!leftImages.empty()){
+            imLeft = cv::imdecode(leftImages.pop_front(),cv::IMREAD_UNCHANGED,imLeft);
+            
+        }
+
+    }
+
+    //Run the openCV decode before 
+
+ 
+
+}
+
 
 void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
                 vector<string> &vstrImageRight, vector<double> &vTimestamps)

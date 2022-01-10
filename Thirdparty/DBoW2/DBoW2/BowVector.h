@@ -56,6 +56,7 @@ enum ScoringType
 };
 
 /// Vector of words to represent images
+//TODO: Use shared memory allocator
 class BowVector: 
 	public std::map<WordId, WordValue>
 {
