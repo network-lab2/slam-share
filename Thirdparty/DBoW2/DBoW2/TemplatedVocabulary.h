@@ -1210,7 +1210,7 @@ template<class TDescriptor, class F>
 inline double TemplatedVocabulary<TDescriptor,F>::score
   (const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const
 {
-  return m_scoring_object->score(v1, v2);
+  return m_scoring_object->score_new(v1, v2);
 }
 
 // --------------------------------------------------------------------------
