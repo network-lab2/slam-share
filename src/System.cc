@@ -997,7 +997,7 @@ void System::PostLoad(){
         std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
         for(auto k:thesekeyframes){
             std::cout<<"Size of Bag of Words: "<<k->mBowVec->size()<<std::endl;
-            std::cout<<"Size of Feature vectors: "<<k->mFeatVec->size()<<std::endl;
+            //std::cout<<"Size of Feature vectors: "<<k->mFeatVec->size()<<std::endl;
             std::cout<<"Size of the feature matrix. Hopefully it is same size: "<<k->mDescriptors.size()<<std::endl;
             std::cout<<"Size of the element of mDescriptors: "<<k->mDescriptors.elemSize()<<std::endl;
             std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
