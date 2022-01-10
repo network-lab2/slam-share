@@ -63,6 +63,7 @@ public:
      * @return score between v and w \
      */ \
     virtual double score(const BowVector &v, const BowVector &w) const; \
+    virtual double score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;\
     \
     /** \
      * Says if a vector must be normalized according to the scoring function \
