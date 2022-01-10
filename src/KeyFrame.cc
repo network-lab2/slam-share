@@ -246,7 +246,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //the map for bow vec
     mBowVec = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(std::less<unsigned int >(),alloc_map_bow);
-    mFeatVec = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
+    mFeatVec = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(std::less<unsigned int >(),alloc_feat_bow);
 
     //now fill up the mBowVec and mFeatVec
     for(auto it = F.mBowVec.begin(); it != F.mBowVec.end(); ++it) {
