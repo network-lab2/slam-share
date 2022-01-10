@@ -30,6 +30,7 @@
 #include "FeatureVector.h"
 #include "BowVector.h"
 #include "ScoringObject.h"
+#include "SlamHelper.h"
 
 #include "../DUtils/Random.h"
 
@@ -1194,6 +1195,16 @@ void TemplatedVocabulary<TDescriptor,F>::transform(
 }
 
 // --------------------------------------------------------------------------
+
+template<class TDescriptor, class F> 
+inline double TemplatedVocabulary<TDescriptor,F>::score
+  (const BowVector &v1, const BowVector &v2) const
+{
+  return m_scoring_object->score(v1, v2);
+}
+
+// --------------------------------------------------------------------------
+
 
 template<class TDescriptor, class F> 
 inline double TemplatedVocabulary<TDescriptor,F>::score
