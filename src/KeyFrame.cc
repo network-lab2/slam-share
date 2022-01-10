@@ -193,6 +193,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     const ShmemAllocator_feat alloc_feat_bow(ORB_SLAM3::segment.get_segment_manager());
 
 
+
     //keyframes ones
     mvpLoopCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
     mvpMergeCandKFs = ORB_SLAM3::segment.construct<MyVector_keyframe>(boost::interprocess::anonymous_instance)(alloc_inst_key);
@@ -244,7 +245,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
 
     //the map for bow vec
-    mBowVec = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(alloc_map_bow);
+    mBowVec = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(std::less<unsigned int >(),alloc_map_bow);
     mFeatVec = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
 
     //now fill up the mBowVec and mFeatVec
@@ -252,7 +253,12 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
         mBowVec->insert(it);
     }
     for(auto it = F.mFeatVec.begin(); it != F.mFeatVec.end(); ++it) {
-        mFeatVec->insert(it);
+        //here since the second element is a vector, we need to create a vector dynamically in the shared memory and insert it
+        //create a vector first. 
+        MyVector_unsigned_int *insertable_vector = ORB_SLAM3::segment.construct<MyVector_unsigned_int>(boost::interprocess::anonymous_instance)(alloc_vector_uint);
+        insertable_vector->assign(it.second.begin(),it.second.end());
+
+        mFeatVec->insert(std::pair{it.first,insertable_vector});
     }
 
     //creating all the matrix in the keyframe
