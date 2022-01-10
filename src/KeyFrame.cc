@@ -244,10 +244,16 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
 
     //the map for bow vec
-    mBowVec_shared = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(alloc_map_bow);
-    //mFeatVec_shared = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
+    mBowVec = ORB_SLAM3::segment.construct<bowMap>(boost::interprocess::anonymous_instance)(alloc_map_bow);
+    mFeatVec = ORB_SLAM3::segment.construct<featMap>(boost::interprocess::anonymous_instance)(alloc_feat_bow);
 
-   
+    //now fill up the mBowVec and mFeatVec
+    for(auto it = F.mBowVec.begin(); it != F.mBowVec.end(); ++it) {
+        mBowVec->insert(it);
+    }
+    for(auto it = F.mFeatVec.begin(); it != F.mFeatVec.end(); ++it) {
+        mFeatVec->insert(it);
+    }
 
     //creating all the matrix in the keyframe
     std::cout<<"Keyframe constructor.--++ this one is used"<<std::endl;
@@ -487,6 +493,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
  }
 
  void KeyFrame::FixBow(boost::interprocess::offset_ptr<KeyFrame> pKF,ORBVocabulary* mpORBVocabulary_2){
+    std::cout<<"We probably never need to run this\n";
     //if(pKF->mBowVec.empty() || pKF->mFeatVec.empty())
     //{
         //memcpy(&(pKF->mBowVec), &mBowVec, sizeof(DBoW2::BowVector));
@@ -494,9 +501,9 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 
         DBoW2::BowVector *newBow = new DBoW2::BowVector();// = mBowVec;
         DBoW2::FeatureVector *newFeat = new DBoW2::FeatureVector();
-        memcpy(&(pKF->mBowVec), newBow, sizeof(DBoW2::BowVector));
+        memcpy(&(pKF->mBowVec_actual), newBow, sizeof(DBoW2::BowVector));
         //std::cout<<"first memcpy passed\n";
-        memcpy(&(pKF->mFeatVec), newFeat, sizeof(DBoW2::FeatureVector));
+        memcpy(&(pKF->mFeatVec_actual), newFeat, sizeof(DBoW2::FeatureVector));
         //pKF->mBowVec = mBowVec;
         //pKF->mFeatVec = mFeatVec;
         //std::cout<<"Fails here? descriptor size: "<<pKF->mDescriptors.size()<<std::endl;
@@ -513,26 +520,35 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
         //pKF->mBowVec = *newBow;
         //pKF->mFeatVec = *newFeat;
 
-        mpORBvocabulary->transform(vCurrentDesc,pKF->mBowVec,pKF->mFeatVec,4);
+        mpORBvocabulary->transform(vCurrentDesc,pKF->mBowVec_actual,pKF->mFeatVec_actual,4);
         
         
         //pKF->mBowVec = newBow;
         //pKF->mFeatVec = newFeat;
     //}
-        std:;cout<<"Fixed BOW\n";
+        std::cout<<"Fixed BOW\n";
 
 }
 
 
 void KeyFrame::ComputeBoW()
 {
-    if(mBowVec.empty() || mFeatVec.empty())
+    if(mBowVec_actual.empty() || mFeatVec_actual.empty())
     {
         vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(mDescriptors);
         // Feature vector associate features with nodes in the 4th level (from leaves up)
         // We assume the vocabulary tree has 6 levels, change the 4 otherwise
-        mpORBvocabulary->transform(vCurrentDesc,mBowVec,mFeatVec,4);
+        mpORBvocabulary->transform(vCurrentDesc,mBowVec_actual,mFeatVec_actual,4);
     }
+    //Iterate throught he computed BOW and then fill it in the maps.
+     //now fill up the mBowVec and mFeatVec
+    for(auto it = mBowVec_actual.begin(); it != mBowVec_actual.end(); ++it) {
+        mBowVec->insert(it);
+    }
+    for(auto it2 = mFeatVec_actual.begin(); it != mFeatVec_actual.end(); ++it) {
+        mFeatVec->insert(it2);
+    }
+
 }
 
 void KeyFrame::SetPose(const cv::Mat &Tcw_)

@@ -10,7 +10,8 @@ set(HDRS_DBOW2
   DBoW2/FClass.h       
   DBoW2/FeatureVector.h
   DBoW2/ScoringObject.h   
-  DBoW2/TemplatedVocabulary.h)
+  DBoW2/TemplatedVocabulary.h
+  DBow2/SlamHelper.h)
 set(SRCS_DBOW2
   DBoW2/BowVector.cpp
   DBoW2/FORB.cpp      

@@ -441,7 +441,8 @@ bool LoopClosing::NewDetectCommonRegions()
     }
 
     const vector<boost::interprocess::offset_ptr<KeyFrame> > vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
-    const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
+    //const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
+    auto &CurrentBowVec = mpCurrentKF->mBowVec;
 
     //std::cout<<"New detect common regions 7.\n";
 

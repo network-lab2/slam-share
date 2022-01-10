@@ -11,6 +11,7 @@
 #define __D_T_SCORING_OBJECT__
 
 #include "BowVector.h"
+#include "SlamHelper.h"
 
 namespace DBoW2 {
 
@@ -26,6 +27,8 @@ public:
    * @return score
    */
   virtual double score(const BowVector &v, const BowVector &w) const = 0;
+
+  virtual double score(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const = 0;
 
   /**
    * Returns whether a vector must be normalized before scoring according

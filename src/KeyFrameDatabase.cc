@@ -66,13 +66,18 @@ void KeyFrameDatabase::add(boost::interprocess::offset_ptr<KeyFrame> pKF)
     //std::cout<<"KeyFrameDatabase::after lock. mBowVec Size: "<<pKF->mBowVec.size()<<" mvInvertedFile size: "<<mvInvertedFile.size()<<std::endl;
     */
     int counter = 0;
-    for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
+    // forgive me compiler I hope auto iterator will work.
+    //for(DBoW2::BowVector::const_iterator vit= pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++){
+    
+    for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
+
     //for(DBoW2::BowVector::const_iterator vit= newBow.begin(), vend=newBow.end(); vit!=vend; vit++){
         //std::cout<<"Crash?"<<std::endl;
         //std::cout<<"BowVec output: "<<vit->first<<std::endl;
         counter++;
         mvInvertedFile[vit->first].push_back(pKF);
-        if(counter>=pKF->mBowVec.size())
+        //if(counter>=pKF->mBowVec.size())
+        if(counter>=pKF->mBowVec->size())
             break;
     }
     //std::cout<<"KeyFrameDatabase::add2\n";
@@ -93,7 +98,8 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
 
     //pKF->FixBow(pKF,nullptr);
     // Erase elements in the Inverse File for the entry
-    for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
+    //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit!=vend; vit++)
+    for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
     {
         std::cout<<"KeyFrameDatabase erase 1.1\n";
         std::cout<<"KeyFrameDatabase erase 1.2 keyframe: "<<pKF->mnId<<std::endl;
@@ -115,7 +121,8 @@ void KeyFrameDatabase::erase(boost::interprocess::offset_ptr<KeyFrame>  pKF)
                     }   
             }
         }
-        if(counter>=pKF->mBowVec.size())
+        //if(counter>=pKF->mBowVec.size())
+        if(counter>=pKF->mBowVec->size())
             break;
     }
 }
@@ -162,7 +169,8 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectLoopC
     {
         unique_lock<mutex> lock(mMutex);
 
-        for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
@@ -290,7 +298,8 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
     {
         unique_lock<mutex> lock(mMutex);
 
-        for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs = mvInvertedFile[vit->first];
 
@@ -506,7 +515,8 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
 
     }
 
-    for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+    //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+    for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
     {
         list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs = mvInvertedFile[vit->first];
 
@@ -531,7 +541,8 @@ void KeyFrameDatabase::DetectBestCandidates(boost::interprocess::offset_ptr<KeyF
 
         spConnectedKF = pKF->GetConnectedKeyFrames();
 
-        for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
@@ -668,7 +679,8 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
         spConnectedKF = pKF->GetConnectedKeyFrames();
         int counter = 0;
 
-        for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
         {
             //std::cout<<"Counter: DetectNBestCandidates: "<<counter++<<std::endl;
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
@@ -689,7 +701,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
                 pKFi->mnPlaceRecognitionWords++;
 
             }
-            if(counter++>=pKF->mBowVec.size())
+            if(counter++>=pKF->mBowVec->size())
                 break;
         }
     }
@@ -798,7 +810,8 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
     {
         unique_lock<mutex> lock(mMutex);
 
-        for(DBoW2::BowVector::const_iterator vit=F->mBowVec.begin(), vend=F->mBowVec.end(); vit != vend; vit++)
+        //for(DBoW2::BowVector::const_iterator vit=F->mBowVec.begin(), vend=F->mBowVec.end(); vit != vend; vit++)
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
