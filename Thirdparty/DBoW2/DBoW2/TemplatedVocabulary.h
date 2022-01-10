@@ -161,6 +161,16 @@ public:
    * @note the vectors must be already sorted and normalized if necessary
    */
   inline double score(const BowVector &a, const BowVector &b) const;
+
+  /**
+   * Returns the score of two vectors
+   * @param a vector
+   * @param b vector
+   * @return score between vectors
+   * @note the vectors must be already sorted and normalized if necessary
+   */
+  inline double score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
+  
   
   /**
    * Returns the id of the node that is "levelsup" levels from the word given
