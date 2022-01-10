@@ -256,9 +256,9 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
         //here since the second element is a vector, we need to create a vector dynamically in the shared memory and insert it
         //create a vector first. 
         MyVector_unsigned_int *insertable_vector = ORB_SLAM3::segment.construct<MyVector_unsigned_int>(boost::interprocess::anonymous_instance)(alloc_vector_uint);
-        insertable_vector->assign(it.second.begin(),it.second.end());
+        insertable_vector->assign(it->second.begin(),it->second.end());
 
-        mFeatVec->insert(std::pair{it.first,insertable_vector});
+        mFeatVec->insert(std::pair{it->first,insertable_vector});
     }
 
     //creating all the matrix in the keyframe
