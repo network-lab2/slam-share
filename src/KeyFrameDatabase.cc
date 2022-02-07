@@ -594,7 +594,7 @@ void KeyFrameDatabase::DetectBestCandidates(boost::interprocess::offset_ptr<KeyF
         if(pKFi->mnPlaceRecognitionWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->score(pKF->mBowVec,pKFi->mBowVec);
+            float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
             pKFi->mPlaceRecognitionScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
@@ -731,7 +731,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
         if(pKFi->mnPlaceRecognitionWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->score(pKF->mBowVec,pKFi->mBowVec);
+            float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
             pKFi->mPlaceRecognitionScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
@@ -810,9 +810,8 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
     {
         unique_lock<mutex> lock(mMutex);
 
-        //for(DBoW2::BowVector::const_iterator vit=F->mBowVec.begin(), vend=F->mBowVec.end(); vit != vend; vit++)
-        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++)
-        {
+        for(DBoW2::BowVector::const_iterator vit=F->mBowVec.begin(), vend=F->mBowVec.end(); vit != vend; vit++){
+        //for(auto vit= F->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
             for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lKFs.begin(), lend= lKFs.end(); lit!=lend; lit++)
@@ -853,7 +852,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         if(pKFi->mnRelocWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->score(F->mBowVec,pKFi->mBowVec);
+            float si = mpVoc->score_new(F->mBowVec,pKFi->mBowVec);
             pKFi->mRelocScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
