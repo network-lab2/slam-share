@@ -120,7 +120,7 @@ double L1Scoring::score_new(const boost::interprocess::offset_ptr<bowMap> v1, co
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 
-double L2Scoring::score_new(const BowVector &v1, const BowVector &v2) const
+double L2Scoring::score(const BowVector &v1, const BowVector &v2) const
 {
   BowVector::const_iterator v1_it, v2_it;
   const BowVector::const_iterator v1_end = v1.end();

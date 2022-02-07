@@ -252,6 +252,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
     for(auto it = F.mBowVec.begin(); it != F.mBowVec.end(); ++it) {
         mBowVec->insert(it);
     }
+    
     for(auto it = F.mFeatVec.begin(); it != F.mFeatVec.end(); ++it) {
         //here since the second element is a vector, we need to create a vector dynamically in the shared memory and insert it
         //create a vector first. 
