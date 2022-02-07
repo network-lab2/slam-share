@@ -170,7 +170,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectLoopC
         unique_lock<mutex> lock(mMutex);
 
         //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
-        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++)
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
