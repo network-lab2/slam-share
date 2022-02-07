@@ -258,8 +258,8 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
         //create a vector first. 
         MyVector_unsigned_int *insertable_vector = ORB_SLAM3::segment.construct<MyVector_unsigned_int>(boost::interprocess::anonymous_instance)(alloc_vector_uint);
         insertable_vector->assign(it->second.begin(),it->second.end());
-
-        mFeatVec->insert(std::pair{it->first,insertable_vector});
+        std::pair<unsigned int,MyVector_unsigned_int> p(it->first,insertable_vector);
+        mFeatVec->insert(p);
     }
 
     //creating all the matrix in the keyframe
