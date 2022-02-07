@@ -542,7 +542,7 @@ void KeyFrameDatabase::DetectBestCandidates(boost::interprocess::offset_ptr<KeyF
         spConnectedKF = pKF->GetConnectedKeyFrames();
 
         //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
-        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++)
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 
@@ -680,7 +680,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
         int counter = 0;
 
         //for(DBoW2::BowVector::const_iterator vit=pKF->mBowVec.begin(), vend=pKF->mBowVec.end(); vit != vend; vit++)
-        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++)
         {
             //std::cout<<"Counter: DetectNBestCandidates: "<<counter++<<std::endl;
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
@@ -811,7 +811,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         unique_lock<mutex> lock(mMutex);
 
         //for(DBoW2::BowVector::const_iterator vit=F->mBowVec.begin(), vend=F->mBowVec.end(); vit != vend; vit++)
-        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++){
+        for(auto vit= pKF->mBowVec->begin(); vit!=pKF->mBowVec->end(); vit++)
         {
             list<boost::interprocess::offset_ptr<KeyFrame> > &lKFs =   mvInvertedFile[vit->first];
 

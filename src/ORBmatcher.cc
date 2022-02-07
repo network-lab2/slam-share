@@ -289,9 +289,11 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
     const float factor = 1.0f/HISTO_LENGTH;
 
     // We perform the matching over ORB that belong to the same vocabulary node (at a certain level)
-    DBoW2::FeatureVector::const_iterator KFit = vFeatVecKF.begin();
+    //DBoW2::FeatureVector::const_iterator KFit = vFeatVecKF.begin();
+    boost::interprocess::map::const_iterator KFit = vFeatVecKF->begin();
     DBoW2::FeatureVector::const_iterator Fit = F.mFeatVec.begin();
-    DBoW2::FeatureVector::const_iterator KFend = vFeatVecKF.end();
+    boost::interprocess::map::const_iterator =  vFeatVecKF->end();
+    //DBoW2::FeatureVector::const_iterator KFend = vFeatVecKF.end();
     DBoW2::FeatureVector::const_iterator Fend = F.mFeatVec.end();
 
     std::cout<<"SearchByBow: failure here."<<std::endl;
