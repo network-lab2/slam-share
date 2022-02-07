@@ -848,11 +848,17 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
     for(list<boost::interprocess::offset_ptr<KeyFrame> >::iterator lit=lKFsSharingWords.begin(), lend= lKFsSharingWords.end(); lit!=lend; lit++)
     {
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
+        std::map<unsigned int,double,std::less<unsigned int > > temp_map;
+        //insert the map from the frame.
+         for(auto it = F.mFeatVec.begin(); it != F.mFeatVec.end(); ++it) {
+            temp_map.insert(it);
+         }
 
         if(pKFi->mnRelocWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->score_new(F->mBowVec,pKFi->mBowVec);
+            //float si = mpVoc->score_new(F->mBowVec,pKFi->mBowVec);
+            float si = mpVoc->score_new(temp_map,pKFi->mBowVec);
             pKFi->mRelocScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
