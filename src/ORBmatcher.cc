@@ -290,9 +290,9 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
 
     // We perform the matching over ORB that belong to the same vocabulary node (at a certain level)
     //DBoW2::FeatureVector::const_iterator KFit = vFeatVecKF.begin();
-    boost::interprocess::map::const_iterator KFit = vFeatVecKF->begin();
+    auto KFit = vFeatVecKF->begin();
     DBoW2::FeatureVector::const_iterator Fit = F.mFeatVec.begin();
-    boost::interprocess::map::const_iterator =  vFeatVecKF->end();
+    auto KFend =  vFeatVecKF->end();
     //DBoW2::FeatureVector::const_iterator KFend = vFeatVecKF.end();
     DBoW2::FeatureVector::const_iterator Fend = F.mFeatVec.end();
 
