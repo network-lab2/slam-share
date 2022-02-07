@@ -850,7 +850,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         boost::interprocess::offset_ptr<KeyFrame>  pKFi = *lit;
         std::map<unsigned int,double,std::less<unsigned int > > temp_map;
         //insert the map from the frame.
-         for(auto it = F.mFeatVec.begin(); it != F.mFeatVec.end(); ++it) {
+         for(auto it = F->mFeatVec.begin(); it != F->mFeatVec.end(); ++it) {
             temp_map.insert(it);
          }
 
