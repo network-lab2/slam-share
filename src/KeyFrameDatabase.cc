@@ -452,7 +452,7 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
             {
                 nscores++;
 
-                float si = mpVoc->score(pKF->mBowVec,pKFi->mBowVec);
+                float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
 
                 pKFi->mMergeScore = si;
                 if(si>=minScore)

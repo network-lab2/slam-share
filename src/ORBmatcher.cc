@@ -278,7 +278,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
 
     vpMapPointMatches = vector<boost::interprocess::offset_ptr<MapPoint> >(F.N,static_cast<boost::interprocess::offset_ptr<MapPoint> >(NULL));
 
-    const DBoW2::FeatureVector &vFeatVecKF = pKF->mFeatVec;
+    //const DBoW2::FeatureVector &vFeatVecKF = pKF->mFeatVec;
+    const auto &vFeatVecKF = pKF->mFeatVec;
 
     int nmatches=0;
 
@@ -836,7 +837,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     //vector<cv::KeyPoint> temp_vec;
     //temp_vec.assign((pKF1->mvKeysUn)->begin(),(pKF1->mvKeysUn)->end());
     //const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
-    const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
+    //const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
+    const auto &vFeatVec1 = pKF1->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
     //std::cout<<"First keyframe belongs to: "<<pKF1->GetMap()->map_name<<std::endl;
@@ -844,7 +846,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     //vector<cv::KeyPoint> temp_vec2;
     //temp_vec.assign((pKF2->mvKeysUn)->begin(),(pKF2->mvKeysUn)->end());
     //const vector<cv::KeyPoint> &vKeysUn2 = temp_vec2;
-    const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+    //const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+    const auto &vFeatVec2 = pKF2->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
     //std::cout<<"First keyframe belongs to: "<<pKF2->GetMap()->map_name<<std::endl;
@@ -1012,8 +1015,10 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
 int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, cv::Mat F12,
                                        vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, const bool bCoarse)
 {    
-    const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
-    const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+    //const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
+    //const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+    const auto &vFeatVec1 = pKF1->mFeatVec;
+    const auto &vFeatVec2 = pKF2->mFeatVec;
 
     //Compute epipole in second image
     cv::Mat Cw = pKF1->GetCameraCenter();
@@ -1256,8 +1261,11 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                                            vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, const bool bCoarse)
     {
         //std::cout<<"SearchForTriangulation_1\n";
-        const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
-        const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+        //const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
+        //const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+        const auto &vFeatVec1 = pKF1->mFeatVec;
+        const auto &vFeatVec2 = pKF2->mFeatVec;
+
 
         //Compute epipole in second image
         auto Cw = pKF1->GetCameraCenter_();
@@ -1510,8 +1518,11 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
     int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame> pKF1, boost::interprocess::offset_ptr<KeyFrame> pKF2, cv::Mat F12,
                                            vector<pair<size_t, size_t> > &vMatchedPairs, const bool bOnlyStereo, vector<cv::Mat> &vMatchedPoints)
     {
-        const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
-        const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+        //const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
+        //const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
+        const auto &vFeatVec1 = pKF1->mFeatVec;
+        const auto &vFeatVec2 = pKF2->mFeatVec;
+
 
         //Compute epipole in second image
         cv::Mat Cw = pKF1->GetCameraCenter();
