@@ -843,7 +843,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     //temp_vec.assign((pKF1->mvKeysUn)->begin(),(pKF1->mvKeysUn)->end());
     //const vector<cv::KeyPoint> &vKeysUn1 = temp_vec;
     //const DBoW2::FeatureVector &vFeatVec1 = pKF1->mFeatVec;
-    const auto &vFeatVec1 = pKF1->mFeatVec;
+    const auto vFeatVec1 = pKF1->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints1 = pKF1->GetMapPointMatches();
     const cv::Mat &Descriptors1 = pKF1->mDescriptors;
     //std::cout<<"First keyframe belongs to: "<<pKF1->GetMap()->map_name<<std::endl;
@@ -852,7 +852,7 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     //temp_vec.assign((pKF2->mvKeysUn)->begin(),(pKF2->mvKeysUn)->end());
     //const vector<cv::KeyPoint> &vKeysUn2 = temp_vec2;
     //const DBoW2::FeatureVector &vFeatVec2 = pKF2->mFeatVec;
-    const auto &vFeatVec2 = pKF2->mFeatVec;
+    const auto vFeatVec2 = pKF2->mFeatVec;
     const vector<boost::interprocess::offset_ptr<MapPoint> > vpMapPoints2 = pKF2->GetMapPointMatches();
     const cv::Mat &Descriptors2 = pKF2->mDescriptors;
     //std::cout<<"First keyframe belongs to: "<<pKF2->GetMap()->map_name<<std::endl;
@@ -870,10 +870,14 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     int nmatches = 0;
 
     //std::cout<<"Before const_iterator\n";
-    DBoW2::FeatureVector::const_iterator f1it = vFeatVec1.begin();
-    DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
-    DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
-    DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
+    //DBoW2::FeatureVector::const_iterator f1it = vFeatVec1.begin();
+    //DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
+    //DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
+    //DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
+    DBoW2::FeatureVector::const_iterator f1it = vFeatVec1->begin();
+    DBoW2::FeatureVector::const_iterator f2it = vFeatVec2->begin();
+    DBoW2::FeatureVector::const_iterator f1end = vFeatVec1->end();
+    DBoW2::FeatureVector::const_iterator f2end = vFeatVec2->end();
 
     //std::cout<<"SearchByBow 2\n";
     //std::cout<<"Size of featvec1 and featvec2: "<<vFeatVec1.size()<<" "<<vFeatVec2.size()<<std::endl;
