@@ -598,7 +598,7 @@ void KeyFrameDatabase::DetectBestCandidates(boost::interprocess::offset_ptr<KeyF
         if(pKFi->mnPlaceRecognitionWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+            float si = KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
             pKFi->mPlaceRecognitionScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
@@ -735,7 +735,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
         if(pKFi->mnPlaceRecognitionWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+            float si = KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
             pKFi->mPlaceRecognitionScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
