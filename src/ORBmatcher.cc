@@ -304,7 +304,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
         {
             //const vector<unsigned int> vIndicesKF = KFit->second;
             const vector<unsigned int> vIndicesF = Fit->second;
-            const vector<unsigned int> vIndicesKF;
+            //const vector<unsigned int> vIndicesKF;
+            vector<unsigned int> vIndicesKF;
             vIndicesKF.assign(KFit->second.begin(),KFit->second.end());
 
             for(size_t iKF=0; iKF<vIndicesKF.size(); iKF++)
