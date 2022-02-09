@@ -23,6 +23,7 @@
 #include "Thirdparty/DBoW2/DBoW2/BowVector.h"
 
 #include<mutex>
+#include<cfloat>
 
 using namespace std;
 
@@ -133,6 +134,105 @@ void KeyFrameDatabase::clear()
     mvInvertedFile.resize(mpVoc->size());
 }
 
+double KeyFrameDatabase::score_KFDatabase_ptr(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const
+{
+  //BowVector::const_iterator v1_it, v2_it;
+  //const BowVector::const_iterator v1_end = v1.end();
+  //const BowVector::const_iterator v2_end = v2.end();
+  
+  auto v1_it = v1->begin();
+  auto v2_it = v2->begin();
+  auto v1_end = v1->end();
+  auto v2_end = v2->end();
+  
+  double score = 0;
+  
+  while(v1_it != v1_end && v2_it != v2_end)
+  {
+    const WordValue& vi = v1_it->second;
+    const WordValue& wi = v2_it->second;
+    
+    if(v1_it->first == v2_it->first)
+    {
+      score += fabs(vi - wi) - fabs(vi) - fabs(wi);
+      
+      // move v1 and v2 forward
+      ++v1_it;
+      ++v2_it;
+    }
+    else if(v1_it->first < v2_it->first)
+    {
+      // move v1 forward
+      v1_it = v1->lower_bound(v2_it->first);
+      // v1_it = (first element >= v2_it.id)
+    }
+    else
+    {
+      // move v2 forward
+      v2_it = v2->lower_bound(v1_it->first);
+      // v2_it = (first element >= v1_it.id)
+    }
+  }
+  
+  // ||v - w||_{L1} = 2 + Sum(|v_i - w_i| - |v_i| - |w_i|) 
+  //    for all i | v_i != 0 and w_i != 0 
+  // (Nister, 2006)
+  // scaled_||v - w||_{L1} = 1 - 0.5 * ||v - w||_{L1}
+  score = -score/2.0;
+
+  return score; // [0..1]
+}
+
+double KeyFrameDatabase::score_KFDatabase_frame(const std::map<double,unsigned int> *v1, const boost::interprocess::offset_ptr<bowMap> v2) const
+{
+  //BowVector::const_iterator v1_it, v2_it;
+  //const BowVector::const_iterator v1_end = v1.end();
+  //const BowVector::const_iterator v2_end = v2.end();
+  
+  auto v1_it = v1->begin();
+  auto v2_it = v2->begin();
+  auto v1_end = v1->end();
+  auto v2_end = v2->end();
+  
+  double score = 0;
+  
+  while(v1_it != v1_end && v2_it != v2_end)
+  {
+    const WordValue& vi = v1_it->second;
+    const WordValue& wi = v2_it->second;
+    
+    if(v1_it->first == v2_it->first)
+    {
+      score += fabs(vi - wi) - fabs(vi) - fabs(wi);
+      
+      // move v1 and v2 forward
+      ++v1_it;
+      ++v2_it;
+    }
+    else if(v1_it->first < v2_it->first)
+    {
+      // move v1 forward
+      v1_it = v1->lower_bound(v2_it->first);
+      // v1_it = (first element >= v2_it.id)
+    }
+    else
+    {
+      // move v2 forward
+      v2_it = v2->lower_bound(v1_it->first);
+      // v2_it = (first element >= v1_it.id)
+    }
+  }
+  
+  // ||v - w||_{L1} = 2 + Sum(|v_i - w_i| - |v_i| - |w_i|) 
+  //    for all i | v_i != 0 and w_i != 0 
+  // (Nister, 2006)
+  // scaled_||v - w||_{L1} = 1 - 0.5 * ||v - w||_{L1}
+  score = -score/2.0;
+
+  return score; // [0..1]
+}
+
+
 void KeyFrameDatabase::clearMap(boost::interprocess::offset_ptr<Map>  pMap)
 {
     unique_lock<mutex> lock(mMutex);
@@ -222,7 +322,8 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectLoopC
         {
             nscores++;
 
-            float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
+            //float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
+            float si = KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
 
             pKFi->mLoopScore = si;
             if(si>=minScore)
@@ -364,7 +465,7 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
             {
                 nscores++;
 
-                float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
+                float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
 
                 pKFi->mLoopScore = si;
                 if(si>=minScore)
@@ -452,7 +553,7 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
             {
                 nscores++;
 
-                float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
+                float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
 
                 pKFi->mMergeScore = si;
                 if(si>=minScore)
@@ -594,7 +695,7 @@ void KeyFrameDatabase::DetectBestCandidates(boost::interprocess::offset_ptr<KeyF
         if(pKFi->mnPlaceRecognitionWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
+            float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
             pKFi->mPlaceRecognitionScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
@@ -731,7 +832,7 @@ void KeyFrameDatabase::DetectNBestCandidates(boost::interprocess::offset_ptr<Key
         if(pKFi->mnPlaceRecognitionWords>minCommonWords)
         {
             nscores++;
-            float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
+            float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
             pKFi->mPlaceRecognitionScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
@@ -861,7 +962,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         {
             nscores++;
             //float si = mpVoc->score_new(F->mBowVec,pKFi->mBowVec);
-            float si = mpVoc->score_new(&temp_featmap,pKFi->mBowVec);
+            float si = mpVoc->score_KFDatabase_frame(&temp_featmap,pKFi->mBowVec);
             pKFi->mRelocScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }

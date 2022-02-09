@@ -28,7 +28,7 @@ public:
    */
   virtual double score(const BowVector &v, const BowVector &w) const = 0;
 
-  virtual double score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const = 0;
+  //virtual double score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const = 0;
 
   /**
    * Returns whether a vector must be normalized before scoring according

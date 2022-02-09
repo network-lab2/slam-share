@@ -71,6 +71,9 @@ public:
 
    void SetORBVocabulary(ORBVocabulary* pORBVoc);
 
+   double score_KFDatabase_frame(const std::map<double,unsigned int> *v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
+   double score_KFDatabase_ptr(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
+
 protected:
 
   // Associated vocabulary

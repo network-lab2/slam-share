@@ -66,6 +66,7 @@ double L1Scoring::score(const BowVector &v1, const BowVector &v2) const
 
   return score; // [0..1]
 }
+/*
 
 double L1Scoring::score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const
 {
@@ -116,7 +117,7 @@ double L1Scoring::score_new(const boost::interprocess::offset_ptr<bowMap> v1, co
   return score; // [0..1]
 }
 
-
+*/
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 

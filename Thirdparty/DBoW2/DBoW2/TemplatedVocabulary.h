@@ -169,7 +169,7 @@ public:
    * @return score between vectors
    * @note the vectors must be already sorted and normalized if necessary
    */
-  inline double score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
+  //inline double score_new(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
   
   
   /**
@@ -1214,7 +1214,7 @@ inline double TemplatedVocabulary<TDescriptor,F>::score
 }
 
 // --------------------------------------------------------------------------
-
+/*
 
 template<class TDescriptor, class F> 
 inline double TemplatedVocabulary<TDescriptor,F>::score_new
@@ -1222,7 +1222,7 @@ inline double TemplatedVocabulary<TDescriptor,F>::score_new
 {
   return m_scoring_object->score_new(v1, v2);
 }
-
+*/
 // --------------------------------------------------------------------------
 
 template<class TDescriptor, class F>
