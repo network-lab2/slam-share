@@ -453,7 +453,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame>  pKF,Frame
         }
         else if(KFit->first < Fit->first)
         {
-            KFit = vFeatVecKF.lower_bound(Fit->first);
+            //KFit = vFeatVecKF.lower_bound(Fit->first);
+            KFit = vFeatVecKF->lower_bound(Fit->first);
         }
         else
         {
