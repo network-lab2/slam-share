@@ -373,9 +373,9 @@ public:
 
     typedef boost::interprocess::allocator<unsigned int, boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_vec_unsigned_int;
     typedef boost::interprocess::vector<unsigned int, ShmemAllocator_vec_unsigned_int> MyVector_unsigned_int;
-    typedef std::pair<unsigned int, MyVector_unsigned_int> ValueType_feat;
+    typedef std::pair<const unsigned int, Vector<unsigned int> > ValueType_feat;
     typedef boost::interprocess::allocator<ValueType_feat,boost::interprocess::managed_shared_memory::segment_manager> ShmemAllocator_feat;
-    typedef boost::interprocess::map<unsigned int, MyVector_unsigned_int,std::less<unsigned int >,ShmemAllocator_feat> featMap;
+    typedef boost::interprocess::map<unsigned int, Vector<unsigned int> ,std::less<unsigned int >,ShmemAllocator_feat> featMap;
     boost::interprocess::offset_ptr<featMap> mFeatVec;
 
 
