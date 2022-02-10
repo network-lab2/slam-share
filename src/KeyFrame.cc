@@ -499,7 +499,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
 
  }
 
- double KeyFrame::score_KFDatabase_ptr(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const
+ double KeyFrame::score_KFDatabase_ptr(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2)
 {
   //BowVector::const_iterator v1_it, v2_it;
   //const BowVector::const_iterator v1_end = v1.end();
@@ -548,7 +548,7 @@ void KeyFrame::FixMatrices(boost::interprocess::offset_ptr<KeyFrame> pKF)
   return score; // [0..1]
 }
 
-double KeyFrame::score_KFDatabase_frame(const std::map<double,unsigned int> *v1, const boost::interprocess::offset_ptr<bowMap> v2) const
+double KeyFrame::score_KFDatabase_frame(const std::map<double,unsigned int> *v1, const boost::interprocess::offset_ptr<bowMap> v2)
 {
   //BowVector::const_iterator v1_it, v2_it;
   //const BowVector::const_iterator v1_end = v1.end();
