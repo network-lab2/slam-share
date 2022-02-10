@@ -379,8 +379,8 @@ public:
     boost::interprocess::offset_ptr<featMap> mFeatVec;
 
 
-    double score_KFDatabase_frame(const std::map<double,unsigned int> *v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
-    double score_KFDatabase_ptr(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
+    static double score_KFDatabase_frame(const std::map<double,unsigned int> *v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
+    static double score_KFDatabase_ptr(const boost::interprocess::offset_ptr<bowMap> v1, const boost::interprocess::offset_ptr<bowMap> v2) const;
 
 
     // Pose relative to parent (this is computed when bad flag is activated)
