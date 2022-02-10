@@ -875,10 +875,10 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
     //DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
     //DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
     //DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
-    DBoW2::FeatureVector::const_iterator f1it = vFeatVec1->begin();
-    DBoW2::FeatureVector::const_iterator f2it = vFeatVec2->begin();
-    DBoW2::FeatureVector::const_iterator f1end = vFeatVec1->end();
-    DBoW2::FeatureVector::const_iterator f2end = vFeatVec2->end();
+    auto f1it = vFeatVec1->begin();
+    auto f2it = vFeatVec2->begin();
+    auto f1end = vFeatVec1->end();
+    auto f2end = vFeatVec2->end();
 
     //std::cout<<"SearchByBow 2\n";
     //std::cout<<"Size of featvec1 and featvec2: "<<vFeatVec1.size()<<" "<<vFeatVec2.size()<<std::endl;
