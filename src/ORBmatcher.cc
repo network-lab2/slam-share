@@ -979,7 +979,8 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
             f2it++;
             f1it_counter++;
             f2it_counter++;
-            if((f1it_counter>=vFeatVec1.size()) ||(f2it_counter>=vFeatVec2.size()))
+            //if((f1it_counter>=vFeatVec1.size()) ||(f2it_counter>=vFeatVec2.size()))
+            if((f1it_counter>=vFeatVec1->size()) ||(f2it_counter>=vFeatVec2->size()))
             {
                 break;
             }
@@ -987,12 +988,14 @@ int ORBmatcher::SearchByBoW(boost::interprocess::offset_ptr<KeyFrame> pKF1, boos
         else if(f1it->first < f2it->first)
         {
             //std::cout<<"Fails else if SearchByBow\n";
-            f1it = vFeatVec1.lower_bound(f2it->first);
+            //f1it = vFeatVec1.lower_bound(f2it->first);
+            f1it = vFeatVec1->lower_bound(f2it->first);
         }
         else
         {
             //std::cout<<"Fails else SearchByBow\n";
-            f2it = vFeatVec2.lower_bound(f1it->first);
+            //f2it = vFeatVec2.lower_bound(f1it->first);
+            f2it = vFeatVec2->lower_bound(f1it->first);
         }
     }
     //std::cout<<"Finished the loop?\n";
