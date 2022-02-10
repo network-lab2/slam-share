@@ -226,7 +226,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectLoopC
             nscores++;
 
             //float si = mpVoc->score_new(pKF->mBowVec,pKFi->mBowVec);
-            float si = KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+            float si = KeyFrame::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
 
             pKFi->mLoopScore = si;
             if(si>=minScore)
@@ -368,7 +368,8 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
             {
                 nscores++;
 
-                float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+                //float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+                float si = KeyFrame::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
 
                 pKFi->mLoopScore = si;
                 if(si>=minScore)
@@ -456,7 +457,8 @@ void KeyFrameDatabase::DetectCandidates(boost::interprocess::offset_ptr<KeyFrame
             {
                 nscores++;
 
-                float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+                //float si = mpVoc->KeyFrameDatabase::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
+                float si = KeyFrame::score_KFDatabase_ptr(pKF->mBowVec,pKFi->mBowVec);
 
                 pKFi->mMergeScore = si;
                 if(si>=minScore)
