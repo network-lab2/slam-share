@@ -97,6 +97,7 @@ def align(model,data):
     trans_error = numpy.sqrt(numpy.sum(numpy.multiply(alignment_error,alignment_error),0)).A[0]
         
     return rot,transGT,trans_errorGT,trans,trans_error, s
+    #return rot,transGT,trans_errorGT,transGT,trans_errorGT, s
 
 def plot_traj(ax,stamps,traj,style,color,label):
     """
@@ -116,17 +117,29 @@ def plot_traj(ax,stamps,traj,style,color,label):
     x = []
     y = []
     last = stamps[0]
+    print("Size of the Stamps: %d",len(stamps))
+    sum_timestamps = 0
     for i in range(len(stamps)):
-        if stamps[i]-last < 2*interval:
+        if stamps[i]-last < 100*interval:
             x.append(traj[i][0])
             y.append(traj[i][1])
         elif len(x)>0:
+            print("Some plot points exceed timestamp. Size of x: %d and Size of y: %d",(len(x),len(y)))
+            sum_timestamps = sum_timestamps+len(x)
             ax.plot(x,y,style,color=color,label=label)
             label=""
             x=[]
             y=[]
         last= stamps[i]
+    print("Sum of all printed timestamps: %d",sum_timestamps)
+    #plot without timestamp
+    '''
+    for i in range(len(stamps)):
+        x.append(traj[1][0])
+        y.append(traj[i][1])
+    '''
     if len(x)>0:
+        print("Final size of x: %d",len(x))
         ax.plot(x,y,style,color=color,label=label)
             
 
@@ -165,33 +178,35 @@ if __name__=="__main__":
     second_xyz_notscaled = rot * second_xyz + trans
     second_xyz_notscaled_full = rot * second_xyz_full + trans
     first_stamps = first_list.keys()
-    first_stamps.sort()
+    #first_stamps.sort()
+    first_stamps = sorted(first_stamps)
     first_xyz_full = numpy.matrix([[float(value) for value in first_list[b][0:3]] for b in first_stamps]).transpose()
     
     second_stamps = second_list.keys()
-    second_stamps.sort()
+    #second_stamps.sort()
+    second_stamps = sorted(second_stamps)
     second_xyz_full = numpy.matrix([[float(value)*float(args.scale) for value in second_list[b][0:3]] for b in second_stamps]).transpose()
     second_xyz_full_aligned = scale * rot * second_xyz_full + trans
     
     if args.verbose:
-        print "compared_pose_pairs %d pairs"%(len(trans_error))
+        print ("compared_pose_pairs %d pairs"%(len(trans_error)))
 
-        print "absolute_translational_error.rmse %f m"%numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error))
-        print "absolute_translational_error.mean %f m"%numpy.mean(trans_error)
-        print "absolute_translational_error.median %f m"%numpy.median(trans_error)
-        print "absolute_translational_error.std %f m"%numpy.std(trans_error)
-        print "absolute_translational_error.min %f m"%numpy.min(trans_error)
-        print "absolute_translational_error.max %f m"%numpy.max(trans_error)
-        print "max idx: %i" %numpy.argmax(trans_error)
+        print ("absolute_translational_error.rmse %f m"%numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error)))
+        print ("absolute_translational_error.mean %f m"%numpy.mean(trans_error))
+        print ("absolute_translational_error.median %f m"%numpy.median(trans_error))
+        print ("absolute_translational_error.std %f m"%numpy.std(trans_error))
+        print ("absolute_translational_error.min %f m"%numpy.min(trans_error))
+        print ("absolute_translational_error.max %f m"%numpy.max(trans_error))
+        print ("max idx: %i" %numpy.argmax(trans_error))
     else:
         # print "%f, %f " % (numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error)),  scale)
         # print "%f,%f" % (numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error)),  scale)
-        print "%f,%f,%f" % (numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error)), scale, numpy.sqrt(numpy.dot(trans_errorGT,trans_errorGT) / len(trans_errorGT)))
+        print ("%f,%f,%f" % (numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error)), scale, numpy.sqrt(numpy.dot(trans_errorGT,trans_errorGT) / len(trans_errorGT))))
         # print "%f" % len(trans_error)
     if args.verbose2:
-        print "compared_pose_pairs %d pairs"%(len(trans_error))
-        print "absolute_translational_error.rmse %f m"%numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error))
-        print "absolute_translational_errorGT.rmse %f m"%numpy.sqrt(numpy.dot(trans_errorGT,trans_errorGT) / len(trans_errorGT))
+        print ("compared_pose_pairs %d pairs"%(len(trans_error)))
+        print ("absolute_translational_error.rmse %f m"%numpy.sqrt(numpy.dot(trans_error,trans_error) / len(trans_error)))
+        print ("absolute_translational_errorGT.rmse %f m"%numpy.sqrt(numpy.dot(trans_errorGT,trans_errorGT) / len(trans_errorGT)))
 
     if args.save_associations:
         file = open(args.save_associations,"w")
@@ -212,12 +227,14 @@ if __name__=="__main__":
         fig = plt.figure()
         ax = fig.add_subplot(111)
         plot_traj(ax,first_stamps,first_xyz_full.transpose().A,'-',"black","ground truth")
-        plot_traj(ax,second_stamps,second_xyz_full_aligned.transpose().A,'-',"blue","estimated")
+        #plot_traj(ax,second_stamps,second_xyz_full_aligned.transpose().A,'-',"blue","estimated")
+        plot_traj(ax,second_stamps,second_xyz_full_aligned.transpose().A,'-',"green","KeyFrames")
+        '''
         label="difference"
         for (a,b),(x1,y1,z1),(x2,y2,z2) in zip(matches,first_xyz.transpose().A,second_xyz_aligned.transpose().A):
             ax.plot([x1,x2],[y1,y2],'-',color="red",label=label)
             label=""
-            
+        '''    
         ax.legend()
             
         ax.set_xlabel('x [m]')

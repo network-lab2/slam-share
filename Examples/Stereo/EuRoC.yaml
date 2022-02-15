@@ -22,7 +22,7 @@ Camera.width: 752
 Camera.height: 480
 
 # Camera frames per second 
-Camera.fps: 10.0
+Camera.fps: 50
 
 # stereo baseline times fx
 Camera.bf: 47.90639384423901
@@ -88,7 +88,7 @@ RIGHT.P:  !!opencv-matrix
 #--------------------------------------------------------------------------------------------
 
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 1200
+ORBextractor.nFeatures: 1500
 
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2
