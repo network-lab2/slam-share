@@ -234,7 +234,7 @@ void getImageNetwork(ORB_SLAM3::System *SLAM, int frames_processed, vector<float
 
 }
 
-
+/*
 void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
                 vector<string> &vstrImageRight, vector<double> &vTimestamps)
 {
@@ -271,3 +271,61 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
     }
 }
 
+*/
+void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
+                vector<string> &vstrImageRight, vector<double> &vTimestamps)
+{
+    ifstream fTimes;
+    string strPathTimeFile = strPathToSequence + "/times.txt";
+    fTimes.open(strPathTimeFile.c_str());
+    int counter = 0;
+    int skip = 2; //skip one in 300
+    while(!fTimes.eof())
+    {
+        string s;
+        getline(fTimes,s);
+        if(!s.empty())
+        {
+            stringstream ss;
+            ss << s;
+            double t;
+            ss >> t;
+            if(counter%skip != 0){
+                vTimestamps.push_back(t);
+            }
+            else
+                std::cout<<"SKIPPED\n";
+            counter++;
+        }
+
+    }
+    std::cout<<"Counter: "<<counter<<std::endl;
+    string strPrefixLeft = strPathToSequence + "/image_0/";
+    string strPrefixRight = strPathToSequence + "/image_1/";
+
+    const int nTimes = vTimestamps.size();
+    const int nTimes_loop = counter;
+    vstrImageLeft.resize(nTimes);
+    vstrImageRight.resize(nTimes);
+
+    std::cout<<"---- Before getting in the loop \n";
+    int new_counter = 0;
+    for(int i=0; i<nTimes_loop; i++)
+    {
+        if(i%skip !=0){
+            stringstream ss;
+            /*
+            ss << setfill('0') << setw(6) << i;
+            vstrImageLeft[i] = strPrefixLeft + ss.str() + ".png";
+            vstrImageRight[i] = strPrefixRight + ss.str() + ".png";
+            */
+            ss << setfill('0') << setw(6) << i;
+            vstrImageLeft[new_counter] = strPrefixLeft + ss.str() + ".png";
+            vstrImageRight[new_counter] = strPrefixRight + ss.str() + ".png";
+            new_counter++;
+        }
+        else
+            std::cout<<"2nd SKIPPED\n";
+
+    }   
+}
