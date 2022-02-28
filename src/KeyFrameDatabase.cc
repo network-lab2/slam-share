@@ -857,8 +857,8 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         std::map<double,unsigned int> temp_featmap;
         //insert the map from the frame.
         
-         for(auto& it = F->mBowVec.begin(); it != F->mBowVec.end(); ++it) {
-            temp_featmap.insert(it);
+         for(auto it = F->mBowVec.begin(); it != F->mBowVec.end(); ++it) {
+            temp_featmap.insert(std::pair<double,unsigned int>(it->first,it->second));
          }
          
 
