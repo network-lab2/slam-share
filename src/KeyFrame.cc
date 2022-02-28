@@ -250,7 +250,7 @@ KeyFrame::KeyFrame(Frame &F, boost::interprocess::offset_ptr<Map> pMap, KeyFrame
 
     //now fill up the mBowVec and mFeatVec
     for(auto it = F.mBowVec.begin(); it != F.mBowVec.end(); ++it) {
-        mBowVec->insert(it);
+        mBowVec->insert(std::pair<unsigned int, double>(it->first, it->second));
     }
 
     for(auto it = F.mFeatVec.begin(); it != F.mFeatVec.end(); ++it) {
