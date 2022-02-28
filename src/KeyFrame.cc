@@ -563,8 +563,8 @@ double KeyFrame::score_KFDatabase_frame(const std::map<double,unsigned int> *v1,
   
   while(v1_it != v1_end && v2_it != v2_end)
   {
-    const WordValue& vi = v1_it->second;
-    const WordValue& wi = v2_it->second;
+    const double& vi = v1_it->second;
+    const double& wi = v2_it->second;
     
     if(v1_it->first == v2_it->first)
     {
