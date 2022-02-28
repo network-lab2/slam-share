@@ -1235,11 +1235,13 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
         }
         else if(f1it->first < f2it->first)
         {
-            f1it = vFeatVec1.lower_bound(f2it->first);
+            //f1it = vFeatVec1.lower_bound(f2it->first);
+            f1it = vFeatVec1->lower_bound(f2it->first);
         }
         else
         {
-            f2it = vFeatVec2.lower_bound(f1it->first);
+            //f2it = vFeatVec2.lower_bound(f1it->first);
+            f2it = vFeatVec2->lower_bound(f1it->first);
         }
     }
 

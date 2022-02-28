@@ -857,7 +857,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         std::map<double,unsigned int> temp_featmap;
         //insert the map from the frame.
         
-         for(auto it = F->mBowVec.begin(); it != F->mBowVec.end(); ++it) {
+         for(auto& it = F->mBowVec.begin(); it != F->mBowVec.end(); ++it) {
             temp_featmap.insert(it);
          }
          
@@ -867,7 +867,7 @@ vector<boost::interprocess::offset_ptr<KeyFrame> > KeyFrameDatabase::DetectReloc
         {
             nscores++;
             //float si = mpVoc->score_new(F->mBowVec,pKFi->mBowVec);
-            float si = mpVoc->score_KFDatabase_frame(&temp_featmap,pKFi->mBowVec);
+            float si = pKFi->score_KFDatabase_frame(&temp_featmap,pKFi->mBowVec);
             pKFi->mRelocScore=si;
             lScoreAndMatch.push_back(make_pair(si,pKFi));
         }
