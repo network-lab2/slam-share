@@ -1082,10 +1082,17 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
     const float factor = 1.0f/HISTO_LENGTH;
 
+/*
     DBoW2::FeatureVector::const_iterator f1it = vFeatVec1.begin();
     DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
     DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
     DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
+    */
+
+    auto f1it = vFeatVec1->begin();
+    auto f2it = vFeatVec2->begin();
+    auto f1end = vFeatVec1->end();
+    auto f2end = vFeatVec2->end();
 
     while(f1it!=f1end && f2it!=f2end)
     {
