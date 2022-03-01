@@ -202,6 +202,7 @@ int main(int argc, char **argv)
 }
 
 void getImageNetwork(ORB_SLAM3::System *SLAM, int frames_processed, vector<float> vTimesTrack){
+    /*
     boost::circular_buffer<char*> leftImages(1000);
     boost::circular_buffer<char*> rightImages(1000);
     // For the network receive:
@@ -230,7 +231,8 @@ void getImageNetwork(ORB_SLAM3::System *SLAM, int frames_processed, vector<float
 
     //Run the openCV decode before 
 
- 
+ */
+    return;
 
 }
 
