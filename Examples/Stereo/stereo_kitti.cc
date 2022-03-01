@@ -67,11 +67,14 @@ int main(int argc, char **argv)
     int frames_processed = 0;
     //vector<char*> buffImageLeft;
     //vector<char*> buffImageRight;
+    
+    /*
     if(GET_IMAGE_FROM_NETWORK){
         getImageNetwork(&SLAM, buffImageLeft, vTimesTrack);
     }
     else{
-    
+    */
+
     //resize time tracker
     vTimesTrack.resize(nImages);  
 
@@ -179,7 +182,7 @@ int main(int argc, char **argv)
     double total_time_process = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame - Start_frame).count();
     std::cout<<"Time taken for this process: "<<total_time_process<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";
 
-} //The main processing loop without network ends here.
+//} //The main processing loop without network ends here.
 
     // Stop all threads
     SLAM.Shutdown();
