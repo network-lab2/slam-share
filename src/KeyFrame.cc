@@ -655,7 +655,7 @@ void KeyFrame::ComputeBoW()
         //mFeatVec->insert(std::pair<unsigned int, double>(it2->first,it2->second));
         const ShmemAllocator_vec_unsigned_int alloc_vector_uint(ORB_SLAM3::segment.get_segment_manager());
         MyVector_unsigned_int * vec_ptr = ORB_SLAM3::segment.construct<MyVector_float>(boost::interprocess::anonymous_instance)(alloc_vector_uint);
-        vec_ptr.assign(it->second->begin(),it->second->end());
+        vec_ptr->assign(it2->second->begin(),it2->second->end());
         mFeatVec->insert(std::pair<unsigned int, Vector<unsigned int> >(it2->first,*vec_ptr));
     }
 
