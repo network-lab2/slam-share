@@ -652,7 +652,8 @@ void KeyFrame::ComputeBoW()
         mBowVec->insert(std::pair<unsigned int, double>(it->first,it->second));
     }
     for(auto it2 = mFeatVec_actual.begin(); it2 != mFeatVec_actual.end(); ++it2) {
-        mFeatVec->insert(std::pair<unsigned int, double>(it2->first,it2->second));
+        //mFeatVec->insert(std::pair<unsigned int, double>(it2->first,it2->second));
+        mFeatVec->insert(*it2);
     }
 
 }
