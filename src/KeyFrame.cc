@@ -649,10 +649,10 @@ void KeyFrame::ComputeBoW()
     //Iterate throught he computed BOW and then fill it in the maps.
      //now fill up the mBowVec and mFeatVec
     for(auto it = mBowVec_actual.begin(); it != mBowVec_actual.end(); ++it) {
-        mBowVec->insert(it);
+        mBowVec->insert(std::pair<unsigned int, double>(it->first,it->second));
     }
     for(auto it2 = mFeatVec_actual.begin(); it2 != mFeatVec_actual.end(); ++it2) {
-        mFeatVec->insert(it2);
+        mFeatVec->insert(std::pair<unsigned int, double>(it2->first,it2->second));
     }
 
 }
