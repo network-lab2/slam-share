@@ -1491,7 +1491,8 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
                 }
                 vFeatVec1_counter++;
                 vFeatVec2_counter++;
-                if(vFeatVec1_counter>= vFeatVec1.size() || vFeatVec2_counter>= vFeatVec2.size()){
+                //if(vFeatVec1_counter>= vFeatVec1.size() || vFeatVec2_counter>= vFeatVec2.size()){
+                if(vFeatVec1_counter>= vFeatVec1->size() || vFeatVec2_counter>= vFeatVec2->size()){
                     //std::cout<<"Breaking in SearchForTriangulation_\n";
                     break;
                 }
@@ -1501,11 +1502,13 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
             }
             else if(f1it->first < f2it->first)
             {
-                f1it = vFeatVec1.lower_bound(f2it->first);
+                //f1it = vFeatVec1.lower_bound(f2it->first);
+                f1it = vFeatVec1->lower_bound(f2it->first);
             }
             else
             {
-                f2it = vFeatVec2.lower_bound(f1it->first);
+                //f2it = vFeatVec2.lower_bound(f1it->first);
+                f2it = vFeatVec2->lower_bound(f1it->first);
             }
         }
 
@@ -1583,10 +1586,17 @@ int ORBmatcher::SearchForTriangulation(boost::interprocess::offset_ptr<KeyFrame>
 
         const float factor = 1.0f/HISTO_LENGTH;
 
+        /* //changed DBow2
         DBoW2::FeatureVector::const_iterator f1it = vFeatVec1.begin();
         DBoW2::FeatureVector::const_iterator f2it = vFeatVec2.begin();
         DBoW2::FeatureVector::const_iterator f1end = vFeatVec1.end();
         DBoW2::FeatureVector::const_iterator f2end = vFeatVec2.end();
+        */
+        auto f1it = vFeatVec1->begin();
+        auto f2it = vFeatVec2->begin();
+        auto f1end = vFeatVec1->end();
+        auto f2end = vFeatVec2->end();
+
         int right = 0;
         while(f1it!=f1end && f2it!=f2end)
         {
