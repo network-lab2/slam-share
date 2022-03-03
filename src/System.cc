@@ -1079,7 +1079,7 @@ void System::PostLoad(){
 
         }
         std::cout<<"************ Paused after ADDING keyframes ********************\n";
-        //cin>>pause;
+        cin>>pause;
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
         //for(auto& keyf: allkeyframes){
