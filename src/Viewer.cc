@@ -258,6 +258,12 @@ void Viewer::Run()
         if(menuShowPoints)
             mpMapDrawer->DrawMapPoints();
 
+        //Aditya added for saving.
+        if(menuSnapshot){
+            d_cam.SaveRenderNow("Map.png");
+
+        }
+
         pangolin::FinishFrame();
 
         cv::Mat toShow;
@@ -286,9 +292,12 @@ void Viewer::Run()
             bLocalizationMode = false;
             bFollow = true;
             menuFollowCamera = true;
+            menuSnapshot = false;
             mpSystem->ResetActiveMap();
             menuReset = false;
+
         }
+
 
         if(Stop())
         {
