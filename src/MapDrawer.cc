@@ -234,7 +234,7 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
         for(size_t i=0; i<vpKFs.size(); i++)
         {
             //change the color of the graph for new keyframes
-            if(vpKFs[i]->mnId>=3000)
+            if(vpKFs[i]->mnId>=4000)
             {
                 glColor4f(1.0f,0.0f,0.0f,0.6f);
             }
