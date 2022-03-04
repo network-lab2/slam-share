@@ -260,7 +260,7 @@ void Viewer::Run()
 
         //Aditya added for saving.
         if(menuSnapshot){
-            d_cam.SaveRenderNow("Map.png");
+            d_cam.SaveOnRender("Map.png");
 
         }
 
