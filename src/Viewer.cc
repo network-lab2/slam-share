@@ -132,7 +132,8 @@ void Viewer::Run()
     mbFinished = false;
     mbStopped = false;
 
-    pangolin::CreateWindowAndBind("ORB-SLAM3: Map Viewer",1024,768);
+    //pangolin::CreateWindowAndBind("ORB-SLAM3: Map Viewer",1024,768);
+    pangolin::CreateWindowAndBind("ORB-SLAM3: Map Viewer",1920,1080);
 
     // 3D Mouse handler requires depth testing to be enabled
     glEnable(GL_DEPTH_TEST);
@@ -260,7 +261,7 @@ void Viewer::Run()
 
         //Aditya added for saving.
         if(menuSnapshot){
-            d_cam.SaveOnRender("Map.png");
+            d_cam.SaveOnRender("Map");
 
         }
 
