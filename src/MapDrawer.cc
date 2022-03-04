@@ -233,6 +233,11 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
 
         for(size_t i=0; i<vpKFs.size(); i++)
         {
+            //change the color of the graph for new keyframes
+            if(vpKFs[i]->mnId>=3000)
+            {
+                glColor4f(1.0f,0.0f,0.0f,0.6f);
+            }
             // Covisibility Graph
             const vector<boost::interprocess::offset_ptr<KeyFrame> > vCovKFs = vpKFs[i]->GetCovisiblesByWeight(100);
             cv::Mat Ow = vpKFs[i]->GetCameraCenter();
