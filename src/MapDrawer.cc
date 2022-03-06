@@ -176,6 +176,9 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
         for(size_t i=0; i<vpKFs.size(); i++)
         {
             boost::interprocess::offset_ptr<KeyFrame>  pKF = vpKFs[i];
+            //change the color of the graph for new keyframes
+            
+
             //std::cout<<"Which keyframe fails? "<<i<<std::endl;
             cv::Mat Twc = pKF->GetPoseInverse().t();
             unsigned int index_color = pKF->mnOriginMapId;
@@ -195,6 +198,11 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
                 glLineWidth(mKeyFrameLineWidth);
                 glColor3f(mfFrameColors[index_color][0],mfFrameColors[index_color][1],mfFrameColors[index_color][2]);
                 glBegin(GL_LINES);
+            }
+
+            if(pKF->mnId>=4000)
+            {
+                glColor3f(0.0f,0.0f,0.0f); //black for new keyframes. 
             }
 
             glVertex3f(0,0,0);
