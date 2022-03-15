@@ -1058,6 +1058,9 @@ void System::PostLoad(){
         std::cout<<"************ 2nd time Paused to see above Points ********************\n";
         //cin>>pause;
 
+          std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point pre_start = std::chrono::steady_clock::now();
         
         for(auto& keyf: allkeyframes){
             keyf->FixMatrices(keyf);
@@ -1068,6 +1071,13 @@ void System::PostLoad(){
             std::cout<<"KeyFrame: "<<keyf->mnId<<std::endl;
             
         }
+
+         std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point pre_end = std::chrono::steady_clock::now();
+         double time_for_pre_merge= std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(pre_end - pre_start).count();
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"Time for Pre-Merge: (ms): "<<time_for_pre_merge<<std::endl;
 
         std::cout<<"************ Paused after fixing matrices. ********************\n";
         //cin>>pause;
