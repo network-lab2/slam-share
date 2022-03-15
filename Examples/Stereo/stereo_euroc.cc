@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 
 
             std::cout<<ni<<" images completed\n";
-            if(ni==100){
+            if(ni==1200){
                 std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
