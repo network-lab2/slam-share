@@ -244,6 +244,25 @@ int main(int argc, char **argv)
             SLAM.InsertTrackTime(t_track);
 #endif
 
+            std::cout<<ni<<" images completed\n";
+            if(ni==100){
+                std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point postLoad_start = std::chrono::steady_clock::now();
+            SLAM.PostLoad(); //run the post load function
+            std::chrono::steady_clock::time_point postLoad_end = std::chrono::steady_clock::now();
+            time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            }
+
             double ttrack= std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1).count();
 
             vTimesTrack[ni]=ttrack;
