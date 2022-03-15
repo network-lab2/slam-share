@@ -1081,8 +1081,8 @@ void System::PostLoad(){
         std::cout<<"************ Paused after ADDING keyframes ********************\n";
         cin>>pause;
         // Stop all threads
-        this.Shutdown();
-        this.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        this->Shutdown();
+        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
 
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
