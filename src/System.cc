@@ -1093,7 +1093,11 @@ void System::PostLoad(){
        // }
         //std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
         
-
+        std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
+             //run the post load function
+            
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
@@ -1103,9 +1107,14 @@ void System::PostLoad(){
             mpLoopCloser->InsertKeyFrame(keyframe);
             //usleep(1000);
         }
-        std::cout<<"Dumping the current map\n";
-        this->Shutdown();
-        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+       
+       std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
+            double time_for_merge= std::chrono::duration_cast<std::chrono::duration<double>, std::milli >(t_end - t_start).count();
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"Time for Merge: (ms): "<<time_for_merge<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+
         /* //delays the program without benefit
         int lcloser_counter = 0;
         while(!mpLoopCloser->isFinished())
@@ -1135,6 +1144,10 @@ void System::PostLoad(){
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         cin>>pause;
+
+         std::cout<<"Dumping the current map\n";
+        this->Shutdown();
+        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
         //mpAtlas->ChangeMap(stopped_map);
        /*
 
