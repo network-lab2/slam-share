@@ -1109,7 +1109,7 @@ void System::PostLoad(){
         }
        
        std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
-            double time_for_merge= std::chrono::duration_cast<std::chrono::duration<double>, std::milli >(t_end - t_start).count();
+            double time_for_merge= std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t_end - t_start).count();
             std::cout<<std::endl<<std::endl;
             std::cout<<"Time for Merge: (ms): "<<time_for_merge<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
