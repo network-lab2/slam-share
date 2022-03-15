@@ -1108,12 +1108,7 @@ void System::PostLoad(){
             //usleep(1000);
         }
        
-       std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
-            double time_for_merge= std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t_end - t_start).count();
-            std::cout<<std::endl<<std::endl;
-            std::cout<<"Time for Merge: (ms): "<<time_for_merge<<std::endl;
-            std::cout<<"------------------------------------------------------------"<<std::endl;
-            std::cout<<"------------------------------------------------------------"<<std::endl;
+
 
         /* //delays the program without benefit
         int lcloser_counter = 0;
@@ -1143,6 +1138,12 @@ void System::PostLoad(){
         */
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
+        std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
+            double time_for_merge= std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t_end - t_start).count();
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"Time for Merge: (ms): "<<time_for_merge<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
         cin>>pause;
 
          std::cout<<"Dumping the current map\n";
