@@ -170,6 +170,7 @@ int main(int argc, char **argv)
         double t_track = 0;
         int num_rect = 0;
         int proccIm = 0;
+        double time_for_postload;
         for(int ni=0; ni<nImages[seq]; ni++, proccIm++)
         {
             // Read left and right images from file
