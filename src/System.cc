@@ -1016,9 +1016,7 @@ void System::PostLoad(){
         cin>>pause;
         */
 
-        std::cout<<"Dumping the current map\n";
-        this->Shutdown();
-        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        
 
 
         // create a new map.
@@ -1103,8 +1101,11 @@ void System::PostLoad(){
             //    continue;
             //}
             mpLoopCloser->InsertKeyFrame(keyframe);
-            usleep(1000);
+            //usleep(1000);
         }
+        std::cout<<"Dumping the current map\n";
+        this->Shutdown();
+        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
         /* //delays the program without benefit
         int lcloser_counter = 0;
         while(!mpLoopCloser->isFinished())
