@@ -1146,6 +1146,9 @@ void System::PostLoad(){
             mapP->UpdateNormalAndDepth();
         }
         */
+         std::cout<<"Dumping the current map\n";
+        this->Shutdown();
+        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
@@ -1156,9 +1159,7 @@ void System::PostLoad(){
             std::cout<<"------------------------------------------------------------"<<std::endl;
         cin>>pause;
 
-         std::cout<<"Dumping the current map\n";
-        this->Shutdown();
-        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        
         //mpAtlas->ChangeMap(stopped_map);
        /*
 
