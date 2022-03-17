@@ -7,7 +7,7 @@ if __name__=="__main__":
     #print(sys.argv[sys.argc-1])
 
 
-    timeStampFile_path = '/home/adhak001/dev_slam/slam_fork/ORB_SLAM3/evaluation/experiments/map-combo/output/'
+    timeStampFile_path = '/home/adhak001/dev_slam/slam_fork/ORB_SLAM3/evaluation/'
 
 
     resultSava_path = '/home/adhak001/dev_slam/slam_fork/ORB_SLAM3/evaluation/'
