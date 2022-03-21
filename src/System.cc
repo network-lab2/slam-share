@@ -1092,7 +1092,7 @@ void System::PostLoad(){
 
         }
         std::cout<<"************ Paused after ADDING keyframes ********************\n";
-        cin>>pause;
+        //cin>>pause;
         
 
         std::cout<<"First map keyframes: "<<allkeyframes.size()<<" Number of Keyframes after adding the map: "<<mpAtlas->KeyFramesInMap()<<std::endl;
@@ -1280,7 +1280,7 @@ void System::PostLoad(){
 
         std::cout<<"Pause\n";
         int a;
-        std::cin>>a;
+        //std::cin>>a;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to other atlas.\n";
