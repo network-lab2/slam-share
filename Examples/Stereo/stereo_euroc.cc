@@ -235,7 +235,7 @@ int main(int argc, char **argv)
             }
 
 
-            if(ni>= 850)
+            if(ni> 800)
              {
                 std::cout<<"400 frames done\n";
                 std::chrono::steady_clock::time_point End_frame_n = std::chrono::steady_clock::now();
