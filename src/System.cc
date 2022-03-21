@@ -1156,9 +1156,9 @@ void System::PostLoad(){
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
 
-             std::cout<<"Dumping the current map\n";
-        this->Shutdown();
-        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+            // std::cout<<"Dumping the current map\n";
+        //this->Shutdown();
+        //this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
         //cin>>pause;
 
         
