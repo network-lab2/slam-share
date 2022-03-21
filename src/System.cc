@@ -1146,9 +1146,7 @@ void System::PostLoad(){
             mapP->UpdateNormalAndDepth();
         }
         */
-         std::cout<<"Dumping the current map\n";
-        this->Shutdown();
-        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
@@ -1157,7 +1155,11 @@ void System::PostLoad(){
             std::cout<<"Time for Merge: (ms): "<<time_for_merge<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
-        cin>>pause;
+
+             std::cout<<"Dumping the current map\n";
+        this->Shutdown();
+        this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+        //cin>>pause;
 
         
         //mpAtlas->ChangeMap(stopped_map);
@@ -1278,7 +1280,7 @@ void System::PostLoad(){
 
         std::cout<<"Pause\n";
         int a;
-        //std::cin>>a;
+        std::cin>>a;
 
         //now update the mpAtlas to newly read map
         //std::cout<<"Changing the map to other atlas.\n";
