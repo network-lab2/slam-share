@@ -965,7 +965,7 @@ void System::PostLoad(){
         sprintf(&atlasname[5],"%d",previous_num);
         otherAtlas = (segment.find<Atlas>(atlasname)).first;
 
-        std::cout<<"Printing the details form another atlas inside PostLoad!!\n";
+        std::cout<<"Printing the details form another atlas inside PostLoad!! OTHERNAME: "<<atlasname<<std::endl;
         std::cout<<"Check if the map is bad:"<<otherAtlas->currentMapPtr->IsBad()<<std::endl;
 
         //std::cout<<"Other atlas timestamp:-- "<<otherAtlas->currentMapPtr->GetOriginKF()->GetNumberMPs()<<"\n";
@@ -1328,7 +1328,7 @@ void System::PostLoad2(){
     if (*magic_num > 3)
     {
         //second process
-        int previous_num = *magic_num+1;
+        int previous_num = *magic_num;
         char atlasname[7];
 
         atlasname[0] = 'a';
