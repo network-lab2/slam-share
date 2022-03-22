@@ -1422,7 +1422,7 @@ void System::PostLoad2(){
 	            std::chrono::steady_clock::time_point pre_start = std::chrono::steady_clock::now();
 	        
 	        for(auto& keyf: allkeyframes){
-	            keyf->FixMatrices(keyf);
+	            //keyf->FixMatrices(keyf);
 	            keyf->ResetCamera(mpAtlas->getCurrentCamera());
 	            keyf->UpdateMap(mpAtlas->GetCurrentMap());
 	            keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
@@ -1467,10 +1467,13 @@ void System::PostLoad2(){
    		 std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints2 = mpAtlas->currentMapPtr->GetAllMapPoints();
    		 std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes2 = mpAtlas->currentMapPtr->GetAllKeyFrames();
 
+   		 //outside map now.. 
    		 for(auto& mapP: allmappoints2){
    		 	 mapP->FixMatrices();
    		 }
+   		 std::cout<<"Before fixing the matrix and Bows.\n";
    		 for(auto& keyf: thesekeyframes2){
+   		 	keyf->FixMatrices(keyf);
    		 	thesekeyframes2[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
    		 }
             
