@@ -1329,12 +1329,12 @@ void System::PostLoad2(){
     {
         //second process
         int previous_nums[2];
-        int previous_nums[0] = *magic_num-1;
-        int previous_nums[1] = *magic_num-2;
+        previous_nums[0] = *magic_num-1;
+        previous_nums[1] = *magic_num-2;
         for (int ii =0; ii<2; ii++)
         {
 
-        	int previous_num = previous_nums[i];
+        	int previous_num = previous_nums[ii];
         	char atlasname[7];
 
 	        atlasname[0] = 'a';
