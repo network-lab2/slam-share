@@ -197,6 +197,8 @@ boost::interprocess::offset_ptr<Tracking> offset_tracker;
 
 //Newly created function to Merge Maps. Load the existing map first.
 void PostLoad();
+//Second map for 2 map merges
+void PostLoad2();
 private:
 
     // Input sensor

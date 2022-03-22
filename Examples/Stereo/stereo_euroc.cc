@@ -216,14 +216,14 @@ int main(int argc, char **argv)
 
 
             std::cout<<ni<<" images completed\n";
-            if(ni==1000){
+            if(ni==1200){
                 std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::chrono::steady_clock::time_point postLoad_start = std::chrono::steady_clock::now();
-            SLAM.PostLoad(); //run the post load function
+            SLAM.PostLoad2(); //run the post load function
             std::chrono::steady_clock::time_point postLoad_end = std::chrono::steady_clock::now();
             time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
             std::cout<<std::endl<<std::endl;
@@ -235,7 +235,7 @@ int main(int argc, char **argv)
             }
 
 
-            if(ni> 1000)
+            if(ni> 1200)
              {
                 std::cout<<"400 frames done\n";
                 std::chrono::steady_clock::time_point End_frame_n = std::chrono::steady_clock::now();
