@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 
 
             std::cout<<ni<<" images completed\n";
-            if(ni==1200){
+            if(ni==1600){
                 std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
@@ -233,10 +233,11 @@ int main(int argc, char **argv)
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
 
-            std::cout<<"STOPPED. RUN ANOTHER MAP BEFORE MERGE\n";
-            int aa;
-            cin>>aa;
+            //std::cout<<"STOPPED. RUN ANOTHER MAP BEFORE MERGE\n";
+            //int aa;
+            //cin>>aa;
             }
+            /*
             if(ni==1400){
                 std::cout<<" --- More than 1400 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
@@ -255,8 +256,8 @@ int main(int argc, char **argv)
             std::cout<<"------------------------------------------------------------"<<std::endl;
             }
 
-
-            if(ni> 1400)
+            */
+            if(ni> 1600)
              {
                 std::cout<<"1400 frames done\n";
                 std::chrono::steady_clock::time_point End_frame_n = std::chrono::steady_clock::now();
