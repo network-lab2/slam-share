@@ -1405,7 +1405,7 @@ void System::PostLoad2(){
 	        //fix all the mapppoints.
 	        for(auto& mapP: allmappoints){
 	            mapP->UpdateMap(mpAtlas->GetCurrentMap());
-	            mapP->FixMatrices();
+	            //mapP->FixMatrices();
 	            //mapP->UpdateNormalAndDepth();
 	            mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
 	        }
@@ -1444,7 +1444,7 @@ void System::PostLoad2(){
 	        for(auto& keyf: allkeyframes){
 	        //we should fix the descriptors differently.
 	            //with ORB vocab from new map
-	            thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
+	            //thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
 	            mpAtlas->GetCurrentMap()->AddKeyFrame(keyf);
 	            //mpKeyFrameDatabase->add(keyf);
@@ -1463,12 +1463,23 @@ void System::PostLoad2(){
 
         }//end for loop
    		 std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
+
+   		 std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints2 = mpAtlas->currentMapPtr->GetAllMapPoints();
+   		 std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes2 = mpAtlas->currentMapPtr->GetAllKeyFrames();
+
+   		 for(auto& mapP: allmappoints2){
+   		 	 mapP->FixMatrices();
+   		 }
+   		 for(auto& keyf: thesekeyframes2){
+   		 	thesekeyframes2[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
+   		 }
             
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
             mpLoopCloser->InsertKeyFrame(keyframe);
         }
+
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
