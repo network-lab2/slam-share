@@ -1370,6 +1370,7 @@ void System::PostLoad2(){
 
 
 	        std::cout<<"----- Test the accessible keyframes Bag of words ------\n";
+	        /*
 	        for(auto k:thesekeyframes){
 	            std::cout<<"Size of Bag of Words: "<<k->mBowVec->size()<<std::endl;
 	            //std::cout<<"Size of Feature vectors: "<<k->mFeatVec->size()<<std::endl;
@@ -1377,7 +1378,7 @@ void System::PostLoad2(){
 	            std::cout<<"Size of the element of mDescriptors: "<<k->mDescriptors.elemSize()<<std::endl;
 	            std::cout<<"KeyFrame ID: "<<k->mnId<<std::endl;
 	        }
-
+			*/
 	        auto stopped_map = mpAtlas->GetCurrentMap();
 	        int num_keyframes = mpAtlas->GetCurrentMap()->GetAllKeyFrames().size();
 	        std::cout<<" -------old map ID: "<<mpAtlas->GetCurrentMap()->GetId()<<std::endl;
