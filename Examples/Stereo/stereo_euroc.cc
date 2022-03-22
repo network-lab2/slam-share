@@ -223,6 +223,27 @@ int main(int argc, char **argv)
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
             std::chrono::steady_clock::time_point postLoad_start = std::chrono::steady_clock::now();
+            SLAM.PostLoad(); //run the post load function
+            std::chrono::steady_clock::time_point postLoad_end = std::chrono::steady_clock::now();
+            time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
+            std::cout<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+
+            std::cout<<"STOPPED. RUN ANOTHER MAP BEFORE MERGE\n";
+            int aa;
+            cin>>aa;
+            }
+            if(ni==1400){
+                std::cout<<" --- More than 1400 images --- we pause now and run postload "<<std::endl<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::cout<<"------------------------------------------------------------"<<std::endl;
+            std::chrono::steady_clock::time_point postLoad_start = std::chrono::steady_clock::now();
             SLAM.PostLoad2(); //run the post load function
             std::chrono::steady_clock::time_point postLoad_end = std::chrono::steady_clock::now();
             time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
@@ -235,9 +256,9 @@ int main(int argc, char **argv)
             }
 
 
-            if(ni> 1200)
+            if(ni> 1400)
              {
-                std::cout<<"400 frames done\n";
+                std::cout<<"1400 frames done\n";
                 std::chrono::steady_clock::time_point End_frame_n = std::chrono::steady_clock::now();
                 double total_time_process_n = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(End_frame_n - Start_frame).count();
                 std::cout<<"Time taken for this process: "<<total_time_process_n<<"ms\n Time for PostLoad: "<<time_for_postload<<"ms \n";

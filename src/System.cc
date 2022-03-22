@@ -1325,16 +1325,16 @@ void System::PostLoad2(){
     Atlas *otherAtlas=nullptr;
 
     //now check. 3 is the starting process. 
-    if (*magic_num > 4)
+    if (*magic_num > 3)
     {
         //second process
         int previous_nums[2];
-        previous_nums[0] = *magic_num-2;
-        previous_nums[1] = *magic_num-1;
-        for (int ii =0; ii<2; ii++)
-        {
+        previous_nums[0] = *magic_num+1;
+        //previous_nums[1] = *magic_num-1;
+        //for (int ii =0; ii<2; ii++)
+        //{
 
-        	int previous_num = previous_nums[ii];
+        	int previous_num = previous_nums[0];
         	char atlasname[7];
 
 	        atlasname[0] = 'a';
@@ -1406,7 +1406,7 @@ void System::PostLoad2(){
 	        //fix all the mapppoints.
 	        for(auto& mapP: allmappoints){
 	            mapP->UpdateMap(mpAtlas->GetCurrentMap());
-	            //mapP->FixMatrices();
+	            mapP->FixMatrices();
 	            //mapP->UpdateNormalAndDepth();
 	            mpAtlas->GetCurrentMap()->AddMapPoint(mapP);
 	        }
@@ -1423,7 +1423,7 @@ void System::PostLoad2(){
 	            std::chrono::steady_clock::time_point pre_start = std::chrono::steady_clock::now();
 	        
 	        for(auto& keyf: allkeyframes){
-	            //keyf->FixMatrices(keyf);
+	            keyf->FixMatrices(keyf);
 	            keyf->ResetCamera(mpAtlas->getCurrentCamera());
 	            keyf->UpdateMap(mpAtlas->GetCurrentMap());
 	            keyf->SetORBVocabulary(mpAtlas->GetORBVocabulary());
@@ -1445,7 +1445,7 @@ void System::PostLoad2(){
 	        for(auto& keyf: allkeyframes){
 	        //we should fix the descriptors differently.
 	            //with ORB vocab from new map
-	            //thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
+	            thesekeyframes[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
 
 	            mpAtlas->GetCurrentMap()->AddKeyFrame(keyf);
 	            //mpKeyFrameDatabase->add(keyf);
@@ -1462,9 +1462,9 @@ void System::PostLoad2(){
 	        
 	         
 
-        }//end for loop
-   		 std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
-
+        //}//end for loop
+	        /*
+   		 
    		 std::vector<boost::interprocess::offset_ptr<MapPoint> > allmappoints2 = mpAtlas->currentMapPtr->GetAllMapPoints();
    		 std::vector<boost::interprocess::offset_ptr<KeyFrame> > thesekeyframes2 = mpAtlas->currentMapPtr->GetAllKeyFrames();
 
@@ -1478,6 +1478,9 @@ void System::PostLoad2(){
    		 	thesekeyframes2[0]->FixBow(keyf,mpAtlas->GetORBVocabulary());
    		 }
             
+            */
+            std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
+
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
         {
