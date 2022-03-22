@@ -1108,8 +1108,8 @@ void System::PostLoad(){
             std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
              //run the post load function
 
-            this->Shutdown();
-            this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+            //this->Shutdown();
+            //this->SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
             
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
