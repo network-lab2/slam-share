@@ -1458,11 +1458,11 @@ void System::PostLoad2(){
 	        
 	        std::cout<<"------------------------------------------------------------"<<std::endl;
 	        std::cout<<"------------------------------------------------------------"<<std::endl;
-	        std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
+	        
 	         
 
         }//end for loop
-    
+   		 std::chrono::steady_clock::time_point t_start = std::chrono::steady_clock::now();
             
         int counter_kf = 0;
         for(auto& keyframe: mpAtlas->GetCurrentMap()->GetAllKeyFrames())
