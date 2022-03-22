@@ -1329,8 +1329,8 @@ void System::PostLoad2(){
     {
         //second process
         int previous_nums[2];
-        previous_nums[0] = *magic_num-1;
-        previous_nums[1] = *magic_num-2;
+        previous_nums[0] = *magic_num-2;
+        previous_nums[1] = *magic_num-1;
         for (int ii =0; ii<2; ii++)
         {
 
