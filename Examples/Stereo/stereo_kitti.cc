@@ -301,6 +301,9 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
             else
                 std::cout<<"SKIPPED\n";
             counter++;
+            if (counter==200){
+                break;
+            }
         }
 
     }
