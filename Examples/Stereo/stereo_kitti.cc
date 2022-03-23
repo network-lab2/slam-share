@@ -315,7 +315,8 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
 
     std::cout<<"---- Before getting in the loop \n";
     int new_counter = 0;
-    for(int i=0; i<nTimes_loop; i++)
+    //for(int i=0; i<nTimes_loop; i++)
+    for(int i=2300; i<2500; i++)
     {
         if(i%skip !=0){
             stringstream ss;
