@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
         //stop after 100 frames.
         count_images++;
-        if(count_images==100)
+        if(count_images==200)
         {
             std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
@@ -102,9 +102,9 @@ int main(int argc, char **argv)
             time_for_postload= std::chrono::duration_cast<std::chrono::duration<double> >(postLoad_end - postLoad_start).count();
             //int flag = std::cin.get();
             // Stop all threads
-            //SLAM.Shutdown();
+            SLAM.Shutdown();
             // Save camera trajectory
-           //SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
+           SLAM.SaveTrajectoryKITTI("CameraTrajectory.txt");
            //int hold;
            //std::cin>>hold;
            std::cout<<std::endl<<std::endl;
@@ -301,9 +301,9 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
             else
                 std::cout<<"SKIPPED\n";
             counter++;
-            if (counter==200){
-                break;
-            }
+            //if (counter==200){
+             //   break;
+            //}
         }
 
     }
