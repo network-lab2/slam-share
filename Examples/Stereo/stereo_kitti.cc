@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
         //stop after 100 frames.
         count_images++;
-        if(count_images==200)
+        if(count_images==1200)
         {
             std::cout<<" --- More than 100 images --- we pause now and run postload "<<std::endl<<std::endl;
             std::cout<<"------------------------------------------------------------"<<std::endl;
@@ -320,7 +320,7 @@ void LoadImages(const string &strPathToSequence, vector<string> &vstrImageLeft,
     int new_counter = 0;
     //for(int i=0; i<nTimes_loop; i++)
     
-    for(int i=200; i<400; i++)
+    for(int i=0; i<1200; i++)
     {
         if(i%skip !=0){
             stringstream ss;
