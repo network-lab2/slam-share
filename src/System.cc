@@ -1152,6 +1152,7 @@ void System::PostLoad(){
           while(!mpLoopCloser->isFinished())
         {
         	usleep(1000);
+        	mpLoopCloser->RequestFinish();
         }
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
