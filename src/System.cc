@@ -1149,7 +1149,10 @@ void System::PostLoad(){
             mapP->UpdateNormalAndDepth();
         }
         */
-        
+          while(!mpLoopCloser->isFinished())
+        {
+        	usleep(1000);
+        }
 
         std::cout<<"------********--------- Finished mLoopCloser ------------*********-----------\n ----- Before Changing the maps back to original -------\n";
         std::chrono::steady_clock::time_point t_end = std::chrono::steady_clock::now();
