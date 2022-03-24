@@ -63,6 +63,7 @@ void LoopClosing::Run()
         //----------------------------
         if(CheckNewKeyFrames())
         {
+            std::chrono::steady_clock::time_point time_StartCheckNewFrames = std::chrono::steady_clock::now();
             std::cout<<"New KeyFrames\n";
             if(mpLastCurrentKF)
             {
@@ -262,6 +263,9 @@ void LoopClosing::Run()
 
             }
             mpLastCurrentKF = mpCurrentKF;
+            std::chrono::steady_clock::time_point time_EndCheckNewFrames = std::chrono::steady_clock::now();
+            double total_check = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(time_EndCheckNewFrames - time_StartCheckNewFrames).count();
+            std::cout<<"<><><><><><><><><> KeyFrame: "<<mpCurrentKF->mnId<<" FINISHED in LoopClosing Time (ms): "<<total_check<<"<><><><><><><><><>\n";
         }
 
         ResetIfRequested();
