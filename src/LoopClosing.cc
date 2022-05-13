@@ -879,7 +879,8 @@ int LoopClosing::FindMatchesByProjection(boost::interprocess::offset_ptr<KeyFram
 
 void LoopClosing::CorrectLoop()
 {
-    cout << "Loop detected!" << endl;
+    cout << "Loop detected! Starting the Time measurement." << endl;
+    std::chrono::steady_clock::time_point time_startCorrectLoop = std::chrono::steady_clock::now();
 
     // Send a stop signal to Local Mapping
     // Avoid new keyframes are inserted while correcting the loop
@@ -1092,6 +1093,12 @@ void LoopClosing::CorrectLoop()
     mpLocalMapper->Release();
 
     mLastLoopKFid = mpCurrentKF->mnId; //TODO old varible, it is not use in the new algorithm
+
+    std::chrono::steady_clock::time_point time_endCorrectLoop = std::chrono::steady_clock::now();
+    double timeCorrectLoop = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(time_endCorrectLoop - time_startCorrectLoop).count(); 
+    
+    std::cout<<"ooooooooooooooooooo Loop Correct Time: "<<timeCorrectLoop<<" milli-seconds ooooooooooooooooooooooooooooooooooooo\n";   
+
 }
 
 void LoopClosing::MergeLocal()
