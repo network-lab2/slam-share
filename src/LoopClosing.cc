@@ -247,7 +247,8 @@ void LoopClosing::Run()
 #ifdef REGISTER_TIMES
                         std::chrono::steady_clock::time_point time_EndLoop = std::chrono::steady_clock::now();
                         double timeLoop = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(time_EndLoop - time_StartLoop).count();
-                        vTimeLoopTotal_ms.push_back(timeLoop);
+                        
+                        .push_back(timeLoop);
 #endif
                     }
 
@@ -266,7 +267,7 @@ void LoopClosing::Run()
             std::chrono::steady_clock::time_point time_EndCheckNewFrames = std::chrono::steady_clock::now();
             double total_check = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(time_EndCheckNewFrames - time_StartCheckNewFrames).count();
             std::cout<<"<><><><><><><><><> KeyFrame: "<<mpCurrentKF->mnId<<" FINISHED in LoopClosing Time (ms): "<<total_check<<"<><><><><><><><><>\n";
-            std::cout<<"================== KeyFrame: "<<mpCurrentKF->mnId<<" FINISHED in Machine Time: "<<std::chrono::steady_clock::now()<<"###################\n";
+            std::cout<<"================== KeyFrame: "<<mpCurrentKF->mnId<<" FINISHED in Machine Time: "<<std::chrono::system_clock::now()<<"###################\n";
         }
 
         ResetIfRequested();
