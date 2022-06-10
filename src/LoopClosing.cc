@@ -264,7 +264,8 @@ void LoopClosing::Run()
             }
             mpLastCurrentKF = mpCurrentKF;
             std::chrono::steady_clock::time_point time_EndCheckNewFrames = std::chrono::steady_clock::now();
-            std::chrono::time_point<std::chrono::high_resolution_clock,std::chrono::nanoseconds> nano_timecheck = std::chrono::time_point_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now())
+            //std::chrono::time_point<std::chrono::high_resolution_clock,std::chrono::nanoseconds> nano_timecheck = std::chrono::time_point_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now());
+            auto nano_timecheck = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
             double total_check = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(time_EndCheckNewFrames - time_StartCheckNewFrames).count();
             std::cout<<"<><><><><><><><><> KeyFrame: "<<mpCurrentKF->mnId<<" FINISHED in LoopClosing Time (ms): "<<total_check<<"<><><><><><><><><>\n";
             std::cout<<"================== KeyFrame: "<<mpCurrentKF->mnId<<" FINISHED in Machine Time: "<<nano_timecheck<<" ###################\n";
