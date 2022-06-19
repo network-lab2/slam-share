@@ -58,7 +58,7 @@ Camera2.lappingBegin: 0
 Camera2.lappingEnd: 511
 
 # Camera frames per second
-Camera.fps: 20.0
+Camera.fps: 30.0
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
