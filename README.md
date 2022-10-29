@@ -1,4 +1,8 @@
-# ORB-SLAM3
+# SLAM-SHARE
+Please check the pre-requisite of ORB-SLAM3 to be able to install SLAM-Share
+
+
+#Based on ORB-SLAM3
 
 ### V0.4: Beta version, 21 April 2021
 **Authors:** Carlos Campos, Richard Elvira, Juan J. Gómez Rodríguez, [José M. M. Montiel](http://webdiis.unizar.es/~josemari/), [Juan D. Tardos](http://webdiis.unizar.es/~jdtardos/).
